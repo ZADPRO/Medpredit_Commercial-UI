@@ -1,0 +1,55 @@
+.inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+.inputbox {
+  height: 100%;
+  width: 100%;
+}
+
+.inputs input,
+.inputs .p-password {
+  width: 100%;
+
+  max-width: 20rem;
+  border-radius: 10px;
+}
+.p-icon-field.p-icon-field-right {
+  width: 100%;
+}
+.forgot {
+  font-size: 15px;
+  font-weight: bold;
+  color: #0c4b41;
+  margin-top: 5%;
+}
+
+.text1 {
+  font-size: 22px;
+  font-weight: bold;
+  width: 20rem;
+  color: #0c4b41;
+  margin-bottom: 20px;
+}
+.forgotPassword {
+  font-size: 18px;
+  width: 20rem;
+  color: #0c4b41;
+}
+
+.hitext {
+  display: flex;
+  width: 100%;
+}
+
+.loginScreenIonic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  padding: 10px;
+}

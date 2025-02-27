@@ -1,0 +1,7 @@
+{
+  "name": "Medpredit_Commercial_UI",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
