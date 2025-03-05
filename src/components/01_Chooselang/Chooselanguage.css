@@ -64,7 +64,15 @@
   width: 50px;
   height: 30px;
   object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
 }
+
+.language-option.selected .imageForLang img {
+  filter: none;
+}
+
+
 
 /* Button container to keep it at the bottom */
 .button-container {
@@ -79,6 +87,7 @@
   width: 320px;
   padding: 12px;
   font-size: 18px;
+  font-weight: bold;
   background: #a5e768;
   color: #0c4b41;
   border: none;

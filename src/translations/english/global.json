@@ -1,5 +1,54 @@
 {
   "chooseLanguage": {
-    "home": "Home page english"
-  }
+    "home": "Home page english",
+    "language":"Choose Your Language",
+    "select": "Select"
+  },
+  "login": {
+    "welcome": "Hi, Welcome!",
+    "Mobile Number/ Email Address": "Mobile Number/ Email Address",
+    "Password": "Password",
+    "Remember Me": "Remember Me",
+    "Forgot Password": "Forgot Password",
+    "Login": "Login",
+    "Not a member": "Not a member",
+    "Register Now": "Register Now",
+    "or continue with": "or continue with"
+  },
+  "Register User": {
+  "First Name": "First Name",
+  "Last Name": "Last Name",
+  "E-Mail": "E-Mail",
+  "Enter Password": "Enter Password",
+  "Confirm Password": "Confirm Password",
+  "Must be 8 characters": "Must be 8 characters",
+  "Match Password": "Match Password",
+  "I've read and agree with the": "I've read and agree with the",
+  "Terms and Conditions and the Privacy Policy": "Terms and Conditions and the Privacy Policy.",
+  "Next": "Next",
+  "First Name is required.": "First Name is required.",
+  "Last Name is required.": "Last Name is required.",
+  "Email is required.": "Email is required.",
+  "Enter a valid email.": "Enter a valid email.",
+  "Password is required.": "Password is required.",
+  "Password must be at least 8 characters.": "Password must be at least 8 characters.",
+  "Passwords do not match.": "Passwords do not match.",
+  "You must agree to the Terms and Conditions.": "You must agree to the Terms and Conditions.",
+  "Registration Successful!": "Registration Successful!"
+},
+"forgotPassword": {
+  "title": "Forgot Password",
+  "description": "Enter your email to receive an OTP and reset your password.",
+  "emailPlaceholder": "Email Address",
+  "next": "Next",
+  "invalidEmail": "Please enter a valid email address."
+},
+"verifyOTP": {
+  "title": "Verify OTP",
+  "description": "Enter code to reset your password.",
+  "otpPlaceholder": "Enter OTP",
+  "verify": "Verify"
+}
+
+
 }

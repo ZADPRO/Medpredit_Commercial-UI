@@ -1,3 +1,18 @@
+.loginScreenIonic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  padding-right: 4vw;
+  background-color: var(--med-light-grey);
+}
+
+.loginScreenIonic>img{
+  max-height: 30vh;
+}
+
 .inputs {
   display: flex;
   flex-direction: column;
@@ -13,9 +28,9 @@
 .inputs input,
 .inputs .p-password {
   width: 100%;
-
   max-width: 20rem;
   border-radius: 10px;
+  border: none;
 }
 .p-icon-field.p-icon-field-right {
   width: 100%;
@@ -34,22 +49,32 @@
   color: #0c4b41;
   margin-bottom: 20px;
 }
-.forgotPassword {
-  font-size: 18px;
-  width: 20rem;
-  color: #0c4b41;
-}
 
 .hitext {
   display: flex;
   width: 100%;
 }
 
-.loginScreenIonic {
+.loginRegisterUser{
+  color: var(--med-dark-green);
+  font-weight: 600;
+}
+
+.loginRegisterUser:hover{
+  text-decoration: underline;
+}
+
+.loginIonicLogo{
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  height: 100vh;
-  padding: 10px;
+  flex-direction: row;
+  gap: 1rem;
+  margin: 0.8rem 0;
+}
+
+.loginIonicLogo>ion-icon {
+  background-color: var(--med-light-green);
+  color: var(--med-dark-green);
+  font-size: 1.6rem;
+  border-radius: 50%;
+  padding: 0.6rem;
 }

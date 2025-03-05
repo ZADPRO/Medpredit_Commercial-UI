@@ -1,13 +1,16 @@
 ion-tab-bar#mainIonToolbar {
     position: absolute;
-    bottom: 0;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
     text-align: center;
     inline-size: 100%;
-    height: 9vh;
+    border: none;
+    width: 80%;
     padding: 1rem 0 0 0;
-    border-radius: 20px 20px 0 0;
+    border-radius: 20px;
     --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --background: #effafe;
+    --background: var(--med-dark-green);
     --background-size: contain;
   }
   
