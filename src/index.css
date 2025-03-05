@@ -1,0 +1,40 @@
+* {
+  /* font-family: "Inter"; */
+  font-optical-sizing: auto;
+  font-style: normal;
+  scrollbar-width: auto !important;
+}
+
+:root {
+  --med-light-grey: rgba(243, 243, 243, 1);
+  --med-dark-green: rgba(12, 75, 65, 1);
+  --med-light-green: rgba(165, 231, 104, 1);
+}
+
+
+.medCustom-button01 {
+  background-color: var(--med-light-green);
+  color: var(--med-dark-green);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 10px;
+}
+
+
+/*Prime React Input Fields CSS*/
+
+.p-password{
+  background-color: white;
+  border-radius: 6px;
+}
+
+.p-checkbox:not(.p-disabled):has(.p-checkbox-input).p-highlight .p-checkbox-box {
+  background-color: var(--med-light-green);
+  border: transparent;
+}
+
+.p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box{
+  border-color: transparent;
+}

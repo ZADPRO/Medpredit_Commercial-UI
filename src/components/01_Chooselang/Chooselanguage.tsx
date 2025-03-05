@@ -3,12 +3,13 @@ import "./Chooselanguage.css";
 
 import logo from "../../assets/images/Splashscreen/logo.png";
 
-import tamil from "../../assets/images/Chooselanguage/Tamil.png";
+import tamil from "../../assets/images/Chooselanguage/Tamil1.png";
 import english from "../../assets/images/Chooselanguage/English.png";
 import hindi from "../../assets/images/Chooselanguage/Hindi.png";
 
 import { useTranslation } from "react-i18next";
 import { IonContent, IonPage } from "@ionic/react";
+import { useHistory } from "react-router";
 
 interface Category {
   name: string;
@@ -19,8 +20,8 @@ interface Category {
 const Chooselanguage: React.FC = () => {
   const categories = [
     { name: "English", key: "E", langCode: "english", image: english },
-    { name: "Tamil", key: "T", langCode: "tamil", image: tamil },
-    { name: "Hindi", key: "H", langCode: "hindi", image: hindi },
+    { name: "தமிழ்", key: "T", langCode: "tamil", image: tamil },
+    { name: "हिंदी", key: "H", langCode: "hindi", image: hindi },
   ];
 
   const { t, i18n } = useTranslation("global");
@@ -29,6 +30,8 @@ const Chooselanguage: React.FC = () => {
     console.log("lang", lang);
     i18n.changeLanguage(lang);
   };
+
+  const history = useHistory();
 
   const [selectedCategory, setSelectedCategory] = useState<Category>(
     categories[0]
@@ -45,9 +48,7 @@ const Chooselanguage: React.FC = () => {
         <div className="ionContentsLoginScreen">
           {/* Centered content */}
           <div className="language-container">
-            <p className="text">Choose your Language</p>
-            <p>{t("chooseLanguage.home")}</p>
-
+            <p className="text">{t("chooseLanguage.language")}</p>
             <div className="card">
               {categories.map((category) => (
                 <div
@@ -78,7 +79,10 @@ const Chooselanguage: React.FC = () => {
 
           {/* Button at the bottom */}
           <div className="button-container">
-            <button className="select-button">Select</button>
+            <button onClick={() => history.push("/login", {
+              direction: "forward",
+              animation: "slide",
+            })} className="select-button">{t("chooseLanguage.select")}</button>
           </div>
         </div>
       </IonContent>
