@@ -1,10 +1,14 @@
 .registerScreenIonic{
+<<<<<<< HEAD
     padding: 2%;
+=======
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
     block-size: 100vh;
     inline-size: 100vw;
     background-color: rgba(243, 243, 243, 1);
     display: flex;
     align-items: center;
+<<<<<<< HEAD
     background-image: url("../../assets/images/Backgroundimg/bgimg.png");
     background-size: cover;
     background-position: center; 
@@ -15,6 +19,8 @@
     margin-top: 3%;
     font-weight: 700;
     font-size: xx-large;
+=======
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
 }
 
 .registerUserForm{
@@ -22,9 +28,13 @@
     padding: 1rem 1rem 1rem 1.5rem;
     display: flex;
     flex-direction: column;
+<<<<<<< HEAD
     gap: 2rem;
     overflow-y: auto; /* Allows form scrolling */
     max-height: 90vh; /* Ensures form is scrollable if needed */
+=======
+    gap: 1rem
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
 }
 
 .registerUserFields{
@@ -42,6 +52,7 @@
 }
 
 .registerUserForm>img{
+<<<<<<< HEAD
     width: 100%;
     margin: 0 auto;
 }
@@ -76,3 +87,8 @@
   
   
   
+=======
+    width: 50%;
+    margin: 0 auto;
+}
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2

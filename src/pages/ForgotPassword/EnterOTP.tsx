@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { IonContent, IonModal, IonPage } from "@ionic/react";
 import { InputOtp } from "primereact/inputotp";
 import React, { useState, useEffect } from "react";
@@ -56,6 +57,35 @@ const EnterOTP = () => {
               <label style={{ display: "flex", justifyContent: "center" }}>
                 {t("verifyOTP.description")}
               </label>
+=======
+import { IonContent, IonIcon, IonPage } from "@ionic/react";
+import { chevronBack } from "ionicons/icons";
+import { InputOtp } from "primereact/inputotp";
+import { InputText } from "primereact/inputtext";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import './ForgotPassword.css'
+import { useTranslation } from "react-i18next";
+
+const EnterOTP = () => {
+    const [token, setTokens] = useState<string | number | undefined>();
+  const { t, i18n } = useTranslation("global");
+  const history = useHistory();
+  return (
+    <IonPage>
+      <IonContent fullscreen>
+        <div className="forgotPassIonicScreen">
+          <div></div>
+          <div className="forgotPassword">
+            <IonIcon
+              size="large"
+              onClick={() => history.goBack()}
+              icon={chevronBack}
+            ></IonIcon>
+            <h1>{t("verifyOTP.title")}</h1>
+            <div className="forgotPasswordFields">
+              <label>{t("verifyOTP.description")}</label>
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
               <InputOtp
                 value={token}
                 onChange={(e) => setTokens(e.value ?? undefined)}
@@ -63,6 +93,7 @@ const EnterOTP = () => {
                 integerOnly
               />
             </div>
+<<<<<<< HEAD
 
             <div
               style={{
@@ -100,6 +131,11 @@ const EnterOTP = () => {
                 // history.goBack(); 
                 setShowModal(true); 
               }}
+=======
+            <div style={{ margin: '2rem 0 0 1rem' }}>
+              <button
+                onClick={() => history.goBack()}
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
                 className="medCustom-button01"
               >
                 {t("verifyOTP.verify")}
@@ -107,6 +143,7 @@ const EnterOTP = () => {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
         <IonModal
           isOpen={showModal}
           onDidDismiss={() => setShowModal(false)}
@@ -131,6 +168,8 @@ const EnterOTP = () => {
           
           </div>
         </IonModal>
+=======
+>>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
       </IonContent>
     </IonPage>
   );
