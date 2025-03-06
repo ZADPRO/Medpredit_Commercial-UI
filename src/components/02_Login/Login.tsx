@@ -18,6 +18,7 @@ import { Checkbox } from "primereact/checkbox";
 import { useTranslation } from "react-i18next";
 import Lottie from "lottie-react";
 import tickAnimation from "../../assets/Animations/tickanimation.json";
+import popupbg from "../../assets/images/Backgroundimg/popupbg.png";
 
 const Login: React.FC = () => {
   const [value, setValue] = useState("");

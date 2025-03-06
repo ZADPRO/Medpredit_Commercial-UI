@@ -22,6 +22,7 @@ import EnterOTP from "../ForgotPassword/EnterOTP";
 import Tab1 from "../Tab1";
 import { chevronBack, home } from "ionicons/icons";
 import './MainRoutes.css';
+import ChangePAssword from "../ChangePassword/ChangePAssword";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -85,6 +86,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/forgotPassword">
           <ForgotPassword/>
+        </Route>
+        <Route path="/changepassword">
+          <ChangePAssword/>
         </Route>
         <Route path="/enterOTP">
           <EnterOTP/>

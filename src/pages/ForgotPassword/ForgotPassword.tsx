@@ -49,10 +49,10 @@ const ForgotPassword = () => {
             <div className="forgotPasswordFields">
               <label>{t("forgotPassword.description")}</label>
               <InputText
-                type="text"
-                placeholder={t("login.Mobile Number/ Email Address")}
+                type="number"
+                placeholder={t("forgotPassword.Mobile Number")}
                 style={{
-                  width: "200rem",
+                  width: "20rem",
                   maxWidth: "100%",
                   borderRadius: "10px",
                 }}
@@ -72,7 +72,6 @@ const ForgotPassword = () => {
           onDidDismiss={() =>
             setToastOpen({ status: false, textColor: "", message: "" })
           }
-
           message={toastOpen.message}
           duration={3000}
         />
