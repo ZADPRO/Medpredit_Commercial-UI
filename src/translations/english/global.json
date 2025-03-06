@@ -13,12 +13,14 @@
     "Login": "Login",
     "Not a member": "Not a member",
     "Register Now": "Register Now",
-    "or continue with": "or continue with"
+    "or continue with": "or continue with",
+     "Login Successful": "Login Successful!"
   },
   "Register User": {
   "First Name": "First Name",
   "Last Name": "Last Name",
   "E-Mail": "E-Mail",
+  "Mobile Number": "Mobile Number",
   "Enter Password": "Enter Password",
   "Confirm Password": "Confirm Password",
   "Must be 8 characters": "Must be 8 characters",
@@ -34,20 +36,23 @@
   "Password must be at least 8 characters.": "Password must be at least 8 characters.",
   "Passwords do not match.": "Passwords do not match.",
   "You must agree to the Terms and Conditions.": "You must agree to the Terms and Conditions.",
-  "Registration Successful!": "Registration Successful!"
+  "Registration Successful!": "Registration Successful!",
+  "Mobile number is required.": "Mobile number is required."
 },
 "forgotPassword": {
-  "title": "Forgot Password",
+  "title": "Forgot Password?",
   "description": "Enter your email to receive an OTP and reset your password.",
   "emailPlaceholder": "Email Address",
-  "next": "Next",
+  "continue": "Continue",
   "invalidEmail": "Please enter a valid email address."
 },
 "verifyOTP": {
-  "title": "Verify OTP",
-  "description": "Enter code to reset your password.",
+  "title": "OTP VERFICATION",
+  "description": "Enter OTP sent to +91-8765279827",
   "otpPlaceholder": "Enter OTP",
-  "verify": "Verify"
+  "verify": "Verify",
+  "resendmsg":"Don't receive code? Re-send",
+  "verifySuccessful":" Verified Successfully!" 
 }
 
 

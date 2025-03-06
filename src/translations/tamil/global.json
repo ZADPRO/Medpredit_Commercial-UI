@@ -13,11 +13,13 @@
     "Login": "உள்நுழை",
     "Not a member": "பதிவு செய்யவா?",
     "Register Now": "பதிவு",
-    "or continue with": "அல்லது"
+    "or continue with": "அல்லது",
+    "Login Successful": "உள்நுழைவு வெற்றிகரமாக முடிந்தது!"
   },
   "Register User": {
     "First Name": "முதல் பெயர்",
     "Last Name": "கடைசி பெயர்",
+    "Mobile Number": "மொபைல் எண்",
     "E-Mail": "மின்னஞ்சல்",
     "Enter Password": "கடவுச்சொல்லை உள்ளிடவும்",
     "Confirm Password": "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
@@ -34,21 +36,22 @@
     "Password must be at least 8 characters.": "கடவுச்சொல்லில் குறைந்தது 8 எழுத்துகள் இருக்க வேண்டும்.",
     "Passwords do not match.": "கடவுச்சொற்கள் பொருந்தவில்லை.",
     "You must agree to the Terms and Conditions.": "நீங்கள் விதிமுறைகள் மற்றும் நிபந்தனைகளை ஒப்புக்கொள்ள வேண்டும்.",
-    "Registration Successful!": "பதிவு வெற்றிகரமாக முடிந்தது!"
+    "Registration Successful!": "பதிவு வெற்றிகரமாக முடிந்தது!",
+       "Mobile number is required.": "மொபைல் எண் தேவை."
   },
   "forgotPassword": {
-  "title": "கடவுச்சொல் மறந்துவிட்டீர்களா?",
-  "description": "OTP பெற மற்றும் உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் மின்னஞ்சலை உள்ளிடவும்.",
-  "emailPlaceholder": "மின்னஞ்சல் முகவரி",
-  "next": "அடுத்து",
-  "invalidEmail": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்."
-},
-"verifyOTP": {
-  "title": "OTP சரிபார்க்கவும்",
-  "description": "உங்கள் கடவுச்சொல்லை மீட்டமைக்க குறியீட்டை உள்ளிடவும்.",
-  "otpPlaceholder": "OTP உள்ளிடவும்",
-  "verify": "சரிபார்க்கவும்"
-}
-
-
+    "title": "கடவுச்சொல் மறந்துவிட்டீர்களா?",
+    "description": "OTP பெற மற்றும் உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் மின்னஞ்சலை உள்ளிடவும்.",
+    "emailPlaceholder": "மின்னஞ்சல் முகவரி",
+    "continue": "தொடரவும்",
+    "invalidEmail": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்."
+  },
+  "verifyOTP": {
+    "title": "OTP சரிபார்க்கவும்",
+    "description": "உங்கள் கடவுச்சொல்லை மீட்டமைக்க குறியீட்டை உள்ளிடவும்.",
+    "otpPlaceholder": "OTP உள்ளிடவும்",
+    "verify": "சரிபார்க்கவும்",
+    "resendmsg":"குறியீடு பெறவில்லையா? மீண்டும் அனுப்பு",
+    "verifySuccessful": "வெற்றிகரமாக சரிபார்க்கப்பட்டது!"
+  }
 }

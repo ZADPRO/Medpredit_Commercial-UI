@@ -1,9 +1,20 @@
 .registerScreenIonic{
+    padding: 2%;
     block-size: 100vh;
     inline-size: 100vw;
     background-color: rgba(243, 243, 243, 1);
     display: flex;
     align-items: center;
+    background-image: url("../../assets/images/Backgroundimg/bgimg.png");
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+.title{
+    margin-top: 3%;
+    font-weight: 700;
+    font-size: xx-large;
 }
 
 .registerUserForm{
@@ -11,7 +22,9 @@
     padding: 1rem 1rem 1rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem
+    gap: 2rem;
+    overflow-y: auto; /* Allows form scrolling */
+    max-height: 90vh; /* Ensures form is scrollable if needed */
 }
 
 .registerUserFields{
@@ -29,6 +42,37 @@
 }
 
 .registerUserForm>img{
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
 }
+.p-password-input.p-inputtext.p-component.p-filled
+{
+    width: 100%;
+}
+
+.half-screen-modalReg {
+    --height: 40vh; /* Half screen height */
+    --width: 100vw; /* 80% of screen width */
+    --border-radius: 15px;
+    --background: white;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    text-align: center;
+  }
+  
+  .modalContent {
+    padding: 30px;
+    
+  }
+
+    
+  .lottie-containerlogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  
+  
