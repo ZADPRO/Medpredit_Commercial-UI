@@ -40,6 +40,7 @@ import TermsCondition from "../../components/29_TermsCondition/TermsCondition";
 import PrivacyPolicy from "../../components/30_PrivacyPolicy/PrivacyPolicy";
 import ChooseLanguage_02 from "../../components/31_ChooseLanguage/ChooseLanguage_02";
 import AddFamilyMember from "../../components/32_AddFamilyMembers/AddFamilyMember";
+import ChangePAssword from "../ChangePassword/ChangePAssword";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -165,6 +166,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/forgotPassword">
           <ForgotPassword />
+        </Route>
+        <Route path="/changepassword">
+          <ChangePAssword/>
         </Route>
         <Route path="/enterOTP">
           <EnterOTP />
