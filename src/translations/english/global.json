@@ -1,7 +1,7 @@
 {
   "chooseLanguage": {
     "home": "Home page english",
-    "language":"Choose Your Language",
+    "language": "Choose Your Language",
     "select": "Select"
   },
   "login": {
@@ -13,71 +13,45 @@
     "Login": "Login",
     "Not a member": "Not a member",
     "Register Now": "Register Now",
-<<<<<<< HEAD
     "or continue with": "or continue with",
-     "Login Successful": "Login Successful!"
-=======
-    "or continue with": "or continue with"
->>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
+    "Login Successful": "Login Successful!"
   },
   "Register User": {
-  "First Name": "First Name",
-  "Last Name": "Last Name",
-  "E-Mail": "E-Mail",
-<<<<<<< HEAD
-  "Mobile Number": "Mobile Number",
-=======
->>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
-  "Enter Password": "Enter Password",
-  "Confirm Password": "Confirm Password",
-  "Must be 8 characters": "Must be 8 characters",
-  "Match Password": "Match Password",
-  "I've read and agree with the": "I've read and agree with the",
-  "Terms and Conditions and the Privacy Policy": "Terms and Conditions and the Privacy Policy.",
-  "Next": "Next",
-  "First Name is required.": "First Name is required.",
-  "Last Name is required.": "Last Name is required.",
-  "Email is required.": "Email is required.",
-  "Enter a valid email.": "Enter a valid email.",
-  "Password is required.": "Password is required.",
-  "Password must be at least 8 characters.": "Password must be at least 8 characters.",
-  "Passwords do not match.": "Passwords do not match.",
-  "You must agree to the Terms and Conditions.": "You must agree to the Terms and Conditions.",
-<<<<<<< HEAD
-  "Registration Successful!": "Registration Successful!",
-  "Mobile number is required.": "Mobile number is required."
-},
-"forgotPassword": {
-  "title": "Forgot Password?",
-  "description": "Enter your email to receive an OTP and reset your password.",
-  "emailPlaceholder": "Email Address",
-  "continue": "Continue",
-  "invalidEmail": "Please enter a valid email address."
-},
-"verifyOTP": {
-  "title": "OTP VERFICATION",
-  "description": "Enter OTP sent to +91-8765279827",
-  "otpPlaceholder": "Enter OTP",
-  "verify": "Verify",
-  "resendmsg":"Don't receive code? Re-send",
-  "verifySuccessful":" Verified Successfully!" 
-=======
-  "Registration Successful!": "Registration Successful!"
-},
-"forgotPassword": {
-  "title": "Forgot Password",
-  "description": "Enter your email to receive an OTP and reset your password.",
-  "emailPlaceholder": "Email Address",
-  "next": "Next",
-  "invalidEmail": "Please enter a valid email address."
-},
-"verifyOTP": {
-  "title": "Verify OTP",
-  "description": "Enter code to reset your password.",
-  "otpPlaceholder": "Enter OTP",
-  "verify": "Verify"
->>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
-}
-
-
+    "First Name": "First Name",
+    "Last Name": "Last Name",
+    "E-Mail": "E-Mail",
+    "Mobile Number": "Mobile Number",
+    "Enter Password": "Enter Password",
+    "Confirm Password": "Confirm Password",
+    "Must be 8 characters": "Must be 8 characters",
+    "Match Password": "Match Password",
+    "I've read and agree with the": "I've read and agree with the",
+    "Terms and Conditions and the Privacy Policy": "Terms and Conditions and the Privacy Policy.",
+    "Next": "Next",
+    "First Name is required.": "First Name is required.",
+    "Last Name is required.": "Last Name is required.",
+    "Email is required.": "Email is required.",
+    "Enter a valid email.": "Enter a valid email.",
+    "Password is required.": "Password is required.",
+    "Password must be at least 8 characters.": "Password must be at least 8 characters.",
+    "Passwords do not match.": "Passwords do not match.",
+    "You must agree to the Terms and Conditions.": "You must agree to the Terms and Conditions.",
+    "Registration Successful!": "Registration Successful!",
+    "Mobile number is required.": "Mobile number is required."
+  },
+  "forgotPassword": {
+    "title": "Forgot Password?",
+    "description": "Enter your email to receive an OTP and reset your password.",
+    "emailPlaceholder": "Email Address",
+    "continue": "Continue",
+    "invalidEmail": "Please enter a valid email address."
+  },
+  "verifyOTP": {
+    "title": "OTP VERFICATION",
+    "description": "Enter OTP sent to +91-8765279827",
+    "otpPlaceholder": "Enter OTP",
+    "verify": "Verify",
+    "resendmsg": "Don't receive code? Re-send",
+    "verifySuccessful": " Verified Successfully!"
+  }
 }

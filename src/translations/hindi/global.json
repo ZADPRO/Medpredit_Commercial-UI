@@ -13,7 +13,6 @@
     "Login": "लॉगिन",
     "Not a member": "सदस्य नहीं हैं",
     "Register Now": "अभी पंजीकरण करें",
-<<<<<<< HEAD
     "or continue with": "या जारी रखें",
     "Login Successful": "लॉगिन सफल हुआ!"
   },
@@ -57,46 +56,4 @@
     "verifySuccessful": "सफलतापूर्वक सत्यापित हुआ!"
 
   }
-=======
-    "or continue with": "या जारी रखें"
-},
-"Register User": {
-  "First Name": "पहला नाम",
-  "Last Name": "अंतिम नाम",
-  "E-Mail": "ई-मेल",
-  "Enter Password": "पासवर्ड दर्ज करें",
-  "Confirm Password": "पासवर्ड की पुष्टि करें",
-  "Must be 8 characters": "कम से कम 8 अक्षर होने चाहिए",
-  "Match Password": "पासवर्ड मेल खाना चाहिए",
-  "I've read and agree with the": "मैंने पढ़ लिया है और सहमत हूं",
-  "Terms and Conditions and the Privacy Policy": "नियम और शर्तें और गोपनीयता नीति।",
-  "Next": "अगला",
-  "First Name is required.": "पहला नाम आवश्यक है।",
-  "Last Name is required.": "अंतिम नाम आवश्यक है।",
-  "Email is required.": "ई-मेल आवश्यक है।",
-  "Enter a valid email.": "कृपया एक वैध ई-मेल दर्ज करें।",
-  "Password is required.": "पासवर्ड आवश्यक है।",
-  "Password must be at least 8 characters.": "पासवर्ड कम से कम 8 अक्षर का होना चाहिए।",
-  "Passwords do not match.": "पासवर्ड मेल नहीं खा रहे हैं।",
-  "You must agree to the Terms and Conditions.": "आपको नियम और शर्तों से सहमत होना होगा।",
-  "Registration Successful!": "पंजीकरण सफल रहा!"
-},
-"forgotPassword": {
-  "title": "पासवर्ड भूल गए",
-  "description": "ओटीपी प्राप्त करने और अपना पासवर्ड रीसेट करने के लिए अपना ईमेल दर्ज करें।",
-  "emailPlaceholder": "ईमेल पता",
-  "next": "आगे बढ़ें",
-  "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।"
-},
-"verifyOTP": {
-  "title": "ओटीपी सत्यापित करें",
-  "description": "अपना पासवर्ड रीसेट करने के लिए कोड दर्ज करें।",
-  "otpPlaceholder": "ओटीपी दर्ज करें",
-  "verify": "सत्यापित करें"
-}
-
-
-
-
->>>>>>> e62ed9601a5b991d93e1c3e94031177b2e8a7da2
 }
