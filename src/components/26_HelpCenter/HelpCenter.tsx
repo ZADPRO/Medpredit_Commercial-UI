@@ -1,11 +1,19 @@
-import React from 'react';
+import { IonContent, IonPage } from "@ionic/react";
+import React from "react";
 
 const HelpCenter: React.FC = () => {
-    return (
+  return (
+    <IonPage>
+      <IonContent>
         <div>
-            <span>HelpCenter</span>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta,
+          rerum. Ratione amet repudiandae ipsum quibusdam inventore distinctio
+          corrupti asperiores explicabo, qui sapiente rerum laudantium
+          doloremque necessitatibus ullam possimus id excepturi.
         </div>
-    );
+      </IonContent>
+    </IonPage>
+  );
 };
 
 export default HelpCenter;
