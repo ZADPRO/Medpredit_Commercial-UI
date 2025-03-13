@@ -46,11 +46,18 @@
 
 .profile_top_bar_avatar {
     flex-shrink: 0;
-    padding: 0.8rem;
+    width: 2.5rem;
+    height: 2.5rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.2rem;
+    font-weight: bold;
     background-color: var(--med-light-green);
     border-radius: 50%;
+    text-transform: uppercase;
 }
+
 
 .profile_top_bar_footer{
     background-color: black;

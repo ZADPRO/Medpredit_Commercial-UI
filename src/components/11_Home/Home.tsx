@@ -41,6 +41,12 @@ import riskImage from "../../assets/images/Home/risk.svg";
 const Home: React.FC = () => {
   const history = useHistory();
 
+  const userDetails = localStorage.getItem("userDetails");
+
+  const userName = userDetails ? ((JSON.parse(userDetails)).firstName + " " + (JSON.parse(userDetails)).lastName) : null;
+
+  console.log(userName);
+
   const [isScrolled, setIsScrolled] = useState(false);
 
   // Handle Ionic scroll event
@@ -136,7 +142,7 @@ const Home: React.FC = () => {
                 <h2
                   style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
                 >
-                  KrishnaRaj
+                  {userName}
                 </h2>
               </div>
               <div className="home-top-bar-icons">
@@ -468,8 +474,8 @@ const Home: React.FC = () => {
               <span>View All</span>
             </div>
             <div className="home-knowAbout-content">
-                {knowAbout.map((item) => (
-                  <div style={{backgroundColor: `${item.bgColor}`}} className="home-knowAbout-cards">
+                {knowAbout.map((item, index) => (
+                  <div key={index} style={{backgroundColor: `${item.bgColor}`}} className="home-knowAbout-cards">
                     <img src={item.bgImage} />
                     <h3>{item.title}</h3>
                     <p>{item.subTitle}</p>

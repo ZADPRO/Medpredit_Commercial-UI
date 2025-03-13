@@ -23,7 +23,6 @@ const ServiceAssestment: React.FC = () => {
   const location = useLocation();
   const title = (location.state as { title?: string })?.title;
 
-   //ServiceID hardcoded from database
   const servicesDetails = [
     {
       serviceId: 8,
@@ -108,6 +107,21 @@ const ServiceAssestment: React.FC = () => {
       points: [""],
     },
   ];
+
+  useEffect(() => {
+    const selectedService = servicesDetails.find(
+      (service) => service.title === title
+    );
+
+    if (selectedService) {
+      const serviceData = {
+        id: selectedService.serviceId,
+        label: selectedService.title,
+      };
+
+      localStorage.setItem("getCategory", JSON.stringify(serviceData));
+    }
+  });
 
   // console.log("servicesDetails.find((item) => item.title === title)?.serviceId ", servicesDetails.find((item) => item.title === title)?.serviceId );
 
