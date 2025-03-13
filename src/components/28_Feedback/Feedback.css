@@ -1,0 +1,21 @@
+.custom-modal {
+    --background: rgba(255, 255, 255, 0.2) !important; /* Light transparent white */
+    --backdrop-opacity: 1 !important; /* Ensure the backdrop is visible */
+    backdrop-filter: blur(10px); /* Apply blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+  }
+  
+  .custom-content {
+    --background: transparent !important; /* Remove default modal background */
+  }
+  
+  .Feedbackscreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  height: 80vh;
+    width: 100vw;
+    padding-right: 8vw;
+ 
+  }
