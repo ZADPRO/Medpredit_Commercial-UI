@@ -44,6 +44,10 @@ import ChangePAssword from "../ChangePassword/ChangePAssword";
 import About from "../../components/33_About/About";
 import ServiceAssestment from "../Services/ServiceAssestment";
 import Questions from "../Questions/Questions";
+import UserProfile from "../../components/21_Profile/34_Userprofile/UserProfile";
+import Termsofservice from "../../components/34_Termsofservice/Termsofservice";
+import Opensource from "../../components/35_Opensource/Opensource";
+import LandR from "../../components/36_L&R/LandR";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -93,6 +97,11 @@ const MainRoutes: React.FC = () => {
     {
       name: "Profile",
       path: "/profile",
+      icon: "",
+    },
+    {
+      name: "UserProfile",
+      path: "/userprofile",
       icon: "",
     },
     {
@@ -182,6 +191,9 @@ const MainRoutes: React.FC = () => {
         <Route path="/profile">
           <Profile />
         </Route>
+        <Route path="/userprofile">
+          <UserProfile />
+        </Route>
         <Route path="/subscriptionPlans">
           <SubscriptionPlans />
         </Route>
@@ -191,6 +203,16 @@ const MainRoutes: React.FC = () => {
         <Route path="/coupons">
           <Coupons />
         </Route>
+        <Route path="/termsofservice">
+          <Termsofservice />
+        </Route>
+        <Route path="/opensource">
+          <Opensource />
+        </Route>
+        <Route path="/landr">
+          <LandR />
+        </Route>
+     
         <Route path="/notificationSettings">
           <NotificationSettings />
         </Route>
@@ -222,7 +244,7 @@ const MainRoutes: React.FC = () => {
           <ServiceAssestment />
         </Route>
         <Route path="/serviceQuestion">
-          <Questions/>
+          <Questions />
         </Route>
       </IonRouterOutlet>
 
