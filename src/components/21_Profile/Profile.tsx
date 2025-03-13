@@ -27,7 +27,7 @@ const Profile: React.FC = () => {
     {
       title: "Account",
       items: [
-        { icon: "pi pi-user", label: "Edit Profile", path: "" },
+        { icon: "pi pi-user", label: "Profile", path: "/userprofile" },
         {
           icon: "pi pi-receipt",
           label: "Manage Subscriptions",
