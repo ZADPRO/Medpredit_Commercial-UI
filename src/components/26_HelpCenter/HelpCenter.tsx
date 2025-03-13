@@ -1,10 +1,11 @@
+import { IonPage } from '@ionic/react';
 import React from 'react';
 
 const HelpCenter: React.FC = () => {
     return (
-        <div>
+        <IonPage>
             <span>HelpCenter</span>
-        </div>
+        </IonPage>
     );
 };
 

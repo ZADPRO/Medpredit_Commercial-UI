@@ -1,10 +1,11 @@
+import { IonPage } from "@ionic/react";
 import React from "react";
 
 const TransactionHistory: React.FC = () => {
   return (
-    <div>
+    <IonPage>
       <span>TransactionHistory</span>
-    </div>
+    </IonPage>
   );
 };
 

@@ -1,10 +1,11 @@
+import { IonPage } from '@ionic/react';
 import React from 'react';
 
 const TermsCondition: React.FC = () => {
     return (
-        <div>
+        <IonPage>
             <span>TermsCondition</span>
-        </div>
+        </IonPage>
     );
 };
 

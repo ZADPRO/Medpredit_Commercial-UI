@@ -1,10 +1,11 @@
+import { IonPage } from '@ionic/react';
 import React from 'react';
 
 const ChooseLanguage_02: React.FC = () => {
     return (
-        <div>
+        <IonPage>
             <span>ChooseLanguage</span>
-        </div>
+        </IonPage>
     );
 };
 

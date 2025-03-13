@@ -1,10 +1,11 @@
+import { IonPage } from '@ionic/react';
 import React from 'react';
 
 const PrivacyPolicy: React.FC = () => {
     return (
-        <div>
+        <IonPage>
             <span>PrivacyPolicy</span>
-        </div>
+        </IonPage>
     );
 };
 
