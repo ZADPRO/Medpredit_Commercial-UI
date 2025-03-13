@@ -41,23 +41,27 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
 
     setSelectedValues(updatedSelectedValues);
 
+    
+  };
+
+  const handleSubmitClick = () => {
     // Extract forward question IDs for all selected options
     const forwardQIds = label.options
-      .filter((option) => updatedSelectedValues.includes(option.refOptionId))
+      .filter((option) => selectedValues.includes(option.refOptionId))
       .map((option) => option.forwardQId);
 
     // Call the callback functions with updated values
-    onOptionSelect(updatedSelectedValues, forwardQIds);
-    onEdit(updatedSelectedValues, forwardQIds);
+    onOptionSelect(selectedValues, forwardQIds);
+    onEdit(selectedValues, forwardQIds);
 
     // Log the selected values and forward question IDs
-    console.log("Selected Values:", updatedSelectedValues);
+    console.log("Selected Values:", selectedValues);
     console.log("Forward QIds:", forwardQIds);
   };
 
   return (
     <>
-    {/*
+      {/*
     <div>
       <div className="questions multiInput">
         <Domain questionId={label.questionId} />
@@ -99,9 +103,39 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
               ) : (
                 <i></i>
               )}
-              <span style={{marginLeft: "1rem"}}>{option.refOptionLabel}</span>
+              <span style={{ marginLeft: "1rem" }}>
+                {option.refOptionLabel}
+              </span>
             </button>
           ))}
+        </div>
+        <div
+          style={{
+            width: "100%",
+            height: "35px",
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            background: "transparent",
+            marginTop: "10px",
+          }}
+        >
+          <button
+            style={{
+              background: "#10416a",
+              width: "30px",
+              height: "30px",
+              color: "#fff",
+              borderRadius: "50%",
+              padding: "5px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => handleSubmitClick()}
+          >
+            <i className="pi pi-arrow-right"></i>
+          </button>
         </div>
         <Divider />
       </div>

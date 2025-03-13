@@ -14,13 +14,22 @@ import { useHistory } from "react-router";
 
 const Profile: React.FC = () => {
   const history = useHistory();
+
+  const userDetails = localStorage.getItem("userDetails");
+
+  const userDeatilsObj = userDetails
+    ? JSON.parse(userDetails)
+    : { userCustId: null, phNumber: null, firstName: null, lastName: null };
+
+  console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
+
   const sections = [
     {
       title: "Account",
       items: [
-        { icon: "pi pi-user", label: "Profile", path: "" },
+        { icon: "pi pi-user", label: "Edit Profile", path: "" },
         {
-          icon: "pi pi-book",
+          icon: "pi pi-receipt",
           label: "Manage Subscriptions",
           path: "/subscriptionPlans",
         },
@@ -44,7 +53,7 @@ const Profile: React.FC = () => {
           label: "Choose Language",
           path: "/ChooseLanguage_02",
         },
-        { icon: "pi pi-user", label: "Help Center", path: "/helpCenter" },
+        { icon: "pi pi-headphones", label: "Help Center", path: "/helpCenter" },
         { icon: "pi pi-comment", label: "Feedback", path: "/feedback" },
       ],
     },
@@ -53,11 +62,11 @@ const Profile: React.FC = () => {
       items: [
         { icon: "pi pi-info", label: "About", path: "/about" },
         {
-          icon: "pi pi-user",
+          icon: "pi pi-book",
           label: "Terms and Conditions",
           path: "/termsCondition",
         },
-        { icon: "pi pi-user", label: "Privacy Policy", path: "/privacyPolicy" },
+        { icon: "pi pi-lock", label: "Privacy Policy", path: "/privacyPolicy" },
         { icon: "pi pi-sign-out", label: "Log Out", path: "/login" },
       ],
     },
@@ -82,16 +91,20 @@ const Profile: React.FC = () => {
           <div className="profile_top">
             <div className="profile_top_bar">
               <div className="profile_top_bar_header">
-                <h2>Krishna Raj R</h2>
+                <h2>
+                  {userDeatilsObj.firstName + " " + userDeatilsObj.lastName}
+                </h2>
                 <p>
-                  MEDPREDiT ID: <b>MED00001</b>
+                  MEDPREDiT ID: <b>{userDeatilsObj.userCustId}</b>
                 </p>
                 <p>
-                  Phone Number: <b>9876543212</b>
+                  Phone Number: <b>{userDeatilsObj.phNumber}</b>
                 </p>
               </div>
               <div className="profile_top_bar_avatar">
-                <span>KR</span>
+                <span>
+                  {userDeatilsObj.firstName.charAt(0) + userDeatilsObj.lastName.charAt(0)}
+                </span>
               </div>
             </div>
             <div className="profile_top_bar_footer">

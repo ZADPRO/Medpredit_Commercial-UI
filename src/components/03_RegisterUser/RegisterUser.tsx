@@ -9,28 +9,57 @@ import { useTranslation } from "react-i18next";
 import Lottie from "lottie-react";
 import tickAnimation from "../../assets/Animations/tickanimation.json";
 import { useHistory } from "react-router-dom";
+import { Divider } from "primereact/divider";
+import axios from "axios";
+import decrypt from "../../helper";
 
 const RegisterUser = () => {
   const { t, i18n } = useTranslation("global");
-
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [checked, setChecked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const history = useHistory();
 
-  const [toastOpen, setToastOpen] = useState({
+  const [formData, setFormData] = useState({
+    refUserFname: "",
+    refUserLname: "",
+    refUserEmail: "",
+    refUserPassword: "",
+    refUserConPassword: "",
+    // refGender: null as string | null,
+    // refMaritalStatus: null as string | null,
+    // refDOB: null as any | null,
+    refGender: "-",
+    refMaritalStatus: "-",
+    refDOB: "-",
+    refEducation: "-",
+    refProfession: "-",
+    refSector: "-",
+    refAddress: "-",
+    refDistrict: "-",
+    // refPincode: null as any | null,
+    refPincode: "-",
+    refUserMobileno: "",
+  });
+  interface ToastState {
+    status: boolean;
+    message: string;
+    textColor?: string; // Optional textColor
+  };
+
+  interface ToastState {
+    status: boolean;
+    message: string;
+    textColor?: string; // Optional textColor
+  }
+
+  const [toastOpen, setToastOpen] = useState<ToastState>({
     status: false,
     message: "",
-    textColor: "white",
+    textColor: "white"
   });
 
   const validateForm = () => {
-    if (!firstName) {
+    if (!formData.refUserFname) {
       setToastOpen({
         status: true,
         message: t("Register User.First Name is required."),
@@ -39,7 +68,7 @@ const RegisterUser = () => {
       return false;
     }
 
-    if (!lastName) {
+    if (!formData.refUserLname) {
       setToastOpen({
         status: true,
         message: t("Register User.Last Name is required."),
@@ -47,16 +76,17 @@ const RegisterUser = () => {
       });
       return false;
     }
-    if (!mobile) {
+    if (!formData.refUserMobileno || !/^\d{10}$/.test(formData.refUserMobileno)) {
       setToastOpen({
         status: true,
-        message: t("Register User.Mobile number is required."),
+        message: t("Register User.Mobile number must be 10 digits."),
         textColor: "red",
       });
       return false;
     }
+    
 
-    if (!email) {
+    if (!formData.refUserEmail) {
       setToastOpen({
         status: true,
         message: t("Register User.Email is required."),
@@ -66,7 +96,7 @@ const RegisterUser = () => {
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
+    if (!emailPattern.test(formData.refUserEmail)) {
       setToastOpen({
         status: true,
         message: t("Register User.Enter a valid email."),
@@ -75,7 +105,7 @@ const RegisterUser = () => {
       return false;
     }
 
-    if (!password) {
+    if (!formData.refUserPassword) {
       setToastOpen({
         status: true,
         message: t("Register User.Password is required."),
@@ -84,7 +114,7 @@ const RegisterUser = () => {
       return false;
     }
 
-    if (password.length < 8) {
+    if (formData.refUserPassword.length < 8) {
       setToastOpen({
         status: true,
         message: t("Register User.Password must be at least 8 characters."),
@@ -93,7 +123,7 @@ const RegisterUser = () => {
       return false;
     }
 
-    if (password !== confirmPassword) {
+    if (formData.refUserPassword !== formData.refUserConPassword) {
       setToastOpen({
         status: true,
         message: t("Register User.Passwords do not match."),
@@ -114,16 +144,101 @@ const RegisterUser = () => {
     return true;
   };
 
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      setShowModal(true);
+      handleSigup();
       setToastOpen({
         status: true,
         message: t("Register User.Registration Successful!"),
         textColor: "green",
       });
       console.log("Form submitted");
+    }
+  };
+
+  const handleSigup = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/usersignup`,
+        {
+          refUserFname: formData.refUserFname,
+          refUserLname: formData.refUserLname,
+          refUserEmail: formData.refUserEmail,
+          refUserPassword: formData.refUserPassword,
+          refDOB: formData.refDOB,
+          refMaritalStatus: formData.refMaritalStatus,
+          refEducation: formData.refEducation,
+          refProfession: formData.refProfession,
+          refSector: formData.refSector,
+          refAddress: formData.refAddress,
+          refDistrict: formData.refDistrict,
+          refPincode: formData.refPincode,
+          refUserMobileno: formData.refUserMobileno,
+          refGender: formData.refGender,
+        }
+      );
+      const data = decrypt(
+        response.data[1],
+        response.data[0],
+        import.meta.env.VITE_ENCRYPTION_KEY
+      );
+
+      console.log(data);
+
+      if (data.status) {
+        setToastOpen({
+          status: true,
+          textColor: "green",
+          message: "Successfully Signup",
+        });
+
+        
+      setShowModal(true);
+
+        setTimeout(() => {
+          history.push("/login", {
+            direction: "backward",
+            animation: "slide",
+          });
+
+          setFormData({
+            refUserFname: "",
+            refUserLname: "",
+            refUserEmail: "",
+            refUserPassword: "",
+            refUserConPassword: "",
+            // refGender: null as string | null,
+            // refMaritalStatus: null as string | null,
+            refGender: "-",
+            refMaritalStatus: "-",
+            refDOB: null as any | null,
+            refEducation: "",
+            refProfession: "",
+            refSector: "",
+            refAddress: "",
+            refDistrict: "",
+            refPincode: null as any | null,
+            refUserMobileno: "",
+          });
+        }, 3000);
+      } else {
+        // setLoading(false);
+        setToastOpen({
+          status: true,
+          message: "Already Mobile Number Exits",
+        });
+      }
+    } catch {
+      console.error("tesitng - false");
     }
   };
 
@@ -138,10 +253,11 @@ const RegisterUser = () => {
               <label>{t("Register User.First Name")}</label>
               <InputText
                 type="text"
+                name="refUserFname"
                 placeholder={t("Register User.First Name")}
-                value={firstName}
+                value={formData.refUserFname}
                 required
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={handleInputChange}
               />
             </div>
 
@@ -149,10 +265,11 @@ const RegisterUser = () => {
               <label>{t("Register User.Last Name")}</label>
               <InputText
                 type="text"
+                name="refUserLname"
                 placeholder={t("Register User.Last Name")}
-                value={lastName}
+                value={formData.refUserLname}
                 required
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={handleInputChange}
               />
             </div>
 
@@ -160,20 +277,27 @@ const RegisterUser = () => {
               <label>{t("Register User.E-Mail")}</label>
               <InputText
                 type="email"
+                name="refUserEmail"
                 placeholder={t("Register User.E-Mail")}
-                value={email}
+                value={formData.refUserEmail}
                 required
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleInputChange}
               />
             </div>
             <div className="registerUserFields">
               <label>{t("Register User.Mobile Number")}</label>
               <InputText
                 type="number"
+                name="refUserMobileno"
                 placeholder={t("Register User.Mobile Number")}
-                value={mobile}
+                value={formData.refUserMobileno}
                 required
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (/^\d{0,10}$/.test(input)) {
+                    handleInputChange(e);
+                  }
+                }}
               />
             </div>
 
@@ -181,12 +305,13 @@ const RegisterUser = () => {
               <label>{t("Register User.Enter Password")}</label>
               <Password
                 type="password"
+                name="refUserPassword"
                 toggleMask
                 placeholder={t("Register User.Must be 8 characters")}
-                value={password}
+                value={formData.refUserPassword}
                 required
-                onChange={(e) => setPassword(e.target.value)}
-                feedback={false}
+                onChange={handleInputChange}
+                
               />
             </div>
 
@@ -194,11 +319,12 @@ const RegisterUser = () => {
               <label>{t("Register User.Confirm Password")}</label>
               <Password
                 type="password"
+                name="refUserConPassword"
                 toggleMask
                 placeholder={t("Register User.Match Password")}
-                value={confirmPassword}
+                value={formData.refUserConPassword}
                 required
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={handleInputChange}
                 feedback={false}
               />
             </div>

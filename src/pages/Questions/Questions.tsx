@@ -50,7 +50,10 @@ interface QuestionSet {
 }
 
 const Questions: React.FC = () => {
-  const token = localStorage.getItem("token");
+  const tokenString: any = localStorage.getItem("userDetails");
+  const tokenObject = JSON.parse(tokenString);
+  const token = tokenObject.token;
+  const userId = tokenObject.userId;
   const history = useHistory();
   const location = useLocation();
   const serviceId = (location.state as { id?: number })?.id || 0;
@@ -115,18 +118,13 @@ const Questions: React.FC = () => {
     { questionId: any; questionType: any; answer: any }[]
   >([]);
 
-  // const tokenString: any = localStorage.getItem("userDetails");
-  // const patientId: any = localStorage.getItem("currentPatientId");
-  // const tokenObject = JSON.parse(tokenString);
-  // const token = tokenObject.token;
-
   const getQuestions = () => {
     axios
       .post(
         `${import.meta.env.VITE_API_URL}/getQuestions`,
         {
           questionId: serviceId,
-          patientId: 5,
+          patientId: userId,
         },
         {
           headers: {
@@ -263,15 +261,17 @@ const Questions: React.FC = () => {
         .post(
           `${import.meta.env.VITE_API_URL}/postAnswers`,
           {
-            patientId: 5,
+            patientId: userId,
             categoryId: serviceId,
             answers: serviceId === 201 ? questionSets : submittedAnswer,
-            employeeId: localStorage.getItem("currentDoctorId")
-              ? localStorage.getItem("currentDoctorId")
-              : null,
-            hospitalId: localStorage.getItem("hospitalId")
-              ? localStorage.getItem("hospitalId")
-              : null,
+            // employeeId: localStorage.getItem("currentDoctorId")
+            //   ? localStorage.getItem("currentDoctorId")
+            //   : null,
+            // hospitalId: localStorage.getItem("hospitalId")
+            //   ? localStorage.getItem("hospitalId")
+            //   : null,
+            employeeId: null,
+            hospitalId: "undefined",
           },
           {
             headers: {
@@ -498,10 +498,6 @@ const Questions: React.FC = () => {
   const handleNextQuestion = () => {
     if (visibleQuestions.length > 1) {
       const previousQuestion = visibleQuestions[visibleQuestions.length - 2];
-
-      if (previousQuestion.questionType === "2") {
-        return;
-      }
     }
   
     if (visibleQuestions.length > 0) {
@@ -509,9 +505,6 @@ const Questions: React.FC = () => {
     }
   };
   
-  
-  
-
   console.log("indexes", scrollIndex, visibleQuestions.length);
 
 
@@ -523,8 +516,7 @@ const Questions: React.FC = () => {
     });
     setSubmitButton(true)
   };
-  
-  
+   
   
   return (
     <IonPage className="cus-ion-page">
@@ -861,7 +853,7 @@ const Questions: React.FC = () => {
             >
               <button
                 disabled={submitButton}
-                // onClick={submitResponse}
+                onClick={submitResponse}
                 className={`questionSubmitButton ${
                   submitButton ? "disabled" : ""
                 }`}
