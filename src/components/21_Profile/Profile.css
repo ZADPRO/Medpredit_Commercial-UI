@@ -1,0 +1,146 @@
+.medpredit_profile {
+    block-size: 100vh;
+    inline-size: 100vw;
+    background: var(--med-light-green-gradient-background);
+    overflow: scroll;
+    /* padding-top: 1rem; */
+}
+
+.profile_top{
+    width: 95%;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile_top_bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 5% 5% 10% 5%;
+    
+}
+
+.profile_top_bar_header {
+    width: 70%;
+    min-width: 0;
+    word-wrap: break-word; /* Allows long words to break */
+}
+
+.profile_top_bar_header h2 {
+    margin: 0;
+    width: 100%;
+    white-space: normal; /* Ensures the text wraps */
+    font-weight: 900;
+    font-size: 1.9rem;
+    padding: 0 0 0.4rem 0;
+}
+
+.profile_top_bar_header p{
+    margin: 0;
+    font-size: 0.8rem;
+
+}
+
+.profile_top_bar_avatar {
+    flex-shrink: 0;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    background-color: var(--med-light-green);
+    border-radius: 50%;
+}
+
+.profile_top_bar_footer{
+    background-color: black;
+    color: rgba(255,215,0,1);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile_top_bar_footer h3{
+    margin: 0;
+    font-size: 1rem;
+}
+
+.profile-body {
+    width: 95%;
+    margin: 2rem auto;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+  }
+
+  .account-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--med-dark-green);
+    padding: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .account-item {
+    display: flex;
+    align-items: center; /* Ensures everything is in the same line */
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+    width: 100%;
+}
+
+.account-item:hover {
+    background: #f5f5f5;
+}
+
+.account-item ion-icon{
+  color: var(--med-dark-green);
+  font-size: 1.2rem;
+}
+
+.account-item i {
+    font-size: 1.2rem;
+    color: var(--med-light-green);
+    background-color: var(--med-dark-green);
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-text {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.account-label {
+    font-size: 1rem;
+    flex-grow: 1; /* Ensures it takes up remaining space */
+}
+
+.short-divider {
+    height: 1px;
+    width: 80%;
+    margin-left: auto;
+    background: rgba(224, 224, 224, 0.5);
+}
+
+  
+  .profile-copyright {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+    border-top: 1px solid #ddd;
+  }
+  

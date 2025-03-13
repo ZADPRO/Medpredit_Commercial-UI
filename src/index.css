@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Rubik+Wet+Paint&display=swap");
 
-body {
-}
+/* body {
+} */
 
 * {
   font-family: "Inter", sans-serif;
@@ -14,6 +14,7 @@ body {
   --med-light-grey: rgba(243, 243, 243, 1);
   --med-dark-green: rgba(12, 75, 65, 1);
   --med-light-green: rgba(165, 231, 104, 1);
+  --med-light-green-gradient-background: linear-gradient(225deg, rgba(246,255,242,1) 0%, rgba(255,255,255,1) 100%);
 }
 
 .medCustom-button01 {
@@ -25,6 +26,15 @@ body {
   width: 100%;
   border-radius: 10px;
 }
+
+.medCustom-chip01 {
+  background-color: var(--med-light-green);
+  color: var(--med-dark-green);
+  font-size: 0.7rem;
+  padding: 0.2rem;
+  border-radius: 10px;
+}
+
 
 /*Prime React Input Fields CSS*/
 
@@ -42,3 +52,49 @@ body {
 .p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
   border-color: transparent;
 }
+
+.p-radiobutton.p-highlight .p-radiobutton-box {
+  border-color: var(--med-dark-green);
+  background: var(--med-dark-green);
+}
+
+ion-modal#med-modal {
+  --width: 90%;
+  --height: auto;
+  --border-radius: 6px;
+  /* --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4); */
+  --justify-content: start;
+  --align-items: start;
+  --max-height: 90vh; /* Prevent overflow */
+  overflow: auto; /* Allow scrolling if needed */
+}
+
+/* React TimeKeeper CSS Starts*/
+
+.input-react-timekeeper> .react-timekeeper{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.input-react-timekeeper> .react-timekeeper>div{
+  text-align: center;
+  font-weight: bold!important;
+}
+
+.input-react-timekeeper> .react-timekeeper>div>div{
+  left:0!important;
+  color: rgb(164, 214, 245)!important;
+}
+
+.input-react-timekeeper> .react-timekeeper>span{
+  background: var(--gradient-background-02)!important;
+  color: white!important;
+  font-weight: bold!important;
+  font-size: medium!important;
+}
+
+.input-react-timekeeper> .react-timekeeper .react-timekeeper__clock-wrapper {
+    background: var(--gradient-background-02-opacity)!important;
+}
+
+/* React TimeKeeper CSS Ends*/

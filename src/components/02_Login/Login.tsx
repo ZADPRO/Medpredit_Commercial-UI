@@ -23,12 +23,17 @@ import popupbg from "../../assets/images/Backgroundimg/popupbg.png";
 const Login: React.FC = () => {
   const [value, setValue] = useState("");
   const [checked, setChecked] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { t } = useTranslation("global");
 
   const history = useHistory();
 
+  const handleLogIn = () => {
+    setShowModal(true);
+    localStorage.setItem("token", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjIsImlhdCI6MTc0MTY3MjY4M30.SU5JiKi2uy7IVRPGovD3b28HyvKigI70fU6IMUk0uGk");
+  }
+  
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -93,7 +98,7 @@ const Login: React.FC = () => {
 
           <div style={{ width: "20rem" }}>
             <button
-              onClick={() => setShowModal(true)} // Show modal on login click
+              onClick={() => handleLogIn()} // Show modal on login click
               className="medCustom-button01"
             >
               {t("login.Login")}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 91 119.1">
+  <!-- Generator: Adobe Illustrator 29.3.1, SVG Export Plug-In . SVG Version: 2.1.0 Build 151)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: url(#linear-gradient1);
+      }
+
+      .st0, .st1 {
+        isolation: isolate;
+        opacity: .5;
+      }
+
+      .st2 {
+        fill: #f9ffd9;
+      }
+
+      .st3 {
+        fill: #fff;
+      }
+
+      .st4 {
+        mask: url(#mask);
+      }
+
+      .st5 {
+        fill: none;
+        stroke: url(#linear-gradient);
+        stroke-width: .5px;
+      }
+
+      .st1 {
+        fill: url(#linear-gradient2);
+        fill-opacity: .7;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="-10.2" y1="-11.6" x2="101.3" y2="140.9" gradientTransform="translate(0 128) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset=".1" stop-color="#a5e768" stop-opacity=".2"/>
+      <stop offset=".4" stop-color="#a5e768"/>
+      <stop offset=".9" stop-color="#0c4b41" stop-opacity=".2"/>
+    </linearGradient>
+    <mask id="mask" x=".1" y="-34" width="126.8" height="160.5" maskUnits="userSpaceOnUse">
+      <g id="mask0_394_959">
+        <rect class="st3" x=".4" y=".5" width="90.4" height="125.8" rx="16.2" ry="16.2"/>
+        <rect class="st5" x=".4" y=".5" width="90.4" height="125.8" rx="16.2" ry="16.2"/>
+      </g>
+    </mask>
+    <linearGradient id="linear-gradient1" x1="57" y1="124.1" x2="45.9" y2="64.8" gradientTransform="translate(-29.7 79.3) rotate(29.6) scale(1 -1) skewX(5)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a5e768"/>
+      <stop offset="1" stop-color="#a8d930" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient2" x1="57" y1="124.1" x2="45.9" y2="64.8" gradientTransform="translate(-58.3 71.9) rotate(29.6) scale(1 -1) skewX(5)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a5e768"/>
+      <stop offset="1" stop-color="#a8d930" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect class="st2" x=".5" y=".8" width="90.1" height="118.2"/>
+  <g class="st4">
+    <g>
+      <path class="st0" d="M104.3-20c22.5,12.8,29.3,39.7,15.2,60.1-14.1,20.4-43.8,26.6-66.3,13.8S24,14.2,38.1-6.2s43.8-26.6,66.3-13.8Z"/>
+      <path class="st1" d="M75.8-27.4c22.5,12.8,29.3,39.7,15.2,60.1-14.1,20.4-43.8,26.6-66.3,13.8S-4.6,6.8,9.5-13.6s43.8-26.6,66.3-13.8Z"/>
+    </g>
+  </g>
+</svg>
