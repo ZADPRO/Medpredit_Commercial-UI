@@ -28,8 +28,6 @@ interface YesNoProps {
 const YesNo: React.FC<YesNoProps> = ({ label, onOptionSelect, onEdit }) => {
   const [selectedValue, setSelectedValue] = useState<number | null>(null);
 
-  useEffect(() => { }, []);
-
   useEffect(() => {
     setSelectedValue(0); // Reset selection to empty array initially
   }, [label]);

@@ -254,8 +254,8 @@ const TimeInputBox: React.FC<HrsInputBox> = ({ label, type, onEdit }) => {
           {/* <Domain questionId={label.questionId} /> */}
           <p className="questionText">{label.questionText}</p>
           <div
-            className="p-inputgroup flex-1"
-            style={{ border: "1.5px solid #10416a", borderRadius: "10px" }}
+            className="p-inputgroup flex-1 align-items-center justify-content-center"
+            style={{ border: "1.5px solid var(--med-dark-green)", borderRadius: "10px" }}
           >
             <InputText
               id="fullInput"
@@ -284,10 +284,10 @@ const TimeInputBox: React.FC<HrsInputBox> = ({ label, type, onEdit }) => {
             >
               <button
                 style={{
-                  background: "#10416a",
+                  background: "var(--med-light-green)",
                   width: "30px",
                   height: "30px",
-                  color: "#fff",
+                  color: "var(--med-dark-green)",
                   borderRadius: "50%",
                   padding: "5px",
                   display: "flex",

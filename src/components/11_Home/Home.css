@@ -43,7 +43,7 @@
   background-color: var(--med-dark-green);
   padding: 0.6rem;
   border-radius: 50%;
-  color: white;
+  color: var(--med-light-green);
 }
 
 .home-search-bar {

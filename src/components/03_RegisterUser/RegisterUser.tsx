@@ -156,11 +156,6 @@ const RegisterUser = () => {
     e.preventDefault();
     if (validateForm()) {
       handleSigup();
-      setToastOpen({
-        status: true,
-        message: t("Register User.Registration Successful!"),
-        textColor: "green",
-      });
       console.log("Form submitted");
     }
   };
@@ -345,6 +340,7 @@ const RegisterUser = () => {
                 {t("Register User.I've read and agree with the")}{" "}
                 <span
                   style={{ color: "var(--med-dark-green)", fontWeight: "bold" }}
+                  onClick={() => history.push("/termsandprivacy")}
                 >
                   {t(
                     "Register User.Terms and Conditions and the Privacy Policy"

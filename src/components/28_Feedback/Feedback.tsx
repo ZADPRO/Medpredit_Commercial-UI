@@ -14,10 +14,10 @@ import {
   IonIcon,
 } from "@ionic/react";
 import React, { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import feedbackSound from "../../assets/Soundeffets/feedbackSound.mp3";
 import "./Feedback.css";
-import { star, starOutline } from "ionicons/icons";
+import { chevronBack, star, starOutline } from "ionicons/icons";
 
 const Feedback: React.FC = () => {
   const modalRef = useRef<HTMLIonModalElement>(null);
@@ -30,12 +30,12 @@ const Feedback: React.FC = () => {
   };
 
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
-          </IonButtons>
+                      <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
+                    </IonButtons>
           <IonTitle style={{ fontSize: "20px", fontWeight: "bold" }}>
             Send Feedback
           </IonTitle>
@@ -56,7 +56,7 @@ const Feedback: React.FC = () => {
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <IonText style={{ fontSize: "18px", fontWeight: "bold" }}>
+          <IonText style={{ fontSize: "18px", fontWeight: "bold", color: "var(--med-dark-green)" }}>
             We’d love to hear your thoughts {selectedEmoji && selectedEmoji}!
             Your feedback helps us improve and provide a better experience.
           </IonText>
@@ -132,13 +132,13 @@ const Feedback: React.FC = () => {
           <IonButton
             id="open-modal"
             expand="block"
-            style={{ marginTop: "15px", color: "white" }}
+            style={{ marginTop: "15px", color: "var(--med-light-green)", "--background": "var(--med-dark-green)" }}
             onClick={playSound}
           >
             Submit Feedback
           </IonButton>
         </IonCard>
-        <IonModal
+        {/* <IonModal
           id="example-modal"
           ref={modalRef}
           trigger="open-modal"
@@ -186,7 +186,7 @@ const Feedback: React.FC = () => {
               </IonCard>
             </motion.div>
           </IonContent>
-        </IonModal>
+        </IonModal> */}
        </div>
 
        

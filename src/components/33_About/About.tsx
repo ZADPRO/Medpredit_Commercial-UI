@@ -10,6 +10,7 @@ import {
     IonTitle, 
     IonToolbar 
   } from "@ionic/react";
+import { chevronBack } from "ionicons/icons";
   import React from "react";
   
   const About: React.FC = () => {
@@ -18,29 +19,29 @@ import {
         <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
-              <IonBackButton defaultHref="/home" />
+              <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
             </IonButtons>
             <IonTitle>About</IonTitle>
           </IonToolbar>
         </IonHeader>
-  
+
         <IonContent className="ion-padding">
           <IonList>
-            <IonItem routerLink="/termsofservice"  button>
+            <IonItem routerLink="/termsofservice" button>
               <IonLabel>Terms of Service</IonLabel>
             </IonItem>
-  
-            <IonItem >
+
+            <IonItem>
               <IonLabel>
                 <p>App version</p>
                 <h3>v18.7.9 Live</h3>
               </IonLabel>
             </IonItem>
-  
+
             <IonItem routerLink="/opensource" button>
               <IonLabel>Open Source Libraries</IonLabel>
             </IonItem>
-  
+
             <IonItem routerLink="/landr" button>
               <IonLabel>Licenses and Registrations</IonLabel>
             </IonItem>

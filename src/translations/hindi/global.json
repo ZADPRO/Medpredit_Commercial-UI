@@ -6,8 +6,8 @@
   },
   "login": {
     "welcome": "नमस्ते, स्वागत है!",
-    "Mobile Number/ Email Address": "मोबाइल नंबर/ईमेल पता",
-    "Password": "पासवर्ड",
+    "Mobile Number/ Email Address": "मोबाइल नंबर दर्ज करें",
+    "Password": "पासवर्ड दर्ज करें",
     "Remember Me": "मुझे याद रखें",
     "Forgot Password": "पासवर्ड भूल गए",
     "Login": "लॉगिन",

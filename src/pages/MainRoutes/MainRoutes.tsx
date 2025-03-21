@@ -48,6 +48,9 @@ import UserProfile from "../../components/21_Profile/34_Userprofile/UserProfile"
 import Termsofservice from "../../components/34_Termsofservice/Termsofservice";
 import Opensource from "../../components/35_Opensource/Opensource";
 import LandR from "../../components/36_L&R/LandR";
+// import UserProfile2 from "../../components/21_Profile/34_Userprofile/UserProfile2";
+import Report from "../Reports/Report";
+import TermsAndPrivacy from "../../components/03_RegisterUser/TermsAndPrivacy";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -176,6 +179,9 @@ const MainRoutes: React.FC = () => {
         <Route path="/registerUser">
           <RegisterUser />
         </Route>
+        <Route path="/termsandprivacy">
+          <TermsAndPrivacy />
+        </Route>
         <Route path="/forgotPassword">
           <ForgotPassword />
         </Route>
@@ -194,6 +200,9 @@ const MainRoutes: React.FC = () => {
         <Route path="/userprofile">
           <UserProfile />
         </Route>
+        {/* <Route path="/userprofile2">
+          <UserProfile2/>
+        </Route> */}
         <Route path="/subscriptionPlans">
           <SubscriptionPlans />
         </Route>
@@ -245,6 +254,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/serviceQuestion">
           <Questions />
+        </Route>
+        <Route path="/reports">
+          <Report/> 
         </Route>
       </IonRouterOutlet>
 

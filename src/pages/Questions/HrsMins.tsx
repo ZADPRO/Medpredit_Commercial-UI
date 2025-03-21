@@ -73,16 +73,17 @@ const HrsMins: React.FC<HrsInputBox> = ({ label, type, onEdit, SubmitActive }) =
 
   useEffect(() => {
     if (isFirstRender.current) {
-      isFirstRender.current = false; // Mark first render as handled
+      isFirstRender.current = false;
       return;
     }
   
-    if (hrsValue === 0 && minsValue === 0) {
-      handleButtonClick();
-    } else if (hrsValue === null && minsValue === null) {
-      handleButtonClick();
+    if (hrsValue !== null && minsValue !== null) {
+      if (hrsValue === 0 && minsValue === 0) {
+        handleButtonClick();
+      }
     }
   }, [hrsValue, minsValue]);
+  
   
 
   const handleClearTime = () => {
@@ -104,7 +105,7 @@ const HrsMins: React.FC<HrsInputBox> = ({ label, type, onEdit, SubmitActive }) =
       >
         <IonModal
           isOpen={isOpen}
-          id="doctorDetailsGraph"
+          id="ion-custom-modal-01"
           initialBreakpoint={1}
           onDidDismiss={closeModal}
           animated={false}
@@ -149,11 +150,11 @@ const HrsMins: React.FC<HrsInputBox> = ({ label, type, onEdit, SubmitActive }) =
                 onClick={() => handleClearTime()}
                 style={{
                   width: "40%",
-                  background: "#ceebfb",
+                  background: "var(--med-light-green)",
                   padding: "15px",
                   textAlign: "center",
                   fontSize: "1.1rem",
-                  color: "#0c3f69",
+                  color: "var(--med-dark-green)",
                   borderRadius: "10px",
                   fontWeight: "600",
                 }}
@@ -164,11 +165,11 @@ const HrsMins: React.FC<HrsInputBox> = ({ label, type, onEdit, SubmitActive }) =
                 onClick={handleSetTime}
                 style={{
                   width: "40%",
-                  background: "linear-gradient(27deg, rgba(16, 148, 231, 1) 0%, rgba(7, 117, 197, 1) 100%)",
+                  background: "var(--med-dark-green)",
                   padding: "15px",
                   textAlign: "center",
                   fontSize: "1rem",
-                  color: "#fff",
+                  color: "var(--med-light-green)",
                   borderRadius: "10px",
                   fontWeight: "700"
                 }}
@@ -182,7 +183,7 @@ const HrsMins: React.FC<HrsInputBox> = ({ label, type, onEdit, SubmitActive }) =
         <div className="questionsType inputText">
           {/* <Domain questionId={label.questionId} /> */}
           <p className="questionText">{label.questionText}</p>
-          <div className="p-inputgroup flex-1" style={{ border: "1.5px solid #10416a", borderRadius: "10px" }}>
+          <div className="p-inputgroup flex-1" style={{ border: "1.5px solid var(--med-dark-green)", borderRadius: "10px" }}>
             <InputNumber
               id="hrsInputLeft"
               value={hrsValue}

@@ -147,11 +147,11 @@ const Hrs24: React.FC<HrsInputBox> = ({ label, type, onEdit }) => {
                                 }}
                                 style={{
                                     width: "40%",
-                                    background: "#ceebfb",
+                                    background: "var(--med-light-green)",
                                     padding: "15px",
                                     textAlign: "center",
                                     fontSize: "1.1rem",
-                                    color: "#0c3f69",
+                                    color: "var(--med-dark-green)",
                                     borderRadius: "10px",
                                     fontWeight: "600",
                                 }}
@@ -162,11 +162,11 @@ const Hrs24: React.FC<HrsInputBox> = ({ label, type, onEdit }) => {
                                 onClick={handleSetTime}
                                 style={{
                                     width: "40%",
-                                    background: "linear-gradient(27deg, rgba(16, 148, 231, 1) 0%, rgba(7, 117, 197, 1) 100%)",
+                                    background: "var(--med-dark-green)",
                                     padding: "15px",
                                     textAlign: "center",
                                     fontSize: "1rem",
-                                    color: "#fff",
+                                    color: "var(--med-light-green)",
                                     borderRadius: "10px",
                                     fontWeight: "700"
                                 }}

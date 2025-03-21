@@ -84,7 +84,7 @@
     background-color: white;
   }
 
-  .account-header {
+  .profile-body-header {
     font-size: 1.2rem;
     font-weight: bold;
     color: var(--med-dark-green);
@@ -92,7 +92,7 @@
     border-bottom: 1px solid #e0e0e0;
   }
   
-  .account-item {
+  .profile-body-item {
     display: flex;
     align-items: center; /* Ensures everything is in the same line */
     gap: 1rem;
@@ -103,16 +103,16 @@
     width: 100%;
 }
 
-.account-item:hover {
+.profile-body-item:hover {
     background: #f5f5f5;
 }
 
-.account-item ion-icon{
+.profile-body-item ion-icon{
   color: var(--med-dark-green);
   font-size: 1.2rem;
 }
 
-.account-item i {
+.profile-body-item i {
     font-size: 1.2rem;
     color: var(--med-light-green);
     background-color: var(--med-dark-green);
@@ -123,18 +123,18 @@
     justify-content: center;
 }
 
-.account-text {
+.profile-body-text {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.account-label {
+.profile-body-label {
     font-size: 1rem;
     flex-grow: 1; /* Ensures it takes up remaining space */
 }
 
-.short-divider {
+.profile-body-short-divider {
     height: 1px;
     width: 80%;
     margin-left: auto;

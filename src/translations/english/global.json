@@ -6,8 +6,8 @@
   },
   "login": {
     "welcome": "Hi, Welcome!",
-    "Mobile Number/ Email Address": "Mobile Number/ Email Address",
-    "Password": "Password",
+    "Mobile Number/ Email Address": "Enter Mobile Number",
+    "Password": "Enter Password",
     "Remember Me": "Remember Me",
     "Forgot Password": "Forgot Password",
     "Login": "Login",

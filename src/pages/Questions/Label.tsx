@@ -24,6 +24,7 @@ const Label: React.FC<LabelProps> = ({ label, onEdit }) => {
   useEffect(() => {
     onEdit(label.questionType, "0", forwardQId);
   }, [forwardQId]);
+  
   return (
     <div className="questions inputText">
       <p className="questionText">{label.questionText}</p>

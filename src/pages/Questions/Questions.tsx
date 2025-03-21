@@ -242,6 +242,10 @@ const Questions: React.FC = () => {
         (q) => parseInt(q.questionId, 10) === nextQuestionId
       );
 
+      console.log("nextQuestion", visibleQuestions);
+
+      console.log("nextQuestion", nextQuestion);
+
       if (nextQuestion) {
         setVisibleQuestions((prevVisibleQuestions) => [
           ...prevVisibleQuestions,
@@ -253,8 +257,10 @@ const Questions: React.FC = () => {
   };
 
   const [loadingStatus, setLoadingStatus] = useState(false);
+
   const submitResponse = () => {
-    console.log(submittedAnswer);
+    console.log("submittedAnswer", submittedAnswer);
+    console.log("serviceId", serviceId, userId);
     setLoadingStatus(true);
     try {
       axios
@@ -262,7 +268,7 @@ const Questions: React.FC = () => {
           `${import.meta.env.VITE_API_URL}/postAnswers`,
           {
             patientId: userId,
-            categoryId: serviceId,
+            categoryId: serviceId.toString(),
             answers: serviceId === 201 ? questionSets : submittedAnswer,
             // employeeId: localStorage.getItem("currentDoctorId")
             //   ? localStorage.getItem("currentDoctorId")
@@ -328,7 +334,10 @@ const Questions: React.FC = () => {
     refOptionId: number,
     forwardQnId: any
   ) => {
+    console.log("handleQuestionEdit");
     if (responses) {
+      console.log("handleQuestionEdit --------------- 1");
+
       responses.map((res) => {
         if (res.questionId === questionId) {
           console.log("Response found - editing");
@@ -345,6 +354,7 @@ const Questions: React.FC = () => {
         }
       });
     }
+    console.log("forwardQnId", forwardQnId);
     getNextQuestions(questionId, questionType, refOptionId, forwardQnId);
   };
   console.log("Visible qns", visibleQuestions);
@@ -519,7 +529,7 @@ const Questions: React.FC = () => {
    
   
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage>
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="start">
@@ -853,7 +863,7 @@ const Questions: React.FC = () => {
             >
               <button
                 disabled={submitButton}
-                onClick={submitResponse}
+                onClick={() => {submitResponse()}}
                 className={`questionSubmitButton ${
                   submitButton ? "disabled" : ""
                 }`}

@@ -23,11 +23,17 @@ const Profile: React.FC = () => {
 
   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
 
+  
+  const logOut = () => {
+
+  };
+
   const sections = [
     {
       title: "Account",
       items: [
         { icon: "pi pi-user", label: "Profile", path: "/userprofile" },
+        // { icon: "pi pi-user", label: "Add Family", path: "/userprofile2" },
         {
           icon: "pi pi-receipt",
           label: "Manage Subscriptions",
@@ -67,11 +73,11 @@ const Profile: React.FC = () => {
           path: "/termsCondition",
         },
         { icon: "pi pi-lock", label: "Privacy Policy", path: "/privacyPolicy" },
-        { icon: "pi pi-sign-out", label: "Log Out", path: "/login" },
+        { icon: "pi pi-sign-out", label: "Log Out", path: "/login", function:  logOut()},
       ],
     },
   ];
-
+  
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -103,7 +109,8 @@ const Profile: React.FC = () => {
               </div>
               <div className="profile_top_bar_avatar">
                 <span>
-                  {userDeatilsObj.firstName.charAt(0) + userDeatilsObj.lastName.charAt(0)}
+                  {userDeatilsObj.firstName.charAt(0) +
+                    userDeatilsObj.lastName.charAt(0)}
                 </span>
               </div>
             </div>
@@ -115,21 +122,25 @@ const Profile: React.FC = () => {
 
           {sections.map((section, index) => (
             <div key={index} className="profile-body">
-              <h3 className="account-header">{section.title}</h3>
+              <h3 className="profile-body-header">{section.title}</h3>
               {section.items.map((item, itemIndex) => (
                 <div
                   key={itemIndex}
                   onClick={() => {
-                    item.path.length > 0 && history.push(item.path);
+                    if (item.label == "Log Out") {
+                      localStorage.clear();
+
+                      item.path.length > 0 && location.replace(item.path);
+                    } else item.path.length > 0 && history.push(item.path);
                   }}
                 >
-                  <div className="account-item">
+                  <div className="profile-body-item">
                     <i className={item.icon}></i>
-                    <span className="account-label">{item.label}</span>
+                    <span className="profile-body-label">{item.label}</span>
                     <IonIcon icon={chevronForward} />
                   </div>
                   {itemIndex !== section.items.length - 1 && (
-                    <div className="short-divider"></div>
+                    <div className="profile-body-short-divider"></div>
                   )}
                 </div>
               ))}

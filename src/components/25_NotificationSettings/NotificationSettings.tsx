@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { 
   IonContent, IonHeader, IonLabel, IonPage, IonSegment, 
-  IonSegmentButton, IonToolbar, IonCard, IonCardContent 
+  IonSegmentButton, IonToolbar, IonCard, IonCardContent, 
+  IonButtons,
+  IonBackButton,
+  IonTitle
 } from '@ionic/react';
+import { chevronBack } from 'ionicons/icons';
 
 const NotificationSettings: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState<string>("all");
@@ -11,7 +15,20 @@ const NotificationSettings: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonSegment 
+           <IonHeader>
+                    <IonToolbar>
+                      <IonButtons slot="start">
+                        <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
+                      </IonButtons>
+                      <IonTitle>Notification Settings</IonTitle>
+                    </IonToolbar>
+                  </IonHeader>
+          
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent className="ion-padding">
+      <IonSegment 
             value={selectedSegment} 
             onIonChange={(e) => setSelectedSegment(e.detail.value as string)} // ✅ Fix: Cast as string
           >
@@ -25,10 +42,6 @@ const NotificationSettings: React.FC = () => {
               <IonLabel>Plan</IonLabel>
             </IonSegmentButton>
           </IonSegment>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent className="ion-padding">
         {selectedSegment === "all" && (
           <IonCard>
             <IonCardContent>

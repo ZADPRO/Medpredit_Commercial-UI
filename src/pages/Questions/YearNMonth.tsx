@@ -61,12 +61,48 @@ const YearNMonth: React.FC<TextInputBoxProps> = ({
           {/* <Domain questionId={label.questionId} /> */}
           <p className="questionText">{label.questionText}</p>
           {/* <ShowCard questionId={label.questionId} /> */}
-          <div className="questionsbuttonGroup_01" style={{ display: "flex", width: "100%", paddingBottom: "10px" }}>
-            <div className={`questionsTextOptions_01 ${selectedButton === "year" && "selected"}`} onClick={() => { setSelectedButton("year") }} style={{ width: "30%", fontSize: "0.7rem" }}>Year</div>
-            <div className={`questionsTextOptions_01 ${selectedButton === "month" && "selected"}`} onClick={() => { setSelectedButton("month") }} style={{ width: "30%", fontSize: "0.7rem" }}>Month</div>
-            <div className={`questionsTextOptions_01 ${selectedButton === "week" && "selected"}`} onClick={() => { setSelectedButton("week") }} style={{ width: "30%", fontSize: "0.7rem" }}>Week</div>
+          <div
+            className="questionsbuttonGroup_01"
+            style={{ display: "flex", width: "100%", paddingBottom: "10px" }}
+          >
+            <div
+              className={`questionsTextOptions_01 ${
+                selectedButton === "year" && "selected"
+              }`}
+              onClick={() => {
+                setSelectedButton("year");
+              }}
+              style={{ width: "30%", fontSize: "0.7rem" }}
+            >
+              Year
+            </div>
+            <div
+              className={`questionsTextOptions_01 ${
+                selectedButton === "month" && "selected"
+              }`}
+              onClick={() => {
+                setSelectedButton("month");
+              }}
+              style={{ width: "30%", fontSize: "0.7rem" }}
+            >
+              Month
+            </div>
+            <div
+              className={`questionsTextOptions_01 ${
+                selectedButton === "week" && "selected"
+              }`}
+              onClick={() => {
+                setSelectedButton("week");
+              }}
+              style={{ width: "30%", fontSize: "0.7rem" }}
+            >
+              Week
+            </div>
           </div>
-          <div className="p-inputgroup flex-1" style={{ border: "1.5px solid #10416a", borderRadius: "10px", }}>
+          <div
+            className="p-inputgroup flex-1 align-items-center justify-content-center"
+            style={{ border: "1.5px solid var(--med-dark-green)", borderRadius: "10px" }}
+          >
             <InputText
               type="number"
               id="fullInput"
@@ -77,8 +113,29 @@ const YearNMonth: React.FC<TextInputBoxProps> = ({
               min={1}
               required
             />
-            <div style={{ width: "10%", height: "35px", display: "flex", justifyContent: "center", alignItems: "center", background: "transparent" }}>
-              <button style={{ background: "#10416a", width: "30px", height: "30px", color: "#fff", borderRadius: "50%", padding: "5px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div
+              style={{
+                width: "10%",
+                height: "35px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "transparent",
+              }}
+            >
+              <button
+                style={{
+                  background: "var(--med-light-green)",
+                  width: "30px",
+                  height: "30px",
+                  color: "var(--med-dark-green)",
+                  borderRadius: "50%",
+                  padding: "5px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <i className="pi pi-arrow-right"></i>
               </button>
             </div>

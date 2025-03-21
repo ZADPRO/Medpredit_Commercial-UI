@@ -6,8 +6,8 @@
   },
   "login": {
     "welcome": "வணக்கம், வரவேற்கிறோம்!",
-    "Mobile Number/ Email Address": "மொபைல் / மின்னஞ்சல்",
-    "Password": "கடவுச்சொல்",
+    "Mobile Number/ Email Address": "மொபைல் எண்ணை உள்ளிடவும்",
+    "Password": "கடவுச்சொல்லை உள்ளிடவும்",
     "Remember Me": "நினைவில் வை",
     "Forgot Password": "கடவுச்சொல்?",
     "Login": "உள்நுழை",

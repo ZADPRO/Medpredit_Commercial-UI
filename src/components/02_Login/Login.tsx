@@ -47,7 +47,9 @@ const Login: React.FC = () => {
     // setShowToast(false);
     const { name, value } = e.target;
     if (isSignIn) {
-      setSignInData((prev) => ({ ...prev, [name]: value }));
+      if ((name == "username" && value.length <= 10) || (name == "password")) {
+        setSignInData((prev) => ({ ...prev, [name]: value }));
+      }
     }
   };
   
@@ -63,6 +65,7 @@ const Login: React.FC = () => {
         response.data[0],
         import.meta.env.VITE_ENCRYPTION_KEY
       );
+      console.log(data);
       if (data.status) {
         const userDetails = {
           roleType: data.roleType,
@@ -76,14 +79,11 @@ const Login: React.FC = () => {
 
         localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
+        localStorage.setItem("detailsFlag", data.isDetails);
+
         localStorage.setItem("hospitalId", data.hospitaId);
-
+        console.log(data);
         setShowModal(true);
-
-        history.push("/home", {
-          direction: "forward",
-          animation: "slide",
-        });
 
         setSignInData({
           username: "",
@@ -104,7 +104,21 @@ const Login: React.FC = () => {
       // setShowToast(true);
       // setLoadingStatus(false);
     };
-  }
+  };
+
+  const routeCondition = () => {
+    const flag = localStorage.getItem("detailsFlag");
+
+    if (flag == "true") {
+      setTimeout(() => {
+        history.push("/userProfile");
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        history.push("/home");
+      }, 1000);
+    }
+  };
   
   return (
     <IonPage>
@@ -114,7 +128,7 @@ const Login: React.FC = () => {
           <p className="welcometext">{t("login.welcome")}👋</p>
           <div className="inputs">
             <InputText
-              type="text"
+              type="number"
               name="username"
               placeholder={t("login.Mobile Number/ Email Address")}
               style={{ width: "20rem", maxWidth: "100%", borderRadius: "10px" }}
@@ -212,11 +226,7 @@ const Login: React.FC = () => {
                 animationData={tickAnimation}
                 loop={false}
                 style={{ width: 150, height: 150 }}
-                onComplete={() => {
-                  setTimeout(() => {
-                    history.push("/home");
-                  }, 1000);
-                }}
+                onComplete={() => routeCondition()}
               />
             </div>
             <p
