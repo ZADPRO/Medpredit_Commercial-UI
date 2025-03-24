@@ -305,13 +305,13 @@ const Questions: React.FC = () => {
               //   `/subCategories/${getQuestionsToken.id}/${getQuestionsToken.label}`
               // );
               setLoadingStatus(false);
-              history.goBack();
+              history.replace("/serviceAssestment?refresh=true");
               setSubmittedAnswer([]);
             } else {
               console.error("getCategory is null or undefined");
 
               setLoadingStatus(false);
-              history.goBack();
+              history.replace("/serviceAssestment?refresh=true");
               setSubmittedAnswer([]);
             }
           }
@@ -529,7 +529,7 @@ const Questions: React.FC = () => {
    
   
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
         <IonButtons slot="start">

@@ -166,6 +166,8 @@ import { useHistory } from "react-router";
       refDOB: null as any | null,
       refEducation: "",
       refOccupationLvl: "",
+      activeStatus: "",
+      updatedBy: "",
       refSector: "",
       refAddress: "",
       refDistrict: "",
@@ -222,6 +224,8 @@ import { useHistory } from "react-router";
           setTimeout(() => {
             history.replace("/home")
           }, 3000);
+        } else{
+          setToastOpen({ status: true, textColor: "green", position: "top",  message: "Profile Saved" });
         }
       };
     }
@@ -248,8 +252,9 @@ import { useHistory } from "react-router";
               refAddress: formData.refAddress,
               refDistrict: formData.refDistrict,
               refPincode: formData.refPincode,
-              refUserMobileno: formData.refUserMobileno,
               refGender: formData.refGender,
+              activeStatus: formData.activeStatus,
+              updatedBy: userDeatilsObj.userId,
             },
             {
               headers: {
@@ -789,7 +794,7 @@ import { useHistory } from "react-router";
               {/* Occupational Sector */}
               <IonModal
                 isOpen={occupationalSector}
-                id="doctorDetailsGraph"
+                id="med-modal"
                 initialBreakpoint={1}
                 onDidDismiss={() => {
                   setOccupationalSector(false);
@@ -897,14 +902,12 @@ import { useHistory } from "react-router";
             </IonSegmentContent>
             <IonSegmentContent id="Contact Details">
               {/* Mobile Number */}
-              {/* <div className="inputBox">
+              <div className="inputBox">
                 <label>
                   Mobile Number <span style={{ color: "red" }}>*</span>
                 </label>
                 <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+                  className="p-inputgroup addFamilyInputField inputDisabled"
                 >
                   <span className="addFamilyInputField_Icon">
                     <i className="pi pi-phone"></i>
@@ -924,7 +927,7 @@ import { useHistory } from "react-router";
                     name="refUserMobileno"
                   />
                 </div>
-              </div> */}
+              </div>
               <div className="inputBox">
                 <label>Email</label>
                 <div

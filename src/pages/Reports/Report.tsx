@@ -13,7 +13,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import axios from "axios";
-import { chevronBack, chevronForward, filter, filterOutline } from "ionicons/icons";
+import { chevronBack, chevronForward, close, filter, filterOutline } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import decrypt from "../../helper";
 import { RadioButton } from "primereact/radiobutton";
@@ -24,6 +24,7 @@ import { color } from "framer-motion";
 import ReportData from "./ReportContent";
 import { ScoreVerify } from "../../ScoreVerify";
 import ReportContent from "./ReportContent";
+import { useHistory } from "react-router";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -35,6 +36,8 @@ const Report: React.FC = () => {
     refGender: string;
   }
 
+  const history = useHistory();
+
   const [showModal1, setShowModal1] = useState<boolean>(false);
 
   const [showModal2, setShowModal2] = useState<boolean>(true);
@@ -42,7 +45,8 @@ const Report: React.FC = () => {
   const [userData, setUserData] = useState<Array<UserInfo>>([]);
 
   const [selectedUser, setSelectedUser] = useState<number>();
-  const [selectedDate, setSelectedDate] = useState<Nullable<Date>>(null);
+  const [selectedDate, setSelectedDate] = useState<Nullable<Date>>(new Date());
+
 
   const [reportUser, setReportUser] = useState<{
     reUserId?: number;
@@ -92,6 +96,14 @@ const Report: React.FC = () => {
 
   const [urineketones, setUrineketones] = useState<any[]>([]);
   const maxDate = new Date();
+
+  const scrollableDivRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
+    }
+  }, [reportModalCategories, allScore, stressAnswer]);
 
   // const sampleUsers: UserInfo[] = [
   //   {
@@ -662,7 +674,7 @@ const Report: React.FC = () => {
 
 
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -741,7 +753,27 @@ const Report: React.FC = () => {
         presentingElement={presentingElement}
       >
         <div className="report-modalContent">
-          <h4>Select Date</h4>
+        <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h4>Select Date</h4>
+            <IonIcon
+              onClick={() => {
+                setShowModal2(false);
+                if (structuredCategories.length === 0) {
+                    history.replace("/home");
+                }
+              }}
+              style={{ "font-size": "1.5rem" }}
+              icon={close}
+            />
+          </div>
+
           <div className="flex justify-content-center reports-user-list">
             <Calendar
               value={selectedDate}
@@ -767,12 +799,36 @@ const Report: React.FC = () => {
         id="ion-custom-modal-02"
       >
         <div className="report-modalContent">
-          <h4>{reportModalTitle}</h4>
-          <ReportContent
-            reportModalCategories={reportModalCategories}
-            allScore={allScore}
-            stressAnswer={stressAnswer}
-          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h4>{reportModalTitle}</h4>
+            <IonIcon
+              onClick={() => setShowReportModal1(false)}
+              style={{ "font-size": "1.5rem" }}
+              icon={close}
+            />
+          </div>
+
+          <div
+            ref={scrollableDivRef}
+            style={{
+              maxHeight: "80vh",
+              paddingBottom: "7rem",
+              overflowY: "auto",
+            }}
+          >
+            <ReportContent
+              reportModalCategories={reportModalCategories}
+              allScore={allScore}
+              stressAnswer={stressAnswer}
+            />
+          </div>
         </div>
       </IonModal>
 
@@ -799,7 +855,18 @@ const Report: React.FC = () => {
         )} */}
 
         <div className="reports-services-card">
-          {selectedDate && <div>{selectedDate.toLocaleDateString()}</div>}
+        {selectedDate && (
+  <div>
+    {selectedDate
+      .toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(/ /g, "-")} {/* Replaces spaces with "-" */}
+  </div>
+)}
+
           {structuredCategories.length > 0 &&
             structuredCategories[0]?.subcategories[0]?.subcategories.map(
               (item: any, index: number) =>
@@ -846,18 +913,14 @@ const Report: React.FC = () => {
 
                       <p className="date-range">
                         <b>Valid Till: </b>
-                        {
-                          addDaysToDate(
-                            (
-                              allScore?.find(
-                                (answer) =>
-                                  answer.refQCategoryId ===
-                                  item.refQCategoryId.toString()
-                              )?.refPTcreatedDate
-                            ),
-                            getValidity(item.refQCategoryId)
-                          )
-                        }
+                        {addDaysToDate(
+                          allScore?.find(
+                            (answer) =>
+                              answer.refQCategoryId ===
+                              item.refQCategoryId.toString()
+                          )?.refPTcreatedDate,
+                          getValidity(item.refQCategoryId)
+                        )}
                       </p>
                       <span
                         style={{

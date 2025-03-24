@@ -92,7 +92,7 @@ const Hrs24: React.FC<HrsInputBox> = ({ label, type, onEdit }) => {
             >
                 <IonModal
                     isOpen={isOpen}
-                    id="doctorDetailsGraph"
+                    id="med-modal"
                     initialBreakpoint={1}
                     onDidDismiss={closeModal}
                     animated={false}

@@ -122,10 +122,10 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
         >
           <button
             style={{
-              background: "#10416a",
+              background: "var(--med-dark-green)",
               width: "30px",
               height: "30px",
-              color: "#fff",
+              color: "var(--med-light-green)",
               borderRadius: "50%",
               padding: "5px",
               display: "flex",

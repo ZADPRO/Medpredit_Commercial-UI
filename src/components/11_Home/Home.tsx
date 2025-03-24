@@ -10,10 +10,12 @@ import {
   IonFabButton,
   IonFabList,
   IonGrid,
+  IonHeader,
   IonIcon,
   IonicSafeString,
   IonPage,
   IonRow,
+  IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import "./Home.css";
@@ -61,6 +63,7 @@ import averageImage from "../../assets/images/Home/average.svg";
 import riskImage from "../../assets/images/Home/risk.svg";
 import personAdd from "../../assets/images/Icons/PersonAdd.png";
 import personEdit from "../../assets/images/Icons/PersonEdit.png";
+import { StatusBar } from "@capacitor/status-bar";
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -78,9 +81,12 @@ const Home: React.FC = () => {
   // Handle Ionic scroll event
   const handleScroll = (event: CustomEvent) => {
     const scrollTop = event.detail.scrollTop;
-    setIsScrolled(scrollTop > 20); // Add class when scrolled 20px
+    setIsScrolled(scrollTop > 20); // Track scroll state
+  
+    // Update StatusBar color dynamically
+    StatusBar.setBackgroundColor({ color: scrollTop > 20 ? "#f3f3f3" : "#f8fff5" });
   };
-
+  
   const services = [
     {
       serviceId: 9,
@@ -209,42 +215,44 @@ const Home: React.FC = () => {
   ];
 
   return (
-    <IonPage>
-      <IonContent fullscreen scrollEvents={true} onIonScroll={handleScroll}>
+    <IonPage className="cus-ion-page">
+      <IonHeader>
+  <div className="home-top">
+    <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
+      <div className="home-top-bar-greetings">
+        <span style={{ fontSize: "0.8rem" }}>Hi,</span>
+        <h2 style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}>
+          {userDeatilsObj.firstName}
+        </h2>
+      </div>
+      <div className="home-top-bar-icons">
+        <IonIcon
+          onClick={() =>
+            history.push("/reports", {
+              direction: "forward",
+              animation: "slide",
+            })
+          }
+          icon={newspaperOutline}
+        />
+        <IonIcon icon={notificationsOutline} />
+        <IonIcon
+          onClick={() =>
+            history.push("/profile", {
+              direction: "forward",
+              animation: "slide",
+            })
+          }
+          icon={personOutline}
+        />
+      </div>
+    </div>
+  </div>
+</IonHeader>
+
+      <IonContent scrollEvents={true} onIonScroll={handleScroll}>
         <div className="medpredit_home">
-          <div className="home-top">
-            <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
-              <div className="home-top-bar-greetings">
-                <span style={{ fontSize: "0.8rem" }}>Hi,</span>
-                <h2
-                  style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
-                >
-                  {userDeatilsObj.firstName}
-                </h2>
-              </div>
-              <div className="home-top-bar-icons">
-                <IonIcon
-                  onClick={() =>
-                    history.push("/reports", {
-                      direction: "forward",
-                      animation: "slide",
-                    })
-                  }
-                  icon={newspaperOutline}
-                />
-                <IonIcon icon={notificationsOutline} />
-                <IonIcon
-                  onClick={() =>
-                    history.push("/profile", {
-                      direction: "forward",
-                      animation: "slide",
-                    })
-                  }
-                  icon={personOutline}
-                />
-              </div>
-            </div>
-            <div className="home-search-bar">
+        <div className="home-search-bar">
               <input
                 className="home-search-input"
                 placeholder="Search Service"
@@ -257,7 +265,6 @@ const Home: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
 
           <div className="home-carousel">
             <Carousel
@@ -625,7 +632,7 @@ const Home: React.FC = () => {
 
           <div className="home-footer">
             <h3>
-              Made in <img src={heartIcon} /> with
+              Made with <img src={heartIcon} /> by
             </h3>
             <h1>ZAdroit</h1>
             <h4>

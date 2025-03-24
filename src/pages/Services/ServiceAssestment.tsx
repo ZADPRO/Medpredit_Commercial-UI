@@ -12,9 +12,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import "../Services/ServiceAssessment.css";
 import { chevronBack } from "ionicons/icons";
-import img1 from "../../assets/images/banner_image.jpg";
 import alcohol_banner from "../../assets/images/Services/Alcohol_Banner.png";
-import stress_banner from "../../assets/images/Services/Stress_Banner.jpg";
+import stress_banner from "../../assets/images/Services/Stress_Banner.png";
 import tobacco_banner from "../../assets/images/Services/Tobacco_Banner.png";
 import physical_banner from "../../assets/images/Services/Physical_Banner.png";
 import sleep_banner from "../../assets/images/Services/Sleep_Banner.png";
@@ -47,8 +46,25 @@ interface Category {
 const ServiceAssestment: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
-  const serviceId = Number((location.state as { serviceId?: number })?.serviceId) || 0;
+  
+  const serviceId =
+    Number((location.state as { serviceId?: number })?.serviceId) ||
+    Number(localStorage.getItem("serviceId")) ||
+    0;
 
+  useEffect(() => {
+    if (serviceId) {
+      localStorage.setItem("serviceId", String(serviceId));
+    }
+  }, [serviceId]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("refresh") === "true") {
+      getCategory();
+    }
+  }, [location.search]);
+  
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
   const [userData, setUserData] = useState<Array<UserInfo>>([]);
@@ -452,10 +468,17 @@ const ServiceAssestment: React.FC = () => {
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
+        <IonToolbar>
         <IonButtons slot="start">
           <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
-          {/* <span>{title}</span> */}
+          <h2 style={{margin: "0"}}>
+            {
+              servicesDetails.find((item) => item.serviceId === serviceId)
+                ?.title
+            }
+          </h2>
         </IonButtons>
+        </IonToolbar>
       </IonHeader>
       <IonContent>
         {/* <div className="medpredit_serviceAssess"> */}
@@ -529,24 +552,26 @@ const ServiceAssestment: React.FC = () => {
             <></>
           )}
 
-          <h1>
+          {/* <h1>
             {
               servicesDetails.find((item) => item.serviceId === serviceId)
                 ?.title
             }
-          </h1>
+          </h1> */}
+          
+          <img
+          style={{marginTop: "1rem"}}
+            src={
+              servicesDetails.find((item) => item.serviceId === serviceId)
+                ?.image
+            }
+          />
           <p>
             {
               servicesDetails.find((item) => item.serviceId === serviceId)
                 ?.subTitle
             }
           </p>
-          <img
-            src={
-              servicesDetails.find((item) => item.serviceId === serviceId)
-                ?.image
-            }
-          />
           <ol>
             {servicesDetails
               .find((item) => item.serviceId === serviceId)

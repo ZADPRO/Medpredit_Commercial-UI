@@ -311,7 +311,7 @@ console.log(SubmitActive);
 
               <IonModal
                 isOpen={openModalIndex === index}
-                id="doctorDetailsGraph"
+                id="med-modal"
                 initialBreakpoint={1}
                 onDidDismiss={closeModal}
                 animated={false}

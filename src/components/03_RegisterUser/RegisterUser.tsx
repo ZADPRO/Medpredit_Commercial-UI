@@ -249,7 +249,7 @@ const RegisterUser = () => {
               <InputText
                 type="text"
                 name="refUserFname"
-                placeholder={t("Register User.First Name")}
+                placeholder={t("Register User.Enter") + " "+ t("Register User.First Name")}
                 value={formData.refUserFname}
                 required
                 onChange={handleInputChange}
@@ -261,7 +261,7 @@ const RegisterUser = () => {
               <InputText
                 type="text"
                 name="refUserLname"
-                placeholder={t("Register User.Last Name")}
+                placeholder={t("Register User.Enter") + " "+ t("Register User.Last Name")}
                 value={formData.refUserLname}
                 required
                 onChange={handleInputChange}
@@ -273,7 +273,7 @@ const RegisterUser = () => {
               <InputText
                 type="email"
                 name="refUserEmail"
-                placeholder={t("Register User.E-Mail")}
+                placeholder={t("Register User.Enter") + " "+ t("Register User.E-Mail")}
                 value={formData.refUserEmail}
                 required
                 onChange={handleInputChange}
@@ -284,7 +284,7 @@ const RegisterUser = () => {
               <InputText
                 type="number"
                 name="refUserMobileno"
-                placeholder={t("Register User.Mobile Number")}
+                placeholder={t("Register User.Enter") + " "+ t("Register User.Mobile Number")}
                 value={formData.refUserMobileno}
                 required
                 onChange={(e) => {
@@ -302,7 +302,7 @@ const RegisterUser = () => {
                 type="password"
                 name="refUserPassword"
                 toggleMask
-                placeholder={t("Register User.Must be 8 characters")}
+                placeholder={t("Register User.Enter Password")}
                 value={formData.refUserPassword}
                 required
                 onChange={handleInputChange}

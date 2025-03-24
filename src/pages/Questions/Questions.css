@@ -89,7 +89,7 @@
 
 .questionsTextOptions_02 {
     width: 95%;
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 1rem;
     border: 1px solid var(--med-dark-green);
     border-radius: 20px;
     color: var(--med-dark-green);
@@ -97,7 +97,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
-
+    text-align: start;
 }
 
 ion-modal#questionsModal {

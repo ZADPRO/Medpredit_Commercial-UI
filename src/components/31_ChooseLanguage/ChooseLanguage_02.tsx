@@ -79,10 +79,7 @@ const ChooseLanguage_02: React.FC = () => {
 
           {/* Button at the bottom */}
           <div className="button-container">
-            <button onClick={() => history.push("/login", {
-              direction: "forward",
-              animation: "slide",
-            })} className="select-button">{t("chooseLanguage.select")}</button>
+            <button onClick={() => history.goBack()} className="select-button">{t("chooseLanguage.select")}</button>
           </div>
         </div>
       </IonContent>

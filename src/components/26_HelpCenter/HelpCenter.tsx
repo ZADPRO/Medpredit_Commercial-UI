@@ -11,7 +11,7 @@ import {
   IonLabel
 } from "@ionic/react";
 import React, { useState } from "react";
-import { chevronDownOutline, chevronUpOutline } from "ionicons/icons";
+import { chevronBack, chevronDownOutline, chevronUpOutline } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 import "./HelpCenter.css";
 
@@ -34,17 +34,17 @@ const HelpCenter: React.FC = () => {
   );
 
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
+            <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
           <IonTitle>Help Center</IonTitle>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
+      {/* <IonContent className="ion-padding">
         <h2 className="ion-text-center">We’re here to help you</h2>
         <p className="ion-text-center">Share your concern or check our FAQ below.</p>
 
@@ -79,7 +79,7 @@ const HelpCenter: React.FC = () => {
           <p>Still stuck? Help is a mail away</p>
           <IonButton expand="full" color="danger">Send a Message</IonButton>
         </div>
-      </IonContent>
+      </IonContent> */}
     </IonPage>
   );
 };

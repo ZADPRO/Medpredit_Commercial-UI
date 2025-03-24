@@ -23,11 +23,6 @@ const Profile: React.FC = () => {
 
   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
 
-  
-  const logOut = () => {
-
-  };
-
   const sections = [
     {
       title: "Account",
@@ -73,28 +68,28 @@ const Profile: React.FC = () => {
           path: "/termsCondition",
         },
         { icon: "pi pi-lock", label: "Privacy Policy", path: "/privacyPolicy" },
-        { icon: "pi pi-sign-out", label: "Log Out", path: "/login", function:  logOut()},
+        {
+          icon: "pi pi-sign-out",
+          label: "Log Out",
+          path: "/login",
+        },
       ],
     },
   ];
-  
-  return (
-    <IonPage>
-      <IonContent fullscreen>
-        <div className="medpredit_profile">
-          <IonToolbar>
-            <IonHeader>
-              <IonButtons slot="start">
-                <IonBackButton
-                  mode="md"
-                  defaultHref="/home"
-                  icon={chevronBack}
-                ></IonBackButton>
-              </IonButtons>
-            </IonHeader>
-          </IonToolbar>
 
-          <div className="profile_top">
+  return (
+    <IonPage className="cus-ion-page">
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton
+              mode="md"
+              defaultHref="/home"
+              icon={chevronBack}
+            ></IonBackButton>
+          </IonButtons>
+        </IonToolbar>
+        <div className="profile_top">
             <div className="profile_top_bar">
               <div className="profile_top_bar_header">
                 <h2>
@@ -119,6 +114,11 @@ const Profile: React.FC = () => {
               <IonIcon icon={chevronForward} />
             </div>
           </div>
+      </IonHeader>
+
+      <IonContent>
+        <div className="medpredit_profile">
+          
 
           {sections.map((section, index) => (
             <div key={index} className="profile-body">

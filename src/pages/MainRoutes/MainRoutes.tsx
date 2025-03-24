@@ -1,22 +1,9 @@
 import {
-  IonContent,
-  IonIcon,
-  IonLabel,
   IonRouterOutlet,
   IonTabs,
-  IonTabButton,
-  IonTabBar,
-  IonMenu,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonPage,
-  IonButtons,
-  IonMenuButton,
 } from "@ionic/react";
-import { IonItem, IonList } from "@ionic/react";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, useLocation } from "react-router";
 import { useHistory } from "react-router-dom";
 import Splashscreen from "../../components/00_Splashscreen/Splashscreen";
@@ -51,19 +38,27 @@ import LandR from "../../components/36_L&R/LandR";
 // import UserProfile2 from "../../components/21_Profile/34_Userprofile/UserProfile2";
 import Report from "../Reports/Report";
 import TermsAndPrivacy from "../../components/03_RegisterUser/TermsAndPrivacy";
+import { StatusBar, Style } from "@capacitor/status-bar";
+import { Capacitor } from "@capacitor/core";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
-  const showTabBar = [
-    "/home",
-    "/patient",
-    "/advice",
-    "/disease",
-    "/profile",
-    "/configure",
-    "/checkup",
-  ].includes(location.pathname);
+
+  useEffect(() => {
+    const configureStatusBar = async () => {
+      if (Capacitor.isNativePlatform()) {
+        let bgcolor = location.pathname === "/home" ? "#f3f3f3" : "#f8fff5"; // Home → Green, Others → Light
+
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        await StatusBar.setBackgroundColor({ color: bgcolor });
+        await StatusBar.setStyle({ style: Style.Light });
+      }
+    };
+
+    configureStatusBar();
+  }, [location.pathname]);
+
 
   const tokenString = localStorage.getItem("userDetails");
   let roleType = 1;
@@ -72,97 +67,6 @@ const MainRoutes: React.FC = () => {
     const tokenObject = JSON.parse(tokenString);
     roleType = tokenObject.roleType;
   }
-
-  const doctor = [
-    {
-      name: "Home",
-      path: "/home",
-      icon: home,
-    },
-    {
-      name: "Patient",
-      path: "/patient",
-      icon: home,
-    },
-    {
-      name: "Disease",
-      path: "/disease",
-      icon: home,
-    },
-    {
-      name: "Profile",
-      path: "/profile",
-      icon: home,
-    },
-  ];
-
-  const menuBar = [
-    {
-      name: "Profile",
-      path: "/profile",
-      icon: "",
-    },
-    {
-      name: "UserProfile",
-      path: "/userprofile",
-      icon: "",
-    },
-    {
-      name: "Subscription Plans",
-      path: "/subscriptionPlans",
-      icon: "",
-    },
-    {
-      name: "Transaction History",
-      path: "/transactionHistory",
-      icon: "",
-    },
-    {
-      name: "Coupons",
-      path: "/coupons",
-      icon: "",
-    },
-    {
-      name: "Notification Setting",
-      path: "/notificationSettings",
-      icon: "",
-    },
-    {
-      name: "Help Center",
-      path: "/helpCenter",
-      icon: "",
-    },
-    {
-      name: "Share",
-      path: "/share",
-      icon: "",
-    },
-    {
-      name: "Feedback",
-      path: "/feedback",
-      icon: "",
-    },
-    {
-      name: "Terms and Condition",
-      path: "/termsCondition",
-      icon: "",
-    },
-    {
-      name: "Privacy Policy",
-      path: "/privacyPolicy",
-      icon: "",
-    },
-    {
-      name: "Choose Language",
-      path: "/ChooseLanguage_02",
-      icon: "",
-    },
-    {
-      name: "Add Family Member",
-      path: "/addFamilyMember",
-      icon: "",
-    },
-  ];
 
   return (
     <IonTabs>

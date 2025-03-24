@@ -261,7 +261,7 @@ const ReportContent = ({
                     )
                     .filter((label: string) => label) // Filter out any empty labels
                     .map((label: string, index: number) => (
-                      <div key={index}>{label}</div>
+                      <li style={{padding: "0.3rem 0"}} key={index}>{label}</li>
                     ))}
                 </div>
               </div>

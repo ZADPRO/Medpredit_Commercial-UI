@@ -112,10 +112,12 @@ const Login: React.FC = () => {
     if (flag == "true") {
       setTimeout(() => {
         history.push("/userProfile");
+        setShowModal(false);
       }, 1000);
     } else {
       setTimeout(() => {
         history.push("/home");
+        setShowModal(false);
       }, 1000);
     }
   };
@@ -212,7 +214,6 @@ const Login: React.FC = () => {
             </span>
           </div>
 
-          <Divider />
         </div>
 
         <IonModal

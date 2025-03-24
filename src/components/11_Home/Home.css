@@ -1,18 +1,31 @@
 .medpredit_home {
-  block-size: 100vh;
   inline-size: 100vw;
-  background: var(--med-light-green-gradient-background);
-  padding-top: 5rem;
+  padding-top: 1rem;
   /* Prevent content overlap */
 }
 
-.home-top-bar {
+.custom-header {
+  background-color: #f8fff5 !important; /* Match StatusBar color */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 1000;
+  height: 12vh; /* Cover StatusBar + Toolbar */
+  display: flex;
+  align-items: center;
+  padding-top: 4vh; /* Space for StatusBar */
+}
+
+.home-top {
+  width: 100%;
+}
+
+/* Use existing styles, just update the header spacing */
+.home-top-bar {
+  width: 100%;
   background: transparent;
-  padding: 1.5rem 1rem;
+  padding: 1rem 1rem; /* Adjusted for better spacing */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -20,8 +33,12 @@
   transition: all 0.2s ease;
 }
 
+.scrolled-header {
+  background-color: var(--med-light-grey) !important;
+}
+
 .home-top-bar.scrolled {
-  padding: 0.8rem 1rem;
+  padding: 1rem 1rem;
   background: var(--med-light-grey);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -38,13 +55,15 @@
   gap: 0.8rem;
 }
 
-.home-top-bar-icons>ion-icon {
-  font-size: 1rem;
+.home-top-bar-icons > ion-icon {
+  font-size: 1.2rem;
   background-color: var(--med-dark-green);
   padding: 0.6rem;
   border-radius: 50%;
   color: var(--med-light-green);
 }
+
+
 
 .home-search-bar {
   display: flex;
@@ -114,7 +133,6 @@
 }
 
 .home-services {
-  margin-top: 1rem;
   color: var(--med-dark-green);
   background-color: #F8F2DE;
   border-radius: 24px 24px 0 0;
