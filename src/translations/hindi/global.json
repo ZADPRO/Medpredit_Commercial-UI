@@ -6,8 +6,8 @@
   },
   "login": {
     "welcome": "नमस्ते, स्वागत है!",
-    "Mobile Number/ Email Address": "मोबाइल नंबर/ईमेल पता",
-    "Password": "पासवर्ड",
+    "Mobile Number/ Email Address": "मोबाइल नंबर दर्ज करें",
+    "Password": "पासवर्ड दर्ज करें",
     "Remember Me": "मुझे याद रखें",
     "Forgot Password": "पासवर्ड भूल गए",
     "Login": "लॉगिन",
@@ -17,6 +17,7 @@
     "Login Successful": "लॉगिन सफल हुआ!"
   },
   "Register User": {
+    "Enter": "दर्ज करें",
     "First Name": "पहला नाम",
     "Last Name": "अंतिम नाम",
     "E-Mail": "ई-मेल",
@@ -44,7 +45,8 @@
     "description": "ओटीपी प्राप्त करने और अपना पासवर्ड रीसेट करने के लिए अपना ईमेल दर्ज करें।",
     "emailPlaceholder": "ईमेल पता",
     "continue": "जारी रखें",
-    "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।"
+    "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।",
+    "Mobile Number":"मोबाइल नंबर"
   },
   "verifyOTP": {
     
@@ -54,6 +56,12 @@
     "verify": "सत्यापित करें",
     "resendmsg":"कोड प्राप्त नहीं हुआ? फिर से भेजें",
     "verifySuccessful": "सफलतापूर्वक सत्यापित हुआ!"
+    
 
-  }
+  },
+  "changepassword":{
+    "New Password":  "नया पासवर्ड",
+    "Confirm Password": "पासवर्ड की पुष्टि करें",
+     "Finish":"समाप्त करें"
+}
 }

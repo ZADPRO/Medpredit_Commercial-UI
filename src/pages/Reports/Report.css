@@ -1,0 +1,152 @@
+.report-modalContent {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    width: 100%;
+    height: 80%;
+    background-image: url("../../assets/images/Backgroundimg/popupbg.png");
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.report-modalContent h4{
+    color: var(--med-dark-green);
+    font-weight: 600;
+}
+
+.reports-user-list {
+    flex-grow: 1; /* Takes up remaining space */
+    overflow-y: auto; /* Enables vertical scrolling */
+    margin: 1rem 0;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background: transparent;
+}
+
+.reports-user-data {
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+.reports-user-profile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reports-user-profile > i {
+    background-color: var(--med-dark-green);
+    color: var(--med-light-green);
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.report-header {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.report-footer {
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.reports-services-card{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.activity-card {
+    display: flex;
+    align-items: center;
+    background: #f9fdf9;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .left-indicator {
+    width: 4px;
+    height: 60%; /* Adjust this based on your design */
+    background: #7fd87f;
+    border-radius: 8px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .content {
+    flex-grow: 1;
+    margin-left: 20px; /* Ensures content doesn't overlap with the indicator */
+  }
+  
+  .title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #114b30;
+    margin: 0;
+  }
+  
+  .date-range {
+    font-size: 0.7rem;
+    color: #707070;
+    margin: 5px 0;
+  }
+  
+  
+  .arrow {
+    color: #ccc;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .e{
+    color: #00e379;
+  }
+
+
+
+  .pastReport_AccCont_div1{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 95%;
+    font-size: medium;
+}
+
+.pastReport_AccCont_div2{
+    width: 85%;
+    margin: 0 auto;
+    font-size: 0.9rem;
+
+}
+
+.pastReport_AccCont_div2_list{
+    width: 100%;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+}
+
+.pastReport_AccCont_div2_sublist {
+    margin-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+
+}

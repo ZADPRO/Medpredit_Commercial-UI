@@ -1,0 +1,4 @@
+.subscribe-card-content ion-button{
+    --background: var(--med-dark-green);
+    --color: var(--med-light-green);
+}

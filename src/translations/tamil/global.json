@@ -6,8 +6,8 @@
   },
   "login": {
     "welcome": "வணக்கம், வரவேற்கிறோம்!",
-    "Mobile Number/ Email Address": "மொபைல் / மின்னஞ்சல்",
-    "Password": "கடவுச்சொல்",
+    "Mobile Number/ Email Address": "மொபைல் எண்ணை உள்ளிடவும்",
+    "Password": "கடவுச்சொல்லை உள்ளிடவும்",
     "Remember Me": "நினைவில் வை",
     "Forgot Password": "கடவுச்சொல்?",
     "Login": "உள்நுழை",
@@ -17,6 +17,7 @@
     "Login Successful": "உள்நுழைவு வெற்றிகரமாக முடிந்தது!"
   },
   "Register User": {
+    "Enter": "உள்ளிடவும்",
     "First Name": "முதல் பெயர்",
     "Last Name": "கடைசி பெயர்",
     "Mobile Number": "மொபைல் எண்",
@@ -44,7 +45,8 @@
     "description": "OTP பெற மற்றும் உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் மின்னஞ்சலை உள்ளிடவும்.",
     "emailPlaceholder": "மின்னஞ்சல் முகவரி",
     "continue": "தொடரவும்",
-    "invalidEmail": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்."
+    "invalidEmail": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்.",
+     "Mobile Number": "மொபைல் எண்"
   },
   "verifyOTP": {
     "title": "OTP சரிபார்க்கவும்",
@@ -53,5 +55,11 @@
     "verify": "சரிபார்க்கவும்",
     "resendmsg": "குறியீடு பெறவில்லையா? மீண்டும் அனுப்பு",
     "verifySuccessful": "வெற்றிகரமாக சரிபார்க்கப்பட்டது!"
-  }
+   
+  },
+  "changepassword":{
+    "New Password":  "புதிய கடவுச்சொல்",
+    "Confirm Password": "Cகடவுச்சொல்லை உறுதிப்படுத்தவும்",
+     "Finish":"முடிக்கவும்"
+}
 }

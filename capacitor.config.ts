@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
-  appName: 'Medpredit_Commercial_UI',
+  appName: 'Medpredit_Commercial',
   webDir: 'dist'
 };
 

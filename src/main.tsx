@@ -1,3 +1,5 @@
+(window as any).global = window;
+
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -34,11 +36,11 @@ i18next.init({
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <React.StrictMode>
-    <PrimeReactProvider>
-      <I18nextProvider i18n={i18next}>
-        <App />
-      </I18nextProvider>{" "}
-    </PrimeReactProvider>{" "}
-  </React.StrictMode>
+  // <React.StrictMode>
+  <PrimeReactProvider>
+    <I18nextProvider i18n={i18next}>
+      <App />
+    </I18nextProvider>{" "}
+  </PrimeReactProvider>
+  // </React.StrictMode>
 );

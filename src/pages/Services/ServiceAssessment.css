@@ -1,0 +1,150 @@
+.serviceAssess_content{
+    width: 90%;
+    margin: 0 auto;
+    color: var(--med-dark-green);
+}
+
+.serviceAssess_content h1{
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.serviceAssess_content p{
+    font-weight: 600;
+}
+
+.serviceAssess_content img{
+    border-radius: 20px;
+    
+    height: 30vh;
+    width:90vw;
+}
+
+.serviceAssess_content ol{
+    padding-inline-start: 20px;
+}
+
+.serviceAssess_content ol li{
+    padding-top: 0.3rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.serviceAssess_content_member{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    overflow: scroll;
+    padding: 5px;
+}
+
+.serviceAssess_content_member div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.serviceAssess_content_memberWrapper span {
+    font-size: 0.8rem;
+}
+
+.serviceAssess_content_memberList {
+    padding: 1rem;
+    background-color: var(--med-dark-green);
+    color: var(--med-light-green);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    white-space: nowrap;
+    transition: 0.3s;
+    width: 3.5rem; 
+    height: 3.5rem;
+}
+
+/* Selected member styling */
+.serviceAssess_content_memberWrapper.selected .serviceAssess_content_memberList {
+    background-color: var(--highlight-color);
+    color: var(--med-dark-green);
+    border: 2px solid var(--med-light-green);
+    transform: scale(1.1);
+}
+
+/* Tick mark styling */
+.tick-mark {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    background-color: var(--med-dark-green);
+    color: var(--med-light-green);
+    font-size: 0.4rem!important;
+    border-radius: 20px;
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
+ion-fab{
+    margin: 0 1rem 1rem 0;
+}
+
+ion-fab-button {
+    --background: var(--med-light-green);
+    --background-activated: #87d361;
+  --background-hover: #a3e681;
+    --box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
+    --color: var(--med-dark-green);
+    height: 64px;
+    width: 64px;
+    font-weight: bold;
+  }
+
+  ion-fab-list ion-fab-button{
+    --background: var(--med-dark-green);
+  }
+
+.footer-ios ion-toolbar:first-of-type, .header-ios ion-toolbar:first-of-type {
+    --border-width: none;
+}
+
+ion-header ion-toolbar, ion-footer ion-toolbar{
+    --border-style: none;
+    --border-width: none;
+    color: var(--med-dark-green);
+}
+
+ion-header ion-toolbar{
+    --background: transparent;
+}
+
+ion-footer ion-toolbar{
+    --background: var(--med-dark-green);
+    color: var(--med-light-green);
+}
+
+ion-buttons ion-back-button, ion-buttons ion-button ion-icon{
+    color: var(--med-dark-green);
+    --icon-font-size: 2rem;
+}
+
+ion-header ion-toolbar ion-button ion-icon{
+    color: var(--med-dark-green);
+}
+
+ion-footer .cus-ion-toolbar-disabled{
+    --background: rgb(230, 230, 230);
+    color: darkgrey
+}
+
+ion-footer .cus-ion-toolbar-disabled ion-title{
+    font-size: 0.8rem;
+}

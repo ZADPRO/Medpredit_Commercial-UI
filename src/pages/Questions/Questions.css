@@ -1,0 +1,159 @@
+.questionsParent {
+    inline-size: 100%;
+    block-size: 100vh;
+    color: #0c436c;
+    font-size: 1.2rem;
+    padding: 5% 0 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.questionsHeader {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5% 2% 5%;
+    font-weight: bold;
+  }
+  
+  .questionsHeader span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+
+.questionsList {
+    padding: 0 5% 0 5%;
+    overflow-y: scroll;
+    height: 85vh;
+}
+
+.questionText {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--med-dark-green);
+}
+
+.questionSubmitButton {
+    width: 100%;
+    height: var(--min-height);
+    font-size: 1.2rem;
+    font-weight: Bold;
+    cursor: pointer;
+    color: var(--med-light-green);
+    background:transparent;
+}
+
+.questionSubmitButton.disabled {
+    color: #a0a0a0;
+    /* Lighter text color */
+    cursor: not-allowed;
+}
+
+.questionsbuttonGroup_01 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.questionsTextOptions_01 {
+    width: 95%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border-radius: 20px;
+    border: 1px solid var(--med-dark-green);
+    color: var(--med-dark-green);
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.questionsbuttonGroup_01>.selected {
+    color : var(--med-dark-green) !important;
+    background : var(--med-light-green);
+}
+
+.questions_MainDiv{
+    opacity: 25%!important;
+    width: 90%;
+    margin: 0 auto;
+    transition: 0.8s ease-in-out;
+    pointer-events: none;
+    user-select: none;
+}
+
+.questionsTextOptions_02 {
+    width: 95%;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--med-dark-green);
+    border-radius: 20px;
+    color: var(--med-dark-green);
+    font-weight: 700;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    text-align: start;
+}
+
+ion-modal#questionsModal {
+    --height: auto;
+    --border-radius: 20px;
+    --background: rgb(239, 250, 255);
+    --background-size: contain;
+    align-items: center;
+    padding: 0 5%;
+}
+
+ion-modal#questionsModal::part(backdrop) {
+    background: rgba(0, 0, 0, 0.3);
+    /* Darker semi-transparent background */
+    backdrop-filter: blur(10px);
+    /* Apply blur effect */
+}
+
+ion-accordion-toggle-icon ios{
+    margin: 0;
+}
+
+.questionsAccordion>ion-accordion-group{
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    overflow: scroll;
+}
+
+.questionsAccordion>ion-accordion-group>ion-accordion{
+    background-color: transparent;
+}
+
+.questionsAccordion>ion-accordion-group>ion-accordion>ion-item::part(native) {
+    background: linear-gradient(135deg, rgba(198,231,252,1) 0%, rgba(196,231,250,1) 97%);
+    border-radius: 5px;
+    color: #1764b7;
+    font-weight: 500;
+}
+
+.questionsAccordion>ion-accordion-group>ion-accordion>div{
+    background-color: transparent;
+    
+}
+
+.questionsAccordion>ion-accordion-group>ion-accordion>div>ion-content{
+    block-size: 65vh;
+}
+
+#fullInput, #hrsInputLeft .p-inputtext{
+    border: none;
+    border-right: 1px solid;
+    margin: 0.1rem;
+}
+
+#hrsInput .p-inputtext{
+    border: none;
+    margin: 0.1rem;
+}

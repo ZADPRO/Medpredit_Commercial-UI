@@ -1,5 +1,5 @@
 {
-  "name": "Medpredit_Commercial_UI",
+  "name": "Medpredit_Commercial",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -12,15 +12,22 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capacitor/android": "7.0.1",
     "@capacitor/app": "7.0.0",
+    "@capacitor/camera": "^7.0.0",
     "@capacitor/core": "^7.0.1",
     "@capacitor/haptics": "7.0.0",
     "@capacitor/keyboard": "7.0.0",
     "@capacitor/status-bar": "^7.0.0",
-    "@ionic/react": "^8.0.0",
+    "@ionic/react": "^8.4.3",
     "@ionic/react-router": "^8.0.0",
+    "@react-pdf/renderer": "^4.3.0",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.8.2",
+    "bcrypt": "^5.1.1",
+    "crypto-js": "^4.2.0",
+    "framer-motion": "^12.4.10",
     "i18next": "^24.2.2",
     "ionicons": "^7.0.0",
     "lottie-react": "^2.4.1",
@@ -31,8 +38,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.4.1",
+    "react-responsive-carousel": "^3.2.23",
     "react-router": "^5.3.4",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "react-timekeeper": "^1.1.0"
   },
   "devDependencies": {
     "@capacitor/cli": "7.0.1",
@@ -40,6 +49,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
+    "@types/crypto-js": "^4.2.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-legacy": "^5.0.0",
@@ -54,7 +64,7 @@
     "terser": "^5.4.0",
     "typescript": "^5.1.6",
     "typescript-eslint": "^8.24.0",
-    "vite": "~5.2.0",
+    "vite": "5.2.14",
     "vitest": "^0.34.6"
   },
   "description": "An Ionic project"

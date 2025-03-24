@@ -11,6 +11,7 @@ import {
   IonIcon,
   IonPage,
   IonModal,
+  IonText,
 } from "@ionic/react";
 import { Divider } from "primereact/divider";
 import { useHistory } from "react-router-dom";
@@ -18,16 +19,109 @@ import { Checkbox } from "primereact/checkbox";
 import { useTranslation } from "react-i18next";
 import Lottie from "lottie-react";
 import tickAnimation from "../../assets/Animations/tickanimation.json";
+import popupbg from "../../assets/images/Backgroundimg/popupbg.png";
+import axios from "axios";
+import decrypt from "../../helper";
 
 const Login: React.FC = () => {
   const [value, setValue] = useState("");
   const [checked, setChecked] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { t } = useTranslation("global");
 
   const history = useHistory();
 
+  const [signInData, setSignInData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    isSignIn: boolean = false
+  ) => {
+    // setToastMessage("");
+    // setShowToast(false);
+    const { name, value } = e.target;
+    if (isSignIn) {
+      if ((name == "username" && value.length <= 10) || (name == "password")) {
+        setSignInData((prev) => ({ ...prev, [name]: value }));
+      }
+    }
+  };
+  
+  const handleLogIn = async() => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/usersignin`,
+        signInData
+      );
+
+      const data = decrypt(
+        response.data[1],
+        response.data[0],
+        import.meta.env.VITE_ENCRYPTION_KEY
+      );
+      console.log(data);
+      if (data.status) {
+        const userDetails = {
+          roleType: data.roleType,
+          token: "Bearer " + data.token,
+          userId: data.users[0].refUserId,
+          userCustId: data.users[0].refUserCustId,
+          firstName: data.users[0].refUserFname,
+          lastName: data.users[0].refUserLname,
+          phNumber: data.users[0].refUserMobileno,
+        };
+
+        localStorage.setItem("userDetails", JSON.stringify(userDetails));
+
+        localStorage.setItem("detailsFlag", data.isDetails);
+
+        localStorage.setItem("hospitalId", data.hospitaId);
+        console.log(data);
+        setShowModal(true);
+
+        setSignInData({
+          username: "",
+          password: "",
+        });
+        
+        console.log(data);
+      } else {
+        setErrorMessage("Invalid username or password");
+
+        // setToastMessage("*Invalid username or password");
+        // setShowToast(true);
+      }
+    } catch (error) {
+      console.error("Error during Sign In:", error);
+      setErrorMessage("An error occurred. Please try again.");
+      // setToastMessage("An error occurred. Please try again.");
+      // setShowToast(true);
+      // setLoadingStatus(false);
+    };
+  };
+
+  const routeCondition = () => {
+    const flag = localStorage.getItem("detailsFlag");
+
+    if (flag == "true") {
+      setTimeout(() => {
+        history.push("/userProfile");
+        setShowModal(false);
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        history.push("/home");
+        setShowModal(false);
+      }, 1000);
+    }
+  };
+  
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -36,19 +130,26 @@ const Login: React.FC = () => {
           <p className="welcometext">{t("login.welcome")}👋</p>
           <div className="inputs">
             <InputText
-              type="text"
+              type="number"
+              name="username"
               placeholder={t("login.Mobile Number/ Email Address")}
               style={{ width: "20rem", maxWidth: "100%", borderRadius: "10px" }}
+              value={signInData.username}
+              onChange={(e) => handleInputChange(e, true)}
             />
             <Password
+            name="password"
               placeholder={t("login.Password")}
-              value={value}
               toggleMask
               style={{ width: "20rem", maxWidth: "100%", borderRadius: "10px" }}
-              onChange={(e) => setValue(e.target.value)}
+              value={signInData.password}
+              onChange={(e) => handleInputChange(e, true)}
               feedback={false}
               tabIndex={1}
             />
+          </div>
+          <div>
+          {errorMessage && <IonText color="danger">{errorMessage}</IonText>}{" "}
           </div>
           <div
             style={{
@@ -92,7 +193,7 @@ const Login: React.FC = () => {
 
           <div style={{ width: "20rem" }}>
             <button
-              onClick={() => setShowModal(true)} // Show modal on login click
+              onClick={() => handleLogIn()} // Show modal on login click
               className="medCustom-button01"
             >
               {t("login.Login")}
@@ -113,7 +214,6 @@ const Login: React.FC = () => {
             </span>
           </div>
 
-          <Divider />
         </div>
 
         <IonModal
@@ -127,11 +227,7 @@ const Login: React.FC = () => {
                 animationData={tickAnimation}
                 loop={false}
                 style={{ width: 150, height: 150 }}
-                onComplete={() => {
-                  setTimeout(() => {
-                    history.push("/home");
-                  }, 1000);
-                }}
+                onComplete={() => routeCondition()}
               />
             </div>
             <p

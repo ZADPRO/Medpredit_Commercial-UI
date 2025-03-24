@@ -6,8 +6,8 @@
   },
   "login": {
     "welcome": "Hi, Welcome!",
-    "Mobile Number/ Email Address": "Mobile Number/ Email Address",
-    "Password": "Password",
+    "Mobile Number/ Email Address": "Enter Mobile Number",
+    "Password": "Enter Password",
     "Remember Me": "Remember Me",
     "Forgot Password": "Forgot Password",
     "Login": "Login",
@@ -17,6 +17,7 @@
     "Login Successful": "Login Successful!"
   },
   "Register User": {
+    "Enter": "Enter",
     "First Name": "First Name",
     "Last Name": "Last Name",
     "E-Mail": "E-Mail",
@@ -44,7 +45,8 @@
     "description": "Enter your email to receive an OTP and reset your password.",
     "emailPlaceholder": "Email Address",
     "continue": "Continue",
-    "invalidEmail": "Please enter a valid email address."
+    "invalidEmail": "Please enter a valid email address.",
+      "Mobile Number": "Mobile Number"
   },
   "verifyOTP": {
     "title": "OTP VERFICATION",
@@ -53,5 +55,11 @@
     "verify": "Verify",
     "resendmsg": "Don't receive code? Re-send",
     "verifySuccessful": " Verified Successfully!"
-  }
+  
+  },
+  "changepassword":{
+    "New Password":  "New Password",
+    "Confirm Password": "Confirm Password",
+    "Finish":"Finish"
+}
 }

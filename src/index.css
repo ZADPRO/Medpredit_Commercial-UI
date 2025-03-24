@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Rubik+Wet+Paint&display=swap");
 
-body {
-}
+/* body {
+} */
 
 * {
   font-family: "Inter", sans-serif;
@@ -10,11 +10,26 @@ body {
   scrollbar-width: auto !important;
 }
 
+::-webkit-scrollbar{
+  width: 0;
+}
+
 :root {
   --med-light-grey: rgba(243, 243, 243, 1);
   --med-dark-green: rgba(12, 75, 65, 1);
   --med-light-green: rgba(165, 231, 104, 1);
+  --med-light-green-gradient-background: linear-gradient(225deg, rgba(246,255,242,1) 0%, rgba(255,255,255,1) 100%);
 }
+
+body {
+  --ion-safe-area-top: env(safe-area-inset-top); /* Ensures safe area handling */
+}
+
+ion-content {
+  --background: #ffffff; /* Ensures content does not bleed into the status bar */
+  padding-top: var(--ion-safe-area-top); /* Pushes content below status bar */
+}
+
 
 .medCustom-button01 {
   background-color: var(--med-light-green);
@@ -25,6 +40,33 @@ body {
   width: 100%;
   border-radius: 10px;
 }
+
+.medCustom-button02 {
+  background-color: var(--med-dark-green);
+  color: var(--med-light-green);
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.medCustom-chip01 {
+  background-color: var(--med-light-green);
+  color: var(--med-dark-green);
+  font-size: 0.7rem;
+  padding: 0.2rem;
+  border-radius: 10px;
+}
+
+.cus-ion-page{
+  background: var(--med-light-green-gradient-background);
+}
+
+.cus-ion-page ion-content{
+  --background: transparent!important;
+}
+
 
 /*Prime React Input Fields CSS*/
 
@@ -41,4 +83,128 @@ body {
 
 .p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
   border-color: transparent;
+}
+
+.p-radiobutton.p-highlight .p-radiobutton-box {
+  border-color: var(--med-dark-green);
+  background: var(--med-dark-green);
+}
+.p-datepicker{
+  background: transparent;
+  color: var(--med-dark-green);
+  border: none;
+}
+
+.p-datepicker table td.p-datepicker-today > span {
+  background: var(--med-light-grey);
+}
+
+.p-datepicker table td > .p-disabled{
+  opacity: 30%;
+}
+
+.p-datepicker table td > span.p-highlight {
+  background: var(--med-dark-green);
+  color: var(--med-light-green);
+}
+
+.p-dropdown:not(.p-disabled).p-focus{
+  border: none;
+  box-shadow: none;
+}
+
+/* React TimeKeeper CSS Starts*/
+
+.input-react-timekeeper> .react-timekeeper{
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.input-react-timekeeper> .react-timekeeper>div{
+  text-align: center;
+  font-weight: bold!important;
+}
+
+.input-react-timekeeper> .react-timekeeper>div>div{
+  left:0!important;
+  color: var(--med-light-green)!important;
+}
+
+.input-react-timekeeper> .react-timekeeper>span{
+  background: var(--med-dark-green)!important;
+  color: white!important;
+  font-weight: bold!important;
+  font-size: medium!important;
+}
+
+.react-timekeeper__clock{
+  background: var(--med-light-green)!important;
+}
+
+.input-react-timekeeper> .react-timekeeper .react-timekeeper__clock-wrapper {
+    /* background: var(--med-dark-green-gradient-background)!important; */
+}
+
+.react-timekeeper__clock-animations>span {
+  color: var(--med-dark-green)!important;
+}
+
+/* React TimeKeeper CSS Ends*/
+
+
+ion-modal#med-modal {
+  --width: 90%;
+  --height: auto;
+  --border-radius: 6px;
+  /* --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4); */
+  --justify-content: start;
+  --align-items: start;
+  --max-height: 90vh; /* Prevent overflow */
+  overflow: auto; /* Allow scrolling if needed */
+}
+
+
+ion-modal#ion-custom-modal-01{
+  --width: 90%;
+  --height: auto;
+  --border-radius: 6px;
+  /* --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4); */
+  --justify-content: start;
+  --align-items: start;
+  --max-height: 90vh; /* Prevent overflow */
+  overflow: auto; /* Allow scrolling if needed */
+}
+
+
+ion-modal#ion-custom-modal-02 {
+  --max-height: 80%;
+  --border-radius: 30px 30px 0 0;
+  --height: auto;
+  align-items: flex-end;
+}
+
+.cus-overflow{
+  height: fit-content;
+  overflow: scroll;
+}
+
+ion-datetime {
+  --background: var(--med-light-green-gradient-background);
+  --background-rgb:  var(--med-light-green-gradient-background);
+  --wheel-highlight-background:  var(--med-dark-green);
+  --wheel-highlight-border-radius: 10px;
+  --wheel-fade-background-rgb: 239, 250, 254;
+}
+
+ion-datetime::part(wheel-item) {
+  color: grey;
+}
+
+ion-datetime::part(wheel-item active) {
+  color: var(--med-light-green);
+}
+
+ion-toast::part(button) {
+  color: var(--med-dark-green) !important;
+  font-size: 0.8rem;
 }

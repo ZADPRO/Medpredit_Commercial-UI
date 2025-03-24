@@ -1,0 +1,72 @@
+.p-inputtext.p-variant-filled {
+    width: 100%;
+}
+
+.inner-scroll {
+    background-color: #f7fff3;
+}
+
+.p-password.p-component.p-inputwrapper.p-inputwrapper-filled {
+    width: 100%;
+}
+
+
+
+/* --------------------------------------- */
+
+ion-segment-view#userProfile-ion-segment-view ion-segment-content {
+    width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+.inputBox {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.inputBox label {
+    color: var(--med-dark-green);
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 5px;
+}
+
+.addFamilyInputField {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 0.8rem;
+    border: 0.5px solid var(--med-dark-green);
+    border-bottom: 2px solid var(--med-dark-green);
+    background: white;
+}
+
+.inputDisabled{
+    opacity: 70%;
+    background-color: rgb(240, 240, 240);
+    border: 1.2px solid rgb(46, 46, 46);
+    pointer-events: none;
+    user-select: none;
+}
+
+.addFamilyInputText {
+    all: unset;
+}
+
+.addFamilyInputField_Icon {
+    padding: 0px 0.5rem;
+}
+
+.addFamilyInputField .p-dropdown {
+    border: none;
+    background: transparent;
+}
+
+.addFamilyInputField>.p-dropdown>.p-inputtext {
+    padding: 0;
+}
