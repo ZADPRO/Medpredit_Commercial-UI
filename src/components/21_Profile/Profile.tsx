@@ -42,6 +42,16 @@ const Profile: React.FC = () => {
       ],
     },
     {
+      title: "Account",
+      items: [
+        {
+          icon: "pi pi-clipboard",
+          label: "Upload Medical Records",
+          path: "/uploadMedicalReports",
+        },
+      ],
+    },
+    {
       title: "Settings",
       items: [
         {
@@ -90,36 +100,34 @@ const Profile: React.FC = () => {
           </IonButtons>
         </IonToolbar>
         <div className="profile_top">
-            <div className="profile_top_bar">
-              <div className="profile_top_bar_header">
-                <h2>
-                  {userDeatilsObj.firstName + " " + userDeatilsObj.lastName}
-                </h2>
-                <p>
-                  MEDPREDiT ID: <b>{userDeatilsObj.userCustId}</b>
-                </p>
-                <p>
-                  Phone Number: <b>{userDeatilsObj.phNumber}</b>
-                </p>
-              </div>
-              <div className="profile_top_bar_avatar">
-                <span>
-                  {userDeatilsObj.firstName.charAt(0) +
-                    userDeatilsObj.lastName.charAt(0)}
-                </span>
-              </div>
+          <div className="profile_top_bar">
+            <div className="profile_top_bar_header">
+              <h2>
+                {userDeatilsObj.firstName + " " + userDeatilsObj.lastName}
+              </h2>
+              <p>
+                MEDPREDiT ID: <b>{userDeatilsObj.userCustId}</b>
+              </p>
+              <p>
+                Phone Number: <b>{userDeatilsObj.phNumber}</b>
+              </p>
             </div>
-            <div className="profile_top_bar_footer">
-              <h3>Join Premium</h3>
-              <IonIcon icon={chevronForward} />
+            <div className="profile_top_bar_avatar">
+              <span>
+                {userDeatilsObj.firstName.charAt(0) +
+                  userDeatilsObj.lastName.charAt(0)}
+              </span>
             </div>
           </div>
+          <div className="profile_top_bar_footer">
+            <h3>Join Premium</h3>
+            <IonIcon icon={chevronForward} />
+          </div>
+        </div>
       </IonHeader>
 
       <IonContent>
         <div className="medpredit_profile">
-          
-
           {sections.map((section, index) => (
             <div key={index} className="profile-body">
               <h3 className="profile-body-header">{section.title}</h3>

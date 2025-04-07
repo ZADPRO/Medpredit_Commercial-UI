@@ -1,7 +1,4 @@
-import {
-  IonRouterOutlet,
-  IonTabs,
-} from "@ionic/react";
+import { IonRouterOutlet, IonTabs } from "@ionic/react";
 
 import React, { useEffect } from "react";
 import { Route, useLocation } from "react-router";
@@ -40,6 +37,7 @@ import { StatusBar, Style } from "@capacitor/status-bar";
 import { Capacitor } from "@capacitor/core";
 import ManageFamily from "../../components/32_ManageFamilyMembers/ManageFamily";
 import SubscriptionDetail from "../Subscription/SubscriptionDetail";
+import UploadMedicalRecords from "../../components/37_UploadMedicalRecords/UploadMedicalRecords";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -48,10 +46,9 @@ const MainRoutes: React.FC = () => {
     const configureStatusBar = async () => {
       if (Capacitor.isNativePlatform()) {
         let bgcolor;
-        if(location.pathname != "/home") {
+        if (location.pathname != "/home") {
           bgcolor = "#f8fff5";
-        }
-        else {
+        } else {
           bgcolor = "none";
         }
 
@@ -63,7 +60,6 @@ const MainRoutes: React.FC = () => {
 
     configureStatusBar();
   }, [location.pathname]);
-
 
   const tokenString = localStorage.getItem("userDetails");
   let roleType = 1;
@@ -110,10 +106,10 @@ const MainRoutes: React.FC = () => {
           <UserProfile />
         </Route>
         <Route path="/manageFamily">
-          <ManageFamily/>
+          <ManageFamily />
         </Route>
         <Route path="/addFamilyMember">
-          <AddFamilyMember/>
+          <AddFamilyMember />
         </Route>
         <Route path="/subscriptionPlans">
           <SubscriptionPlans />
@@ -136,7 +132,7 @@ const MainRoutes: React.FC = () => {
         <Route path="/landr">
           <LandR />
         </Route>
-     
+
         <Route path="/notificationSettings">
           <NotificationSettings />
         </Route>
@@ -171,7 +167,10 @@ const MainRoutes: React.FC = () => {
           <Questions />
         </Route>
         <Route path="/reports">
-          <Report/> 
+          <Report />
+        </Route>
+        <Route path="/uploadMedicalReports">
+          <UploadMedicalRecords />
         </Route>
       </IonRouterOutlet>
 
