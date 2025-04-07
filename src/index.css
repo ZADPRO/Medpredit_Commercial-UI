@@ -51,12 +51,23 @@ ion-content {
   border-radius: 10px;
 }
 
+.medCustom-button03-premium {
+  background-color: rgb(53, 53, 53);
+  color: rgba(255,215,0,1);
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 1rem;
+  width: 100%;
+  border-radius: 10px;
+}
+
 .medCustom-chip01 {
   background-color: var(--med-light-green);
   color: var(--med-dark-green);
   font-size: 0.7rem;
   padding: 0.2rem;
   border-radius: 10px;
+  text-align: center;
 }
 
 .cus-ion-page{
@@ -112,6 +123,15 @@ ion-content {
   border: none;
   box-shadow: none;
 }
+
+.p-inputtext{
+  border: none;
+}
+
+.p-inputtext:enabled:focus{
+  box-shadow: none;
+}
+
 
 /* React TimeKeeper CSS Starts*/
 
@@ -183,6 +203,29 @@ ion-modal#ion-custom-modal-02 {
   align-items: flex-end;
 }
 
+.custom-loading-modal {
+  --background: var(--med-light-green-gradient-background);
+  opacity: 98%;
+  --border-radius: 5px;
+  --box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-container>ion-spinner{
+  height: 7vh;
+  width: 7vh;
+}
+
 .cus-overflow{
   height: fit-content;
   overflow: scroll;
@@ -207,4 +250,34 @@ ion-datetime::part(wheel-item active) {
 ion-toast::part(button) {
   color: var(--med-dark-green) !important;
   font-size: 0.8rem;
+}
+
+ion-fab{
+  margin: 0 1rem 1rem 0;
+}
+
+ion-fab-button {
+  --background: var(--med-light-green);
+  --background-activated: #87d361;
+--background-hover: #a3e681;
+  --box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
+  --color: var(--med-dark-green);
+  height: 64px;
+  width: 64px;
+  font-weight: bold;
+}
+
+ion-fab-list ion-fab-button{
+  --background: var(--med-dark-green);
+}
+
+ion-fab-button#fab-premium {
+  --background: #353535;
+  --background-activated: #353535;
+--background-hover: #353535;;
+  --box-shadow: 5px 5px 10px 0px rgba(53, 53, 53,0.5);
+  --color: rgba(255,215,0,1);
+  height: 64px;
+  width: 64px;
+  font-weight: bold;
 }

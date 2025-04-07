@@ -155,12 +155,12 @@ const RegisterUser = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      handleSigup();
+      handleSignup();
       console.log("Form submitted");
     }
   };
 
-  const handleSigup = async () => {
+  const handleSignup = async () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_COMMERCIAL_URL}/usersignup`,
@@ -190,17 +190,17 @@ const RegisterUser = () => {
       console.log(data);
 
       if (data.status) {
-        setToastOpen({
-          status: true,
-          textColor: "green",
-          message: "Successfully Signup",
-        });
+        // setToastOpen({
+        //   status: true,
+        //   textColor: "green",
+        //   message: "Successfully Signup",
+        // });
 
         
       setShowModal(true);
 
         setTimeout(() => {
-          history.push("/login", {
+          history.replace("/login", {
             direction: "backward",
             animation: "slide",
           });
@@ -229,7 +229,8 @@ const RegisterUser = () => {
         // setLoading(false);
         setToastOpen({
           status: true,
-          message: "Already Mobile Number Exits",
+          message: "Already Mobile Number Exists",
+          textColor: "red"
         });
       }
     } catch {
@@ -239,17 +240,22 @@ const RegisterUser = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent fullscreen scrollY={true}>
         <div className="registerScreenIonic">
           <form className="registerUserForm" onSubmit={handleSubmit}>
-            <img src={registerImage} style={{ width: "100%", height: "35vh", marginTop: "2%" }} />
+            <img
+              src={registerImage}
+              style={{ width: "100%", height: "35vh", marginTop: "2%" }}
+            />
             <div className="title">Registration</div>
             <div className="registerUserFields">
               <label>{t("Register User.First Name")}</label>
               <InputText
                 type="text"
                 name="refUserFname"
-                placeholder={t("Register User.Enter") + " "+ t("Register User.First Name")}
+                placeholder={
+                  t("Register User.Enter") + " " + t("Register User.First Name")
+                }
                 value={formData.refUserFname}
                 required
                 onChange={handleInputChange}
@@ -261,7 +267,9 @@ const RegisterUser = () => {
               <InputText
                 type="text"
                 name="refUserLname"
-                placeholder={t("Register User.Enter") + " "+ t("Register User.Last Name")}
+                placeholder={
+                  t("Register User.Enter") + " " + t("Register User.Last Name")
+                }
                 value={formData.refUserLname}
                 required
                 onChange={handleInputChange}
@@ -273,7 +281,9 @@ const RegisterUser = () => {
               <InputText
                 type="email"
                 name="refUserEmail"
-                placeholder={t("Register User.Enter") + " "+ t("Register User.E-Mail")}
+                placeholder={
+                  t("Register User.Enter") + " " + t("Register User.E-Mail")
+                }
                 value={formData.refUserEmail}
                 required
                 onChange={handleInputChange}
@@ -284,7 +294,11 @@ const RegisterUser = () => {
               <InputText
                 type="number"
                 name="refUserMobileno"
-                placeholder={t("Register User.Enter") + " "+ t("Register User.Mobile Number")}
+                placeholder={
+                  t("Register User.Enter") +
+                  " " +
+                  t("Register User.Mobile Number")
+                }
                 value={formData.refUserMobileno}
                 required
                 onChange={(e) => {
@@ -306,7 +320,6 @@ const RegisterUser = () => {
                 value={formData.refUserPassword}
                 required
                 onChange={handleInputChange}
-                
               />
             </div>
 
@@ -336,7 +349,7 @@ const RegisterUser = () => {
                 onChange={() => setChecked(!checked)}
                 checked={checked}
               ></Checkbox>
-              <label htmlFor="terms" className="ml-2">
+              <label className="ml-2">
                 {t("Register User.I've read and agree with the")}{" "}
                 <span
                   style={{ color: "var(--med-dark-green)", fontWeight: "bold" }}
@@ -353,7 +366,7 @@ const RegisterUser = () => {
               <button
                 type="submit"
                 className="medCustom-button01"
-              // onClick={() => setShowModal(true)}
+                // onClick={() => setShowModal(true)}
               >
                 {t("Register User.Next")}
               </button>
@@ -371,6 +384,12 @@ const RegisterUser = () => {
                 animationData={tickAnimation}
                 loop={false}
                 style={{ width: 150, height: 150 }}
+                onComplete={()=>
+                  setTimeout(() => {
+                    setShowModal(false);
+                    history.push("/login");
+                  }, 1000)
+                }
               />
             </div>
             <p
@@ -382,7 +401,9 @@ const RegisterUser = () => {
             >
               Registration Successful!
             </p>
-            <div style={{ marginTop: "2rem" }}>
+            {/* <div
+            style={{marginTop: "2rem"}}
+            >
               <button
                 type="submit"
                 className="medCustom-button01"
@@ -390,14 +411,12 @@ const RegisterUser = () => {
                   setShowModal(false);
                   setTimeout(() => {
                     history.push("/login");
-                  }, 1000);
+                  }, 50000);
                 }}
               >
                 {t("Done")}
               </button>
-
-
-            </div>
+            </div> */}
           </div>
         </IonModal>
 

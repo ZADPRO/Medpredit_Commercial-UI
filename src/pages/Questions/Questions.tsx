@@ -14,7 +14,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import decrypt from "../../helper";
 import { arrowUndoSharp, chevronBack } from "ionicons/icons";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import "./Questions.css";
 import MultipleSelect from "./MultipleSelect";
 import YesNo from "./YesNo";
@@ -53,15 +53,14 @@ const Questions: React.FC = () => {
   const tokenString: any = localStorage.getItem("userDetails");
   const tokenObject = JSON.parse(tokenString);
   const token = tokenObject.token;
-  const userId = tokenObject.userId;
   const history = useHistory();
-  const location = useLocation();
-  const serviceId = (location.state as { id?: number })?.id || 0;
-
   
+  const { selectedServiceId, selectedUserId } = useParams<{
+      selectedServiceId: string;
+      selectedUserId: string;
+    }>();
 
   const [submitButton, setSubmitButton] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
   const [scrollIndex, setScrollIndex] = useState(0);
 
   const SubmitActive = (isActive: boolean) => {
@@ -123,8 +122,8 @@ const Questions: React.FC = () => {
       .post(
         `${import.meta.env.VITE_API_URL}/getQuestions`,
         {
-          questionId: serviceId,
-          patientId: userId,
+          questionId: selectedServiceId,
+          patientId: selectedUserId,
         },
         {
           headers: {
@@ -260,16 +259,16 @@ const Questions: React.FC = () => {
 
   const submitResponse = () => {
     console.log("submittedAnswer", submittedAnswer);
-    console.log("serviceId", serviceId, userId);
+    console.log("serviceId", selectedServiceId, selectedUserId);
     setLoadingStatus(true);
     try {
       axios
         .post(
           `${import.meta.env.VITE_API_URL}/postAnswers`,
           {
-            patientId: userId,
-            categoryId: serviceId.toString(),
-            answers: serviceId === 201 ? questionSets : submittedAnswer,
+            patientId: selectedUserId,
+            categoryId: selectedServiceId.toString(),
+            answers: Number(selectedServiceId) === 201 ? questionSets : submittedAnswer,
             // employeeId: localStorage.getItem("currentDoctorId")
             //   ? localStorage.getItem("currentDoctorId")
             //   : null,
@@ -305,13 +304,13 @@ const Questions: React.FC = () => {
               //   `/subCategories/${getQuestionsToken.id}/${getQuestionsToken.label}`
               // );
               setLoadingStatus(false);
-              history.replace("/serviceAssestment?refresh=true");
+              history.replace(`/serviceAssessment/${selectedServiceId}`, { getCategory: true });
               setSubmittedAnswer([]);
             } else {
               console.error("getCategory is null or undefined");
 
               setLoadingStatus(false);
-              history.replace("/serviceAssestment?refresh=true");
+              history.replace(`/serviceAssessment/${selectedServiceId}`, { getCategory: true });
               setSubmittedAnswer([]);
             }
           }

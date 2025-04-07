@@ -34,7 +34,7 @@
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    overflow: scroll;
+    overflow-x: scroll;
     padding: 5px;
 }
 
@@ -93,25 +93,6 @@
     transform: scale(1.1);
 }
 
-ion-fab{
-    margin: 0 1rem 1rem 0;
-}
-
-ion-fab-button {
-    --background: var(--med-light-green);
-    --background-activated: #87d361;
-  --background-hover: #a3e681;
-    --box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
-    --color: var(--med-dark-green);
-    height: 64px;
-    width: 64px;
-    font-weight: bold;
-  }
-
-  ion-fab-list ion-fab-button{
-    --background: var(--med-dark-green);
-  }
-
 .footer-ios ion-toolbar:first-of-type, .header-ios ion-toolbar:first-of-type {
     --border-width: none;
 }
@@ -142,9 +123,57 @@ ion-header ion-toolbar ion-button ion-icon{
 
 ion-footer .cus-ion-toolbar-disabled{
     --background: rgb(230, 230, 230);
-    color: darkgrey
+    color: black
 }
 
 ion-footer .cus-ion-toolbar-disabled ion-title{
-    font-size: 0.8rem;
+    font-size: 1rem;
+    padding: 0;
 }
+
+ion-footer .cus-ion-toolbar-premium{
+    --background: black;
+    color: rgba(255,215,0,1);
+}
+
+ion-footer .cus-ion-toolbar-premium div{
+    padding: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+.custom-alert {
+    --background: var(--med-light-green-gradient-background);
+    --width: 90%; /* Custom width */
+    --height: auto;
+  }
+  
+  .custom-alert .alert-button {
+    color: rgba(255,215,0,1);
+    background: black;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+  
+  .custom-alert .alert-message {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--med-dark-green); /* Lighter text for message */
+  }
+
+  .custom-alert .alert-wrapper.sc-ion-alert-ios{
+    border-radius: 5px;
+    --box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); /* Smooth shadow */
+  }
+
+  .alert-button-role-cancel.close-button.sc-ion-alert-ios{
+    color: var(--med-dark-green);
+    background: none;
+  }

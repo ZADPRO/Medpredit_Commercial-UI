@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
       title: "Account",
       items: [
         { icon: "pi pi-user", label: "Profile", path: "/userprofile" },
-        // { icon: "pi pi-user", label: "Add Family", path: "/userprofile2" },
+        { icon: "pi pi-users", label: "Manage Family", path: "/manageFamily" },
         {
           icon: "pi pi-receipt",
           label: "Manage Subscriptions",
@@ -146,6 +146,11 @@ const Profile: React.FC = () => {
               ))}
             </div>
           ))}
+
+          <div className="profile-delete">
+            <span>Delete Account</span>
+            <i className="pi pi-trash" />
+          </div>
 
           <div className="profile-copyright">
             <p>

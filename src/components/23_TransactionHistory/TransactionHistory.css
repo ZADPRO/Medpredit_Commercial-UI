@@ -1,0 +1,36 @@
+.transaction-history{
+    margin-bottom: 2rem;
+}
+
+.transaction-history-cards{
+    background: white;
+    border-top: 0.5px solid grey ;
+    padding: 0.5rem 0;
+}
+
+.transaction-history-cards:nth-child(even) {
+    background: rgb(250, 250, 250);
+}
+
+.transaction-history-cards:last-child {
+    border-bottom: 0.5px solid grey;
+}
+
+.transaction-history-cards>p{
+    margin: 0;
+    padding: 0 0.4rem 0.4rem 0.4rem;
+    font-size: 0.8rem;
+    color: rgb(60, 60, 60);
+}
+
+.transaction-history-cards-head{
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+}
+
+.transaction-history-cards-head>p{
+    margin: 0.4rem;
+    margin-bottom: 0;
+    font-size: 1.2rem;
+}

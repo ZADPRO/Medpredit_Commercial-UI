@@ -12,7 +12,6 @@ import Login from "../../components/02_Login/Login";
 import RegisterUser from "../../components/03_RegisterUser/RegisterUser";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import EnterOTP from "../ForgotPassword/EnterOTP";
-import { chevronBack, home } from "ionicons/icons";
 import "./MainRoutes.css";
 import Home from "../../components/11_Home/Home";
 import Profile from "../../components/21_Profile/Profile";
@@ -26,29 +25,35 @@ import Feedback from "../../components/28_Feedback/Feedback";
 import TermsCondition from "../../components/29_TermsCondition/TermsCondition";
 import PrivacyPolicy from "../../components/30_PrivacyPolicy/PrivacyPolicy";
 import ChooseLanguage_02 from "../../components/31_ChooseLanguage/ChooseLanguage_02";
-import AddFamilyMember from "../../components/32_AddFamilyMembers/AddFamilyMember";
+import AddFamilyMember from "../../components/32_ManageFamilyMembers/AddFamilyMember";
 import ChangePAssword from "../ChangePassword/ChangePAssword";
 import About from "../../components/33_About/About";
-import ServiceAssestment from "../Services/ServiceAssestment";
+import ServiceAssessment from "../Services/ServiceAssessment";
 import Questions from "../Questions/Questions";
 import UserProfile from "../../components/21_Profile/34_Userprofile/UserProfile";
 import Termsofservice from "../../components/34_Termsofservice/Termsofservice";
 import Opensource from "../../components/35_Opensource/Opensource";
 import LandR from "../../components/36_L&R/LandR";
-// import UserProfile2 from "../../components/21_Profile/34_Userprofile/UserProfile2";
 import Report from "../Reports/Report";
 import TermsAndPrivacy from "../../components/03_RegisterUser/TermsAndPrivacy";
 import { StatusBar, Style } from "@capacitor/status-bar";
 import { Capacitor } from "@capacitor/core";
+import ManageFamily from "../../components/32_ManageFamilyMembers/ManageFamily";
+import SubscriptionDetail from "../Subscription/SubscriptionDetail";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
-  const history = useHistory();
 
   useEffect(() => {
     const configureStatusBar = async () => {
       if (Capacitor.isNativePlatform()) {
-        let bgcolor = location.pathname === "/home" ? "#f3f3f3" : "#f8fff5"; // Home → Green, Others → Light
+        let bgcolor;
+        if(location.pathname != "/home") {
+          bgcolor = "#f8fff5";
+        }
+        else {
+          bgcolor = "none";
+        }
 
         await StatusBar.setOverlaysWebView({ overlay: false });
         await StatusBar.setBackgroundColor({ color: bgcolor });
@@ -104,11 +109,17 @@ const MainRoutes: React.FC = () => {
         <Route path="/userprofile">
           <UserProfile />
         </Route>
-        {/* <Route path="/userprofile2">
-          <UserProfile2/>
-        </Route> */}
+        <Route path="/manageFamily">
+          <ManageFamily/>
+        </Route>
+        <Route path="/addFamilyMember">
+          <AddFamilyMember/>
+        </Route>
         <Route path="/subscriptionPlans">
           <SubscriptionPlans />
+        </Route>
+        <Route path="/subscriptionDetail">
+          <SubscriptionDetail />
         </Route>
         <Route path="/transactionHistory">
           <TransactionHistory />
@@ -153,10 +164,10 @@ const MainRoutes: React.FC = () => {
         <Route path="/about">
           <About />
         </Route>
-        <Route path="/serviceAssestment">
-          <ServiceAssestment />
+        <Route path="/serviceAssessment/:serviceId">
+          <ServiceAssessment />
         </Route>
-        <Route path="/serviceQuestion">
+        <Route path="/serviceQuestion/:selectedServiceId/:selectedUserId">
           <Questions />
         </Route>
         <Route path="/reports">

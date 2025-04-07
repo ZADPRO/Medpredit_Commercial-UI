@@ -8,10 +8,9 @@ import { useTranslation } from "react-i18next";
 import forgetpassword from "../../assets/images/Forgetpassword/forgotpassword.png";
 
 const ForgotPassword = () => {
-  const { t, i18n } = useTranslation("global");
-
+  const { t } = useTranslation("global");
   const history = useHistory();
-  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [toastOpen, setToastOpen] = useState({
     status: false,
     message: "",
@@ -19,8 +18,7 @@ const ForgotPassword = () => {
   });
 
   const handleNext = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailRegex.test(email)) {
+    if (/^\d{10}$/.test(mobile)) {
       history.push("/enterOTP", {
         direction: "forward",
         animation: "slide",
@@ -34,15 +32,18 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleChange = (e: any) => {
+    const value = e.target.value;
+    if (/^\d{0,10}$/.test(value)) {
+      setMobile(value);
+    }
+  };
+
   return (
     <IonPage>
       <IonContent fullscreen>
         <div className="loginScreenIonic">
-          {/* <IonIcon
-            size="large"
-            onClick={() => history.goBack()}
-            icon={chevronBack}
-          ></IonIcon> */}
+          {/* <IonIcon size="large" onClick={() => history.goBack()} icon={chevronBack}></IonIcon> */}
           <img src={forgetpassword} alt="forgetpassword" />
           <div className="forgotPassword">
             <h1 className="forgettitle">{t("forgotPassword.title")}</h1>
@@ -50,6 +51,8 @@ const ForgotPassword = () => {
               <label>{t("forgotPassword.description")}</label>
               <InputText
                 type="number"
+                value={mobile}
+                onChange={handleChange}
                 placeholder={t("forgotPassword.Mobile Number")}
                 style={{
                   width: "20rem",

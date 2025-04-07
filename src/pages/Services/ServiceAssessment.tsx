@@ -1,15 +1,18 @@
 import {
+  IonAlert,
   IonBackButton,
   IonButtons,
   IonContent,
   IonFooter,
   IonHeader,
+  IonIcon,
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonAlert,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import "../Services/ServiceAssessment.css";
 import { chevronBack } from "ionicons/icons";
 import alcohol_banner from "../../assets/images/Services/Alcohol_Banner.png";
@@ -20,9 +23,11 @@ import sleep_banner from "../../assets/images/Services/Sleep_Banner.png";
 import family_banner from "../../assets/images/Services/Family_Banner.png";
 import bmi_banner from "../../assets/images/Services/Bmi_Banner.png";
 import dietary_banner from "../../assets/images/Services/Dietary_Banner.png";
+import crown from "../../assets/images/Icons/Premium Crown.png";
 import axios from "axios";
 import decrypt from "../../helper";
 import { ScoreVerify } from "../../ScoreVerify";
+import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
 
 interface UserInfo {
   refUserId: number;
@@ -42,28 +47,46 @@ interface Category {
   UserScoreVerify: any[];
 }
 
+interface UserSubscriptionInfo{
+  packageStatus: boolean;
+  packageData: any[];
+}
 
-const ServiceAssestment: React.FC = () => {
+const ServiceAssessment: React.FC = () => {
   const history = useHistory();
-  const location = useLocation();
-  
-  const serviceId =
-    Number((location.state as { serviceId?: number })?.serviceId) ||
-    Number(localStorage.getItem("serviceId")) ||
-    0;
+  const location = useLocation() as { state: { getCategory?: boolean } };
+    const [loading, setLoading] = useState<boolean>(true);
+
+  const [subscriptionData, setSubscriptionData] = useState<UserSubscriptionInfo>();
+  const [freeAssessmentCount, setFreeAssesmentCount] = useState<number>();
+
+  const { serviceId } = useParams<{
+        serviceId: string;
+      }>();
 
   useEffect(() => {
     if (serviceId) {
       localStorage.setItem("serviceId", String(serviceId));
     }
+    const selectedService = servicesDetails.find(
+      (service) => service.serviceId === Number(serviceId)
+    );
+
+    if (selectedService) {
+      const serviceData = {
+        id: selectedService.serviceId,
+        label: selectedService.title,
+      };
+
+      localStorage.setItem("getCategory", JSON.stringify(serviceData));
+    }
   }, [serviceId]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    if (params.get("refresh") === "true") {
-      getCategory();
+    if (location.state?.getCategory) {
+      selectedUser && getCategory(selectedUser);
     }
-  }, [location.search]);
+  }, [location.state]);
   
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
 
@@ -75,6 +98,10 @@ const ServiceAssestment: React.FC = () => {
   >([]);
   
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [presentAlert] = useIonAlert();
 
   const servicesDetails = [
     {
@@ -186,40 +213,6 @@ const ServiceAssestment: React.FC = () => {
     },
   ];
 
-  const memberList = [
-    {
-      name: "User 1",
-    },
-    {
-      name: "User 2",
-    },
-    {
-      name: "User 3",
-    },
-    {
-      name: "User 4",
-    },
-    {
-      name: "User 5",
-    },
-    {
-      name: "User 6",
-    },
-    {
-      name: "User 7",
-    },
-    {
-      name: "User 8",
-    },
-    {
-      name: "User 9",
-    },
-  ];
-
-  // useEffect(() => {
-  //   setSelectedUser(memberList[0].name);
-  // }, []);
-
   const getValidity = (refQCategoryId: number) => {
     switch (refQCategoryId) {
       case 8:
@@ -297,10 +290,10 @@ const ServiceAssestment: React.FC = () => {
     return diffInDays;
   }
 
-  const getCategory = () => {
+  const getCategory = (userId: number) => {
     const tokenString = localStorage.getItem("userDetails");
-
     if (tokenString) {
+      setLoading(true);
       try {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
@@ -310,7 +303,7 @@ const ServiceAssestment: React.FC = () => {
             `${import.meta.env.VITE_API_URL}/getCategory `,
             {
               SubCategoryId: "4", //Risk Factor
-              patientId: tokenObject.userId.toString(),
+              patientId: userId.toString(),
               employeeId: null,
               hospitalId: "undefined",
             },
@@ -327,16 +320,17 @@ const ServiceAssestment: React.FC = () => {
               response.data[0],
               import.meta.env.VITE_ENCRYPTION_KEY
             );
-
+            console.log(data);
             setCategories(data.data);
-
-            const tempCategory = data.data.find((item: Category) => item.refQCategoryId === serviceId) || null;
+            setFreeAssesmentCount(data.AssessmentTakenNo[0].assessmenttakenno);
+            const tempCategory = data.data.find((item: Category) => item.refQCategoryId === Number(serviceId)) || null;
             setSelectedCategory(tempCategory);
-
+            setLoading(false);
             // setLoadingStatus(false);
             console.log("----------->Val", data.data);
           });
       } catch (error) {
+        setLoading(false);
         console.error("Error parsing token:", error);
       }
     } else {
@@ -345,122 +339,97 @@ const ServiceAssestment: React.FC = () => {
 
     console.log(history.location.pathname);
   }
+console.log(loading);
+  const searchPatient = () => {
+    const tokenString = localStorage.getItem("userDetails");
 
-  // const searchPatient = () => {
-  //   const tokenString = localStorage.getItem("userDetails");
+    const userDeatilsObj = tokenString
+      ? JSON.parse(tokenString)
+      : { userCustId: null, phNumber: null };
 
-  //   const userDeatilsObj = tokenString
-  //     ? JSON.parse(tokenString)
-  //     : { userCustId: null, phNumber: null };
+    //   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
 
-  //   //   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
+    if (tokenString) {
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
 
-  //   if (tokenString) {
-  //     try {
-  //       const tokenObject = JSON.parse(tokenString);
-  //       const token = tokenObject.token;
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/getPatientData`,
+            {
+              mobileNumber: userDeatilsObj.phNumber,
+            },
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
 
-  //       axios
-  //         .post(
-  //           `${import.meta.env.VITE_API_URL}/getPatientData`,
-  //           {
-  //             mobileNumber: userDeatilsObj.phNumber,
-  //           },
-  //           {
-  //             headers: {
-  //               Authorization: token,
-  //               "Content-Type": "application/json",
-  //             },
-  //           }
-  //         )
-  //         .then((response) => {
-  //           const data = decrypt(
-  //             response.data[1],
-  //             response.data[0],
-  //             import.meta.env.VITE_ENCRYPTION_KEY
-  //           );
+            console.log(data);
 
-  //           console.log(data);
+            // setLoadingStatus(false);
 
-  //           // setLoadingStatus(false);
+            if (data.status) {
+              setUserData(data.data);
+              // setSelectedUser(data.data[0].refUserId)
+              setSelectedUser(tokenObject.userId);
 
-  //           if (data.status) {
-  //             setUserData(data.data);
-
-  //             //   if (data.data.length === 0) {
-  //             //     setStatus({
-  //             //       status: true,
-  //             //       message: "No Result Found",
-  //             //     });
-  //             //   } else {
-  //             //     setURLMobileNo(data.data[0].refUserMobileno);
-  //             //     setUrluserId(data.data[0].refUserId);
-  //             //   }ge
-  //           } else {
-  //             console.error("Data consoled false - chekc this");
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error fetching patient data:", error);
-  //         });
-  //     } catch (error) {
-  //       console.error("Error parsing token:", error);
-  //     }
-  //   } else {
-  //     console.error("No token found in localStorage.");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   searchPatient();
-  // }, []);
+              setSubscriptionData({
+                packageStatus: data.packageStatus ?? false, 
+                packageData: Array.isArray(data.packageData) ? data.packageData : []
+              });
+              //   if (data.data.length === 0) {
+              //     setStatus({
+              //       status: true,
+              //       message: "No Result Found",
+              //     });
+              //   } else {
+              //     setURLMobileNo(data.data[0].refUserMobileno);
+              //     setUrluserId(data.data[0].refUserId);
+              //   }ge
+            } else {
+              console.error("Data consoled false - chekc this");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching patient data:", error);
+          });
+      } catch (error) {
+        console.error("Error parsing token:", error);
+      }
+    } else {
+      console.error("No token found in localStorage.");
+    }
+  };
 
   useEffect(() => {
-    const userDetails = localStorage.getItem("userDetails");
-
-    const userDetailsObj = userDetails
-    ? JSON.parse(userDetails)
-    : { userId: null, firstName: null, lastName: null, mobileNo: null, gender: null, custId: null };
-
-    const formattedUserData: UserInfo = {
-      refUserId: userDetailsObj.userId ?? 0,
-      refUserCustId: userDetailsObj.custId ?? "",
-      refUserMobileno: userDetailsObj.mobileNo ?? 0,
-      refUserFname: userDetailsObj.firstName ?? "",
-      refUserLname: userDetailsObj.lastName ?? "",
-      refGender: userDetailsObj.gender ?? "",
-    };
-
-    setUserData([formattedUserData]);
-    setSelectedUser(formattedUserData.refUserId);
-    getCategory();
+    setLoading(true);
+    searchPatient();
   }, []);
 
-
   useEffect(() => {
-    const selectedService = servicesDetails.find(
-      (service) => service.serviceId === serviceId
-    );
+    selectedUser && getCategory(selectedUser)
+  }, [selectedUser])
 
-    if (selectedService) {
-      const serviceData = {
-        id: selectedService.serviceId,
-        label: selectedService.title,
-      };
-
-      localStorage.setItem("getCategory", JSON.stringify(serviceData));
-    }
-  }, [serviceId]);
 
   useEffect(() => {
     const tempValidity = selectedCategory?.refPTcreatedDate &&
     getValidity(selectedCategory?.refQCategoryId) >
-      -calculateDaysDifference(selectedCategory?.refPTcreatedDate);
+      -calculateDaysDifference(selectedCategory?.refPTcreatedDate) || false;
 
-      if (tempValidity) setServiceValidity(tempValidity);
+      setServiceValidity(tempValidity);
   }, [selectedCategory]);
   
-  console.log(categories);
+  console.log((Number(freeAssessmentCount) || 0)  >= 2);
   console.log(userData);
 
   // console.log("servicesDetails.find((item) => item.title === title)?.serviceId ", servicesDetails.find((item) => item.title === title)?.serviceId );
@@ -469,15 +438,16 @@ const ServiceAssestment: React.FC = () => {
     <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
-          <h2 style={{margin: "0"}}>
-            {
-              servicesDetails.find((item) => item.serviceId === serviceId)
-                ?.title
-            }
-          </h2>
-        </IonButtons>
+          <IonButtons slot="start">
+            <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
+            <h2 style={{ margin: "0" }}>
+              {
+                servicesDetails.find(
+                  (item) => item.serviceId === Number(serviceId)
+                )?.title
+              }
+            </h2>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -489,13 +459,31 @@ const ServiceAssestment: React.FC = () => {
               const shortName =
                 item.refUserFname.charAt(0) + item.refUserLname?.charAt(0);
 
+              const getTruncatedName = (
+                fname: string,
+                lname: string,
+                maxLength: number
+              ) => {
+                const fullName = `${fname} ${lname}`;
+                return fullName.length > maxLength
+                  ? fullName.slice(0, maxLength) + "..."
+                  : fullName;
+              };
+
               return (
                 <div
                   key={item.refUserId}
                   className={`serviceAssess_content_memberWrapper ${
                     selectedUser === item.refUserId ? "selected" : ""
                   }`}
-                  onClick={() => setSelectedUser(item.refUserId)}
+                  onClick={(e) => {
+                    setSelectedUser(item.refUserId);
+                    e.currentTarget.scrollIntoView({
+                      behavior: "smooth",
+                      block: "nearest",
+                      inline: "center",
+                    });
+                  }}
                 >
                   <div className="serviceAssess_content_memberList">
                     {shortName}
@@ -503,7 +491,13 @@ const ServiceAssestment: React.FC = () => {
                       <span className="tick-mark">✔</span>
                     )}
                   </div>
-                  <span>{item.refUserFname + " " + item.refUserLname}</span>
+                  <span>
+                    {getTruncatedName(
+                      item.refUserFname,
+                      item.refUserLname ? item.refUserLname : "",
+                      8
+                    )}
+                  </span>
                 </div>
               );
             })}
@@ -519,7 +513,7 @@ const ServiceAssestment: React.FC = () => {
                 fontSize: "0.9rem",
                 display: "flex",
                 flexDirection: "column",
-                gap: "0.5rem"
+                gap: "0.5rem",
               }}
             >
               <span>
@@ -532,14 +526,14 @@ const ServiceAssestment: React.FC = () => {
                 </b>
               </span>
 
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem"
-              }}>
-                <span>
-                Status:{" "}
-                </span>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                }}
+              >
+                <span>Status: </span>
                 {selectedCategory?.refScore && (
                   <ScoreVerify
                     userScoreVerify={selectedCategory?.UserScoreVerify} // Pass the totalScore directly
@@ -558,23 +552,25 @@ const ServiceAssestment: React.FC = () => {
                 ?.title
             }
           </h1> */}
-          
+
           <img
-          style={{marginTop: "1rem"}}
+            style={{ marginTop: "1rem" }}
             src={
-              servicesDetails.find((item) => item.serviceId === serviceId)
-                ?.image
+              servicesDetails.find(
+                (item) => item.serviceId === Number(serviceId)
+              )?.image
             }
           />
           <p>
             {
-              servicesDetails.find((item) => item.serviceId === serviceId)
-                ?.subTitle
+              servicesDetails.find(
+                (item) => item.serviceId === Number(serviceId)
+              )?.subTitle
             }
           </p>
           <ol>
             {servicesDetails
-              .find((item) => item.serviceId === serviceId)
+              .find((item) => item.serviceId === Number(serviceId))
               ?.points.map((point) => (
                 <li>{point}</li>
               ))}
@@ -583,28 +579,66 @@ const ServiceAssestment: React.FC = () => {
         {/* </div> */}
       </IonContent>
       <IonFooter>
-        {serviceValidity == true ? (
+        {serviceValidity == true && (
           <IonToolbar className="cus-ion-toolbar-disabled">
-            <IonTitle>Assesstment Taken</IonTitle>
-          </IonToolbar>
-        ) : (
-          <IonToolbar>
-            <IonTitle
-              onClick={() =>
-                history.push("/serviceQuestion", {
-                  id: servicesDetails.find(
-                    (item) => item.serviceId === serviceId
-                  )?.serviceId,
-                })
-              }
-            >
-              Start Assesstment
-            </IonTitle>
+            <IonTitle>Assessment Taken</IonTitle>
           </IonToolbar>
         )}
+        {/* {serviceValidity == false && (
+          <IonToolbar>
+          <IonTitle
+            onClick={() =>
+              history.push(`/serviceQuestion/${serviceId}/${selectedUser}`)
+            }
+          >
+            Start Assessment
+          </IonTitle>
+        </IonToolbar>
+        )} */}
+        {serviceValidity == false &&
+          (subscriptionData?.packageStatus == false &&
+          ((Number(freeAssessmentCount) || 0) >= 2) ? (
+            <IonToolbar className="cus-ion-toolbar-premium">
+              <div
+                onClick={() =>
+                  presentAlert({
+                    cssClass: "custom-alert",
+                    message:
+                      "Please Upgrade your membership to proceed assessment",
+                    buttons: [
+                      {
+                        text: "Cancel",
+                        role: "cancel", // Close alert
+                        cssClass: "close-button",
+                      },
+                      {
+                        text: "Upgrade Now",
+                        handler: () => history.replace("/subscriptionPlans"),
+                      },
+                    ],
+                  })
+                }
+              >
+                <span>Start Assessment</span>
+                <img style={{ width: "2rem", height: "3rem" }} src={crown} />
+              </div>
+            </IonToolbar>
+          ) : (
+            <IonToolbar>
+              <IonTitle
+                onClick={() =>
+                  history.push(`/serviceQuestion/${serviceId}/${selectedUser}`)
+                }
+              >
+                Start Assessment
+              </IonTitle>
+            </IonToolbar>
+          ))}
       </IonFooter>
+
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };
 
-export default ServiceAssestment;
+export default ServiceAssessment;

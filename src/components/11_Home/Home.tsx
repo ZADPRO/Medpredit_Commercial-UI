@@ -51,7 +51,6 @@ import dietary from "../../assets/images/Services/dietary.png";
 import bmi from "../../assets/images/Services/bmi.png";
 import sleep from "../../assets/images/Services/sleep.png";
 import family_history from "../../assets/images/Services/family_history.png";
-import knowAboutDisease1 from "../../assets/images/Home/know about.jpg";
 import diabetesKnowAbout from "../../assets/images/Services/Diabetes KnowAbout.png";
 import hypertensionKnowAbout from "../../assets/images/Services/Hypertension KnowAbout.png";
 import coronaryKnowAbout from "../../assets/images/Services/Coronary KnowAbout.png";
@@ -93,56 +92,56 @@ const Home: React.FC = () => {
       title: "Stress",
       subtitle: "Manage Stress for a Healthier Life",
       image: stress,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 8,
       title: "Physical Activity",
       subtitle: "Boost Health with Regular Physical Activities",
       image: physical,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 11,
       title: "Alcohol",
       subtitle: "Limit Alcohol for Better Health and Wellness",
       image: alcohol,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 10,
       title: "Tobacco",
       subtitle: "Avoid Tobacco for a Healthier Future",
       image: tobacco,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 12,
       title: "Dietary",
       subtitle: "Maintain a Balanced Diet for Optimal Health",
       image: dietary,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 13,
       title: "BMI",
       subtitle: "Manage Weight for a Healthier Lifestyle",
       image: bmi,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 43,
       title: "Sleep",
       subtitle: "Improve Sleep for Better Physical and Mental Health",
       image: sleep,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
     {
       serviceId: 51,
       title: "Family History",
       subtitle: "Understand Family History for Preventive Care",
       image: family_history,
-      path: "/serviceAssestment",
+      path: "/serviceAssessment",
     },
   ];
 
@@ -188,31 +187,32 @@ const Home: React.FC = () => {
       bgImage: diabetesKnowAbout,
       title: "What is Diabetes?",
       subTitle:
-        "Diabetes is a chronic condition where the body either doesn't produce enough insulin or can't effectively use it, leading to high blood sugar levels.",
+        "Diabetes is a long-term condition where the body cannot properly produce or use insulin, resulting in high blood sugar levels.",
       bgColor: "#F2F6D0",
     },
     {
       bgImage: hypertensionKnowAbout,
       title: "What is Hypertension?",
       subTitle:
-        "Hypertension is a condition where the blood pressure in the arteries is consistently too high, increasing the risk of heart disease and stroke.",
+        "Hypertension is when the blood pressure in the arteries stays too high for too long, raising the risk of heart disease and stroke.",
       bgColor: "#EFDCAB",
     },
     {
       bgImage: coronaryKnowAbout,
       title: "What is Coronary artery disease?",
       subTitle:
-        "Coronary artery disease (CAD) is the narrowing of heart arteries due to plaque buildup, increasing heart attack risk.",
+        "Coronary artery disease (CAD) occurs when heart arteries narrow due to plaque buildup, significantly increasing heart attack risk.",
       bgColor: "#D98324",
     },
     {
       bgImage: stokeKnowAbout,
       title: "What is Stroke?",
       subTitle:
-        "Stroke is a medical condition where blood flow to the brain is disrupted due to a blockage or rupture, leading to potential brain damage and loss of function.",
+        "Stroke is when blood flow to the brain is blocked or ruptured, often causing brain damage and impairing vital functions.",
       bgColor: "#F2F6D0",
     },
   ];
+  
 
   return (
     <IonPage className="cus-ion-page">
@@ -278,13 +278,13 @@ const Home: React.FC = () => {
               preventMovementUntilSwipeScrollTolerance
               swipeScrollTolerance={50}
             >
-              <div className="carouselDiv">
+              <div className="carouselDiv" onClick={() =>history.push("/reports")}>
                 <img src={carousel1} className="carousel-image" />
               </div>
-              <div className="carouselDiv">
+              <div className="carouselDiv" onClick={() => history.push("/serviceAssessment/9")}>
                 <img src={carousel2} className="carousel-image" />
               </div>
-              <div className="carouselDiv">
+              <div className="carouselDiv" onClick={() =>history.push("/manageFamily")}>
                 <img src={carousel3} className="carousel-image" />
               </div>
               <div className="carouselDiv">
@@ -340,9 +340,7 @@ const Home: React.FC = () => {
                           <IonCard
                             className="home-custom-card"
                             onClick={() =>
-                              history.push(card.path, {
-                                serviceId: `${card.serviceId}`,
-                              })
+                              history.push(card.path+`/${card.serviceId}`)
                             }
                           >
                             <div className="home-card-content">
@@ -486,7 +484,7 @@ const Home: React.FC = () => {
                 </span>
               </div>
 
-              <span>View All</span>
+              {/* <span>View All</span> */}
             </div>
 
             <div className="home-riskFactor-content">
@@ -503,7 +501,7 @@ const Home: React.FC = () => {
                         fontSize: "1.5rem",
                       }}
                     >
-                      8
+                      6
                     </span>
                     <span>/8</span>
                   </div>
@@ -520,7 +518,7 @@ const Home: React.FC = () => {
                         fontSize: "1.5rem",
                       }}
                     >
-                      8
+                      1
                     </span>
                     <span>/8</span>
                   </div>
@@ -537,7 +535,7 @@ const Home: React.FC = () => {
                         fontSize: "1.5rem",
                       }}
                     >
-                      8
+                      1
                     </span>
                     <span>/8</span>
                   </div>
@@ -608,7 +606,7 @@ const Home: React.FC = () => {
                 </span>
               </div>
 
-              <span>View All</span>
+              {/* <span>View All</span> */}
             </div>
             <div className="home-knowAbout-content">
               {knowAbout.map((item, index) => (
@@ -620,7 +618,17 @@ const Home: React.FC = () => {
                   <img src={item.bgImage} />
                   <h3>{item.title}</h3>
                   <p>{item.subTitle}</p>
+                  <div style={{
+                    padding: "1rem 0 0 0",
+                    textAlign: "start",
+                    fontSize: "0.8rem",
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    gap: "0.3rem"
+                  }}>Read More <i className="pi pi-arrow-right" /></div>
                 </div>
+                
               ))}
             </div>
           </div>

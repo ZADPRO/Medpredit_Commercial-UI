@@ -13,18 +13,16 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import axios from "axios";
-import { chevronBack, chevronForward, close, filter, filterOutline } from "ionicons/icons";
+import { chevronBack, chevronForward, close, filterOutline } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import decrypt from "../../helper";
-import { RadioButton } from "primereact/radiobutton";
 import "./Report.css";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
-import { color } from "framer-motion";
-import ReportData from "./ReportContent";
 import { ScoreVerify } from "../../ScoreVerify";
 import ReportContent from "./ReportContent";
 import { useHistory } from "react-router";
+import { RadioButton } from "primereact/radiobutton";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -34,19 +32,28 @@ const Report: React.FC = () => {
     refUserFname: string;
     refUserLname?: string;
     refGender: string;
+    headStatus: string;
   }
 
   const history = useHistory();
 
-  const [showModal1, setShowModal1] = useState<boolean>(false);
+  const [showModal1, setShowModal1] = useState<boolean>(true);
 
-  const [showModal2, setShowModal2] = useState<boolean>(true);
+  const [showModal2, setShowModal2] = useState<boolean>(false);
 
   const [userData, setUserData] = useState<Array<UserInfo>>([]);
 
   const [selectedUser, setSelectedUser] = useState<number>();
-  const [selectedDate, setSelectedDate] = useState<Nullable<Date>>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Nullable<Date>>();
+  
+  const [tempselectedUser, settempSelectedUser] = useState<number>();
+  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(new Date());
 
+  const userDetails = localStorage.getItem("userDetails");
+
+  const userDeatilsObj = userDetails
+    ? JSON.parse(userDetails)
+    : { userId: null};
 
   const [reportUser, setReportUser] = useState<{
     reUserId?: number;
@@ -105,213 +112,73 @@ const Report: React.FC = () => {
     }
   }, [reportModalCategories, allScore, stressAnswer]);
 
-  // const sampleUsers: UserInfo[] = [
-  //   {
-  //     refUserMobileno: 9876543210,
-  //     refUserFname: "John",
-  //     refUserLname: "Doe",
-  //     refUserCustId: "CUST001",
-  //   },
-  //   {
-  //     refUserMobileno: 8765432109,
-  //     refUserFname: "Jane",
-  //     refUserLname: "Smith",
-  //     refUserCustId: "CUST002",
-  //   },
-  //   {
-  //     refUserMobileno: 7654321098,
-  //     refUserFname: "Alice",
-  //     refUserCustId: "CUST003",
-  //   }, // No last name
-  //   {
-  //     refUserMobileno: 6543210987,
-  //     refUserFname: "Bob",
-  //     refUserLname: "Williams",
-  //     refUserCustId: "CUST004",
-  //   },
-  //   {
-  //     refUserMobileno: 9123456789,
-  //     refUserFname: "Charlie",
-  //     refUserLname: "Brown",
-  //     refUserCustId: "CUST005",
-  //   },
-  //   {
-  //     refUserMobileno: 9234567890,
-  //     refUserFname: "David",
-  //     refUserLname: "Miller",
-  //     refUserCustId: "CUST006",
-  //   },
-  //   {
-  //     refUserMobileno: 9345678901,
-  //     refUserFname: "Emma",
-  //     refUserLname: "Taylor",
-  //     refUserCustId: "CUST007",
-  //   },
-  //   {
-  //     refUserMobileno: 9456789012,
-  //     refUserFname: "Fiona",
-  //     refUserLname: "Anderson",
-  //     refUserCustId: "CUST008",
-  //   },
-  //   {
-  //     refUserMobileno: 9567890123,
-  //     refUserFname: "George",
-  //     refUserLname: "Harris",
-  //     refUserCustId: "CUST009",
-  //   },
-  //   {
-  //     refUserMobileno: 9678901234,
-  //     refUserFname: "Hannah",
-  //     refUserLname: "White",
-  //     refUserCustId: "CUST010",
-  //   },
-  //   {
-  //     refUserMobileno: 9789012345,
-  //     refUserFname: "Ian",
-  //     refUserLname: "Clark",
-  //     refUserCustId: "CUST011",
-  //   },
-  //   {
-  //     refUserMobileno: 9890123456,
-  //     refUserFname: "Jack",
-  //     refUserLname: "Lewis",
-  //     refUserCustId: "CUST012",
-  //   },
-  //   {
-  //     refUserMobileno: 9901234567,
-  //     refUserFname: "Kelly",
-  //     refUserLname: "Walker",
-  //     refUserCustId: "CUST013",
-  //   },
-  //   {
-  //     refUserMobileno: 9012345678,
-  //     refUserFname: "Liam",
-  //     refUserLname: "Hall",
-  //     refUserCustId: "CUST014",
-  //   },
-  //   {
-  //     refUserMobileno: 9123456781,
-  //     refUserFname: "Mia",
-  //     refUserLname: "Allen",
-  //     refUserCustId: "CUST015",
-  //   },
-  //   {
-  //     refUserMobileno: 9234567892,
-  //     refUserFname: "Nathan",
-  //     refUserLname: "Young",
-  //     refUserCustId: "CUST016",
-  //   },
-  //   {
-  //     refUserMobileno: 9345678903,
-  //     refUserFname: "Olivia",
-  //     refUserLname: "King",
-  //     refUserCustId: "CUST017",
-  //   },
-  //   {
-  //     refUserMobileno: 9456789014,
-  //     refUserFname: "Peter",
-  //     refUserLname: "Scott",
-  //     refUserCustId: "CUST018",
-  //   },
-  //   {
-  //     refUserMobileno: 9567890125,
-  //     refUserFname: "Quinn",
-  //     refUserLname: "Harris",
-  //     refUserCustId: "CUST019",
-  //   },
-  //   {
-  //     refUserMobileno: 9678901236,
-  //     refUserFname: "Rachel",
-  //     refUserLname: "Moore",
-  //     refUserCustId: "CUST020",
-  //   },
-  // ];
+  const searchPatient = () => {
+    const tokenString = localStorage.getItem("userDetails");
 
-  const serviceCards = [
-    {
-      title: "Physical Activities",
-      startDate: "01-01-2025",
-      endDate: "31-01-2025",
-      status: "Healthy",
-      color: "rgba(165, 231, 104, 1)",
-    },
-    {
-      title: "Stress",
-      startDate: "01-01-2025",
-      endDate: "31-01-2025",
-      status: "Risk",
-      color: "rgba(230, 70, 70, 1)",
-    },
-  ];
+    const userDeatilsObj = tokenString
+      ? JSON.parse(tokenString)
+      : { userCustId: null, phNumber: null };
 
-  // const searchPatient = () => {
-  //   const tokenString = localStorage.getItem("userDetails");
+    //   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
 
-  //   const userDeatilsObj = tokenString
-  //     ? JSON.parse(tokenString)
-  //     : { userCustId: null, phNumber: null };
+    if (tokenString) {
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
 
-  //   //   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/getPatientData`,
+            {
+              mobileNumber: userDeatilsObj.phNumber,
+            },
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
 
-  //   if (tokenString) {
-  //     try {
-  //       const tokenObject = JSON.parse(tokenString);
-  //       const token = tokenObject.token;
+            console.log(data);
 
-  //       axios
-  //         .post(
-  //           `${import.meta.env.VITE_API_URL}/getPatientData`,
-  //           {
-  //             mobileNumber: userDeatilsObj.phNumber,
-  //           },
-  //           {
-  //             headers: {
-  //               Authorization: token,
-  //               "Content-Type": "application/json",
-  //             },
-  //           }
-  //         )
-  //         .then((response) => {
-  //           const data = decrypt(
-  //             response.data[1],
-  //             response.data[0],
-  //             import.meta.env.VITE_ENCRYPTION_KEY
-  //           );
+            // setLoadingStatus(false);
 
-  //           console.log(data);
+            if (data.status) {
+              setUserData(data.data);
 
-  //           // setLoadingStatus(false);
-
-  //           if (data.status) {
-  //             setUserData(data.data);
-
-  //             //   if (data.data.length === 0) {
-  //             //     setStatus({
-  //             //       status: true,
-  //             //       message: "No Result Found",
-  //             //     });
-  //             //   } else {
-  //             //     setURLMobileNo(data.data[0].refUserMobileno);
-  //             //     setUrluserId(data.data[0].refUserId);
-  //             //   }
-  //           } else {
-  //             console.error("Data consoled false - chekc this");
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.error("Error fetching patient data:", error);
-  //         });
-  //     } catch (error) {
-  //       console.error("Error parsing token:", error);
-  //     }
-  //   } else {
-  //     console.error("No token found in localStorage.");
-  //   }
-  // };
+              //   if (data.data.length === 0) {
+              //     setStatus({
+              //       status: true,
+              //       message: "No Result Found",
+              //     });
+              //   } else {
+              //     setURLMobileNo(data.data[0].refUserMobileno);
+              //     setUrluserId(data.data[0].refUserId);
+              //   }
+            } else {
+              console.error("Data consoled false - chekc this");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching patient data:", error);
+          });
+      } catch (error) {
+        console.error("Error parsing token:", error);
+      }
+    } else {
+      console.error("No token found in localStorage.");
+    }
+  };
 
   const reportData = () => {
     // console.log("---------------------->", reportDate);
-
     const tokenString = localStorage.getItem("userDetails");
 
     if (tokenString) {
@@ -326,10 +193,10 @@ const Report: React.FC = () => {
           .post(
             `${import.meta.env.VITE_API_URL}/getPastReportData `,
             {
-              patientId: tokenObject.userId,
+              patientId: tempselectedUser,
               employeeId: null,
               hospitalId: "undefined",
-              reportDate: selectedDate,
+              reportDate: tempselectedDate,
             },
             {
               headers: {
@@ -384,11 +251,15 @@ const Report: React.FC = () => {
 
             setStressAnswer(data.stressAnswer);
 
-            setCanDismiss(true);
+            setCanDismissModal1(true);
+            setCanDismissModal2(true);
+            setShowModal1(false);
             setShowModal2(false);  //both for date selection modal
 
             // setLoadingStatus(false);
           });
+          setSelectedDate(tempselectedDate);
+          setSelectedUser(tempselectedUser);
       } catch (error) {
         console.error("Error parsing token:", error);
       }
@@ -650,9 +521,10 @@ const Report: React.FC = () => {
   };
 
 
-  // useEffect(() => {
-  //   searchPatient();
-  // }, []);
+  useEffect(() => {
+    searchPatient();
+    settempSelectedUser(userDeatilsObj.userId)
+  }, []);
 
   console.log("reportModalCategories", reportModalCategories);
 
@@ -661,7 +533,8 @@ const Report: React.FC = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(undefined);
 
-  const [canDismiss, setCanDismiss] = useState(false);
+  const [canDismissModal1, setCanDismissModal1] = useState(false);
+  const [canDismissModal2, setCanDismissModal2] = useState(false);
   const [presentingElement, setPresentingElement] = useState<HTMLElement | undefined>(undefined);
 
   useEffect(() => {
@@ -680,40 +553,80 @@ const Report: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
-          <IonTitle>Reports</IonTitle>
+          <IonTitle>
+            {userData.length > 0 &&
+              userData.find((item) => item.refUserId === selectedUser)
+                ?.refUserFname}
+          </IonTitle>
+
           <IonButton
             fill="clear"
             slot="end"
-            onClick={() => setShowModal2(true)}
+            onClick={() => setShowModal1(true)}
           >
             <IonIcon icon={filterOutline} />
           </IonButton>
         </IonToolbar>
       </IonHeader>
 
-      {/* <IonModal
+      <IonModal
         isOpen={showModal1}
         onDidDismiss={() => setShowModal1(false)}
         initialBreakpoint={1}
         id="ion-custom-modal-02"
+        ref={modal}
+        canDismiss={canDismissModal1}
+        presentingElement={presentingElement}
       >
         <div className="report-modalContent">
-          <h4>Select User</h4>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h4>Select User</h4>
+            <IonIcon
+              onClick={() => {
+                setShowModal1(false);
+                if (structuredCategories.length === 0) {
+                  history.replace("/home");
+                }
+              }}
+              style={{ "font-size": "1.5rem" }}
+              icon={close}
+            />
+          </div>
           <IonList className="reports-user-list">
             {userData?.map((item, index) => (
               <div
                 key={index}
                 className="reports-user-data"
-                onClick={() => setSelectedUser(item.refUserId)}
+                onClick={() => settempSelectedUser(item.refUserId)}
               >
                 <div className="reports-user-profile">
                   <i className="pi pi-user"></i>
-                  <span>{item.refUserFname + " " + item.refUserLname}</span>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <span>{item.refUserFname + " " + item.refUserLname}</span>
+                    {item.headStatus == "true" && (
+                      <span
+                        style={{
+                          fontSize: "0.7rem",
+                          fontWeight: "bold",
+                          color: "var(--med-dark-green)",
+                        }}
+                      >
+                        Primary
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <RadioButton
                   value={item.refUserCustId}
-                  checked={selectedUser === item.refUserId}
-                  onChange={() => setSelectedUser(item.refUserId)}
+                  checked={tempselectedUser === item.refUserId}
+                  onChange={() => settempSelectedUser(item.refUserId)}
                 />
               </div>
             ))}
@@ -721,11 +634,13 @@ const Report: React.FC = () => {
 
           <div
             onClick={() => {
-              if (selectedUser) {
+              if (tempselectedUser) {
+                setCanDismissModal1(true);
+                !selectedUser && setCanDismissModal2(false);
                 setShowModal1(false);
                 setShowModal2(true);
                 const foundUser = userData.find(
-                  (item) => item.refUserId === selectedUser
+                  (item) => item.refUserId === tempselectedUser
                 );
 
                 const reportSelectedUser = {
@@ -740,7 +655,7 @@ const Report: React.FC = () => {
             <button className="medCustom-button01">Next</button>
           </div>
         </div>
-      </IonModal> */}
+      </IonModal>
 
       <IonModal
         isOpen={showModal2}
@@ -748,12 +663,11 @@ const Report: React.FC = () => {
         initialBreakpoint={1}
         id="ion-custom-modal-02"
         ref={modal}
-        trigger="open-modal"
-        canDismiss={canDismiss}
+        canDismiss={canDismissModal2}
         presentingElement={presentingElement}
       >
         <div className="report-modalContent">
-        <div
+          <div
             style={{
               display: "flex",
               flexDirection: "row",
@@ -766,7 +680,7 @@ const Report: React.FC = () => {
               onClick={() => {
                 setShowModal2(false);
                 if (structuredCategories.length === 0) {
-                    history.replace("/home");
+                  history.replace("/home");
                 }
               }}
               style={{ "font-size": "1.5rem" }}
@@ -776,18 +690,32 @@ const Report: React.FC = () => {
 
           <div className="flex justify-content-center reports-user-list">
             <Calendar
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.value)}
+              value={tempselectedDate}
+              onChange={(e) => settempSelectedDate(e.value)}
               maxDate={maxDate}
               inline
             />
           </div>
           <div
-            onClick={() => {
-              reportData();
+            style={{
+              display: "flex",
+              gap: "1rem",
             }}
           >
-            <button className="medCustom-button01">Select</button>
+            <button
+              onClick={() => {
+                !selectedUser && setCanDismissModal1(false);
+                setCanDismissModal2(true);
+                setShowModal2(false);
+                setShowModal1(true);
+              }}
+              className="medCustom-button01"
+            >
+              Back
+            </button>
+            <button onClick={() => reportData()} className="medCustom-button01">
+              Select
+            </button>
           </div>
         </div>
       </IonModal>
@@ -855,17 +783,18 @@ const Report: React.FC = () => {
         )} */}
 
         <div className="reports-services-card">
-        {selectedDate && (
-  <div>
-    {selectedDate
-      .toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      })
-      .replace(/ /g, "-")} {/* Replaces spaces with "-" */}
-  </div>
-)}
+          {selectedDate && (
+            <div>
+              {selectedDate
+                .toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })
+                .replace(/ /g, "-")}{" "}
+              {/* Replaces spaces with "-" */}
+            </div>
+          )}
 
           {structuredCategories.length > 0 &&
             structuredCategories[0]?.subcategories[0]?.subcategories.map(
@@ -996,7 +925,7 @@ const Report: React.FC = () => {
         </div>
       </IonContent>
 
-      <IonFooter>
+      {/* <IonFooter>
         <div
           style={{
             padding: "1rem 1.5rem",
@@ -1004,7 +933,7 @@ const Report: React.FC = () => {
         >
           <button className="medCustom-button01">Download Report</button>
         </div>
-      </IonFooter>
+      </IonFooter> */}
     </IonPage>
   );
 };

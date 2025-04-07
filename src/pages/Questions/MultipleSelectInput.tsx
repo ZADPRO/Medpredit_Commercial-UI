@@ -180,6 +180,7 @@ const MultipleSelectInput: React.FC<MultipleSelectProps> = ({
                                                     required
                                                 />
                                             </div>
+                                            <Divider />
                                         </div>
                                     </>
                                 )}
@@ -188,7 +189,17 @@ const MultipleSelectInput: React.FC<MultipleSelectProps> = ({
                     </div>
  
                     <div style={{ width: "100%", height: "35px", display: "flex", justifyContent: "flex-end", alignItems: "center", background: "transparent", marginTop: "10px" }}>
-                        <button type="submit" style={{ background: "#10416a", width: "30px", height: "30px", color: "#fff", borderRadius: "50%", padding: "5px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <button type="submit" style={{
+                  background: "var(--med-light-green)",
+                  width: "30px",
+                  height: "30px",
+                  color: "var(--med-dark-green)",
+                  borderRadius: "50%",
+                  padding: "5px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
                             <i className="pi pi-arrow-right"></i>
                         </button>
                     </div>

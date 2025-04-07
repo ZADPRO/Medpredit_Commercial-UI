@@ -13,22 +13,30 @@ const Splashscreen: React.FC = () => {
       if (tokenString) {
         const tokenObject = JSON.parse(tokenString);
         const userId = tokenObject.userId;
+        const flag = localStorage.getItem("detailsFlag");
 
         if(userId !== null) {
-          history.push("/home", {
-            direction: "forward",
-            animation: "slide",
-          });
+          if (flag == "true") {
+              history.replace("/userProfile", {
+                direction: "forward",
+                animation: "slide",
+              });
+            } else {
+              history.replace("/home", {
+                direction: "forward",
+                animation: "slide",
+              });
+            }
         }
         else {
-          history.push("/chooselanguage", {
+          history.replace("/chooselanguage", {
             direction: "forward",
             animation: "slide",
           });
         }
       }
       else {
-        history.push("/chooselanguage", {
+        history.replace("/chooselanguage", {
           direction: "forward",
           animation: "slide",
         });

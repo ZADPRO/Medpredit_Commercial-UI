@@ -87,6 +87,22 @@
     background-color: white;
   }
 
+  .profile-delete{
+    width: 95%;
+    margin: 1rem auto;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    /* border: 1.5px solid red; */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgb(255, 247, 247);
+    color: red;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    
+  }
+
   .profile-body-header {
     font-size: 1.2rem;
     font-weight: bold;

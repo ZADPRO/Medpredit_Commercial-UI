@@ -1,0 +1,121 @@
+.manage-family{
+    width: 100%;
+    margin: 0 auto;
+}
+
+.manage-family-card{
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.manage-family .p-divider.p-divider-horizontal{
+    margin: 1rem 0;
+}
+
+.manage-family-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.manage-family-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    cursor: pointer;
+}
+
+.manage-family-card-avatar {
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: var(--med-light-green);
+    border-radius: 50%;
+    text-transform: uppercase;
+    color: var(--med-dark-green);
+}
+
+.manage-family-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    flex-grow: 1;
+}
+
+.manage-family-card-content .manage-family-name {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.manage-family-ml-auto {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+
+.p-accordion-header a{
+    color: var(--med-dark-green);
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link{
+    padding: 0.5rem 1rem;
+    border: none;
+    border-bottom: 1px solid green;
+}
+
+.p-accordion .p-accordion-tab {
+    background: #f9fdf9;
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.p-toggleable-content{
+    background: transparent;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.manage-family-table {
+    border-collapse: collapse;
+    margin-top: 1rem;
+    border: 1px solid var(--med-dark-green);
+}
+
+.manage-family-table tr {
+    border-bottom: 0.1rem solid #ccc;
+}
+
+.manage-family-table td {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+}
+
+.manage-family-table tr:last-child {
+    border-bottom: none;
+}
+
+.manage-family-table td:first-child {
+    font-weight: bold;
+    color: #333;
+    width: 40%;
+}
+
