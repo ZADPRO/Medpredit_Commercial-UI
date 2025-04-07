@@ -42,10 +42,10 @@
   },
   "forgotPassword": {
     "title": "Forgot Password?",
-    "description": "Enter your email to receive an OTP and reset your password.",
-    "emailPlaceholder": "Email Address",
+    "description": "Enter your mobile number to receive an OTP and reset your password.",
+    "emailPlaceholder": "Mobile Number",
     "continue": "Continue",
-    "invalidEmail": "Please enter a valid email address.",
+    "invalidEmail": "Please enter a valid mobile number",
       "Mobile Number": "Mobile Number"
   },
   "verifyOTP": {

@@ -47,13 +47,14 @@ const Login: React.FC = () => {
     // setShowToast(false);
     const { name, value } = e.target;
     if (isSignIn) {
-      if ((name == "username" && value.length <= 10) || (name == "password")) {
+      if ((name == "username" && value.length <= 10) || name == "password") {
         setSignInData((prev) => ({ ...prev, [name]: value }));
       }
     }
   };
-  
-  const handleLogIn = async() => {
+
+  const handleLogIn = async () => {
+    setErrorMessage("");
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_COMMERCIAL_URL}/usersignin`,
@@ -76,6 +77,8 @@ const Login: React.FC = () => {
           lastName: data.users[0].refUserLname,
           phNumber: data.users[0].refUserMobileno,
         };
+        
+        setErrorMessage("");
 
         localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
@@ -84,12 +87,11 @@ const Login: React.FC = () => {
         localStorage.setItem("hospitalId", data.hospitaId);
         console.log(data);
         setShowModal(true);
-
         setSignInData({
           username: "",
           password: "",
         });
-        
+
         console.log(data);
       } else {
         setErrorMessage("Invalid username or password");
@@ -103,7 +105,7 @@ const Login: React.FC = () => {
       // setToastMessage("An error occurred. Please try again.");
       // setShowToast(true);
       // setLoadingStatus(false);
-    };
+    }
   };
 
   const routeCondition = () => {
@@ -121,10 +123,10 @@ const Login: React.FC = () => {
       }, 1000);
     }
   };
-  
+
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent fullscreen scrollY={true}>
         <div className="loginScreenIonic">
           <img src={login} alt="loginimg" />
           <p className="welcometext">{t("login.welcome")}👋</p>
@@ -138,7 +140,7 @@ const Login: React.FC = () => {
               onChange={(e) => handleInputChange(e, true)}
             />
             <Password
-            name="password"
+              name="password"
               placeholder={t("login.Password")}
               toggleMask
               style={{ width: "20rem", maxWidth: "100%", borderRadius: "10px" }}
@@ -148,8 +150,8 @@ const Login: React.FC = () => {
               tabIndex={1}
             />
           </div>
-          <div>
-          {errorMessage && <IonText color="danger">{errorMessage}</IonText>}{" "}
+          <div style={{paddingTop: "0.5rem"}}>
+            {errorMessage && <IonText color="danger">{errorMessage}</IonText>}{" "}
           </div>
           <div
             style={{
@@ -213,7 +215,6 @@ const Login: React.FC = () => {
               {t("login.Register Now")}
             </span>
           </div>
-
         </div>
 
         <IonModal
@@ -239,9 +240,7 @@ const Login: React.FC = () => {
             >
               {" "}
               {t("login.Login Successful")}
-
             </p>
-
           </div>
         </IonModal>
       </IonContent>

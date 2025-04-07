@@ -49,7 +49,11 @@ const TextInputBox: React.FC<TextInputBoxProps> = ({
           {/* <Domain questionId={label.questionId} /> */}
           <p className="questionText">{label.questionText}</p>
           {/* <ShowCard questionId={label.questionId} /> */}
-          <div className="p-inputgroup flex-1" style={{ border: "1.5px solid #10416a", borderRadius: "10px", }}>
+          <div className="p-inputgroup flex-1 align-items-center justify-content-center"
+            style={{
+              border: "1.5px solid var(--med-dark-green)",
+              borderRadius: "10px",
+            }}>
             <InputText
             id="fullInput"
               value={value}
@@ -60,7 +64,17 @@ const TextInputBox: React.FC<TextInputBoxProps> = ({
               required
             />
             <div style={{ width: "10%", height: "35px", display: "flex", justifyContent: "center", alignItems: "center", background: "transparent" }}>
-              <button style={{ background: "#10416a", width: "30px", height: "30px", color: "#fff", borderRadius: "50%", padding: "5px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <button style={{
+                  background: "var(--med-light-green)",
+                  width: "30px",
+                  height: "30px",
+                  color: "var(--med-dark-green)",
+                  borderRadius: "50%",
+                  padding: "5px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
                 <i className="pi pi-arrow-right"></i>
               </button>
             </div>

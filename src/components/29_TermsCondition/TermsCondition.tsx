@@ -199,7 +199,7 @@ const TermsCondition: React.FC = () => {
               {section.details.map((item, i) => (
                 <div key={i}>
                   <strong>{item.label}: </strong>
-                  <span>{item.text}</span>
+                  <span style={{textAlign: "justify"}}>{item.text}</span>
                 </div>
               ))}
             </div>

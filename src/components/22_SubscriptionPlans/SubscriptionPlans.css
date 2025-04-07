@@ -2,3 +2,39 @@
     --background: var(--med-dark-green);
     --color: var(--med-light-green);
 }
+
+.subscribe-card-price{
+    font-size: 3rem;
+    font-weight: bold!important;
+    padding-top: 0.5rem;
+}
+
+.subscribe-card-description {
+    font-size: 0.8rem;
+    padding-bottom: 0.5rem;
+    font-style: italic;
+    color: var(--med-dark-green);
+    font-weight: 700;
+}
+
+
+.subscribe-card-features{
+    padding: 0.2rem 0.5rem;
+    font-size: 1rem;
+}
+
+.subscribe-current-divider .p-tag{
+    background: var(--med-light-green);
+    color: var(--med-dark-green);
+    padding: 0.5rem 1rem;
+}
+
+.subscribe-upgrade-divider .p-tag{
+    background: black;
+    color: rgba(255,215,0,1);
+    padding: 0.5rem 1rem;
+  }
+
+.subscribe-upgrade{
+    
+}

@@ -6,10 +6,11 @@ interface ToastProps {
   message: string;
   textColor?: string;
   position?: "bottom" | "top" | "middle";
+  duration?: number;
   onClose: () => void;
 }
 
-const Toast: React.FC<ToastProps> = ({ isOpen, message, position = "bottom", textColor = "black", onClose }) => {
+const Toast: React.FC<ToastProps> = ({ isOpen, message, position = "bottom", duration = 3000 , textColor = "black", onClose }) => {
   return (
     <IonToast
       style={{ "--color": textColor, fontWeight: "bold" }}
@@ -17,7 +18,7 @@ const Toast: React.FC<ToastProps> = ({ isOpen, message, position = "bottom", tex
       isOpen={isOpen}
       onDidDismiss={onClose}
       message={message}
-      duration={3000}
+      duration={duration}
       buttons={[
         {
           role: 'cancel',

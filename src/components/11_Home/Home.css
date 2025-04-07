@@ -25,7 +25,7 @@
 .home-top-bar {
   width: 100%;
   background: transparent;
-  padding: 1rem 1rem; /* Adjusted for better spacing */
+  padding: 6vh 1rem 1rem 1rem; /* Adjusted for better spacing */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +38,7 @@
 }
 
 .home-top-bar.scrolled {
-  padding: 1rem 1rem;
+  padding: 5.5vh 1rem 1rem 1rem;
   background: var(--med-light-grey);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -400,23 +400,23 @@ border: 0.5px solid var(--med-light-green)
 .home-knowAbout-cards{
   padding: 1rem;
   border-radius: 20px;
-  
 }
 
 .home-knowAbout-cards img{
   border-radius: 20px;
-  height: 8rem;
-  max-width: 15rem;
+  height: 10rem;
+  min-width: 17rem;
 }
 
 .home-knowAbout-cards h3{
   font-weight: bold;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 .home-knowAbout-cards p{
   margin: 0;
   font-size: 0.8rem;
+  text-align: justify;
 }
 
 .home-faq{

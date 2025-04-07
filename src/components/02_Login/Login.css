@@ -3,17 +3,18 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   padding-right: 3vw;
   background-color: var(--med-light-grey);
   background-image: url("../../assets/images/Backgroundimg/bgimg.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  overflow: scroll;
 }
 
-.loginScreenIonic > img {
+.loginScreenIonic>img {
   max-height: 37vh;
 }
 
@@ -24,6 +25,7 @@
   gap: 20px;
   width: 100%;
 }
+
 .inputbox {
   height: 100%;
   width: 100%;
@@ -36,9 +38,11 @@
   border-radius: 10px;
   border: none;
 }
+
 .p-icon-field.p-icon-field-right {
   width: 100%;
 }
+
 .forgot {
   font-size: 15px;
   font-weight: bold;
@@ -78,7 +82,7 @@
   margin: 0.8rem 0;
 }
 
-.loginIonicLogo > ion-icon {
+.loginIonicLogo>ion-icon {
   background-color: var(--med-light-green);
   color: var(--med-dark-green);
   font-size: 1.6rem;
@@ -87,8 +91,10 @@
 }
 
 .half-screen-modal {
-  --height: 35vh; /* Half screen height */
-  --width: 100vw; /* 80% of screen width */
+  --height: 35vh;
+  /* Half screen height */
+  --width: 100vw;
+  /* 80% of screen width */
   --border-radius: 15px;
   --background: white;
   display: flex;
@@ -105,7 +111,7 @@
   background-repeat: no-repeat;
 }
 
-.lottie-container { 
+.lottie-container {
   display: flex;
   justify-content: center;
   align-items: center;

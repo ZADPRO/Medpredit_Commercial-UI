@@ -1,0 +1,58 @@
+.subscription-detail-price{
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.subscription-detail-table {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .subscription-detail-table tr {
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  }
+  
+  /* Alternate row styling */
+  .subscription-detail-table tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.1); /* Subtle transparency */
+  }
+  
+  /* Base styling for table cells */
+  .subscription-detail-table td {
+    padding: 1.2rem 1.8rem;
+    font-size: 1rem;
+    text-align: left;
+    color: #ffffff;
+  }
+  
+  /* Remove bottom border on the last row */
+  .subscription-detail-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Style the first column */
+  .subscription-detail-table td:first-child {
+    font-weight: 700;
+    width: 45%;
+    background: linear-gradient(135deg, rgba(0, 180, 90, 0.8), rgba(0, 120, 60, 0.9));
+  }
+  
+  /* Last column styling */
+  .subscription-detail-table td:last-child {
+    width: 55%;
+    color: var(--med-dark-green);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .subscription-detail-table td {
+      font-size: 0.9rem;
+    }
+  }
+  

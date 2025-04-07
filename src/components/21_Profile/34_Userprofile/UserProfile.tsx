@@ -219,16 +219,16 @@ import { useHistory } from "react-router";
       if (verifyForm1() && verifyForm2() && verifyForm3()) {
         updateUSerDetails();
         if (localStorage.getItem("detailsFlag") === "true") {
-          localStorage.setItem("detailsFlag", "false");
-          setToastOpen({ status: true, textColor: "green", position: "top",  message: "Profile Complete!" });
+          setToastOpen({ status: true, textColor: "green",  message: "Profile Complete!" });
           setTimeout(() => {
-            history.replace("/home")
+            history.replace("/home");
+            localStorage.setItem("detailsFlag", "false");
           }, 3000);
         } else{
-          setToastOpen({ status: true, textColor: "green", position: "top",  message: "Profile Saved" });
+          setToastOpen({ status: true, textColor: "green", message: "Profile Saved" });
         }
       };
-    }
+    };
   
     const updateUSerDetails = async() => {
       const tokenString = localStorage.getItem("userDetails");
@@ -275,6 +275,7 @@ import { useHistory } from "react-router";
           if (data.status) {
               fetchUserDetals();
               setIsEditing(false);
+              updateLocalStorage();
           }
         } catch {
           console.error("tesitng - false");
@@ -283,7 +284,19 @@ import { useHistory } from "react-router";
         console.log("Token Invalid");
       }
     };
-  
+
+    const updateLocalStorage = () => {
+      const userDetails = JSON.parse(
+        localStorage.getItem("userDetails") || "{}"
+      );
+      // Update only firstName and lastName
+      userDetails.firstName = formData.refUserFname;
+      userDetails.lastName = formData.refUserLname;
+      userDetails.phNumber = formData.refUserMobileno;
+      // Save back to localStorage
+      localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    };
+
     const verifyForm1 = () => {
       if (formData.refUserFname.length === 0) {
         setToastOpen({ status: true, textColor: "red", message: "Enter Valid First Name" });
@@ -690,7 +703,6 @@ import { useHistory } from "react-router";
               >
                 <div className="doctor-modal-content">
                   {/* Header */}
-                  <div className="doctor-modal-header">Occupation Category</div>
 
                   {/* Content */}
                   <div
@@ -929,7 +941,7 @@ import { useHistory } from "react-router";
                 </div>
               </div>
               <div className="inputBox">
-                <label>Email</label>
+                <label>Email <span style={{ color: "red" }}>*</span></label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
