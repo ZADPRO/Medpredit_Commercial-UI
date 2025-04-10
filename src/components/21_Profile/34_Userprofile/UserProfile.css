@@ -70,6 +70,18 @@ ion-segment-view#userProfile-ion-segment-view ion-segment-content {
     background: white;
 }
 
+.addFamilyInputFieldCalendar{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    border-radius: 1rem;
+    padding: 0 0.8rem;
+    border: 0.5px solid var(--med-dark-green);
+    border-bottom: 2px solid var(--med-dark-green);
+    background: white;
+}
+
 .inputDisabled{
     opacity: 70%;
     background-color: rgb(240, 240, 240);

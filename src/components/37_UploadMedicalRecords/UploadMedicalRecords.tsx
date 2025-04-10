@@ -1,5 +1,6 @@
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonFab,
@@ -9,6 +10,7 @@ import {
   IonIcon,
   IonItem,
   IonLabel,
+  IonModal,
   IonPage,
   IonThumbnail,
   IonTitle,
@@ -22,33 +24,31 @@ import {
   ellipsisVertical,
   image,
   search,
+  close,
 } from "ionicons/icons";
 import React, { useRef, useState } from "react";
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { useHistory } from "react-router";
+
+interface HealthRecord {
+  id: number;
+  name: string;
+  timestamp: string;
+  thumbnail: string;
+  fileData?: string;
+  type: "pdf" | "image";
+}
 
 const UploadMedicalRecords: React.FC = () => {
-  const [healthRecords, setHealthRecords] = useState([
-    {
-      id: 1,
-      name: "Blood Report",
-      timestamp: "07-Apr-2025, 14:35",
-      thumbnail: "https://ionicframework.com/docs/img/demos/thumbnail.svg",
-    },
-    {
-      id: 2,
-      name: "X-Ray Scan",
-      timestamp: "06-Apr-2025, 10:15",
-      thumbnail: "https://ionicframework.com/docs/img/demos/thumbnail.svg",
-    },
-    {
-      id: 3,
-      name: "ECG Report",
-      timestamp: "05-Apr-2025, 18:22",
-      thumbnail: "https://ionicframework.com/docs/img/demos/thumbnail.svg",
-    },
-  ]);
-
+  const [healthRecords, setHealthRecords] = useState<HealthRecord[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [selectedRecord, setSelectedRecord] = useState<HealthRecord | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const history = useHistory();
 
   const handleCameraClick = async () => {
     try {
@@ -58,14 +58,22 @@ const UploadMedicalRecords: React.FC = () => {
         quality: 90,
       });
 
-      const newRecord = {
-        id: healthRecords.length + 1,
-        name: "New Photo Record",
-        timestamp: new Date().toLocaleString(),
-        thumbnail: image.dataUrl || "",
-      };
+      //   const newRecord: HealthRecord = {
+      //     id: healthRecords.length + 1,
+      //     name: "New Photo Record",
+      //     timestamp: new Date().toLocaleString(),
+      //     thumbnail: image.dataUrl || "",
+      //     fileData: image.dataUrl || "",
+      //     type: "image",
+      //   };
 
-      setHealthRecords([newRecord, ...healthRecords]);
+      //   setHealthRecords([newRecord, ...healthRecords]);
+      history.push({
+        pathname: "/customizeCamera",
+        state: {
+          imageData: image.dataUrl,
+        },
+      });
     } catch (error) {
       console.error("Camera error:", error);
     }
@@ -79,11 +87,13 @@ const UploadMedicalRecords: React.FC = () => {
         quality: 90,
       });
 
-      const newRecord = {
+      const newRecord: HealthRecord = {
         id: healthRecords.length + 1,
         name: "New Gallery Record",
         timestamp: new Date().toLocaleString(),
         thumbnail: image.dataUrl || "",
+        fileData: image.dataUrl || "",
+        type: "image",
       };
 
       setHealthRecords([newRecord, ...healthRecords]);
@@ -93,20 +103,33 @@ const UploadMedicalRecords: React.FC = () => {
   };
 
   const handlePdfClick = () => {
-    fileInputRef.current?.click();
+    // fileInputRef.current?.click();
+    history.push({ pathname: "/pdfMedicalRecords" });
   };
 
   const handlePdfSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type === "application/pdf") {
-      const newRecord = {
-        id: healthRecords.length + 1,
-        name: file.name,
-        timestamp: new Date().toLocaleString(),
-        thumbnail: "https://img.icons8.com/color/96/pdf-2.png", // A placeholder thumbnail for PDF
+      const reader = new FileReader();
+      reader.onload = () => {
+        const pdfDataUrl = reader.result as string;
+        const newRecord: HealthRecord = {
+          id: healthRecords.length + 1,
+          name: file.name,
+          timestamp: new Date().toLocaleString(),
+          thumbnail: "https://img.icons8.com/color/96/pdf-2.png",
+          fileData: pdfDataUrl,
+          type: "pdf",
+        };
+        setHealthRecords([newRecord, ...healthRecords]);
       };
-      setHealthRecords([newRecord, ...healthRecords]);
+      reader.readAsDataURL(file);
     }
+  };
+
+  const handleRecordClick = (record: HealthRecord) => {
+    setSelectedRecord(record);
+    setIsModalOpen(true);
   };
 
   return (
@@ -118,7 +141,7 @@ const UploadMedicalRecords: React.FC = () => {
               mode="md"
               defaultHref="/profile"
               icon={chevronBack}
-            ></IonBackButton>
+            />
           </IonButtons>
           <IonTitle>Medical Records</IonTitle>
           <IonButtons slot="end" className="ion-padding-end">
@@ -131,7 +154,6 @@ const UploadMedicalRecords: React.FC = () => {
       </IonHeader>
 
       <IonContent className="fullscreen">
-        {/* HIDDEN INPUT FOR PDF UPLOAD */}
         <input
           type="file"
           accept="application/pdf"
@@ -140,12 +162,16 @@ const UploadMedicalRecords: React.FC = () => {
           onChange={handlePdfSelected}
         />
 
-        {/* ION FAB BUTTON - HEALTH RECORDS UPLOAD */}
-        <IonFab horizontal="end" vertical="bottom" slot="fixed">
+        <IonFab
+          className="fabButtonCustom"
+          horizontal="end"
+          vertical="bottom"
+          slot="fixed"
+        >
           <IonFabButton>
             <IonIcon icon={add}></IonIcon>
           </IonFabButton>
-          <IonFabList side="top">
+          <IonFabList side="start">
             <IonFabButton onClick={handlePdfClick}>
               <IonIcon icon={documents}></IonIcon>
             </IonFabButton>
@@ -158,9 +184,13 @@ const UploadMedicalRecords: React.FC = () => {
           </IonFabList>
         </IonFab>
 
-        {/* DISPLAY THE HEALTH RECORDS */}
         {healthRecords.map((record) => (
-          <IonItem key={record.id}>
+          <IonItem
+            mode="md"
+            key={record.id}
+            button
+            onClick={() => handleRecordClick(record)}
+          >
             <IonThumbnail slot="start">
               <img alt={record.name} src={record.thumbnail} />
             </IonThumbnail>
@@ -173,6 +203,38 @@ const UploadMedicalRecords: React.FC = () => {
             </IonButtons>
           </IonItem>
         ))}
+
+        {/* Preview Modal */}
+        <IonModal
+          isOpen={isModalOpen}
+          onDidDismiss={() => setIsModalOpen(false)}
+        >
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>{selectedRecord?.name}</IonTitle>
+              <IonButtons slot="end">
+                <IonButton size="small" onClick={() => setIsModalOpen(false)}>
+                  <IonIcon icon={close}></IonIcon>
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent className="ion-padding">
+            {selectedRecord?.type === "image" ? (
+              <img
+                src={selectedRecord?.fileData}
+                alt={selectedRecord?.name}
+                style={{ width: "100%" }}
+              />
+            ) : (
+              <iframe
+                src={selectedRecord?.fileData}
+                title="PDF Preview"
+                style={{ width: "100%", height: "100vh", border: "none" }}
+              />
+            )}
+          </IonContent>
+        </IonModal>
       </IonContent>
     </IonPage>
   );

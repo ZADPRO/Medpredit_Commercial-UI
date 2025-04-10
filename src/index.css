@@ -110,6 +110,14 @@ ion-content {
   border: none;
 }
 
+.p-datepicker.p-component.p-ripple-disabled.p-connected-overlay-enter-done {
+  background: white;
+}
+
+.primeReactCalendar .p-inputtext.p-component {
+  padding-left: 0;
+}
+
 .p-datepicker table td.p-datepicker-today > span {
   background: var(--med-light-grey);
 }
@@ -282,7 +290,7 @@ ion-fab-button#fab-premium {
   font-weight: bold;
 }
 
-ion-fab-button::part(native) {
+.fabButtonCustom ion-fab-button::part(native) {
   background-color: #b7f399;
   border-radius: 15px;
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
@@ -290,10 +298,43 @@ ion-fab-button::part(native) {
   color: black;
 }
 
-ion-fab-button::part(native):hover::after {
+.fabButtonCustom ion-fab-button::part(native):hover::after {
   background-color: #a3e681;
 }
 
-ion-fab-button::part(native):active::after {
+.fabButtonCustom ion-fab-button::part(native):active::after {
   background-color: #87d361;
+}
+
+.p-button.p-fileupload-choose.p-component,
+.p-fileupload-buttonbar button {
+  background-color: var(--med-light-green) !important;
+  color: var(--med-dark-green) !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  padding: 1rem !important;
+  border-radius: 10px !important;
+}
+
+.p-fileupload-buttonbar button[aria-label="Cancel"] {
+  display: none;
+}
+
+.primeReactCalendar .p-inputtext:focus {
+  box-shadow: none !important;
+  border-color: inherit !important;
+}
+
+/* Also disable the focus ring in the popup input */
+.primeReactCalendar .p-calendar input:focus {
+  box-shadow: none !important;
+  border-color: inherit !important;
+  outline: none !important;
+}
+
+.p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
+  outline: 0 none;
+  outline-offset: 0;
+  box-shadow: none;
+  border-color: none;
 }

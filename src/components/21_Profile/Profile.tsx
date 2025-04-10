@@ -42,7 +42,7 @@ const Profile: React.FC = () => {
       ],
     },
     {
-      title: "Account",
+      title: "Medical Records",
       items: [
         {
           icon: "pi pi-clipboard",

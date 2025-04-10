@@ -38,6 +38,8 @@ import { Capacitor } from "@capacitor/core";
 import ManageFamily from "../../components/32_ManageFamilyMembers/ManageFamily";
 import SubscriptionDetail from "../Subscription/SubscriptionDetail";
 import UploadMedicalRecords from "../../components/37_UploadMedicalRecords/UploadMedicalRecords";
+import CustomizeCamera from "../../components/37_UploadMedicalRecords/CustomizeCamera";
+import PdfMedicalRecord from "../../components/37_UploadMedicalRecords/PdfMedicalRecord";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -171,6 +173,12 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/uploadMedicalReports">
           <UploadMedicalRecords />
+        </Route>
+        <Route path="/customizeCamera">
+          <CustomizeCamera />
+        </Route>
+        <Route path="/pdfMedicalRecords">
+          <PdfMedicalRecord />
         </Route>
       </IonRouterOutlet>
 
