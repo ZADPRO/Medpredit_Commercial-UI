@@ -352,7 +352,7 @@ import { useHistory } from "react-router";
     };
 
     return (
-      <IonPage className="cus-ion-page">
+      <IonPage>
         <IonHeader>
           <IonToolbar>
             {localStorage.getItem("detailsFlag") == "false" && (

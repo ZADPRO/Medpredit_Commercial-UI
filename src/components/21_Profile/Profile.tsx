@@ -21,6 +21,7 @@ const Profile: React.FC = () => {
     ? JSON.parse(userDetails)
     : { userCustId: null, phNumber: null, firstName: null, lastName: null };
 
+  const headStatus = localStorage.getItem("headStatus") || "false";
   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
 
   const sections = [
@@ -28,16 +29,18 @@ const Profile: React.FC = () => {
       title: "Account",
       items: [
         { icon: "pi pi-user", label: "Profile", path: "/userprofile" },
-        { icon: "pi pi-users", label: "Manage Family", path: "/manageFamily" },
+        { icon: "pi pi-users", label: "Manage Family", path: "/manageFamily", headStatus: true },
         {
           icon: "pi pi-receipt",
           label: "Manage Subscriptions",
           path: "/subscriptionPlans",
+          headStatus: true
         },
         {
           icon: "pi pi-indian-rupee",
           label: "Transaction History",
           path: "/transactionHistory",
+          headStatus: true
         },
       ],
     },
@@ -90,40 +93,45 @@ const Profile: React.FC = () => {
           </IonButtons>
         </IonToolbar>
         <div className="profile_top">
-            <div className="profile_top_bar">
-              <div className="profile_top_bar_header">
-                <h2>
-                  {userDeatilsObj.firstName + " " + userDeatilsObj.lastName}
-                </h2>
-                <p>
-                  MEDPREDiT ID: <b>{userDeatilsObj.userCustId}</b>
-                </p>
-                <p>
-                  Phone Number: <b>{userDeatilsObj.phNumber}</b>
-                </p>
-              </div>
-              <div className="profile_top_bar_avatar">
-                <span>
-                  {userDeatilsObj.firstName.charAt(0) +
-                    userDeatilsObj.lastName.charAt(0)}
-                </span>
-              </div>
+          <div className="profile_top_bar">
+            <div className="profile_top_bar_header">
+              <h2>
+                {userDeatilsObj.firstName + " " + userDeatilsObj.lastName}
+              </h2>
+              <p>
+                MEDPREDiT ID: <b>{userDeatilsObj.userCustId}</b>
+              </p>
+              <p>
+                Phone Number: <b>{userDeatilsObj.phNumber}</b>
+              </p>
             </div>
-            <div className="profile_top_bar_footer">
+            <div className="profile_top_bar_avatar">
+              <span>
+                {userDeatilsObj.firstName.charAt(0) +
+                  userDeatilsObj.lastName.charAt(0)}
+              </span>
+            </div>
+          </div>
+          {(headStatus == "true" && (localStorage.getItem("subValid") == "false")) && (
+            <div className="profile_top_bar_footer" onClick={()=>history.push("/subscriptionPlans")}>
               <h3>Join Premium</h3>
               <IonIcon icon={chevronForward} />
             </div>
-          </div>
+          )}
+        </div>
       </IonHeader>
 
       <IonContent>
         <div className="medpredit_profile">
-          
-
           {sections.map((section, index) => (
             <div key={index} className="profile-body">
               <h3 className="profile-body-header">{section.title}</h3>
-              {section.items.map((item, itemIndex) => (
+              {section.items.filter((item) => {
+    if (headStatus == "false") {
+      return !item.headStatus; // if userStatus is true, remove items with headStatus
+    }
+    return true; // else show all items
+  }).map((item, itemIndex) => (
                 <div
                   key={itemIndex}
                   onClick={() => {

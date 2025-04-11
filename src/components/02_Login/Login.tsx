@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import login from "../../assets/images/Login/login (1).png";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { logoApple, logoFacebook, logoGoogle } from "ionicons/icons";
+import { close, logoApple, logoFacebook, logoGoogle } from "ionicons/icons";
 import "./Login.css";
 
 import {
@@ -12,6 +12,7 @@ import {
   IonPage,
   IonModal,
   IonText,
+  IonList,
 } from "@ionic/react";
 import { Divider } from "primereact/divider";
 import { useHistory } from "react-router-dom";
@@ -27,7 +28,8 @@ const Login: React.FC = () => {
   const [value, setValue] = useState("");
   const [checked, setChecked] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
-
+  const [userSelectionModal, setUserSelectionModal] = useState<boolean>(false);
+  const [userSelectionList, setUserSelectionList] = useState<any>();
   const { t } = useTranslation("global");
 
   const history = useHistory();
@@ -68,31 +70,34 @@ const Login: React.FC = () => {
       );
       console.log(data);
       if (data.status) {
-        const userDetails = {
-          roleType: data.roleType,
-          token: "Bearer " + data.token,
-          userId: data.users[0].refUserId,
-          userCustId: data.users[0].refUserCustId,
-          firstName: data.users[0].refUserFname,
-          lastName: data.users[0].refUserLname,
-          phNumber: data.users[0].refUserMobileno,
-        };
-        
         setErrorMessage("");
+        if(data.users.length > 1) {
+          setUserSelectionList(data.users);
+          setUserSelectionModal(true);
+        }
+        else {
+          const userDetails = {
+            token: "Bearer " + data.token,
+            userId: data.users[0].refUserId,
+            userCustId: data.users[0].refUserCustId,
+            firstName: data.users[0].refUserFname,
+            lastName: data.users[0].refUserLname,
+            phNumber: data.users[0].refUserMobileno,
+          };
+  
+          localStorage.setItem("userDetails", JSON.stringify(userDetails));
+  
+          localStorage.setItem("detailsFlag", data.isDetails);
 
-        localStorage.setItem("userDetails", JSON.stringify(userDetails));
+          localStorage.setItem("headStatus", data.users[0].headStatus)
+          setShowModal(true);
+          setSignInData({
+            username: "",
+            password: "",
+          });
+        }
+        
 
-        localStorage.setItem("detailsFlag", data.isDetails);
-
-        localStorage.setItem("hospitalId", data.hospitaId);
-        console.log(data);
-        setShowModal(true);
-        setSignInData({
-          username: "",
-          password: "",
-        });
-
-        console.log(data);
       } else {
         setErrorMessage("Invalid username or password");
 
@@ -107,6 +112,57 @@ const Login: React.FC = () => {
       // setLoadingStatus(false);
     }
   };
+
+  const handleSubLogin = async(selectedUser: any) => {
+    setUserSelectionModal(false);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/handleMultipleUserSignin`,
+        {
+          username: signInData.username,
+          password: signInData.password,
+          userId: selectedUser.refUserId
+        }
+      );
+      console.log(response);
+      const data = decrypt(
+        response.data[1],
+        response.data[0],
+        import.meta.env.VITE_ENCRYPTION_KEY
+      );
+      console.log(data);
+
+      if (data.status) {
+        const userDetails = {
+          token: "Bearer " + data.token,
+          userId: selectedUser.refUserId,
+          userCustId: selectedUser.refUserCustId,
+          firstName: selectedUser.refUserFname,
+          lastName: selectedUser.refUserLname,
+          phNumber: selectedUser.refUserMobileno,
+        };
+        
+        setErrorMessage("");
+
+        localStorage.setItem("userDetails", JSON.stringify(userDetails));
+
+        localStorage.setItem("detailsFlag", data.isDetails);
+
+        localStorage.setItem("headStatus", selectedUser.headStatus)
+        setShowModal(true);
+        setSignInData({
+          username: "",
+          password: "",
+        });
+      } else {
+        console.log("Error during Sign In:");
+        setErrorMessage("An error occurred. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during Sign In:", error);
+      setErrorMessage("An error occurred. Please try again.");
+  };
+};
 
   const routeCondition = () => {
     const flag = localStorage.getItem("detailsFlag");
@@ -150,7 +206,7 @@ const Login: React.FC = () => {
               tabIndex={1}
             />
           </div>
-          <div style={{paddingTop: "0.5rem"}}>
+          <div style={{ paddingTop: "0.5rem" }}>
             {errorMessage && <IonText color="danger">{errorMessage}</IonText>}{" "}
           </div>
           <div
@@ -216,6 +272,88 @@ const Login: React.FC = () => {
             </span>
           </div>
         </div>
+
+        <IonModal
+          isOpen={userSelectionModal}
+          onDidDismiss={() => setUserSelectionModal(false)}
+          initialBreakpoint={1}
+          id="ion-custom-modal-02"
+        >
+          <div className="report-modalContent">
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <h4>Select User</h4>
+                      <IonIcon
+                        onClick={() => {
+                          setUserSelectionModal(false);
+                        }}
+                        style={{ "font-size": "1.5rem" }}
+                        icon={close}
+                      />
+                    </div>
+                    <IonList className="reports-user-list">
+                      {userSelectionList?.map((item: any, index: number) => (
+                        <div
+                          key={index}
+                          className="reports-user-data"
+                          onClick={() => handleSubLogin(item)}
+                        >
+                          <div className="reports-user-profile">
+                            <i className="pi pi-user"></i>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                              <span>{item.refUserFname + " " + item.refUserLname}</span>
+                              {item.headStatus == "true" && (
+                                <span
+                                  style={{
+                                    fontSize: "0.7rem",
+                                    fontWeight: "bold",
+                                    color: "var(--med-dark-green)",
+                                  }}
+                                >
+                                  Primary
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          {/* <RadioButton
+                            value={item.refUserCustId}
+                            checked={tempselectedUser === item.refUserId}
+                            onChange={() => settempSelectedUser(item.refUserId)}
+                          /> */}
+                        </div>
+                      ))}
+                    </IonList>
+          
+                    {/* <div
+                      onClick={() => {
+                        if (tempselectedUser) {
+                          setCanDismissModal1(true);
+                          !selectedUser && setCanDismissModal2(false);
+                          setShowModal1(false);
+                          setShowModal2(true);
+                          const foundUser = userData.find(
+                            (item) => item.refUserId === tempselectedUser
+                          );
+          
+                          const reportSelectedUser = {
+                            reUserId: foundUser?.refUserId,
+                            refGender: foundUser?.refGender,
+                          };
+          
+                          setReportUser(reportSelectedUser);
+                        }
+                      }}
+                    >
+                      <button className="medCustom-button01">Next</button>
+                    </div> */}
+                  </div>
+        </IonModal>
 
         <IonModal
           isOpen={showModal}

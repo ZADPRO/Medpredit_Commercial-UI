@@ -19,10 +19,13 @@ import decrypt from "../../helper";
 import "./Report.css";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
-import { ScoreVerify } from "../../ScoreVerify";
+import { ScoreVerify } from "../../ScoreVerify/ScoreVerify";
 import ReportContent from "./ReportContent";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { RadioButton } from "primereact/radiobutton";
+import { ScoreSlider } from "../../ScoreVerify/ScoreSlider";
+import ReportPDF from "../ReportPDF/ReportPDF";
+import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -34,10 +37,27 @@ const Report: React.FC = () => {
     refGender: string;
     headStatus: string;
   }
+  
+  interface CardData {
+    refQCategoryId: number;
+    refCategoryLabel: string;
+    refScore?: any;
+    refScoreId?: any;
+    UserScoreVerify?: any;
+  }
+
+  interface LocationState {
+    selectedUser?: number; // Replace 'any' with your actual plan type
+    selectedUserInfo?: any
+  }
 
   const history = useHistory();
+  const location = useLocation<LocationState>();
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
-  const [showModal1, setShowModal1] = useState<boolean>(true);
+  const headStatus = localStorage.getItem("headStatus") || "false";
+
+  const [showModal1, setShowModal1] = useState<boolean>(false);
 
   const [showModal2, setShowModal2] = useState<boolean>(false);
 
@@ -53,7 +73,7 @@ const Report: React.FC = () => {
 
   const userDeatilsObj = userDetails
     ? JSON.parse(userDetails)
-    : { userId: null};
+    : { userId: null, firstName: null};
 
   const [reportUser, setReportUser] = useState<{
     reUserId?: number;
@@ -64,7 +84,10 @@ const Report: React.FC = () => {
 
   const [structuredCategories, setStructuredCategories] = useState<any[]>([]);
 
-  const [reportModalTitle, setReportModalTitle] = useState();
+  const [reportModalInfo, setReportModalInfo] = useState({
+    serviceId: 0,
+    serviceTitle: "",
+  });
   const [reportModalCategories, setReportModalCategories] = useState<any>({});
 
   const [structuredScores, setstructuredScores] = useState<any[]>([]);
@@ -105,6 +128,8 @@ const Report: React.FC = () => {
   const maxDate = new Date();
 
   const scrollableDivRef = useRef<HTMLDivElement>(null);
+  const [categories, setCategories] = useState<CardData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (scrollableDivRef.current) {
@@ -122,6 +147,7 @@ const Report: React.FC = () => {
     //   console.log(userDeatilsObj.userId, userDeatilsObj.phNumber);
 
     if (tokenString) {
+      setLoading(true);
       try {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
@@ -151,8 +177,8 @@ const Report: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
+              setLoading(false);
               setUserData(data.data);
-
               //   if (data.data.length === 0) {
               //     setStatus({
               //       status: true,
@@ -163,13 +189,16 @@ const Report: React.FC = () => {
               //     setUrluserId(data.data[0].refUserId);
               //   }
             } else {
+              setLoading(false);
               console.error("Data consoled false - chekc this");
             }
           })
           .catch((error) => {
+            setLoading(false);
             console.error("Error fetching patient data:", error);
           });
       } catch (error) {
+        setLoading(false);
         console.error("Error parsing token:", error);
       }
     } else {
@@ -188,7 +217,7 @@ const Report: React.FC = () => {
 
         localStorage.setItem("currentPatientGender", "male"); 
         // setLoadingStatus(true);
-
+        console.log("tgttggtttt", tempselectedUser)
         axios
           .post(
             `${import.meta.env.VITE_API_URL}/getPastReportData `,
@@ -215,7 +244,7 @@ const Report: React.FC = () => {
             console.log("====================================");
             console.log("134", data);
             console.log("====================================");
-
+            setItemColors({});
             setRbs(data.rbs);
             setFbs(data.fbs);
             setPpbs(data.ppbs);
@@ -522,13 +551,97 @@ const Report: React.FC = () => {
 
 
   useEffect(() => {
-    searchPatient();
-    settempSelectedUser(userDeatilsObj.userId)
-  }, []);
+    // Exit early if location.state is undefined and the router hasn't restored it yet
+    if (location.state === undefined) return;
+  
+    if (location.state?.selectedUser) {
+      setShowModal1(false);
+      setShowModal2(false);
+      setSelectedDate(new Date());
+      settempSelectedDate(new Date());
+      settempSelectedUser(location.state.selectedUser);
+      setSelectedUser(location.state.selectedUser);
+      if (headStatus === "true") { searchPatient() };
+    } else {
+      if (headStatus === "true") {
+        searchPatient();
+        setShowModal1(true);
+        setShowModal2(false);
+      } else {
+        setShowModal1(false);
+        setShowModal2(true);
+        setSelectedUser(userDeatilsObj.userId);
+      }
+      settempSelectedUser(userDeatilsObj.userId);
+    }
+  }, [location.state?.selectedUser]);
+  
 
+  console.log("eeeeeeeeeeeeeeeeee", tempselectedDate, selectedDate)
   console.log("reportModalCategories", reportModalCategories);
 
   console.log("Structured Categories: ", structuredCategories);
+
+  const getCategory = () => {
+    const tokenString = localStorage.getItem("userDetails");
+    if (tokenString) {
+      setLoading(true);
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
+        
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/getCategory `,
+            {
+              SubCategoryId: "4", //Risk Factor
+              patientId: selectedUser?.toString(),
+              employeeId: null,
+              hospitalId: "undefined",
+            },
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+            console.log(data);
+            setCategories(data.data);
+            
+            setLoading(false);
+            // setLoadingStatus(false);
+            console.log("----------->Val", data.data);
+          });
+      } catch (error) {
+        setLoading(false);
+        console.error("Error parsing token:", error);
+      }
+    } else {
+      console.error("No token found in localStorage.");
+    }
+
+    console.log(history.location.pathname);
+  };
+
+
+useEffect(() => {
+  if (selectedUser) {
+    getCategory();
+
+    if (isFirstRender == true && location.state?.selectedUser) {
+      setIsFirstRender(false);
+      reportData();
+    }
+  }
+}, [selectedUser]);
+
 
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(undefined);
@@ -545,7 +658,7 @@ const Report: React.FC = () => {
     modal.current?.dismiss();
   }
 
-
+console.log("item colors==========================",itemColors);
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
@@ -554,15 +667,18 @@ const Report: React.FC = () => {
             <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
           <IonTitle>
-            {userData.length > 0 &&
-              userData.find((item) => item.refUserId === selectedUser)
-                ?.refUserFname}
+            {userData.length > 0
+              ? userData.find((item) => item.refUserId === selectedUser)
+                  ?.refUserFname
+              : location.state?.selectedUserInfo?.refUserFname}
           </IonTitle>
 
           <IonButton
             fill="clear"
             slot="end"
-            onClick={() => setShowModal1(true)}
+            onClick={() => {
+              headStatus == "true" ? setShowModal1(true) : setShowModal2(true);
+            }}
           >
             <IonIcon icon={filterOutline} />
           </IonButton>
@@ -688,7 +804,7 @@ const Report: React.FC = () => {
             />
           </div>
 
-          <div className="flex justify-content-center reports-user-list">
+          <div className="flex justify-content-center">
             <Calendar
               value={tempselectedDate}
               onChange={(e) => settempSelectedDate(e.value)}
@@ -702,17 +818,19 @@ const Report: React.FC = () => {
               gap: "1rem",
             }}
           >
-            <button
-              onClick={() => {
-                !selectedUser && setCanDismissModal1(false);
-                setCanDismissModal2(true);
-                setShowModal2(false);
-                setShowModal1(true);
-              }}
-              className="medCustom-button01"
-            >
-              Back
-            </button>
+            {headStatus == "true" && (
+              <button
+                onClick={() => {
+                  !selectedUser && setCanDismissModal1(false);
+                  setCanDismissModal2(true);
+                  setShowModal2(false);
+                  setShowModal1(true);
+                }}
+                className="medCustom-button01"
+              >
+                Back
+              </button>
+            )}
             <button onClick={() => reportData()} className="medCustom-button01">
               Select
             </button>
@@ -735,18 +853,68 @@ const Report: React.FC = () => {
               justifyContent: "space-between",
             }}
           >
-            <h4>{reportModalTitle}</h4>
+            <h4>{reportModalInfo.serviceTitle}</h4>
             <IonIcon
               onClick={() => setShowReportModal1(false)}
               style={{ "font-size": "1.5rem" }}
               icon={close}
             />
           </div>
+          <div className="report-progress-status">
+            {categories && (
+              <>
+                <span>Assessment Score</span>
+                <div
+                  style={{
+                    margin: "0 auto",
+                    width: "70%",
+                  }}
+                >
+                  <ScoreSlider
+                    userScoreVerify={
+                      categories.find(
+                        (item) =>
+                          item.refQCategoryId == reportModalInfo.serviceId
+                      )?.UserScoreVerify
+                    }
+                    refScore={
+                      categories.find(
+                        (item) =>
+                          item.refQCategoryId == reportModalInfo.serviceId
+                      )?.refScore
+                    }
+                  />
+                </div>
 
+                <div
+                  style={{
+                    margin: "0 auto",
+                    width: "50%",
+                  }}
+                >
+                  <ScoreVerify
+                    userScoreVerify={
+                      categories.find(
+                        (item) =>
+                          item.refQCategoryId == reportModalInfo.serviceId
+                      )?.UserScoreVerify
+                    }
+                    refScore={
+                      categories.find(
+                        (item) =>
+                          item.refQCategoryId == reportModalInfo.serviceId
+                      )?.refScore
+                    }
+                  />
+                </div>
+              </>
+            )}
+          </div>
           <div
             ref={scrollableDivRef}
             style={{
-              maxHeight: "80vh",
+              maxHeight: "60vh",
+              paddingTop: "1rem",
               paddingBottom: "7rem",
               overflowY: "auto",
             }}
@@ -806,7 +974,10 @@ const Report: React.FC = () => {
                     onClick={() => {
                       console.log("Modal should open now!");
                       setShowReportModal1(true);
-                      setReportModalTitle(item.refCategoryLabel);
+                      setReportModalInfo({
+                        serviceId: item.refQCategoryId,
+                        serviceTitle: item.refCategoryLabel,
+                      });
                       setReportModalCategories(item);
                     }}
                   >
@@ -925,15 +1096,23 @@ const Report: React.FC = () => {
         </div>
       </IonContent>
 
-      {/* <IonFooter>
-        <div
-          style={{
-            padding: "1rem 1.5rem",
-          }}
-        >
-          <button className="medCustom-button01">Download Report</button>
-        </div>
-      </IonFooter> */}
+      <IonFooter>
+        {Object.keys(itemColors).length !== 0 && (
+          <div
+            style={{
+              padding: "1rem 1.5rem",
+            }}
+          >
+            <button className="medCustom-button01">
+              <ReportPDF
+                reportDate={selectedDate}
+                selectedUser={selectedUser}
+              />
+            </button>
+          </div>
+        )}
+      </IonFooter>
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

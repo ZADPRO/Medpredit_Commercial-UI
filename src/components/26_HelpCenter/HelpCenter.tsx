@@ -34,7 +34,7 @@ const HelpCenter: React.FC = () => {
   );
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

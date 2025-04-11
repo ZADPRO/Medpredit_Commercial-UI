@@ -17,7 +17,7 @@ import {
 import { chevronBack } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import "./SubscriptionPlans.css";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
@@ -48,6 +48,7 @@ interface SubscriptionInfo{
 
 const SubscriptionPlans: React.FC = () => {
   const history = useHistory();
+  const location = useLocation() as { state: { refreshPage?: boolean } };
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionInfo>();
@@ -97,12 +98,18 @@ const getPackage = () => {
 console.log(packages);
 
 useEffect(() => {
+  if(location.state?.refreshPage) {
+    getPackage();
+  }
+}, [location.state]);
+
+useEffect(() => {
   getPackage();
 }, []);
 
 console.log(subscriptionData);
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -140,7 +147,7 @@ console.log(subscriptionData);
                       " Member"}
                   </p>
                   <h1 className="subscribe-card-price">
-                    {"Rs. " + plan.refPkgAmount + "/month"}
+                    {"Rs. " + plan.refPkgAmount}
                   </h1>
                   <Divider/>
                   <h2 >Expires On: <b>{plan.refSubEndDate}</b></h2>
@@ -148,10 +155,11 @@ console.log(subscriptionData);
               </IonCard>
             ))}
 
+            {packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).length != 0 && 
             <Divider className="subscribe-upgrade-divider" align="left">
               <span className="p-tag">Upgrade Package</span>
             </Divider>
-
+}
             <div className="subscribe-upgrade">
             {packages !== undefined &&
             packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).map((plan, index) => (
@@ -175,7 +183,7 @@ console.log(subscriptionData);
                   </p>
 
                   <h1 className="subscribe-card-price">
-                    {"Rs. " + plan.refPkgAmount + "/month"}
+                    {"Rs. " + plan.refPkgAmount}
                   </h1>
                   <button
                     className="medCustom-button02"
@@ -222,7 +230,7 @@ console.log(subscriptionData);
                   </p>
 
                   <h1 className="subscribe-card-price">
-                    {"Rs. " + plan.refPkgAmount + "/month"}
+                    {"Rs. " + plan.refPkgAmount}
                   </h1>
                   <button
                     className="medCustom-button02"

@@ -4,6 +4,7 @@ import {
   IonContent,
   IonFooter,
   IonHeader,
+  IonModal,
   IonPage,
   IonTitle,
   IonToolbar,
@@ -15,6 +16,10 @@ import { useHistory, useLocation } from "react-router";
 import axios from "axios";
 import decrypt from "../../helper";
 import Toast from "../../components/CustomIonToast/CustomIonToast";
+import Lottie from "lottie-react";
+import tickAnimation from "../../assets/Animations/tickanimation.json";
+import { useTranslation } from "react-i18next";
+import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
 
 interface LocationState {
   plan?: any; // Replace 'any' with your actual plan type
@@ -62,6 +67,9 @@ const SubscriptionDetail: React.FC = () => {
   const state = location.state as LocationState | null; // Allow null state
   const selectedPackageId = state?.plan; // Optional chaining to prevent errors
 
+  const { t } = useTranslation("global");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  
   const history = useHistory();
   const [toastOpen, setToastOpen] = useState<{
     status: boolean;
@@ -127,7 +135,7 @@ const SubscriptionDetail: React.FC = () => {
             console.log(data);
             if (data.status) {
               setSelectedPackage(data.result[0]);
-              setGstInfo(data.GSTData[0]);
+              setGstInfo(data.getGST[0]);
                 setUpgradeInfo({
                   isFirstPackage: data.isFirstPackage ?? false,
                   minus_amount: data.minus_amount ?? 0,
@@ -155,17 +163,22 @@ const SubscriptionDetail: React.FC = () => {
   console.log(upgradeInfo)
   console.log(selectPackage);
   // const floatPkgAmount = parseFloat(String(selectPackage?.refPkgAmount ?? "0"));
-
+  
   let selectedPaymentMethod = "upi";
-  let gstAmount = (selectPackage?.refPkgAmount || 0) * (Number(gstInfo?.refCGST)/100 + Number(gstInfo?.refSGST)/100);
-  let grandTotal = ((selectPackage?.refPkgAmount || 0) + gstAmount) * 100;
-// grandTotal = Math.round(grandTotal); // Optional: To avoid floating-point precision issues
-
-  console.log(grandTotal);
-
-
+    let gstAmount;
+    let grandTotal;
+    
   const handlePayment = () => {
     console.log("Payment---------------------------------->");
+   
+    if (upgradeInfo?.isFirstPackage == true) {
+      grandTotal = (selectPackage?.refPkgAmount || 0) * 100;
+    } else {
+      grandTotal = (upgradeInfo?.totalPackageValue || 0) * 100;
+    }
+    
+    console.log(grandTotal);
+
     if (selectedPaymentMethod === "credit_card") {
       let finalAmount = selectPackage?.refPkgAmount || 0; // Convert string to number
       if (selectedPaymentMethod === "credit_card") {
@@ -247,6 +260,8 @@ const SubscriptionDetail: React.FC = () => {
         handler: function (response: any) {
           console.log(response);
           if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
             sendPayment(response.razorpay_payment_id);
           }
           // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
@@ -321,8 +336,6 @@ const SubscriptionDetail: React.FC = () => {
               txnkey: razor_payment_id,
               packageId: selectPackage?.refPkgId,
               method: selectedPaymentMethod,
-              gst: gstAmount,
-
             },
             {
               headers: {
@@ -339,12 +352,13 @@ const SubscriptionDetail: React.FC = () => {
             );
             console.log(data);
             if (data.status) {
-              setToastOpen({
-                status: true,
-                textColor: "green",
-                message: "Payment successful!",
-              });
+              // setToastOpen({
+              //   status: true,
+              //   textColor: "green",
+              //   message: "Payment successful!",
+              // });
               setLoading(false);
+              setShowModal(true);
             } else {
               console.error("Data consoled false - chekc this");
               setLoading(false);
@@ -358,7 +372,7 @@ const SubscriptionDetail: React.FC = () => {
   };
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -373,7 +387,7 @@ const SubscriptionDetail: React.FC = () => {
             <h1 className="subscription-detail-price">
               {"₹ " +
                 (upgradeInfo?.totalPackageValue != undefined
-                  ? upgradeInfo?.totalPackageValue + "/Month"
+                  ? upgradeInfo?.totalPackageValue
                   : "0")}
             </h1>
 
@@ -384,7 +398,9 @@ const SubscriptionDetail: React.FC = () => {
                     " Base" +
                     " + " +
                     "₹" +
-                    selectPackage?.refPkgAmount * (Number(gstInfo?.refCGST)/100 + Number(gstInfo?.refSGST)/100) +
+                    selectPackage?.refPkgAmount *
+                      (Number(gstInfo?.refCGST) / 100 +
+                        Number(gstInfo?.refSGST) / 100) +
                     "GST"
                   : "0")}
             </p>
@@ -424,7 +440,70 @@ const SubscriptionDetail: React.FC = () => {
             </table>
           </>
         ) : (
-          <></>
+          <>
+            <h1
+              className="subscription-detail-price"
+              style={{ display: "flex", flexDirection: "row", gap: "1.5rem" }}
+            >
+              <s>{"₹ " +
+                (upgradeInfo?.totalPackage != undefined
+                  ? upgradeInfo?.totalPackage
+                  : "0")}</s>
+              <span>
+                {"₹ " +
+                  (upgradeInfo?.totalPackageValue != undefined
+                    ? upgradeInfo?.totalPackageValue
+                    : "0")}
+              </span>
+            </h1>
+
+            <p style={{ fontStyle: "italic" }}>
+              {`₹${
+                (upgradeInfo?.newPackage_amount ?? 0) -
+                (upgradeInfo?.minus_amount ?? 0)
+              } Base + ₹${(
+                (upgradeInfo?.newPackage_cgst ?? 0) +
+                (upgradeInfo?.newPackage_sgst ?? 0) -
+                (upgradeInfo?.minus_cgst ?? 0) -
+                (upgradeInfo?.minus_sgst ?? 0)
+              ).toFixed(2)} GST`}
+            </p>
+
+            <table className="subscription-detail-table">
+              <tbody>
+                <tr>
+                  <td>Plan Type</td>
+                  <td>{selectPackage?.refPkgName}</td>
+                </tr>
+                <tr>
+                  <td>Description</td>
+                  <td>{selectPackage?.refPkgDescription}</td>
+                </tr>
+                <tr>
+                  <td>Plan Validity</td>
+                  <td>{selectPackage?.refPkgValidDays} days</td>
+                </tr>
+                <tr>
+                  <td>Valid Members</td>
+                  <td>{selectPackage?.refPkgValidMembers}</td>
+                </tr>
+                <tr>
+                  <td>Start Date</td>
+                  <td>{new Date().toISOString().split("T")[0]}</td>
+                </tr>
+                <tr>
+                  <td>Expiry Date</td>
+                  <td>
+                    {selectPackage?.refPkgValidDays &&
+                      addDaysToDate(
+                        new Date().toLocaleDateString(),
+                        selectPackage?.refPkgValidDays
+                      )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
         )}
       </IonContent>
 
@@ -448,6 +527,36 @@ const SubscriptionDetail: React.FC = () => {
         </div>
       </IonFooter>
 
+      <IonModal
+          isOpen={showModal}
+          onDidDismiss={() => setShowModal(false)}
+          className="half-screen-modal"
+        >
+          <div className="modalContent">
+            <div className="lottie-container">
+              <Lottie
+                animationData={tickAnimation}
+                loop={false}
+                style={{ width: 150, height: 150 }}
+                onComplete={() => setTimeout(() => {
+                  history.replace("/subscriptionPlans", {refreshPage: true});
+                  setShowModal(false);
+                }, 1000)}
+              />
+            </div>
+            <p
+              style={{
+                fontWeight: "700",
+                fontSize: "x-large",
+                marginTop: "0%",
+              }}
+            >
+              {" "}
+              {"Payment Successful"}
+            </p>
+          </div>
+        </IonModal>
+
       <Toast
         isOpen={toastOpen.status}
         message={toastOpen.message}
@@ -455,9 +564,11 @@ const SubscriptionDetail: React.FC = () => {
         duration={1000}
         onClose={() => {
           setToastOpen({ status: false, message: "", textColor: "black" }),
-            history.replace("/transactionHistory");
+            history.replace("/transactionHistory", {refreshPage: true});
         }}
       />
+
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

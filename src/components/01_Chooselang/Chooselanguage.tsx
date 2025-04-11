@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Chooselanguage.css";
 
-import logo from "../../assets/images/Splashscreen/logo.png";
+import logo from "../../assets/images/Icons/Medpredit Icon.png";
 
 import tamil from "../../assets/images/Chooselanguage/Tamil1.png";
 import english from "../../assets/images/Chooselanguage/English.png";
@@ -48,7 +48,11 @@ const Chooselanguage: React.FC = () => {
         <div className="ionContentsLoginScreen">
           {/* Centered content */}
           <div className="language-container">
-            <p className="text">{t("chooseLanguage.language")}</p>
+            <div className="pageLanguage-logo">
+              <img src={logo} />
+              <h2>{t("chooseLanguage.subtitle")}</h2>
+            </div>
+            {/* <p className="text">{t("chooseLanguage.language")}</p> */}
             <div className="card">
               {categories.map((category) => (
                 <div
@@ -79,10 +83,17 @@ const Chooselanguage: React.FC = () => {
 
           {/* Button at the bottom */}
           <div className="button-container">
-            <button onClick={() => history.push("/login", {
-              direction: "forward",
-              animation: "slide",
-            })} className="select-button">{t("chooseLanguage.select")}</button>
+            <button
+              onClick={() =>
+                history.push("/login", {
+                  direction: "forward",
+                  animation: "slide",
+                })
+              }
+              className="select-button"
+            >
+              {t("chooseLanguage.select")}
+            </button>
           </div>
         </div>
       </IonContent>
