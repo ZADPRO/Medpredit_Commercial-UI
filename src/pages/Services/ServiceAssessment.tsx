@@ -26,7 +26,7 @@ import dietary_banner from "../../assets/images/Services/Dietary_Banner.png";
 import crown from "../../assets/images/Icons/Premium Crown.png";
 import axios from "axios";
 import decrypt from "../../helper";
-import { ScoreVerify } from "../../ScoreVerify";
+import { ScoreVerify } from "../../ScoreVerify/ScoreVerify";
 import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
 
 interface UserInfo {
@@ -35,7 +35,6 @@ interface UserInfo {
   refUserMobileno: number;
   refUserFname: string;
   refUserLname?: string;
-  refGender: string;
 }
 
 interface Category {
@@ -55,10 +54,19 @@ interface UserSubscriptionInfo{
 const ServiceAssessment: React.FC = () => {
   const history = useHistory();
   const location = useLocation() as { state: { getCategory?: boolean } };
-    const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const userDetails = localStorage.getItem("userDetails");
+
+  const userDeatilsObj = userDetails
+    ? JSON.parse(userDetails)
+    : { userId: null, userCustId: null, phNumber: null, firstName: null, lastName: null };
+
+    
+  const headStatus = localStorage.getItem("headStatus") || "false";
 
   const [subscriptionData, setSubscriptionData] = useState<UserSubscriptionInfo>();
-  const [freeAssessmentCount, setFreeAssesmentCount] = useState<number>();
+  const [freeAssessmentCount, setFreeAssesmentCount] = useState<number>(0);
 
   const { serviceId } = useParams<{
         serviceId: string;
@@ -109,6 +117,7 @@ const ServiceAssessment: React.FC = () => {
       title: "Physical Activity",
       subTitle: "Evaluate your daily movement and exercise habits.",
       image: physical_banner,
+      priority: "Low",
       points: [
         "Engage in at least 30 minutes of exercise daily.",
         "Incorporate stretching and strength training into your routine.",
@@ -123,6 +132,7 @@ const ServiceAssessment: React.FC = () => {
       subTitle:
         "Understand how stress impacts your well-being and ways to manage it.",
       image: stress_banner,
+      priority: "High",
       points: [
         "Practice deep breathing or meditation for relaxation.",
         "Maintain a balanced work-life schedule.",
@@ -136,6 +146,7 @@ const ServiceAssessment: React.FC = () => {
       title: "Tobacco",
       subTitle: "Review your tobacco use and explore healthier alternatives.",
       image: tobacco_banner,
+      priority: "High",
       points: [
         "Understand the health risks of smoking and tobacco use.",
         "Explore nicotine replacement therapies if needed.",
@@ -150,6 +161,7 @@ const ServiceAssessment: React.FC = () => {
       subTitle:
         "Assess your alcohol consumption and its effects on your health.",
       image: alcohol_banner,
+      priority: "High",
       points: [
         "Limit alcohol intake to recommended guidelines.",
         "Be aware of the long-term health effects of excessive drinking.",
@@ -163,6 +175,7 @@ const ServiceAssessment: React.FC = () => {
       title: "Dietary",
       subTitle: "Evaluate your eating habits and improve nutrition.",
       image: dietary_banner,
+      priority: "Low",
       points: [
         "Consume a balanced diet with fruits, vegetables, and lean proteins.",
         "Limit processed and high-sugar foods.",
@@ -177,6 +190,7 @@ const ServiceAssessment: React.FC = () => {
       subTitle:
         "Understand your Body Mass Index (BMI) and its impact on health.",
       image: bmi_banner,
+      priority: "Low",
       points: [
         "Maintain a healthy weight through a balanced diet and exercise.",
         "Monitor your BMI regularly to track progress.",
@@ -190,6 +204,7 @@ const ServiceAssessment: React.FC = () => {
       title: "Sleep",
       subTitle: "Analyze your sleep patterns and improve rest quality.",
       image: sleep_banner,
+      priority: "High",
       points: [
         "Aim for 7-9 hours of sleep per night.",
         "Maintain a consistent sleep schedule, even on weekends.",
@@ -203,6 +218,7 @@ const ServiceAssessment: React.FC = () => {
       title: "Family History",
       subTitle: "Identify hereditary health risks and preventive measures.",
       image: family_banner,
+      priority: "Low",
       points: [
         "Be aware of family history-related health conditions.",
         "Schedule regular health screenings and check-ups.",
@@ -300,7 +316,7 @@ const ServiceAssessment: React.FC = () => {
         
         axios
           .post(
-            `${import.meta.env.VITE_API_URL}/getCategory `,
+            `${import.meta.env.VITE_API_URL}/getCategory`,
             {
               SubCategoryId: "4", //Risk Factor
               patientId: userId.toString(),
@@ -322,7 +338,20 @@ const ServiceAssessment: React.FC = () => {
             );
             console.log(data);
             setCategories(data.data);
-            setFreeAssesmentCount(data.AssessmentTakenNo[0].assessmenttakenno);
+            setSubscriptionData({
+              packageStatus: data.checkSubscriptions.length > 0 ? true : false, 
+              packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
+            });
+            
+            servicesDetails.find((item) => item.serviceId === Number(serviceId))
+              ?.priority === "High"
+              ? setFreeAssesmentCount(
+                  data.isHigherQuestion[0].assessmenttakenno
+                )
+              : setFreeAssesmentCount(
+                  data.isLowerQuestion[0].assessmenttakenno
+                );
+
             const tempCategory = data.data.find((item: Category) => item.refQCategoryId === Number(serviceId)) || null;
             setSelectedCategory(tempCategory);
             setLoading(false);
@@ -356,7 +385,7 @@ console.log(loading);
 
         axios
           .post(
-            `${import.meta.env.VITE_API_URL}/getPatientData`,
+            `${import.meta.env.VITE_API_COMMERCIAL_URL}/getFamilyMembers`,
             {
               mobileNumber: userDeatilsObj.phNumber,
             },
@@ -379,14 +408,15 @@ console.log(loading);
             // setLoadingStatus(false);
 
             if (data.status) {
-              setUserData(data.data);
+              
+              setUserData(data.familyMembers);
               // setSelectedUser(data.data[0].refUserId)
               setSelectedUser(tokenObject.userId);
 
-              setSubscriptionData({
-                packageStatus: data.packageStatus ?? false, 
-                packageData: Array.isArray(data.packageData) ? data.packageData : []
-              });
+              // setSubscriptionData({
+              //   packageStatus: data.checkSubscriptions.length > 0 ? true : false, 
+              //   packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
+              // });
               //   if (data.data.length === 0) {
               //     setStatus({
               //       status: true,
@@ -413,7 +443,20 @@ console.log(loading);
 
   useEffect(() => {
     setLoading(true);
-    searchPatient();
+    if (headStatus == "true") {
+      searchPatient();
+    } else {
+      setUserData([
+        {
+          refUserId: userDeatilsObj.userId,
+          refUserCustId: userDeatilsObj.userCustId,
+          refUserMobileno: userDeatilsObj.phNumber,
+          refUserFname: userDeatilsObj.firstName,
+          refUserLname: userDeatilsObj.lastName,
+        },
+      ]);
+      setSelectedUser(userDeatilsObj.userId);
+    }
   }, []);
 
   useEffect(() => {
@@ -435,7 +478,7 @@ console.log(loading);
   // console.log("servicesDetails.find((item) => item.title === title)?.serviceId ", servicesDetails.find((item) => item.title === title)?.serviceId );
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -454,6 +497,15 @@ console.log(loading);
         {/* <div className="medpredit_serviceAssess"> */}
 
         <div className="serviceAssess_content">
+          {/* {subscriptionData?.packageStatus == false ? (
+            <div className="serviceAssess_content_free">
+              <span>
+                Free Assessment: <b>{freeAssessmentCount > 0 ? 1 : 0  + "/" + 1}</b>
+              </span>
+            </div>
+          ) : (
+            <></>
+          )} */}
           <div className="serviceAssess_content_member">
             {userData.map((item) => {
               const shortName =
@@ -541,11 +593,39 @@ console.log(loading);
                   />
                 )}
               </div>
+              <u
+                onClick={() =>
+                  history.push({
+                    pathname: "/reports",
+                    state: {
+                      selectedUser: selectedUser,
+                      selectedUserInfo: userData.find(item => item.refUserId == selectedUser)
+                    },
+                  })
+                }
+              >
+                View Report
+              </u>
             </div>
           ) : (
             <></>
           )}
 
+          {serviceValidity && (
+            <span
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: "bold",
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "1rem",
+                color: "#00a184"
+              }}
+            >
+              This Assessment Score Remains Active For{" "}
+              {getValidity(Number(serviceId))} Days.
+            </span>
+          )}
           {/* <h1>
             {
               servicesDetails.find((item) => item.serviceId === serviceId)
@@ -597,7 +677,7 @@ console.log(loading);
         )} */}
         {serviceValidity == false &&
           (subscriptionData?.packageStatus == false &&
-          ((Number(freeAssessmentCount) || 0) >= 2) ? (
+          (Number(freeAssessmentCount) || 0) >= 1 ? (
             <IonToolbar className="cus-ion-toolbar-premium">
               <div
                 onClick={() =>

@@ -40,6 +40,7 @@ import { StatusBar, Style } from "@capacitor/status-bar";
 import { Capacitor } from "@capacitor/core";
 import ManageFamily from "../../components/32_ManageFamilyMembers/ManageFamily";
 import SubscriptionDetail from "../Subscription/SubscriptionDetail";
+import LinkFamilyMember from "../../components/32_ManageFamilyMembers/LinkFamilyMember";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -160,6 +161,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/addFamilyMember">
           <AddFamilyMember />
+        </Route>
+        <Route path="/linkFamilyMember">
+          <LinkFamilyMember/>
         </Route>
         <Route path="/about">
           <About />

@@ -1,0 +1,23 @@
+.scoreSlider{
+    width: 100%;
+}
+
+.scoreSlider>.p-slider{
+    background: linear-gradient(90deg, rgba(29,208,0,1) 0%, rgba(255,244,0,1) 50%, rgba(255,0,0,1) 100%);
+}
+
+.scoreSlider>.p-slider>.p-slider-range{
+    background: transparent;
+}
+
+.scoreSlider>.p-slider>.p-slider-handle{
+    border: 1.9px solid white;
+    background-color: #0c436c;
+    height: 0.5rem;
+    width: 0.5rem;
+}
+
+.scoreSlider>.p-slider.p-slider-horizontal .p-slider-handle {
+    margin-top: -0.265rem;
+    margin-left: -0.265rem;
+}

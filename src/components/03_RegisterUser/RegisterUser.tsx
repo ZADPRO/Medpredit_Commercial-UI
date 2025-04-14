@@ -113,7 +113,35 @@ const RegisterUser = () => {
       });
       return false;
     }
+    
+    if (!/[a-zA-Z]/.test(formData.refUserPassword)) {
+      setToastOpen({
+        status: true,
+        message: "Password must contain at least one letter.",
+        textColor: "red",
+      });
+      return false;
+    }
+    
+    if (!/\d/.test(formData.refUserPassword)) {
+      setToastOpen({
+        status: true,
+        message: "Password must contain at least one digit.",
+        textColor: "red",
+      });
+      return false;
+    }
+    
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.refUserPassword)) {
+      setToastOpen({
+        status: true,
+        message: "Password must contain at least one special character.",
+        textColor: "red",
+      });
+      return false;
+    }
 
+    
     if (formData.refUserPassword.length < 8) {
       setToastOpen({
         status: true,
@@ -320,7 +348,178 @@ const RegisterUser = () => {
                 value={formData.refUserPassword}
                 required
                 onChange={handleInputChange}
+                feedback={false}
               />
+            <div
+              className="inputBox"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                fontWeight: "600",
+              }}
+            >
+              <div
+                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+              >
+                {/[a-zA-Z]/.test(formData.refUserPassword) ? (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-check"
+                    ></i>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "red",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-times"
+                    ></i>
+                  </div>
+                )}
+                &nbsp; Atleast One Character
+              </div>
+              <div
+                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+              >
+                {/\d/.test(formData.refUserPassword) ? (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-check"
+                    ></i>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "red",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-times"
+                    ></i>
+                  </div>
+                )}
+                &nbsp; Atleast One Number
+              </div>
+              <div
+                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+              >
+                {/[!@#$%^&*(),.?":{}|<>]/.test(formData.refUserPassword) ? (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-check"
+                    ></i>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "red",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-times"
+                    ></i>
+                  </div>
+                )}
+                &nbsp; Atleast One Special Character
+              </div>
+              <div
+                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+              >
+                {formData.refUserPassword.length > 7 ? (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-check"
+                    ></i>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "red",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-times"
+                    ></i>
+                  </div>
+                )}
+                &nbsp; Minimum 8 Characters
+              </div>
+            </div>
             </div>
 
             <div className="registerUserFields">
@@ -336,7 +535,47 @@ const RegisterUser = () => {
                 feedback={false}
               />
             </div>
-
+            <div
+                style={{ display: "flex", alignItems: "center", fontSize: "1rem", color: "#45474b" }}
+              >
+                {formData.refUserPassword === formData.refUserConPassword &&
+                formData.refUserPassword.length > 0 ? (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-check"
+                    ></i>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "red",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-times"
+                    ></i>
+                  </div>
+                )}
+                &nbsp; Confirm Password
+              </div>
             <div
               style={{
                 fontSize: "0.8rem",
@@ -353,7 +592,7 @@ const RegisterUser = () => {
                 {t("Register User.I've read and agree with the")}{" "}
                 <span
                   style={{ color: "var(--med-dark-green)", fontWeight: "bold" }}
-                  onClick={() => history.push("/termsandprivacy")}
+                  onClick={() => {history.push("/termsandprivacy"); setChecked(true)}}
                 >
                   {t(
                     "Register User.Terms and Conditions and the Privacy Policy"

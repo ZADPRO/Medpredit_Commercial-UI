@@ -4,6 +4,7 @@ import {
   IonContent,
   IonFab,
   IonFabButton,
+  IonFabList,
   IonHeader,
   IonIcon,
   IonPage,
@@ -12,7 +13,7 @@ import {
   useIonAlert,
 } from "@ionic/react";
 import axios from "axios";
-import { addOutline, chevronBack, peopleOutline } from "ionicons/icons";
+import { addOutline, chevronBack, peopleOutline, unlink } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import profileImg from "../../assets/images/Icons/ProfileIcon.png";
 import decrypt from "../../helper";
@@ -25,6 +26,9 @@ import { useHistory, useLocation } from "react-router";
 import crownimg from "../../assets/images/Icons/Crown.svg";
 import familyImage from "../../assets/images/Manage Family/family.png";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
+import { ToggleButton, ToggleButtonChangeEvent } from "primereact/togglebutton";
+import { InputSwitch, InputSwitchChangeEvent } from "primereact/inputswitch";
+import Toast from "../CustomIonToast/CustomIonToast";
 
 interface UserInfo {
   activeStatus: string;
@@ -39,6 +43,7 @@ interface UserInfo {
   refDOB: string;
   refEducation: string;
   refOccupationLvl: string;
+  refRId: number;
   refSector: string
   refAddress: string;
   refDistrict: string;
@@ -58,7 +63,8 @@ const ManageFamily: React.FC = () => {
   const history = useHistory();
   const location = useLocation() as { state: { refreshFamily?: boolean } };
   const [loading, setLoading] = useState<boolean>(false);
-  
+  const [toastOpen, setToastOpen] = useState({ status: false, message: "", textColor: "black" });
+
   const [presentAlert] = useIonAlert();
   
   const searchPatient = () => {
@@ -78,7 +84,7 @@ const ManageFamily: React.FC = () => {
 
         axios
           .post(
-            `${import.meta.env.VITE_API_URL}/getPatientData`,
+            `${import.meta.env.VITE_API_COMMERCIAL_URL}/getFamilyMembers`,
             {
               mobileNumber: userDeatilsObj.phNumber,
             },
@@ -101,11 +107,11 @@ const ManageFamily: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
-              setPrimaryUser(data.data.find((item: any) => item.headStatus == "true"));
-              setUserData(data.data.filter((item: any) => item.headStatus != "true"));
+              setPrimaryUser(data.familyMembers.find((item: any) => item.headStatus == "true"));
+              setUserData(data.familyMembers.filter((item: any) => item.headStatus != "true"));
               setSubscriptionData({
-                packageStatus: data.packageStatus ?? false, 
-                packageData: Array.isArray(data.packageData) ? data.packageData : []
+                packageStatus: data.checkSubscriptions.length > 0 ? true : false, 
+                packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
               });
               setLoading(false);
             } else {
@@ -125,7 +131,60 @@ const ManageFamily: React.FC = () => {
       console.error("No token found in localStorage.");
     }
   };
-  
+
+  const UnLinkMember = (conPassword: string, userIndex: number) => {
+    const tokenString = localStorage.getItem("userDetails");
+    // console.log(conPassword, userIndex);
+    if (tokenString) {
+      setLoading(true);
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
+        axios
+          .post(
+            `${import.meta.env.VITE_API_COMMERCIAL_URL}/unlinkFamilyMember`,
+            {
+              refRelationId: userData[userIndex].refRId,
+              password: conPassword,
+              headMobileNumber: tokenObject.phNumber,
+            },
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+
+            console.log(data);
+
+            // setLoadingStatus(false);
+
+            if (data.status) {
+              setToastOpen({ status: true, textColor: "green", message: `Unlinked ${userData[userIndex].refUserFname + " " + userData[userIndex].refUserLname} Successfully`});
+              setTimeout(() => {
+                window.location.reload();
+              }, 1500);
+            } else {
+              setLoading(false);
+              setToastOpen({ status: true, textColor: "red", message: `${data.message}`});
+              console.error("Data consoled false - chekc this");
+            }
+          })
+      } catch (error) {
+        setLoading(false);
+        setToastOpen({ status: true, textColor: "red", message: "Unexpected Error!!"});
+        console.error("Error parsing token:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     searchPatient();
   }, []);
@@ -256,24 +315,78 @@ console.log(subscriptionData);
                     }
                   >
                     <div className="manage-family-content">
-                      <span style={{ fontWeight: "bold", fontSize: "0.6rem" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
                         <span
-                          style={{
-                            color:
-                              item.activeStatus.toLowerCase() === "active"
-                                ? "green"
-                                : "red",
-                          }}
+                          style={{ fontWeight: "bold", fontSize: "0.6rem" }}
                         >
-                          {item.activeStatus.toUpperCase()}
+                          <span
+                            style={{
+                              color:
+                                item.activeStatus.toLowerCase() === "active"
+                                  ? "green"
+                                  : "red",
+                            }}
+                          >
+                            {item.activeStatus.toUpperCase()}
+                          </span>
+                          {item.activeStatus.toLowerCase() === "active" &&
+                          item.createdAt
+                            ? `: ${new Date(item.createdAt).toLocaleDateString(
+                                "en-gb"
+                              )}`
+                            : ""}
                         </span>
-                        {item.activeStatus.toLowerCase() === "active" &&
-                        item.createdAt
-                          ? `: ${new Date(item.createdAt).toLocaleDateString(
-                              "en-gb"
-                            )}`
-                          : ""}
-                      </span>
+
+                        <button
+                          className="manage-family-content-unlink"
+                          onClick={() =>
+                            presentAlert({
+                              header: "Unlink Family Member",
+                              message:
+                                "Enter your password to confirm unlinking",
+                              inputs: [
+                                {
+                                  name: "password",
+                                  type: "password",
+                                  placeholder: "Password",
+                                },
+                              ],
+                              buttons: [
+                                {
+                                  text: "Cancel",
+                                  role: "cancel",
+                                  cssClass: "close-button",
+                                },
+                                {
+                                  text: "Yes",
+                                  handler: (alertData) => {
+                                    if (
+                                      !alertData.password ||
+                                      alertData.password.trim() === ""
+                                    ) {
+                                      presentAlert({
+                                        message: "Password is required.",
+                                        buttons: ["OK"],
+                                      });
+                                      return false; // prevent closing the alert
+                                    }
+                                    UnLinkMember(alertData.password, index);
+                                    return true;
+                                  },
+                                },
+                              ],
+                            })
+                          }
+                        >
+                          Unlink
+                        </button>
+                      </div>
 
                       <div className="manage-family-container">
                         <table className="manage-family-table">
@@ -306,7 +419,7 @@ console.log(subscriptionData);
                                 {item.refSector + " & " + item.refOccupationLvl}
                               </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                               <td>Address:</td>
                               <td>
                                 {item.refAddress +
@@ -315,7 +428,7 @@ console.log(subscriptionData);
                                   " - " +
                                   item.refPincode}
                               </td>
-                            </tr>
+                            </tr> */}
                           </tbody>
                         </table>
                       </div>
@@ -334,9 +447,42 @@ console.log(subscriptionData);
           {subscriptionData?.packageStatus == true &&
           subscriptionData?.packageData[0].refPkgValidMembers >
             userData.length + (primaryUser != undefined ? 1 : 0) ? (
-            <IonFabButton onClick={() => history.push("/addFamilyMember")}>
-              <IonIcon icon={addOutline}></IonIcon>
-            </IonFabButton>
+            <>
+              <IonFabButton>
+                <IonIcon icon={addOutline}></IonIcon>
+              </IonFabButton>
+              <IonFabList side="start">
+                <IonFabButton onClick={() => history.push("/addFamilyMember")}>
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    Add
+                  </span>
+                </IonFabButton>
+                <IonFabButton
+                  onClick={() =>
+                    history.push({
+                      pathname: "/linkFamilyMember",
+                      state: { familyMembers: userData },
+                    })
+                  }
+                >
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      fontWeight: "bold",
+                      color: "white",
+                    }}
+                  >
+                    Link
+                  </span>
+                </IonFabButton>
+              </IonFabList>
+            </>
           ) : (
             <IonFabButton
               onClick={() =>
@@ -364,6 +510,16 @@ console.log(subscriptionData);
         </IonFab>
       </IonContent>
       <CustomIonLoading isOpen={loading} />
+
+      <Toast
+        isOpen={toastOpen.status}
+        message={toastOpen.message}
+        textColor={toastOpen.textColor}
+        onClose={() =>
+          setToastOpen({ status: false, message: "", textColor: "black" })
+        }
+      />
+
     </IonPage>
   );
 };

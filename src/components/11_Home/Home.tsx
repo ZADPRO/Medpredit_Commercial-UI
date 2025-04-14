@@ -41,7 +41,7 @@ import carousel3 from "../../assets/images/Home/BANNER3.jpg";
 import carousel4 from "../../assets/images/Home/BANNER4.jpg";
 import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { motion } from "framer-motion";
 import alcohol from "../../assets/images/Services/alchohol.png";
 import physical from "../../assets/images/Services/physical-activities.png";
@@ -63,10 +63,13 @@ import riskImage from "../../assets/images/Home/risk.svg";
 import personAdd from "../../assets/images/Icons/PersonAdd.png";
 import personEdit from "../../assets/images/Icons/PersonEdit.png";
 import { StatusBar } from "@capacitor/status-bar";
+import axios from "axios";
+import decrypt from "../../helper";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 const Home: React.FC = () => {
   const history = useHistory();
-
+  const location = useLocation();
   const userDetails = localStorage.getItem("userDetails");
 
   const userDeatilsObj = userDetails
@@ -74,6 +77,8 @@ const Home: React.FC = () => {
     : { firstName: null, lastName: null };
 
   console.log(userDeatilsObj);
+
+  const headStatus = localStorage.getItem("headStatus") || "false";
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -85,7 +90,14 @@ const Home: React.FC = () => {
     // Update StatusBar color dynamically
     StatusBar.setBackgroundColor({ color: scrollTop > 20 ? "#f3f3f3" : "#f8fff5" });
   };
-  
+
+  const [packages, setPackages] = useState<any>([]); 
+
+  const [freeAssessment, setFreeAssessment] = useState({
+    higherCount: 0,
+    lowerCount: 0
+  });
+
   const services = [
     {
       serviceId: 9,
@@ -95,17 +107,17 @@ const Home: React.FC = () => {
       path: "/serviceAssessment",
     },
     {
-      serviceId: 8,
-      title: "Physical Activity",
-      subtitle: "Boost Health with Regular Physical Activities",
-      image: physical,
-      path: "/serviceAssessment",
-    },
-    {
       serviceId: 11,
       title: "Alcohol",
       subtitle: "Limit Alcohol for Better Health and Wellness",
       image: alcohol,
+      path: "/serviceAssessment",
+    },
+    {
+      serviceId: 43,
+      title: "Sleep",
+      subtitle: "Improve Sleep for Better Physical and Mental Health",
+      image: sleep,
       path: "/serviceAssessment",
     },
     {
@@ -130,10 +142,10 @@ const Home: React.FC = () => {
       path: "/serviceAssessment",
     },
     {
-      serviceId: 43,
-      title: "Sleep",
-      subtitle: "Improve Sleep for Better Physical and Mental Health",
-      image: sleep,
+      serviceId: 8,
+      title: "Physical Activity",
+      subtitle: "Boost Health with Regular Physical Activities",
+      image: physical,
       path: "/serviceAssessment",
     },
     {
@@ -145,6 +157,7 @@ const Home: React.FC = () => {
     },
   ];
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [showAll, setShowAll] = useState(false);
   const visibleServices = showAll ? services : services.slice(0, 4);
 
@@ -161,6 +174,7 @@ const Home: React.FC = () => {
       setTimeout(() => setRenderAll(false), 500);
     }
   };
+
   const plans = [
     {
       title: "Intro",
@@ -214,57 +228,153 @@ const Home: React.FC = () => {
   ];
   
 
+  const getPackage = () => {
+    const tokenString = localStorage.getItem("userDetails");
+    if (tokenString) {
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
+  
+        console.log(token)
+        axios
+          .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`, {
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+            console.log(data);
+            if (data.status) {
+              let tempPackages = data.result.sort((a: any, b: any) => a.refPkgValidMembers - b.refPkgValidMembers);
+
+              tempPackages = tempPackages.slice(0,3);
+
+              tempPackages = [tempPackages[0], tempPackages[2], tempPackages[1]];     // Rearrange the package list for UI
+              setPackages(tempPackages);
+              
+              // setSubscriptionData({
+              //   packageStatus: data.packageStatus ?? false, 
+              //   packageData: Array.isArray(data.packageData) ? data.packageData : []
+              // });
+            setLoading(false);
+            } else {
+              console.error("Data consoled false - chekc this");
+              setLoading(false);
+            }
+          });
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    }
+  };
+
+  const getHomeDetails = () => {
+    const tokenString = localStorage.getItem("userDetails");
+    if (tokenString) {
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
+        axios
+          .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getdashboard`, {
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+            console.log(data);
+            if (data.status) {
+              localStorage.setItem(
+                "subValid",
+                data.checkSubscriptions.length > 0 ? "true" : "false"
+              );
+              setFreeAssessment({
+                higherCount: Number(data.isHigherQuestion[0].assessmenttakenno),
+                lowerCount: Number(data.isLowerQuestion[0].assessmenttakenno)
+              })
+            }
+            setLoading(false);
+          })
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getPackage();
+    getHomeDetails();
+  }, []);
+
+  useEffect(() => {
+    getHomeDetails();
+  }, [location.state]);
+
+  console.log(packages);
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
-  <div className="home-top">
-    <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
-      <div className="home-top-bar-greetings">
-        <span style={{ fontSize: "0.8rem" }}>Hi,</span>
-        <h2 style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}>
-          {userDeatilsObj.firstName}
-        </h2>
-      </div>
-      <div className="home-top-bar-icons">
-        <IonIcon
-          onClick={() =>
-            history.push("/reports", {
-              direction: "forward",
-              animation: "slide",
-            })
-          }
-          icon={newspaperOutline}
-        />
-        <IonIcon icon={notificationsOutline} />
-        <IonIcon
-          onClick={() =>
-            history.push("/profile", {
-              direction: "forward",
-              animation: "slide",
-            })
-          }
-          icon={personOutline}
-        />
-      </div>
-    </div>
-  </div>
-</IonHeader>
+        <div className="home-top">
+          <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
+            <div className="home-top-bar-greetings">
+              <span style={{ fontSize: "0.8rem" }}>Hi,</span>
+              <h2
+                style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
+              >
+                {userDeatilsObj.firstName}
+              </h2>
+            </div>
+            <div className="home-top-bar-icons">
+              <IonIcon
+                onClick={() =>
+                  history.push("/reports", {
+                    direction: "forward",
+                    animation: "slide",
+                  })
+                }
+                icon={newspaperOutline}
+              />
+              <IonIcon icon={notificationsOutline} />
+              <IonIcon
+                onClick={() =>
+                  history.push("/profile", {
+                    direction: "forward",
+                    animation: "slide",
+                  })
+                }
+                icon={personOutline}
+              />
+            </div>
+          </div>
+        </div>
+      </IonHeader>
 
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>
         <div className="medpredit_home">
-        <div className="home-search-bar">
-              <input
-                className="home-search-input"
-                placeholder="Search Service"
-              />
-              <div
-                style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
-              >
-                <button className="home-search-button">
-                  <IonIcon icon={search}></IonIcon>
-                </button>
-              </div>
+          <div className="home-search-bar">
+            <input className="home-search-input" placeholder="Search Service" />
+            <div
+              style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
+            >
+              <button className="home-search-button">
+                <IonIcon icon={search}></IonIcon>
+              </button>
             </div>
+          </div>
 
           <div className="home-carousel">
             <Carousel
@@ -278,13 +388,22 @@ const Home: React.FC = () => {
               preventMovementUntilSwipeScrollTolerance
               swipeScrollTolerance={50}
             >
-              <div className="carouselDiv" onClick={() =>history.push("/reports")}>
+              <div
+                className="carouselDiv"
+                onClick={() => history.push("/reports")}
+              >
                 <img src={carousel1} className="carousel-image" />
               </div>
-              <div className="carouselDiv" onClick={() => history.push("/serviceAssessment/9")}>
+              <div
+                className="carouselDiv"
+                onClick={() => history.push("/serviceAssessment/9")}
+              >
                 <img src={carousel2} className="carousel-image" />
               </div>
-              <div className="carouselDiv" onClick={() =>history.push("/manageFamily")}>
+              <div
+                className="carouselDiv"
+                onClick={() => (headStatus == "true" && history.push("/manageFamily"))}
+              >
                 <img src={carousel3} className="carousel-image" />
               </div>
               <div className="carouselDiv">
@@ -329,41 +448,110 @@ const Home: React.FC = () => {
               <IonGrid className="home-custom-grid">
                 <motion.div
                   initial={{ height: "auto" }}
-                  animate={{ height: showAll ? "auto" : "12rem" }} // Adjust for 4 items
+                  animate={{ height: showAll ? "auto" : "16rem" }} // Adjust for 4 items
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   style={{ overflow: "hidden" }}
                 >
-                  <IonRow>
-                    {(renderAll ? services : services.slice(0, 4)).map(
-                      (card, index) => (
-                        <IonCol size="6" key={index} className="home-card-col">
-                          <IonCard
-                            className="home-custom-card"
-                            onClick={() =>
-                              history.push(card.path+`/${card.serviceId}`)
-                            }
-                          >
-                            <div className="home-card-content">
-                              <IonCardHeader className="home-card-header">
-                                <IonCardTitle className="home-card-title">
-                                  {card.title}
-                                </IonCardTitle>
-                              </IonCardHeader>
-                              <IonCardContent className="home-card-subtitle">
-                                {card.subtitle}
-                              </IonCardContent>
-                            </div>
-                            <div className="home-card-image-container">
-                              <img
-                                src={card.image}
-                                alt="Card Image"
-                                className="home-card-image"
-                              />
-                            </div>
-                          </IonCard>
-                        </IonCol>
-                      )
+                  <div className="home-pricing">
+                    <Divider style={{ margin: "0" }} align="center">
+                      <div className="inline-flex align-items-center">
+                        <b className="home-services-category-title">
+                          Comprehensive Care
+                        </b>
+                      </div>
+                    </Divider>
+                    {localStorage.getItem("subValid") == "false" && (
+                      <p
+                        style={{
+                          marginTop: "0",
+                          fontSize: "0.65rem",
+                          textAlign: "center",
+                        }}
+                      >
+                        Free Assesstment Taken: {freeAssessment.higherCount > 0 ? 1 : 0 }/1
+                      </p>
                     )}
+                  </div>
+                  <IonRow>
+                    {services.slice(0, 4).map((card, index) => (
+                      <IonCol size="6" key={index} className="home-card-col">
+                        <IonCard
+                          className="home-custom-card"
+                          onClick={() =>
+                            history.push(card.path + `/${card.serviceId}`)
+                          }
+                        >
+                          <div className="home-card-content">
+                            <IonCardHeader className="home-card-header">
+                              <IonCardTitle className="home-card-title">
+                                {card.title}
+                              </IonCardTitle>
+                            </IonCardHeader>
+                            <IonCardContent className="home-card-subtitle">
+                              {card.subtitle}
+                            </IonCardContent>
+                          </div>
+                          <div className="home-card-image-container">
+                            <img
+                              src={card.image}
+                              alt="Card Image"
+                              className="home-card-image"
+                            />
+                          </div>
+                        </IonCard>
+                      </IonCol>
+                    ))}
+                  </IonRow>
+                  <div style={{ marginTop: "1rem" }} />
+                  <div className="home-pricing">
+                    <Divider style={{ margin: "0" }} align="center">
+                      <div className="inline-flex align-items-center">
+                        <b className="home-services-category-title">
+                          Basic Care
+                        </b>
+                      </div>
+                    </Divider>
+                    {localStorage.getItem("subValid") == "false" && (
+                      <p
+                        style={{
+                          marginTop: "0",
+                          fontSize: "0.65rem",
+                          textAlign: "center",
+                        }}
+                      >
+                        Free Assesstment Taken: {freeAssessment.lowerCount > 0 ? 1: 0}/1
+                      </p>
+                    )}
+                  </div>
+                  <IonRow>
+                    {services.slice(4, 8).map((card, index) => (
+                      <IonCol size="6" key={index} className="home-card-col">
+                        <IonCard
+                          className="home-custom-card"
+                          onClick={() =>
+                            history.push(card.path + `/${card.serviceId}`)
+                          }
+                        >
+                          <div className="home-card-content">
+                            <IonCardHeader className="home-card-header">
+                              <IonCardTitle className="home-card-title">
+                                {card.title}
+                              </IonCardTitle>
+                            </IonCardHeader>
+                            <IonCardContent className="home-card-subtitle">
+                              {card.subtitle}
+                            </IonCardContent>
+                          </div>
+                          <div className="home-card-image-container">
+                            <img
+                              src={card.image}
+                              alt="Card Image"
+                              className="home-card-image"
+                            />
+                          </div>
+                        </IonCard>
+                      </IonCol>
+                    ))}
                   </IonRow>
                 </motion.div>
               </IonGrid>
@@ -384,33 +572,128 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="home-pricing">
-            <Divider style={{ margin: "0" }} align="center">
-              <div className="inline-flex align-items-center">
-                <b
-                  style={{ color: "var(--med-dark-green)", fontSize: "1.3rem" }}
+          {headStatus == "true" &&
+            localStorage.getItem("subValid") == "false" && (
+              <div className="home-pricing">
+                <Divider style={{ margin: "0" }} align="center">
+                  <div className="inline-flex align-items-center">
+                    <b
+                      style={{
+                        color: "var(--med-dark-green)",
+                        fontSize: "1.3rem",
+                      }}
+                    >
+                      Get Premium
+                    </b>
+                  </div>
+                </Divider>
+                <p
+                  style={{
+                    fontSize: "0.5rem",
+                    marginBottom: "1.25rem",
+                    textAlign: "center",
+                  }}
                 >
-                  Get Premium
-                </b>
-              </div>
-            </Divider>
-            <p
-              style={{
-                fontSize: "0.5rem",
-                marginBottom: "1.25rem",
-                textAlign: "center",
-              }}
-            >
-              Stay Informed and Take Control of Your Health
-            </p>
-            <div className="home-pricing-card">
+                  Stay Informed and Take Control of Your Health
+                </p>
+                <div className="home-pricing-card">
+                  {packages.length > 0 &&
+                    packages.map((plan: any, index: number) => {
+                      if (index != 1)
+                        return (
+                          <Card
+                            key={index}
+                            className="home-pricing-card-content"
+                          >
+                            <span
+                              style={{ fontSize: "1rem", fontWeight: "bold" }}
+                            >
+                              {plan.refPkgName}
+                            </span>
+                            <div>
+                              <p>{plan.refPkgValidDays + " days validity"}</p>
+                              <p>
+                                {"1" +
+                                  (plan.refPkgValidMembers > 1
+                                    ? ` + ${plan.refPkgValidMembers - 1}`
+                                    : "") +
+                                  " Member"}
+                              </p>
+                            </div>
+                            <span
+                              style={{
+                                fontSize: "0.6rem",
+                                fontWeight: "bold",
+                                fontStyle: "italic",
+                              }}
+                            >
+                              {"Rs. " + plan.refPkgAmount}
+                            </span>
+                            <div
+                              className="home-pricing-card-getstarted"
+                              onClick={() =>
+                                history.push({
+                                  pathname: "/subscriptionPlans",
+                                })
+                              }
+                            >
+                              Get Started
+                            </div>
+                          </Card>
+                        );
+                      else
+                        return (
+                          <Card
+                            key={index}
+                            className="home-pricing-card-content"
+                          >
+                            <span
+                              style={{
+                                fontSize: "1.4rem",
+                                fontWeight: "bolder",
+                              }}
+                            >
+                              {plan.refPkgName}
+                            </span>
+                            <div>
+                              <p>{plan.refPkgValidDays + " days validity"}</p>
+                              <p>
+                                {"1" +
+                                  (plan.refPkgValidMembers > 1
+                                    ? ` + ${plan.refPkgValidMembers - 1}`
+                                    : "") +
+                                  " Member"}
+                              </p>
+                            </div>
+                            <span
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: "bolder",
+                                fontStyle: "italic",
+                              }}
+                            >
+                              {"Rs. " + plan.refPkgAmount}
+                            </span>
+                            <div
+                              className="home-pricing-card-getstarted-pro"
+                              onClick={() =>
+                                history.push({
+                                  pathname: "/subscriptionPlans",
+                                })
+                              }
+                            >
+                              Get Started
+                            </div>
+                          </Card>
+                        );
+                    })}
+                </div>
+                {/* <div className="home-pricing-card">
               <Card className="home-pricing-card-content">
                 <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
                   Intro
                 </span>
                 <div>
-                  <p>2 Family Members</p>
-                  <p>2 Family Members</p>
                   <p>2 Family Members</p>
                   <p>2 Family Members</p>
                 </div>
@@ -469,8 +752,9 @@ const Home: React.FC = () => {
                 </span>
                 <div className="home-pricing-card-getstarted">Get Started</div>
               </Card>
-            </div>
-          </div>
+            </div> */}
+              </div>
+            )}
           <div className="home-riskFactor">
             <div className="home-riskFactor-title">
               <div>
@@ -618,17 +902,20 @@ const Home: React.FC = () => {
                   <img src={item.bgImage} />
                   <h3>{item.title}</h3>
                   <p>{item.subTitle}</p>
-                  <div style={{
-                    padding: "1rem 0 0 0",
-                    textAlign: "start",
-                    fontSize: "0.8rem",
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    gap: "0.3rem"
-                  }}>Read More <i className="pi pi-arrow-right" /></div>
+                  {/* <div
+                    style={{
+                      padding: "1rem 0 0 0",
+                      textAlign: "start",
+                      fontSize: "0.8rem",
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      gap: "0.3rem",
+                    }}
+                  >
+                    Read More <i className="pi pi-arrow-right" />
+                  </div> */}
                 </div>
-                
               ))}
             </div>
           </div>
@@ -651,7 +938,6 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-
         {/* <IonFab slot="fixed" vertical="bottom" horizontal="end" edge={false}>
           <IonFabButton>
             <IonIcon icon={peopleOutline}></IonIcon>
@@ -666,6 +952,7 @@ const Home: React.FC = () => {
           </IonFabList>
         </IonFab> */}
       </IonContent>
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

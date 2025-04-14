@@ -170,6 +170,25 @@
   gap: 0.4rem
 }
 
+.home-custom-grid .p-divider .p-divider-content{
+  background-color: transparent;
+  margin: 0;
+}
+
+.home-custom-grid .p-divider.p-divider-horizontal{
+  margin: 0;
+}
+
+.home-services-category-title{
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--med-dark-green);
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
 .home-custom-grid {
   padding: 0.5rem;
 }

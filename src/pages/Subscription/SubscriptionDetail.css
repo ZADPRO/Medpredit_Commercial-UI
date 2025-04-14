@@ -1,6 +1,7 @@
 .subscription-detail-price{
   font-size: 2rem;
   font-weight: bold;
+  margin: 0;
 }
 
 .subscription-detail-table {

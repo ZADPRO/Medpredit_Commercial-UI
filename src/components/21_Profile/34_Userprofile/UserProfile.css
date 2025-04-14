@@ -89,8 +89,17 @@ ion-segment-view#userProfile-ion-segment-view ion-segment-content {
 .addFamilyInputField .p-dropdown {
     border: none;
     background: transparent;
+    width: 100%;
 }
 
 .addFamilyInputField>.p-dropdown>.p-inputtext {
+    padding: 0;
+}
+
+.addFamilyInputField .p-password{
+    width: 100%;
+}
+
+.addFamilyInputField .p-password-input{
     padding: 0;
 }

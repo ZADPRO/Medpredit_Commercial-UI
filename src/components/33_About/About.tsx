@@ -27,7 +27,9 @@ import { chevronBack } from "ionicons/icons";
 
         <IonContent className="ion-padding">
           <IonList>
-            <IonItem routerLink="/termsofservice" button>
+            <IonItem 
+            // routerLink="/termsofservice" button
+            >
               <IonLabel>Terms of Service</IonLabel>
             </IonItem>
 
@@ -38,11 +40,15 @@ import { chevronBack } from "ionicons/icons";
               </IonLabel>
             </IonItem>
 
-            <IonItem routerLink="/opensource" button>
+            <IonItem 
+            // routerLink="/opensource" button
+            >
               <IonLabel>Open Source Libraries</IonLabel>
             </IonItem>
 
-            <IonItem routerLink="/landr" button>
+            <IonItem 
+            // routerLink="/landr" button
+            >
               <IonLabel>Licenses and Registrations</IonLabel>
             </IonItem>
           </IonList>
