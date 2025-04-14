@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import login from "../../assets/images/Login/login (1).png";
+import login1 from "../../assets/images/Login/login1.png";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { close, logoApple, logoFacebook, logoGoogle } from "ionicons/icons";
@@ -184,7 +185,7 @@ const Login: React.FC = () => {
     <IonPage>
       <IonContent fullscreen scrollY={true}>
         <div className="loginScreenIonic">
-          <img src={login} alt="loginimg" />
+          <img src={login1} alt="loginimg" />
           <p className="welcometext">{t("login.welcome")}👋</p>
           <div className="inputs">
             <InputText
@@ -218,7 +219,7 @@ const Login: React.FC = () => {
               justifyContent: "space-between",
             }}
           >
-            <div
+            {/* <div
               style={{
                 fontSize: "0.8rem",
                 display: "flex",
@@ -235,8 +236,8 @@ const Login: React.FC = () => {
               <label htmlFor="remember" className="ml-2">
                 {t("login.Remember Me")}
               </label>
-            </div>
-            <span
+            </div> */}
+            {/* <span
               onClick={() => {
                 history.push("/forgotPassword", {
                   direction: "forward",
@@ -246,7 +247,7 @@ const Login: React.FC = () => {
               className="loginRegisterUser"
             >
               {t("login.Forgot Password")}?
-            </span>
+            </span> */}
           </div>
 
           <div style={{ width: "20rem" }}>

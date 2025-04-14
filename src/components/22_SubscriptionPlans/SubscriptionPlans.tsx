@@ -125,7 +125,7 @@ console.log(subscriptionData);
             </Divider>
           {subscriptionData?.packageData
             .map((plan: any, index: number) => (
-              <IonCard key={index}>
+              <IonCard key={index}className="subscription-cards">
                 <IonCardHeader>
                   <IonCardTitle>{plan.refPkgName}</IonCardTitle>
                   {/* <Divider/>
@@ -163,7 +163,7 @@ console.log(subscriptionData);
             <div className="subscribe-upgrade">
             {packages !== undefined &&
             packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).map((plan, index) => (
-              <IonCard key={index}>
+              <IonCard key={index} className="subscription-cards">
                 <IonCardHeader>
                   <IonCardTitle>{plan.refPkgName}</IonCardTitle>
                 </IonCardHeader>
@@ -210,7 +210,7 @@ console.log(subscriptionData);
 
           {packages !== undefined &&
             packages.map((plan, index) => (
-              <IonCard key={index}>
+              <IonCard key={index} className="subscription-cards">
                 <IonCardHeader>
                   <IonCardTitle>{plan.refPkgName}</IonCardTitle>
                 </IonCardHeader>

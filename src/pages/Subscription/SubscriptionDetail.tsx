@@ -172,7 +172,8 @@ const SubscriptionDetail: React.FC = () => {
     console.log("Payment---------------------------------->");
    
     if (upgradeInfo?.isFirstPackage == true) {
-      grandTotal = (selectPackage?.refPkgAmount || 0) * 100;
+      gstAmount = (selectPackage?.refPkgAmount || 0) * (Number(gstInfo?.refCGST)+Number(gstInfo?.refSGST))/100;
+      grandTotal = ((selectPackage?.refPkgAmount || 0) + gstAmount) * 100;
     } else {
       grandTotal = (upgradeInfo?.totalPackageValue || 0) * 100;
     }

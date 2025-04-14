@@ -535,7 +535,47 @@ const RegisterUser = () => {
                 feedback={false}
               />
             </div>
-
+            <div
+                style={{ display: "flex", alignItems: "center", fontSize: "1rem", color: "#45474b" }}
+              >
+                {formData.refUserPassword === formData.refUserConPassword &&
+                formData.refUserPassword.length > 0 ? (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "green",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-check"
+                    ></i>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      background: "red",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "50%",
+                    }}
+                  >
+                    <i
+                      style={{ fontSize: "15px", color: "#fff" }}
+                      className="pi pi-times"
+                    ></i>
+                  </div>
+                )}
+                &nbsp; Confirm Password
+              </div>
             <div
               style={{
                 fontSize: "0.8rem",
@@ -552,7 +592,7 @@ const RegisterUser = () => {
                 {t("Register User.I've read and agree with the")}{" "}
                 <span
                   style={{ color: "var(--med-dark-green)", fontWeight: "bold" }}
-                  onClick={() => history.push("/termsandprivacy")}
+                  onClick={() => {history.push("/termsandprivacy"); setChecked(true)}}
                 >
                   {t(
                     "Register User.Terms and Conditions and the Privacy Policy"

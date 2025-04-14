@@ -80,6 +80,11 @@ const Profile: React.FC = () => {
     },
   ];
 
+  const handleDelete = () => {
+    window.location.href = "https://www.medpredit.com/dashboard";
+  };
+  
+
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
@@ -145,7 +150,7 @@ const Profile: React.FC = () => {
                   <div className="profile-body-item">
                     <i className={item.icon}></i>
                     <span className="profile-body-label">{item.label}</span>
-                    <IonIcon icon={chevronForward} />
+                    {item.label != "Log Out" && <IonIcon icon={chevronForward} />}
                   </div>
                   {itemIndex !== section.items.length - 1 && (
                     <div className="profile-body-short-divider"></div>
@@ -155,7 +160,7 @@ const Profile: React.FC = () => {
             </div>
           ))}
 
-          <div className="profile-delete">
+          <div className="profile-delete" onClick={() => handleDelete()}>
             <span>Delete Account</span>
             <i className="pi pi-trash" />
           </div>

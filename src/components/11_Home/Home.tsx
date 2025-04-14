@@ -402,7 +402,7 @@ const Home: React.FC = () => {
               </div>
               <div
                 className="carouselDiv"
-                onClick={() => history.push("/manageFamily")}
+                onClick={() => (headStatus == "true" && history.push("/manageFamily"))}
               >
                 <img src={carousel3} className="carousel-image" />
               </div>
@@ -902,7 +902,7 @@ const Home: React.FC = () => {
                   <img src={item.bgImage} />
                   <h3>{item.title}</h3>
                   <p>{item.subTitle}</p>
-                  <div
+                  {/* <div
                     style={{
                       padding: "1rem 0 0 0",
                       textAlign: "start",
@@ -914,7 +914,7 @@ const Home: React.FC = () => {
                     }}
                   >
                     Read More <i className="pi pi-arrow-right" />
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>

@@ -154,7 +154,7 @@ const Report: React.FC = () => {
 
         axios
           .post(
-            `${import.meta.env.VITE_API_URL}/getPatientData`,
+            `${import.meta.env.VITE_API_COMMERCIAL_URL}/getFamilyMembers`,
             {
               mobileNumber: userDeatilsObj.phNumber,
             },
@@ -178,7 +178,8 @@ const Report: React.FC = () => {
 
             if (data.status) {
               setLoading(false);
-              setUserData(data.data);
+              setUserData(data.familyMembers);
+              !location.state?.selectedUser && setShowModal1(true);
               //   if (data.data.length === 0) {
               //     setStatus({
               //       status: true,
@@ -565,7 +566,7 @@ const Report: React.FC = () => {
     } else {
       if (headStatus === "true") {
         searchPatient();
-        setShowModal1(true);
+        // setShowModal1(true);
         setShowModal2(false);
       } else {
         setShowModal1(false);
@@ -698,12 +699,24 @@ console.log("item colors==========================",itemColors);
           <div
             style={{
               display: "flex",
-              flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+              position: "relative",
             }}
           >
-            <h4>Select User</h4>
+            <h1
+              style={{
+                color: "var(--med-dark-green)",
+                fontWeight: "bold",
+                margin: "0 auto",
+                textAlign: "center",
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
+              Reports
+            </h1>
             <IonIcon
               onClick={() => {
                 setShowModal1(false);
@@ -711,10 +724,12 @@ console.log("item colors==========================",itemColors);
                   history.replace("/home");
                 }
               }}
-              style={{ "font-size": "1.5rem" }}
+              style={{ fontSize: "1.5rem", marginLeft: "auto" }}
               icon={close}
             />
           </div>
+
+          <h4>Select User</h4>
           <IonList className="reports-user-list">
             {userData?.map((item, index) => (
               <div
@@ -783,27 +798,39 @@ console.log("item colors==========================",itemColors);
         presentingElement={presentingElement}
       >
         <div className="report-modalContent">
-          <div
+        <div
             style={{
               display: "flex",
-              flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+              position: "relative",
             }}
           >
-            <h4>Select Date</h4>
+            <h1
+              style={{
+                color: "var(--med-dark-green)",
+                fontWeight: "bold",
+                margin: "0 auto",
+                textAlign: "center",
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
+              Reports
+            </h1>
             <IonIcon
               onClick={() => {
-                setShowModal2(false);
+                setShowModal1(false);
                 if (structuredCategories.length === 0) {
                   history.replace("/home");
                 }
               }}
-              style={{ "font-size": "1.5rem" }}
+              style={{ fontSize: "1.5rem", marginLeft: "auto" }}
               icon={close}
             />
           </div>
-
+          <h4>Select Date</h4>
           <div className="flex justify-content-center">
             <Calendar
               value={tempselectedDate}

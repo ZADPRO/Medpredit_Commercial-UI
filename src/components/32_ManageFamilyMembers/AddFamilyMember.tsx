@@ -368,7 +368,7 @@ const AddFamily: React.FC = () => {
   console.log(formData.refUserMobileno)
 
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

@@ -622,7 +622,7 @@ console.log(loading);
                 color: "#00a184"
               }}
             >
-              This Assessment Remains Active For{" "}
+              This Assessment Score Remains Active For{" "}
               {getValidity(Number(serviceId))} Days.
             </span>
           )}

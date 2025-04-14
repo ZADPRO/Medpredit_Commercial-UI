@@ -480,9 +480,12 @@ const LinkFamilyMember: React.FC = () => {
                   button
                   onClick={() => handleItemClick(item)}
                 >
-                  <IonAvatar slot="start">
-                    <IonImg src="https://i.pravatar.cc/300?u=b" />
-                  </IonAvatar>
+                  <div className="profile_top_bar_avatar" style={{marginRight: "1rem"}}>
+              <span>
+                {item.refUserFname.charAt(0) +
+                  item.refUserLname?.charAt(0)}
+              </span>
+              </div>
                   <IonLabel>
                     <h2>{item.refUserFname + " " + item.refUserLname}</h2>
                     <p>{item.refUserCustId}</p>

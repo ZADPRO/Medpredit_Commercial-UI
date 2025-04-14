@@ -211,6 +211,7 @@ import { useHistory } from "react-router";
     useEffect(() => {
       fetchUserDetals();
       if (localStorage.getItem("detailsFlag") === "true") {
+        setIsEditing(true);
         setToastOpen({ status: true, textColor: "red", position: "top",  message: "Please Complete your Profile" });
       }
     }, []);
@@ -352,7 +353,7 @@ import { useHistory } from "react-router";
     };
 
     return (
-      <IonPage>
+      <IonPage className="cus-ion-page">
         <IonHeader>
           <IonToolbar>
             {localStorage.getItem("detailsFlag") == "false" && (
@@ -490,7 +491,7 @@ import { useHistory } from "react-router";
                   <InputText
                     style={{ width: "100%", textAlign: "left" }}
                     className="addFamilyInputText"
-                    value={formData.refDOB ? formData.refDOB.split("T")[0] : ""}
+                    value={formData.refDOB ? (formData.refDOB == "-" ? new Date().toISOString().split("T")[0] : formData.refDOB.split("T")[0]) : ""}
                     placeholder="Date of Birth"
                     name="refDOB"
                     onClick={openModal}
@@ -508,7 +509,7 @@ import { useHistory } from "react-router";
                   <IonDatetime
                     presentation="date"
                     preferWheel={true}
-                    value={formData.refDOB}
+                    value={(formData.refDOB == "-" || !formData.refDOB) ? new Date().toISOString().split("T")[0] : formData.refDOB}
                     onIonChange={(e) => {
                       const selectedDate = e.detail.value;
                       setFormData({

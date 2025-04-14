@@ -268,7 +268,7 @@ const TermsAndPrivacy: React.FC = () => {
   ];
 
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

@@ -198,7 +198,7 @@ const ManageFamily: React.FC = () => {
 console.log("totalusers: ", userData.length + (primaryUser != undefined ? 1 : 0));
 console.log(subscriptionData);
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

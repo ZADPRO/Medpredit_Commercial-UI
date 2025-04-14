@@ -102,7 +102,7 @@ ion-content {
 }
 
 .p-datepicker{
-  background: transparent;
+  /* background: transparent; */
   color: var(--med-dark-green);
   border: none;
 }

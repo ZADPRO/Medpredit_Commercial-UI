@@ -13,11 +13,13 @@ import "./TransactionHistory.css";
 import React, { useEffect, useState } from "react";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
+import { useHistory } from "react-router";
 
 interface Transaction {
   refTransactionId: number;
   refTransactionDate: string;
   refPkgAmount: number;
+  refTransactionAmount: number;
   refTransactionCGST: number;
   refTransactionSGST: number;
   refTransactionMethod: string;
@@ -25,6 +27,7 @@ interface Transaction {
 };
 
 const TransactionHistory: React.FC = () => {
+  const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
 
   const [transHistory, setTransHistory] = useState<Transaction[]>([]);
@@ -115,13 +118,15 @@ const TransactionHistory: React.FC = () => {
 
       <IonContent className="ion-padding">
         <div className="transaction-history">
-          {transHistory.length > 0 &&
+          {transHistory.length > 0 ? (
             transHistory.map((item, index) => (
               <div className="transaction-history-cards">
                 <div className="transaction-history-cards-head">
                   <p>{formatDate(item.refTransactionDate, "dd-mmm-yyyy")}</p>
                   <p style={{ fontWeight: "bold" }}>
-                    {"₹" + (item.refPkgAmount + (item.refTransactionCGST + item.refTransactionSGST))}
+                    {"₹" +
+                      (item.refTransactionAmount +
+                        (item.refTransactionCGST + item.refTransactionSGST))}
                   </p>
                 </div>
                 <p>
@@ -137,7 +142,7 @@ const TransactionHistory: React.FC = () => {
 
                 <p>
                   {"₹" +
-                    item.refPkgAmount +
+                    item.refTransactionAmount +
                     " (+₹" +
                     (item.refTransactionCGST + item.refTransactionSGST) +
                     " GST)"}
@@ -161,7 +166,25 @@ const TransactionHistory: React.FC = () => {
                   </span>
                 </p>
               </div>
-            ))}
+            ))
+          ) : (
+            <div style={{
+              paddingLeft: "0.5rem",
+              color: "var(--med-dark-green)"
+            }}>
+              <h3>No Transactions Yet</h3>
+              <p style={{
+                lineHeight: "1.5rem"
+              }}>
+                <u style={{
+                  color: "var(--med-light-green)",
+                  fontWeight: "bold"
+                }}
+                onClick={() => history.replace("/subscriptionPlans")
+                }>Start your subscription</u> to begin your journey!
+              </p>
+            </div>
+          )}
         </div>
       </IonContent>
 
