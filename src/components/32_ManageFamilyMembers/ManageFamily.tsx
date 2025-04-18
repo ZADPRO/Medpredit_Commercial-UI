@@ -36,7 +36,7 @@ interface UserInfo {
   headStatus: string;
   refUserId: number;
   refUserCustId: string;
-  refUserMobileno: number;
+  refUserMobileno: string;
   refUserFname: string;
   refUserLname?: string;
   refGender: string;
@@ -395,6 +395,10 @@ const ManageFamily: React.FC = () => {
                         <table className="manage-family-table">
                           <tbody>
                             <tr>
+                              <td>Phone Number:</td>
+                              <td>{item.refUserMobileno}</td>
+                            </tr>
+                            <tr>
                               <td>{t("userProfile.Gender")}:</td>
                               <td>{t("userProfile." + item.refGender)}</td>
                             </tr>
@@ -414,12 +418,18 @@ const ManageFamily: React.FC = () => {
                             </tr>
                             <tr>
                               <td>{t("userProfile.Education")}:</td>
-                              <td>{t("userProfile." + item.refEducation)}</td>
+                              <td>{item.refEducation ? t("userProfile." + item.refEducation) : "-"}</td>
                             </tr>
                             <tr>
                               <td>{t("link.Sector & Occupation Lvl")}</td>
                               <td>
-                                {item.refSector + " & " + t("userProfile." + item.refOccupationLvl)}
+                                {item.refSector && item.refOccupationLvl
+                                  ? item.refSector +
+                                    " & " +
+                                    item.refOccupationLvl
+                                  : item.refSector || t("userProfile." + item.refOccupationLvl)
+                                  ? item.refSector + t("userProfile." + item.refOccupationLvl)
+                                  : "-"}
                               </td>
                             </tr>
                             {/* <tr>
@@ -522,7 +532,6 @@ const ManageFamily: React.FC = () => {
           setToastOpen({ status: false, message: "", textColor: "black" })
         }
       />
-
     </IonPage>
   );
 };

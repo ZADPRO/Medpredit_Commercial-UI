@@ -354,6 +354,7 @@ const RegisterUser = () => {
                 type="password"
                 name="refUserPassword"
                 toggleMask
+                
                 placeholder={t("Register User.Enter Password")}
                 value={formData.refUserPassword}
                 required
@@ -538,6 +539,8 @@ const RegisterUser = () => {
                 type="password"
                 name="refUserConPassword"
                 toggleMask
+                onCopy={(e) => e.preventDefault()}
+                onPaste={(e) => e.preventDefault()}
                 placeholder={t("Register User.Match Password")}
                 value={formData.refUserConPassword}
                 required
@@ -546,9 +549,9 @@ const RegisterUser = () => {
               />
             </div>
             <div
-              style={{ display: "flex", alignItems: "center", fontSize: "1rem", color: "#45474b" }}
-            >
-              {formData.refUserPassword === formData.refUserConPassword &&
+                style={{ display: "flex", alignItems: "center", fontSize: "1rem", color: "#45474b", fontWeight: "600", }}
+              >
+                {formData.refUserPassword === formData.refUserConPassword &&
                 formData.refUserPassword.length > 0 ? (
                 <div
                   style={{

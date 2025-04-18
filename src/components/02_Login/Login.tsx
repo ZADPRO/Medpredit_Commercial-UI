@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import login from "../../assets/images/Login/login (1).png";
-import login1 from "../../assets/images/Login/login1.png";
+import login1 from "../../assets/images/Login/login img.png";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { close, logoApple, logoFacebook, logoGoogle } from "ionicons/icons";
 import "./Login.css";
-
 import {
   IonButton,
   IonContent,
@@ -67,8 +66,8 @@ const Login: React.FC = () => {
       console.log(data);
       if (data.status) {
         setErrorMessage("");
-        if (data.users.length > 1) {
-          setUserSelectionList(data.users);
+        if(data.users.length > 1) {
+          setUserSelectionList(data.users.sort((a: any, b: any) => a.refUserId - b.refUserId));
           setUserSelectionModal(true);
         }
         else {
@@ -84,6 +83,8 @@ const Login: React.FC = () => {
           localStorage.setItem("userDetails", JSON.stringify(userDetails));
 
           localStorage.setItem("detailsFlag", data.isDetails);
+
+          localStorage.setItem("firstLogin", data.isDetails);
 
           localStorage.setItem("headStatus", data.users[0].headStatus)
           setShowModal(true);
@@ -161,7 +162,7 @@ const Login: React.FC = () => {
   };
 
   const routeCondition = () => {
-    const flag = localStorage.getItem("detailsFlag");
+    const flag = localStorage.getItem("firstLogin");
 
     if (flag == "true") {
       setTimeout(() => {

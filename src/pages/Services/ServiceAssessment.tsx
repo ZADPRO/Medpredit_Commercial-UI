@@ -550,7 +550,7 @@ const ServiceAssessment: React.FC = () => {
                     {getTruncatedName(
                       item.refUserFname,
                       item.refUserLname ? item.refUserLname : "",
-                      8
+                      7
                     )}
                   </span>
                 </div>

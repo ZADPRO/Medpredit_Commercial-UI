@@ -4,12 +4,16 @@ import {
   IonContent,
   IonFooter,
   IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
   IonModal,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
+import { chevronBack, close } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import "./SubscriptionDetail.css";
 import { useHistory, useLocation } from "react-router";
@@ -70,6 +74,8 @@ const SubscriptionDetail: React.FC = () => {
   const { t } = useTranslation("global");
   const [showModal, setShowModal] = useState<boolean>(false);
 
+  const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
+
   const history = useHistory();
   const [toastOpen, setToastOpen] = useState<{
     status: boolean;
@@ -96,12 +102,18 @@ const SubscriptionDetail: React.FC = () => {
   const [upgradeInfo, setUpgradeInfo] = useState<UpgradeInfo>();
   const [loading, setLoading] = useState<boolean>(true);
 
+  const paymentMethod = [
+    "UPI", "Credit Card", "Debit Card", "Net Banking"
+  ];
+
+  const[selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>();
+
   function addDaysToDate(convertDate: string, daysToAdd: number): string {
     const [day, month, year] = convertDate.split("/").map(Number);
     const date = new Date(year, month - 1, day); // month is 0-indexed
     date.setDate(date.getDate() + daysToAdd);
     return date.toISOString().split("T")[0];
-  }
+  };
 
   useEffect(() => {
     getSelectedPackage();
@@ -164,39 +176,45 @@ const SubscriptionDetail: React.FC = () => {
   console.log(upgradeInfo)
   console.log(selectPackage);
   // const floatPkgAmount = parseFloat(String(selectPackage?.refPkgAmount ?? "0"));
-
-  let selectedPaymentMethod = "upi";
-  let gstAmount;
-  let grandTotal;
+  
+    let gstAmount;
+    let grandTotal;
+    
+  useEffect(()=> {
+    console.log(selectedPaymentMethod)
+    selectedPaymentMethod && handlePayment()
+  }, [selectedPaymentMethod]);
 
   const handlePayment = () => {
+    console.log(selectedPaymentMethod);
     console.log("Payment---------------------------------->");
 
     if (upgradeInfo?.isFirstPackage == true) {
-      gstAmount = (selectPackage?.refPkgAmount || 0) * (Number(gstInfo?.refCGST) + Number(gstInfo?.refSGST)) / 100;
+
+      gstAmount =
+        ((selectPackage?.refPkgAmount || 0) *
+          (Number(gstInfo?.refCGST) + Number(gstInfo?.refSGST))) /
+        100;
       grandTotal = ((selectPackage?.refPkgAmount || 0) + gstAmount) * 100;
     } else {
       grandTotal = (upgradeInfo?.totalPackageValue || 0) * 100;
     }
 
-    console.log(grandTotal);
-
-    if (selectedPaymentMethod === "credit_card") {
-      let finalAmount = selectPackage?.refPkgAmount || 0; // Convert string to number
-      if (selectedPaymentMethod === "credit_card") {
-        finalAmount += finalAmount * 0.03; // Add 3% extra charge
-      }
-
+    
+    if (selectedPaymentMethod === "Credit Card") {
       const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: Math.round(finalAmount * 100), // Razorpay requires amount in paise
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount: Math.round(grandTotal), // Razorpay requires amount in paise
         currency: "INR",
         name: "Medpredit",
         description: "Payment for services",
         handler: function (response: any) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
+          console.log(response);
+          if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
+            sendPayment(response.razorpay_payment_id);
+          }
           // paymentToBackend(
           //   response.razorpay_payment_id,
           //   Math.round(finalAmount * 100)
@@ -204,41 +222,9 @@ const SubscriptionDetail: React.FC = () => {
           // stepperRef.current?.nextCallback();
         },
         prefill: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9876543210",
-        },
-        method: {
-          upi: true,
-          card: false,
-          netbanking: false,
-          wallet: false,
-        },
-        theme: {
-          color: "#f95005",
-        },
-      };
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } else if (selectedPaymentMethod === "debit_card") {
-      const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: grandTotal * 100,
-        currency: "INR",
-        name: "Ublisyoga",
-        description: "Payment for services",
-        handler: function (response: any) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
-          // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
-
-          // stepperRef.current?.nextCallback();
-        },
-        prefill: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9876543210",
+          name: `${userDeatilsObj.firstName + " " + userDeatilsObj.lastName}`,
+          // email: "johndoe@example.com",
+          contact: `${userDeatilsObj.phNumber}`,
         },
         method: {
           upi: false,
@@ -247,15 +233,50 @@ const SubscriptionDetail: React.FC = () => {
           wallet: false,
         },
         theme: {
-          color: "#f95005",
+          color: "rgba(12, 75, 65, 1)",
+        },
+      }; 
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } else if (selectedPaymentMethod === "Debit Card") {
+      const options = {
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount: Math.round(grandTotal),
+        currency: "INR",
+        name: "Medpredit",
+        description: "Payment for Package",
+        handler: function (response: any) {
+          console.log(response);
+          if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
+            sendPayment(response.razorpay_payment_id);
+          }
+          // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
+
+          // stepperRef.current?.nextCallback();
+        },
+        prefill: {
+          name: `${userDeatilsObj.firstName + " " + userDeatilsObj.lastName}`,
+          // email: "johndoe@example.com",
+          contact: `${userDeatilsObj.phNumber}`,
+        },
+        method: {
+          upi: false,
+          card: true,
+          netbanking: false,
+          wallet: false,
+        },
+        theme: {
+          color: "rgba(12, 75, 65, 1)",
         },
       };
       const razorpay = new window.Razorpay(options);
       razorpay.open();
-    } else if (selectedPaymentMethod === "upi") {
+    } else if (selectedPaymentMethod === "UPI") {
       const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: parseInt(grandTotal.toString()),
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount: Math.round(grandTotal),
         currency: "INR",
         name: "Medpredit",
         description: "Payment for Package",
@@ -287,25 +308,28 @@ const SubscriptionDetail: React.FC = () => {
       };
       const razorpay = new window.Razorpay(options);
       razorpay.open();
-    } else if (selectedPaymentMethod === "net_banking") {
+    } else if (selectedPaymentMethod === "Net Banking") {
       const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: grandTotal * 100,
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount:  Math.round(grandTotal),
         currency: "INR",
-        name: "Ublisyoga",
-        description: "Payment for services",
+        name: "Medpredit",
+        description: "Payment for Package",
         handler: function (response: any) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
+          console.log(response);
+          if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
+            sendPayment(response.razorpay_payment_id);
+          }
           // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
 
           // stepperRef.current?.nextCallback();
         },
         prefill: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9876543210",
+          name: `${userDeatilsObj.firstName + " " + userDeatilsObj.lastName}`,
+          // email: "johndoe@example.com",
+          contact: `${userDeatilsObj.phNumber}`,
         },
         method: {
           upi: false,
@@ -314,7 +338,7 @@ const SubscriptionDetail: React.FC = () => {
           wallet: false,
         },
         theme: {
-          color: "#f95005",
+          color: "rgba(12, 75, 65, 1)",
         },
       };
       const razorpay = new window.Razorpay(options);
@@ -447,10 +471,12 @@ const SubscriptionDetail: React.FC = () => {
               className="subscription-detail-price"
               style={{ display: "flex", flexDirection: "row", gap: "1.5rem" }}
             >
-              <s>{"₹ " +
-                (upgradeInfo?.totalPackage != undefined
-                  ? upgradeInfo?.totalPackage
-                  : "0")}</s>
+              <s>
+                {"₹ " +
+                  (upgradeInfo?.totalPackage != undefined
+                    ? upgradeInfo?.totalPackage
+                    : "0")}
+              </s>
               <span>
                 {"₹ " +
                   (upgradeInfo?.totalPackageValue != undefined
@@ -516,8 +542,12 @@ const SubscriptionDetail: React.FC = () => {
         >
           {toastOpen.status == false && (
             <button
+              // onClick={() => {
+              //   selectPackage?.refPkgAmount && handlePayment();
+              // }}
               onClick={() => {
-                selectPackage?.refPkgAmount && handlePayment();
+                setSelectedPaymentMethod("");
+                setShowPaymentModal(true);
               }}
               style={{ borderRadius: "20px" }}
               className="medCustom-button02"
@@ -539,10 +569,12 @@ const SubscriptionDetail: React.FC = () => {
               animationData={tickAnimation}
               loop={false}
               style={{ width: 150, height: 150 }}
-              onComplete={() => setTimeout(() => {
-                history.replace("/subscriptionPlans", { refreshPage: true });
-                setShowModal(false);
-              }, 1000)}
+              onComplete={() =>
+                setTimeout(() => {
+                  history.replace("/subscriptionPlans", { refreshPage: true });
+                  setShowModal(false);
+                }, 1000)
+              }
             />
           </div>
           <p
@@ -555,6 +587,47 @@ const SubscriptionDetail: React.FC = () => {
             {" "}
             {"Payment Successful"}
           </p>
+        </div>
+      </IonModal>
+
+      <IonModal
+        isOpen={showPaymentModal}
+        onDidDismiss={() => setShowModal(false)}
+        id="ion-custom-modal-02"
+      >
+        <div className="report-modalContent">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h4>Payment Method</h4>
+            <IonIcon
+              onClick={() => {
+                setShowPaymentModal(false);
+              }}
+              style={{ "font-size": "1.5rem" }}
+              icon={close}
+            />
+          </div>
+
+          <IonList className="">
+            {paymentMethod.map((method) => (
+              <IonItem
+                button
+                onClick={() => {
+                  setSelectedPaymentMethod(method);
+                  setShowPaymentModal(false);
+                }}
+                key={method}
+              >
+                <IonLabel>{method}</IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
         </div>
       </IonModal>
 

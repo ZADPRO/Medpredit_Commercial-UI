@@ -41,7 +41,7 @@ import { Capacitor } from "@capacitor/core";
 import ManageFamily from "../../components/32_ManageFamilyMembers/ManageFamily";
 import SubscriptionDetail from "../Subscription/SubscriptionDetail";
 import LinkFamilyMember from "../../components/32_ManageFamilyMembers/LinkFamilyMember";
-import InvoicePDF from "../../components/37_InvoicePDF/InvoicePDF";
+import KnowAbout from "../KnowAbout/KnowAbout";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -169,6 +169,9 @@ const MainRoutes: React.FC = () => {
         <Route path="/about">
           <About />
         </Route>
+        <Route path="/knowAbout/:sentDisease">
+          <KnowAbout/>
+        </Route>
         <Route path="/serviceAssessment/:serviceId">
           <ServiceAssessment />
         </Route>
@@ -178,9 +181,6 @@ const MainRoutes: React.FC = () => {
         <Route path="/reports">
           <Report/> 
         </Route>
-        {/* <Route path="/testing">
-          <InvoicePDF/> 
-        </Route> */}
       </IonRouterOutlet>
 
       {/* {showTabBar && (

@@ -13,7 +13,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import axios from "axios";
-import { chevronBack, chevronForward, close, filterOutline } from "ionicons/icons";
+import {
+  chevronBack,
+  chevronForward,
+  close,
+  filterOutline,
+} from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import decrypt from "../../helper";
 import "./Report.css";
@@ -49,7 +54,7 @@ const Report: React.FC = () => {
 
   interface LocationState {
     selectedUser?: number; // Replace 'any' with your actual plan type
-    selectedUserInfo?: any
+    selectedUserInfo?: any;
   }
 
   const history = useHistory();
@@ -68,7 +73,9 @@ const Report: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Nullable<Date>>();
 
   const [tempselectedUser, settempSelectedUser] = useState<number>();
-  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(new Date());
+  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(
+    new Date()
+  );
 
   const userDetails = localStorage.getItem("userDetails");
 
@@ -134,7 +141,8 @@ const Report: React.FC = () => {
 
   useEffect(() => {
     if (scrollableDivRef.current) {
-      scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
+      scrollableDivRef.current.scrollTop =
+        scrollableDivRef.current.scrollHeight;
     }
   }, [reportModalCategories, allScore, stressAnswer]);
 
@@ -219,7 +227,7 @@ const Report: React.FC = () => {
 
         localStorage.setItem("currentPatientGender", "male");
         // setLoadingStatus(true);
-        console.log("tgttggtttt", tempselectedUser)
+        console.log("tgttggtttt", tempselectedUser);
         axios
           .post(
             `${import.meta.env.VITE_API_URL}/getPastReportData `,
@@ -286,7 +294,7 @@ const Report: React.FC = () => {
             setCanDismissModal1(true);
             setCanDismissModal2(true);
             setShowModal1(false);
-            setShowModal2(false);  //both for date selection modal
+            setShowModal2(false); //both for date selection modal
 
             // setLoadingStatus(false);
           });
@@ -446,7 +454,6 @@ const Report: React.FC = () => {
 
     console.log(subCategoryIdStr, "matchedAnswer", matchedAnswer);
 
-
     if (!matchedAnswer || !matchedAnswer.refPTcreatedDate) return false;
 
     // Calculate the duration and days difference
@@ -455,7 +462,11 @@ const Report: React.FC = () => {
       matchedAnswer.refPTcreatedDate
     );
 
-    console.log(subCategoryIdStr, "dduration > -daysDifference", duration > -daysDifference)
+    console.log(
+      subCategoryIdStr,
+      "dduration > -daysDifference",
+      duration > -daysDifference
+    );
 
     return duration > -daysDifference;
   }
@@ -552,7 +563,6 @@ const Report: React.FC = () => {
     }
   };
 
-
   useEffect(() => {
     // Exit early if location.state is undefined and the router hasn't restored it yet
     if (location.state === undefined) return;
@@ -564,7 +574,9 @@ const Report: React.FC = () => {
       settempSelectedDate(new Date());
       settempSelectedUser(location.state.selectedUser);
       setSelectedUser(location.state.selectedUser);
-      if (headStatus === "true") { searchPatient() };
+      if (headStatus === "true") {
+        searchPatient();
+      }
     } else {
       if (headStatus === "true") {
         searchPatient();
@@ -579,8 +591,7 @@ const Report: React.FC = () => {
     }
   }, [location.state?.selectedUser]);
 
-
-  console.log("eeeeeeeeeeeeeeeeee", tempselectedDate, selectedDate)
+  console.log("eeeeeeeeeeeeeeeeee", tempselectedDate, selectedDate);
   console.log("reportModalCategories", reportModalCategories);
 
   console.log("Structured Categories: ", structuredCategories);
@@ -634,25 +645,30 @@ const Report: React.FC = () => {
     console.log(history.location.pathname);
   };
 
-
   useEffect(() => {
     if (selectedUser) {
       getCategory();
 
-      if (isFirstRender == true && location.state?.selectedUser) {
+  useEffect(() => {
+     if (isFirstRender == true && location.state?.selectedUser) {
         setIsFirstRender(false);
         reportData();
       }
+    if (selectedUser) {
+      getCategory();
+
+     
     }
   }, [selectedUser]);
-
 
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(undefined);
 
   const [canDismissModal1, setCanDismissModal1] = useState(false);
   const [canDismissModal2, setCanDismissModal2] = useState(false);
-  const [presentingElement, setPresentingElement] = useState<HTMLElement | undefined>(undefined);
+  const [presentingElement, setPresentingElement] = useState<
+    HTMLElement | undefined
+  >(undefined);
 
   useEffect(() => {
     setPresentingElement(page.current);
@@ -1135,12 +1151,10 @@ const Report: React.FC = () => {
               padding: "1rem 1.5rem",
             }}
           >
-            <button className="medCustom-button01">
               <ReportPDF
                 reportDate={selectedDate}
                 selectedUser={selectedUser}
               />
-            </button>
           </div>
         )}
       </IonFooter>
