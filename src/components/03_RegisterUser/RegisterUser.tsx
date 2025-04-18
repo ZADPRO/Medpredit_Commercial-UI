@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IonContent, IonModal, IonPage, IonToast } from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonModal, IonPage, IonToast, IonToolbar } from "@ionic/react";
 import "./RegisterUser.css";
 import { InputText } from "primereact/inputtext";
 import { Checkbox } from "primereact/checkbox";
@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { Divider } from "primereact/divider";
 import axios from "axios";
 import decrypt from "../../helper";
+import { chevronBack } from "ionicons/icons";
 
 const RegisterUser = () => {
   const { t, i18n } = useTranslation("global");
@@ -84,7 +85,7 @@ const RegisterUser = () => {
       });
       return false;
     }
-    
+
 
     if (!formData.refUserEmail) {
       setToastOpen({
@@ -113,35 +114,35 @@ const RegisterUser = () => {
       });
       return false;
     }
-    
+
     if (!/[a-zA-Z]/.test(formData.refUserPassword)) {
       setToastOpen({
         status: true,
-        message: "Password must contain at least one letter.",
-        textColor: "red",
-      });
-      return false;
-    }
-    
-    if (!/\d/.test(formData.refUserPassword)) {
-      setToastOpen({
-        status: true,
-        message: "Password must contain at least one digit.",
-        textColor: "red",
-      });
-      return false;
-    }
-    
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.refUserPassword)) {
-      setToastOpen({
-        status: true,
-        message: "Password must contain at least one special character.",
+        message: t("Register User.Password must contain at least one letter"),
         textColor: "red",
       });
       return false;
     }
 
-    
+    if (!/\d/.test(formData.refUserPassword)) {
+      setToastOpen({
+        status: true,
+        message: t("Register User.Password must contain at least one digit"),
+        textColor: "red",
+      });
+      return false;
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.refUserPassword)) {
+      setToastOpen({
+        status: true,
+        message: t("Register User.Password must contain at least one special character"),
+        textColor: "red",
+      });
+      return false;
+    }
+
+
     if (formData.refUserPassword.length < 8) {
       setToastOpen({
         status: true,
@@ -224,8 +225,8 @@ const RegisterUser = () => {
         //   message: "Successfully Signup",
         // });
 
-        
-      setShowModal(true);
+
+        setShowModal(true);
 
         setTimeout(() => {
           history.replace("/login", {
@@ -257,7 +258,7 @@ const RegisterUser = () => {
         // setLoading(false);
         setToastOpen({
           status: true,
-          message: "Mobile Number Already Exists",
+          message: t("Register User.Already Mobile Number Exists"),
           textColor: "red"
         });
       }
@@ -270,12 +271,21 @@ const RegisterUser = () => {
     <IonPage>
       <IonContent fullscreen scrollY={true}>
         <div className="registerScreenIonic">
+          <IonToolbar style={{ "--background": "transaparent" }}>
+            <IonButtons slot="start">
+              <IonBackButton
+                mode="md"
+                defaultHref="/login"
+                icon={chevronBack}
+              ></IonBackButton>
+            </IonButtons>
+          </IonToolbar>
           <form className="registerUserForm" onSubmit={handleSubmit}>
             <img
               src={registerImage}
               style={{ width: "100%", height: "35vh", marginTop: "2%" }}
             />
-            <div className="title">Registration</div>
+            <div className="title">{t("Register User.Register")}</div>
             <div className="registerUserFields">
               <label>{t("Register User.First Name")}</label>
               <InputText
@@ -351,176 +361,176 @@ const RegisterUser = () => {
                 onChange={handleInputChange}
                 feedback={false}
               />
-            <div
-              className="inputBox"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-                fontWeight: "600",
-              }}
-            >
               <div
-                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+                className="inputBox"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                  fontWeight: "600",
+                }}
               >
-                {/[a-zA-Z]/.test(formData.refUserPassword) ? (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "green",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-check"
-                    ></i>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-times"
-                    ></i>
-                  </div>
-                )}
-                &nbsp; Atleast One Character
+                <div
+                  style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+                >
+                  {/[a-zA-Z]/.test(formData.refUserPassword) ? (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "green",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-check"
+                      ></i>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "red",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-times"
+                      ></i>
+                    </div>
+                  )}
+                  &nbsp; {t("Register User.Atleast One Character")}
+                </div>
+                <div
+                  style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+                >
+                  {/\d/.test(formData.refUserPassword) ? (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "green",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-check"
+                      ></i>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "red",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-times"
+                      ></i>
+                    </div>
+                  )}
+                  &nbsp; {t("Register User.Atleast One Number")}
+                </div>
+                <div
+                  style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+                >
+                  {/[!@#$%^&*(),.?":{}|<>]/.test(formData.refUserPassword) ? (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "green",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-check"
+                      ></i>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "red",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-times"
+                      ></i>
+                    </div>
+                  )}
+                  &nbsp; {t("Register User.Atleast One Special Character")}
+                </div>
+                <div
+                  style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
+                >
+                  {formData.refUserPassword.length > 7 ? (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "green",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-check"
+                      ></i>
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        background: "red",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "50%",
+                      }}
+                    >
+                      <i
+                        style={{ fontSize: "15px", color: "#fff" }}
+                        className="pi pi-times"
+                      ></i>
+                    </div>
+                  )}
+                  &nbsp; {t("Register User.Minimum 8 Characters")}
+                </div>
               </div>
-              <div
-                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
-              >
-                {/\d/.test(formData.refUserPassword) ? (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "green",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-check"
-                    ></i>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-times"
-                    ></i>
-                  </div>
-                )}
-                &nbsp; Atleast One Number
-              </div>
-              <div
-                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
-              >
-                {/[!@#$%^&*(),.?":{}|<>]/.test(formData.refUserPassword) ? (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "green",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-check"
-                    ></i>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-times"
-                    ></i>
-                  </div>
-                )}
-                &nbsp; Atleast One Special Character
-              </div>
-              <div
-                style={{ display: "flex", fontSize: "1rem", color: "#45474b" }}
-              >
-                {formData.refUserPassword.length > 7 ? (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "green",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-check"
-                    ></i>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-times"
-                    ></i>
-                  </div>
-                )}
-                &nbsp; Minimum 8 Characters
-              </div>
-            </div>
             </div>
 
             <div className="registerUserFields">
@@ -543,42 +553,42 @@ const RegisterUser = () => {
               >
                 {formData.refUserPassword === formData.refUserConPassword &&
                 formData.refUserPassword.length > 0 ? (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "green",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-check"
-                    ></i>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-times"
-                    ></i>
-                  </div>
-                )}
-                &nbsp; Confirm Password
-              </div>
+                <div
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    background: "green",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "50%",
+                  }}
+                >
+                  <i
+                    style={{ fontSize: "15px", color: "#fff" }}
+                    className="pi pi-check"
+                  ></i>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    background: "red",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: "50%",
+                  }}
+                >
+                  <i
+                    style={{ fontSize: "15px", color: "#fff" }}
+                    className="pi pi-times"
+                  ></i>
+                </div>
+              )}
+              &nbsp; {t("Register User.Confirm Password")}
+            </div>
             <div
               style={{
                 fontSize: "0.8rem",
@@ -595,7 +605,7 @@ const RegisterUser = () => {
                 {t("Register User.I've read and agree with the")}{" "}
                 <span
                   style={{ color: "var(--med-dark-green)", fontWeight: "bold" }}
-                  onClick={() => {history.push("/termsandprivacy"); setChecked(true)}}
+                  onClick={() => { history.push("/termsandprivacy"); setChecked(true) }}
                 >
                   {t(
                     "Register User.Terms and Conditions and the Privacy Policy"
@@ -608,7 +618,7 @@ const RegisterUser = () => {
               <button
                 type="submit"
                 className="medCustom-button01"
-                // onClick={() => setShowModal(true)}
+              // onClick={() => setShowModal(true)}
               >
                 {t("Register User.Next")}
               </button>
@@ -626,7 +636,7 @@ const RegisterUser = () => {
                 animationData={tickAnimation}
                 loop={false}
                 style={{ width: 150, height: 150 }}
-                onComplete={()=>
+                onComplete={() =>
                   setTimeout(() => {
                     setShowModal(false);
                     history.push("/login");
@@ -641,7 +651,7 @@ const RegisterUser = () => {
                 marginTop: "0%",
               }}
             >
-              Registration Successful!
+              {t("Register User.Registration Successful")}!
             </p>
             {/* <div
             style={{marginTop: "2rem"}}

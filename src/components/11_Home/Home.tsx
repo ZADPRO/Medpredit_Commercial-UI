@@ -66,6 +66,7 @@ import { StatusBar } from "@capacitor/status-bar";
 import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
+import { useTranslation } from "react-i18next";
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -77,7 +78,7 @@ const Home: React.FC = () => {
     : { firstName: null, lastName: null };
 
   console.log(userDeatilsObj);
-
+  const { t } = useTranslation("global");
   const headStatus = localStorage.getItem("headStatus") || "false";
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -86,12 +87,12 @@ const Home: React.FC = () => {
   const handleScroll = (event: CustomEvent) => {
     const scrollTop = event.detail.scrollTop;
     setIsScrolled(scrollTop > 20); // Track scroll state
-  
+
     // Update StatusBar color dynamically
     StatusBar.setBackgroundColor({ color: scrollTop > 20 ? "#f3f3f3" : "#f8fff5" });
   };
 
-  const [packages, setPackages] = useState<any>([]); 
+  const [packages, setPackages] = useState<any>([]);
 
   const [freeAssessment, setFreeAssessment] = useState({
     higherCount: 0,
@@ -101,57 +102,57 @@ const Home: React.FC = () => {
   const services = [
     {
       serviceId: 9,
-      title: "Stress",
-      subtitle: "Manage Stress for a Healthier Life",
+      title: t("home.Stress"),
+      subtitle: t("home.Manage Stress for a Healthier Life"),
       image: stress,
       path: "/serviceAssessment",
     },
     {
       serviceId: 11,
-      title: "Alcohol",
-      subtitle: "Limit Alcohol for Better Health and Wellness",
+      title: t("home.Alcohol"),
+      subtitle: t("home.Limit Alcohol for Better Health and Wellness"),
       image: alcohol,
       path: "/serviceAssessment",
     },
     {
       serviceId: 43,
-      title: "Sleep",
-      subtitle: "Improve Sleep for Better Physical and Mental Health",
+      title: t("home.Sleep"),
+      subtitle: t("home.Improve Sleep for Better Physical and Mental Health"),
       image: sleep,
       path: "/serviceAssessment",
     },
     {
       serviceId: 10,
-      title: "Tobacco",
-      subtitle: "Avoid Tobacco for a Healthier Future",
+      title: t("home.Tobacco"),
+      subtitle: t("home.Avoid Tobacco for a Healthier Future"),
       image: tobacco,
       path: "/serviceAssessment",
     },
     {
       serviceId: 12,
-      title: "Dietary",
-      subtitle: "Maintain a Balanced Diet for Optimal Health",
+      title: t("home.Dietary"),
+      subtitle: t("home.Maintain a Balanced Diet for Optimal Health"),
       image: dietary,
       path: "/serviceAssessment",
     },
     {
       serviceId: 13,
-      title: "BMI",
-      subtitle: "Manage Weight for a Healthier Lifestyle",
+      title: t("home.BMI"),
+      subtitle: t("home.Manage Weight for a Healthier Lifestyle"),
       image: bmi,
       path: "/serviceAssessment",
     },
     {
       serviceId: 8,
-      title: "Physical Activity",
-      subtitle: "Boost Health with Regular Physical Activities",
+      title: t("home.Physical Activity"),
+      subtitle: t("home.Boost Health with Regular Physical Activities"),
       image: physical,
       path: "/serviceAssessment",
     },
     {
       serviceId: 51,
-      title: "Family History",
-      subtitle: "Understand Family History for Preventive Care",
+      title: t("home.Family History"),
+      subtitle: t("home.Understand Family History for Preventive Care"),
       image: family_history,
       path: "/serviceAssessment",
     },
@@ -175,62 +176,41 @@ const Home: React.FC = () => {
     }
   };
 
-  const plans = [
-    {
-      title: "Intro",
-      price: "400",
-      members: "2 Family Members",
-      styleClass: "intro",
-    },
-    {
-      title: "Pro",
-      price: "800",
-      members: "6 Family Members",
-      styleClass: "pro",
-    },
-    {
-      title: "Base",
-      price: "600",
-      members: "4 Family Members",
-      styleClass: "base",
-    },
-  ];
-
   const knowAbout = [
     {
       disease: 'diabetes',
       bgImage: diabetesKnowAbout,
-      title: "What is Diabetes?",
+      title: t("home.What is Diabetes"),
       subTitle:
-        "Diabetes is a long-term condition where the body cannot properly produce or use insulin, resulting in high blood sugar levels.",
+        t("home.What is Diabetesans"),
       bgColor: "#F2F6D0",
     },
     {
       disease: 'hypertension',
       bgImage: hypertensionKnowAbout,
-      title: "What is Hypertension?",
+      title: t("home.What is Hypertension"),
       subTitle:
-        "Hypertension is when the blood pressure in the arteries stays too high for too long, raising the risk of heart disease and stroke.",
+        t("home.What is Hypertensionans"),
       bgColor: "#EFDCAB",
     },
     {
       disease: 'coronary heart disease',
       bgImage: coronaryKnowAbout,
-      title: "What is Coronary artery disease?",
+      title: t("home.What is Coronary artery disease"),
       subTitle:
-        "Coronary artery disease (CAD) occurs when heart arteries narrow due to plaque buildup, significantly increasing heart attack risk.",
+        t("home.What is Coronary artery diseaseans"),
       bgColor: "#D98324",
     },
     {
       disease: 'stroke',
       bgImage: stokeKnowAbout,
-      title: "What is Stroke?",
+      title: t("home.What is Stroke"),
       subTitle:
-        "Stroke is when blood flow to the brain is blocked or ruptured, often causing brain damage and impairing vital functions.",
+      t("home.What is StrokeAns"),
       bgColor: "#F2F6D0",
     },
   ];
-  
+
 
   const getPackage = () => {
     const tokenString = localStorage.getItem("userDetails");
@@ -238,7 +218,7 @@ const Home: React.FC = () => {
       try {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
-  
+
         console.log(token)
         axios
           .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`, {
@@ -257,16 +237,16 @@ const Home: React.FC = () => {
             if (data.status) {
               let tempPackages = data.result.sort((a: any, b: any) => a.refPkgValidMembers - b.refPkgValidMembers);
 
-              tempPackages = tempPackages.slice(0,3);
+              tempPackages = tempPackages.slice(0, 3);
 
               tempPackages = [tempPackages[0], tempPackages[2], tempPackages[1]];     // Rearrange the package list for UI
               setPackages(tempPackages);
-              
+
               // setSubscriptionData({
               //   packageStatus: data.packageStatus ?? false, 
               //   packageData: Array.isArray(data.packageData) ? data.packageData : []
               // });
-            setLoading(false);
+              setLoading(false);
             } else {
               console.error("Data consoled false - chekc this");
               setLoading(false);
@@ -336,7 +316,7 @@ const Home: React.FC = () => {
         <div className="home-top">
           <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
             <div className="home-top-bar-greetings">
-              <span style={{ fontSize: "0.8rem" }}>Hi,</span>
+              <span style={{ fontSize: "0.8rem" }}>{t("home.Hi")},</span>
               <h2
                 style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
               >
@@ -371,7 +351,7 @@ const Home: React.FC = () => {
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>
         <div className="medpredit_home">
           <div className="home-search-bar">
-            <input className="home-search-input" placeholder="Search Service" />
+            <input className="home-search-input" placeholder={t("home.Search Service")} />
             <div
               style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
             >
@@ -447,10 +427,10 @@ const Home: React.FC = () => {
               <h2
                 style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
               >
-                Services
+                {t("home.Services")}
               </h2>
               <span style={{ fontSize: "0.6rem" }}>
-                Stay Informed and Take Control of Your Health
+                {t("home.Stay Informed and Take Control of Your Health")}
               </span>
               {/* <span className="medCustom-chip01">View All</span> */}
             </div>
@@ -466,7 +446,7 @@ const Home: React.FC = () => {
                     <Divider style={{ margin: "0" }} align="center">
                       <div className="inline-flex align-items-center">
                         <b className="home-services-category-title">
-                          Comprehensive Care
+                          {t("home.Comprehensive Care")}
                         </b>
                       </div>
                     </Divider>
@@ -478,7 +458,7 @@ const Home: React.FC = () => {
                           textAlign: "center",
                         }}
                       >
-                        Free Assesstment Taken: {freeAssessment.higherCount > 0 ? 1 : 0 }/1
+                        {t("home.Free Assesstment Taken")}: {freeAssessment.higherCount > 0 ? 1 : 0}/1
                       </p>
                     )}
                   </div>
@@ -517,7 +497,7 @@ const Home: React.FC = () => {
                     <Divider style={{ margin: "0" }} align="center">
                       <div className="inline-flex align-items-center">
                         <b className="home-services-category-title">
-                          Basic Care
+                          {t("home.Basic Care")}
                         </b>
                       </div>
                     </Divider>
@@ -529,7 +509,7 @@ const Home: React.FC = () => {
                           textAlign: "center",
                         }}
                       >
-                        Free Assesstment Taken: {freeAssessment.lowerCount > 0 ? 1: 0}/1
+                        {t("home.Free Assesstment Taken")}: {freeAssessment.lowerCount > 0 ? 1 : 0}/1
                       </p>
                     )}
                   </div>
@@ -576,7 +556,7 @@ const Home: React.FC = () => {
                 }}
                 onClick={toggleShowAll}
               >
-                <span>{showAll ? "Less" : "More"}</span>
+                <span>{showAll ? t("home.Less") : t("home.More")}</span>
                 <IonIcon icon={showAll ? chevronUp : chevronDown} />
               </div>
             </div>
@@ -593,7 +573,7 @@ const Home: React.FC = () => {
                         fontSize: "1.3rem",
                       }}
                     >
-                      Get Premium
+                      {t("home.Get Premium")}
                     </b>
                   </div>
                 </Divider>
@@ -604,7 +584,7 @@ const Home: React.FC = () => {
                     textAlign: "center",
                   }}
                 >
-                  Stay Informed and Take Control of Your Health
+                  {t("home.Stay Informed and Take Control of Your Health")}
                 </p>
                 <div className="home-pricing-card">
                   {packages.length > 0 &&
@@ -621,13 +601,13 @@ const Home: React.FC = () => {
                               {plan.refPkgName}
                             </span>
                             <div>
-                              <p>{plan.refPkgValidDays + " days validity"}</p>
+                              <p>{plan.refPkgValidDays + " " + t("home.days validity")}</p>
                               <p>
                                 {"1" +
                                   (plan.refPkgValidMembers > 1
                                     ? ` + ${plan.refPkgValidMembers - 1}`
                                     : "") +
-                                  " Member"}
+                                  t("home.Member")}
                               </p>
                             </div>
                             <span
@@ -647,7 +627,7 @@ const Home: React.FC = () => {
                                 })
                               }
                             >
-                              Get Started
+                              {t("home.Get Started")}
                             </div>
                           </Card>
                         );
@@ -666,13 +646,13 @@ const Home: React.FC = () => {
                               {plan.refPkgName}
                             </span>
                             <div>
-                              <p>{plan.refPkgValidDays + " days validity"}</p>
+                              <p>{plan.refPkgValidDays + " " + t("home.days validity")}</p>
                               <p>
                                 {"1" +
                                   (plan.refPkgValidMembers > 1
                                     ? ` + ${plan.refPkgValidMembers - 1}`
                                     : "") +
-                                  " Member"}
+                                  t("home.Member")}
                               </p>
                             </div>
                             <span
@@ -692,7 +672,7 @@ const Home: React.FC = () => {
                                 })
                               }
                             >
-                              Get Started
+                              {t("home.Get Started")}
                             </div>
                           </Card>
                         );
@@ -893,10 +873,10 @@ const Home: React.FC = () => {
                 <h2
                   style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
                 >
-                  Know About Disease
+                  {t("home.Know About Disease")}
                 </h2>
                 <span style={{ fontSize: "0.6rem" }}>
-                  Stay Informed and Take Control of Your Health
+                  {t("home.Stay Informed and Take Control of Your Health")}
                 </span>
               </div>
 
@@ -938,12 +918,12 @@ const Home: React.FC = () => {
 
           <div className="home-footer">
             <h3>
-              Made with <img src={heartIcon} /> by
+              {t("home.made with")} <img src={heartIcon} /> {t("home.by")}
             </h3>
             <h1>ZAdroit</h1>
             <h4>
               <img src={indiaFlag} />
-              Made in India
+              {t("home.Made in India")}
             </h4>
             <h1> </h1>
           </div>

@@ -14,8 +14,10 @@ import {
   IonTitle,
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
 
 const NotificationSettings: React.FC = () => {
+  const { t, i18n } = useTranslation("global");
   const [selectedSegment, setSelectedSegment] = useState<string>("all");
 
   return (
@@ -25,7 +27,7 @@ const NotificationSettings: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Notification Settings</IonTitle>
+          <IonTitle>{t("notificationSettings.Notification Settings")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -35,33 +37,33 @@ const NotificationSettings: React.FC = () => {
           onIonChange={(e) => setSelectedSegment(e.detail.value as string)} // ✅ Fix: Cast as string
         >
           <IonSegmentButton value="all">
-            <IonLabel>All</IonLabel>
+            <IonLabel>{t("notificationSettings.All")}</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="report">
-            <IonLabel>Report</IonLabel>
+            <IonLabel>{t("notificationSettings.Report")}</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="plan">
-            <IonLabel>Plan</IonLabel>
+            <IonLabel>{t("notificationSettings.Plan")}</IonLabel>
           </IonSegmentButton>
         </IonSegment>
         {selectedSegment === "all" && (
           <IonCard>
             <IonCardContent>
-              <p>All notifications will be shown here.</p>
+              <p>{t("notificationSettings.All notifications will be shown here")}.</p>
             </IonCardContent>
           </IonCard>
         )}
         {selectedSegment === "report" && (
           <IonCard>
             <IonCardContent>
-              <p>Report-related notifications.</p>
+              <p>{t("notificationSettings.Report-related notifications")}.</p>
             </IonCardContent>
           </IonCard>
         )}
         {selectedSegment === "plan" && (
           <IonCard>
             <IonCardContent>
-              <p>Plan-related notifications.</p>
+              <p>{t("notificationSettings.Plan-related notifications")}.</p>
             </IonCardContent>
           </IonCard>
         )}

@@ -47,13 +47,13 @@ interface Package {
   updatedBy: string | null;
 }
 
-interface GstInfo{
+interface GstInfo {
   refGSTId: number;
   refCGST: string;
   refSGST: string;
 }
 
-interface UpgradeInfo{
+interface UpgradeInfo {
   isFirstPackage: boolean;
   minus_amount: number;
   minus_cgst: number;
@@ -73,8 +73,9 @@ const SubscriptionDetail: React.FC = () => {
 
   const { t } = useTranslation("global");
   const [showModal, setShowModal] = useState<boolean>(false);
+
   const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
-  
+
   const history = useHistory();
   const [toastOpen, setToastOpen] = useState<{
     status: boolean;
@@ -148,18 +149,18 @@ const SubscriptionDetail: React.FC = () => {
             if (data.status) {
               setSelectedPackage(data.result[0]);
               setGstInfo(data.getGST[0]);
-                setUpgradeInfo({
-                  isFirstPackage: data.isFirstPackage ?? false,
-                  minus_amount: data.minus_amount ?? 0,
-                  minus_cgst: data.minus_cgst ?? 0,
-                  minus_sgst: data.minus_sgst ?? 0,
-                  newPackage_amount: data.newPackage_amount ?? 0,
-                  newPackage_cgst: data.newPackage_cgst ?? 0,
-                  newPackage_sgst: data.newPackage_sgst ?? 0,
-                  totalPackage: data.totalPackage ?? 0,
-                  totalPackageValue: data.totalPackageValue ?? 0,
-                  totalminus: data.totalminus ?? 0,
-                });
+              setUpgradeInfo({
+                isFirstPackage: data.isFirstPackage ?? false,
+                minus_amount: data.minus_amount ?? 0,
+                minus_cgst: data.minus_cgst ?? 0,
+                minus_sgst: data.minus_sgst ?? 0,
+                newPackage_amount: data.newPackage_amount ?? 0,
+                newPackage_cgst: data.newPackage_cgst ?? 0,
+                newPackage_sgst: data.newPackage_sgst ?? 0,
+                totalPackage: data.totalPackage ?? 0,
+                totalPackageValue: data.totalPackageValue ?? 0,
+                totalminus: data.totalminus ?? 0,
+              });
               setLoading(false);
             } else {
               console.error("Data consoled false - chekc this");
@@ -187,8 +188,9 @@ const SubscriptionDetail: React.FC = () => {
   const handlePayment = () => {
     console.log(selectedPaymentMethod);
     console.log("Payment---------------------------------->");
-   
+
     if (upgradeInfo?.isFirstPackage == true) {
+
       gstAmount =
         ((selectPackage?.refPkgAmount || 0) *
           (Number(gstInfo?.refCGST) + Number(gstInfo?.refSGST))) /
@@ -197,6 +199,7 @@ const SubscriptionDetail: React.FC = () => {
     } else {
       grandTotal = (upgradeInfo?.totalPackageValue || 0) * 100;
     }
+
     
     if (selectedPaymentMethod === "Credit Card") {
       const options = {
@@ -418,13 +421,13 @@ const SubscriptionDetail: React.FC = () => {
               {"₹" +
                 (selectPackage?.refPkgAmount != undefined
                   ? selectPackage.refPkgAmount +
-                    " Base" +
-                    " + " +
-                    "₹" +
-                    selectPackage?.refPkgAmount *
-                      (Number(gstInfo?.refCGST) / 100 +
-                        Number(gstInfo?.refSGST) / 100) +
-                    "GST"
+                  " Base" +
+                  " + " +
+                  "₹" +
+                  selectPackage?.refPkgAmount *
+                  (Number(gstInfo?.refCGST) / 100 +
+                    Number(gstInfo?.refSGST) / 100) +
+                  "GST"
                   : "0")}
             </p>
             <table className="subscription-detail-table">
@@ -483,15 +486,14 @@ const SubscriptionDetail: React.FC = () => {
             </h1>
 
             <p style={{ fontStyle: "italic" }}>
-              {`₹${
-                (upgradeInfo?.newPackage_amount ?? 0) -
+              {`₹${(upgradeInfo?.newPackage_amount ?? 0) -
                 (upgradeInfo?.minus_amount ?? 0)
-              } Base + ₹${(
-                (upgradeInfo?.newPackage_cgst ?? 0) +
-                (upgradeInfo?.newPackage_sgst ?? 0) -
-                (upgradeInfo?.minus_cgst ?? 0) -
-                (upgradeInfo?.minus_sgst ?? 0)
-              ).toFixed(2)} GST`}
+                } Base + ₹${(
+                  (upgradeInfo?.newPackage_cgst ?? 0) +
+                  (upgradeInfo?.newPackage_sgst ?? 0) -
+                  (upgradeInfo?.minus_cgst ?? 0) -
+                  (upgradeInfo?.minus_sgst ?? 0)
+                ).toFixed(2)} GST`}
             </p>
 
             <table className="subscription-detail-table">

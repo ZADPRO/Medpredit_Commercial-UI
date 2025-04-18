@@ -23,9 +23,11 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import { InputSwitch, InputSwitchChangeEvent } from "primereact/inputswitch";
 import { Password } from "primereact/password";
+import { useTranslation } from "react-i18next";
 import BackNavigationGuard from "../BackNavigationGuard/BackNavigationGuard ";
 
 const AddFamily: React.FC = () => {
+  const { t } = useTranslation("global");
   const [formPage, setFormPage] = useState(1);
   const steps = [1, 2, 3, 4]; // Define steps for the form
   const [loading, setLoading] = useState(false);
@@ -38,96 +40,110 @@ const AddFamily: React.FC = () => {
     : { userCustId: null, phNumber: null, firstName: null, lastName: null };
 
   const [toastOpen, setToastOpen] = useState({ status: false, message: "", textColor: "black" });
-
-  const genderOpt: string[] = ["Male", "Female", "Transgender"];
-  const refMaritalStatus: string[] = ["Married", "Unmarried"];
-  const educationOpt: string[] = [
-    "Illiteracy",
-    "Primary School",
-    "Middle",
-    " Higher Secondary",
-    "Undergraduate (UG)",
-    "Postgraduate (PG)",
+  const genderOpt: any = [{
+    label: t("userProfile.Male"),
+    value: "Male"
+  }, {
+    label: t("userProfile.Female"),
+    value: "Female"
+  }, {
+    label: t("userProfile.Transgender"),
+    value: "Transgender"
+  }];
+  const refMaritalStatus: any = [{
+    label: t("userProfile.Male"),
+    value: "Married"
+  }, {
+    label: t("userProfile.Female"),
+    value: "Unmarried"
+  }];
+  const educationOpt: { label: string; value: string }[] = [
+    { label: t("userProfile.Illiteracy"), value: "Illiteracy" },
+    { label: t("userProfile.PrimarySchool"), value: "PrimarySchool" },
+    { label: t("userProfile.MiddleSchool"), value: "MiddleSchool" },
+    { label: t("userProfile.HigherSecondary"), value: "HigherSecondary" },
+    { label: t("userProfile.Undergraduate"), value: "Undergraduate" },
+    { label: t("userProfile.Postgraduate"), value: "Postgraduate" },
   ];
-  const occupationcategoryOtp: string[] = [
-    "Professional",
-    "Semi- Professional",
-    "Clerical, Shop-Owner, Farmer",
-    "Skilled worker",
-    "Semi-skilled worker",
-    "Unskilled worker",
-    "Homemaker",
-    "Unemployed",
-    "Student",
+  const occupationCategoryOpt: { label: string; value: string }[] = [
+    { label: t("userProfile.Professional"), value: "Professional" },
+    { label: t("userProfile.SemiProfessional"), value: "SemiProfessional" },
+    { label: t("userProfile.ClericalShopOwnerFarmer"), value: "ClericalShopOwnerFarmer" },
+    { label: t("userProfile.SkilledWorker"), value: "SkilledWorker" },
+    { label: t("userProfile.SemiSkilledWorker"), value: "SemiSkilledWorker" },
+    { label: t("userProfile.UnskilledWorker"), value: "UnskilledWorker" },
+    { label: t("userProfile.Homemaker"), value: "Homemaker" },
+    { label: t("userProfile.Unemployed"), value: "Unemployed" },
+    { label: t("userProfile.Student"), value: "Student" },
   ];
 
   const [occupationModel, setOccupationModel] = useState(false);
   const [occupationalSector, setOccupationalSector] = useState(false);
 
   const occupationData = [
-        {
-          category: "Professional",
-          heading: "Top level management of any organisation",
-          content:
-            "Example: Directors, Managers, advisory board members, consultants etc",
-        },
-        {
-          category: "Semi Professional",
-          heading: "Mid level management of any organisation",
-          content:
-            "Example: Assistant directors, Assistant managers, assistant engineers, junior consultant doctors etc",
-        },
-        {
-          category: "Clerical shop owners, land lords",
-          heading: "",
-          content: "who are involved in accounting and supervisors, desk top work",
-        },
-        {
-          category: "Skilled workers",
-          heading: "Technicians with a degree certificate related to the work",
-          content:
-            "Tailor, mason, carpenter, Electrician, plumber, factory machine operator",
-        },
-        {
-          category: "Semi skilled workers",
-          heading: "Technicians without degree certificate related to the work",
-          content:
-            "Technicians with a degree certificate related to the work Tailor, mason, carpenter, Electrician, plumber, factory machine operator",
-        },
-        {
-          category: "Unskilled worker",
-          heading: "Helpers",
-          content:
-            "sweepers, gardeners, helpers in construction site, house keeping, office unskilled assistants etc",
-        },
-        {
-          category: "Home makers",
-          heading: "",
-          content: "Family member who are involved in domestic chores of a family",
-        },
-        {
-          category: "Unemployed",
-          heading: "",
-          content: "Those who are not employed in any of the organisation",
-        },
-        {
-          category: "Student",
-          heading: "",
-          content:
-            "Those who are involved in learning activity and not employed in any organisation.",
-        },
-      ];
-      
-      const familyRelationOpt: string[] = [
-        "Father",
-        "Mother",
-        "Brother",
-        "Sister",
-        "Spouse",
-        "Son",
-        "Daughter",
-        "Others"
-      ];
+    {
+      category: t("userProfile.Professional"),
+      heading: t("userProfile.Top level management of any organisation"),
+      content:
+        t("userProfile.Example1"),
+    },
+    {
+      category: t("userProfile.SemiProfessional"),
+      heading: t("userProfile.Mid level management of any organisation"),
+      content:
+        t("userProfile.Example2"),
+    },
+    {
+      category: t("userProfile.ClericalShopOwnerFarmer"),
+      heading: "",
+      content: t("userProfile.Example3"),
+    },
+    {
+      category: t("userProfile.SkilledWorker"),
+      heading: t("userProfile.Technicians with a degree certificate related to the work"),
+      content:
+        t("userProfile.Tailor, mason, carpenter, Electrician, plumber, factory machine operator"),
+    },
+    {
+      category: t("userProfile.SemiSkilledWorker"),
+      heading: t("userProfile.Technicians without degree certificate related to the work"),
+      content:
+        t("userProfile.Example4"),
+    },
+    {
+      category: t("userProfile.UnskilledWorker"),
+      heading: t("userProfile.Helpers"),
+      content:
+        t("userProfile.sweepers, gardeners, helpers in construction site, house keeping, office unskilled assistants etc"),
+    },
+    {
+      category: t("userProfile.Homemaker"),
+      heading: "",
+      content: t("userProfile.Family member who are involved in domestic chores of a family"),
+    },
+    {
+      category: t("userProfile.Unemployed"),
+      heading: "",
+      content: t("userProfile.Those who are not employed in any of the organisation"),
+    },
+    {
+      category: t("userProfile.Student"),
+      heading: "",
+      content:
+        t("userProfile.Those who are involved in learning activity and not employed in any organisation"),
+    },
+  ];
+
+  const familyRelationOpt: { label: string; value: string }[] = [
+    { label: t("link.Father"), value: "Father" },
+    { label: t("link.Mother"), value: "Mother" },
+    { label: t("link.Brother"), value: "Brother" },
+    { label: t("link.Sister"), value: "Sister" },
+    { label: t("link.Spouse"), value: "Spouse" },
+    { label: t("link.Son"), value: "Son" },
+    { label: t("link.Daughter"), value: "Daughter" },
+    { label: t("link.Other"), value: "Other" }
+  ];
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -188,19 +204,19 @@ const AddFamily: React.FC = () => {
 
   const verifyForm1 = () => {
     if (formData.refUserFname.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Valid First Name" });
+      setToastOpen({ status: true, textColor: "red", message: t("add.Enter Valid First Name") });
       return false;
     } else if (formData.refUserLname.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Valid Last Name" });
+      setToastOpen({ status: true, textColor: "red", message: t("add.Enter Valid Last Name") });
       return false;
     } else if (!formData.refGender) {
-      setToastOpen({ status: true, textColor: "red", message: "Select Gender" });
+      setToastOpen({ status: true, textColor: "red", message: t("userProfile.Select") + " " + t("userProfile.Gender") });
       return false;
     } else if (!formData.refDOB) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Date of Birth" });
+      setToastOpen({ status: true, textColor: "red", message: t("userProfile.Select") + " " + t("userProfile.Date of Birth") });
       return false;
     } else if (!formData.refMaritalStatus) {
-      setToastOpen({ status: true, textColor: "red", message: "Select Marital Status" });
+      setToastOpen({ status: true, textColor: "red", message: t("userProfile.Select") + " " + t("userProfile.Marital Status") });
       return false;
     }
     return true;
@@ -208,31 +224,31 @@ const AddFamily: React.FC = () => {
 
   const verifyForm2 = () => {
     if (formData.refEducation.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Select Education" });
+      setToastOpen({ status: true, textColor: "red", message: t("userProfile.Select") + " " + t("userProfile.Education") });
       return false;
     } else if (formData.refProfession.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Select Occupation Category" });
+      setToastOpen({ status: true, textColor: "red", message: t("userProfile.Select") + " " + t("userProfile.Occupational Category") });
       return false;
     } else if (formData.refSector.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Sector" });
+      setToastOpen({ status: true, textColor: "red", message: t("Register User.Enter") + " " + t("userProfile.Sector") });
       return false;
     }
     return true;
   };
 
   const verifyForm3 = () => {
-    if (formData.refUserEmail.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/. test(formData.refUserEmail)) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Valid Email" });
+    if (formData.refUserEmail.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.refUserEmail)) {
+      setToastOpen({ status: true, textColor: "red", message: t("link.Enter Valid Mobile Number") });
       return false;
-  }
-  else if (formData.refAddress.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Address" });
+    }
+    else if (formData.refAddress.length === 0) {
+      setToastOpen({ status: true, textColor: "red", message: t("Register User.Enter") + " " + t("userProfile.Address") });
       return false;
     } else if (formData.refDistrict.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter District" });
+      setToastOpen({ status: true, textColor: "red", message: t("Register User.Enter") + " " + t("userProfile.District") });
       return false;
     } else if (formData.refPincode.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter Pincode" });
+      setToastOpen({ status: true, textColor: "red", message: t("Register User.Enter") + " " + t("userProfile.Pincode") });
       return false;
     }
     return true;
@@ -240,22 +256,22 @@ const AddFamily: React.FC = () => {
 
 
   const verifyForm4 = () => {
-    if(formData.realtionType.length === 0) {
-      setToastOpen({ status: true, textColor: "red", message: "Select Relation Type" });
+    if (formData.realtionType.length === 0) {
+      setToastOpen({ status: true, textColor: "red", message: t("link.Select a Relation Type") });
       return false;
     } 
     else if (formData.realtionType == "Others") {
       if(formData.otherRelationType.length === 0) {
         setToastOpen({ status: true, textColor: "red", message: "Specify Relation Type" });
         return false;
-      } 
+      }
     }
     else if (formData.isSame == false) {
-      if(!formData.mobilenumber || !/^\d{10}$/.test(formData.mobilenumber)) {
+      if (!formData.mobilenumber || !/^\d{10}$/.test(formData.mobilenumber)) {
         setToastOpen({
           status: true,
           textColor: "red",
-          message: "Enter Valid Mobile Number",
+          message: t("link.Enter Valid Mobile Number"),
         });
         return false;
       }
@@ -266,14 +282,14 @@ const AddFamily: React.FC = () => {
         !/[!@#$%^&*(),.?":{}|<>]/.test(formData.userpassword) || // Must contain at least one special character
         formData.userpassword.length < 8
       ) {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Valid Password" });
+        setToastOpen({ status: true, textColor: "red", message: t("add.Enter Valid Password") });
         return false;
       }
 
       else if (formData.userpassword !== formData.refUserConPassword) {
         setToastOpen({
           status: true,
-          message: "Passwords do not match",
+          message: t("Register User.Passwords do not match"),
           textColor: "red",
         });
         return false;
@@ -334,7 +350,7 @@ const AddFamily: React.FC = () => {
           });
 
           setTimeout(() => {
-            history.replace("/manageFamily", {refreshFamily: true});
+            history.replace("/manageFamily", { refreshFamily: true });
 
             setFormData({
               refUserFname: "",
@@ -375,8 +391,6 @@ const AddFamily: React.FC = () => {
     }
   };
 
-  console.log(formData.realtionType == "Others" ? formData.otherRelationType : formData.realtionType)
-
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
@@ -384,7 +398,7 @@ const AddFamily: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Add Family Member</IonTitle>
+          <IonTitle>{t("add.Add Family Member")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -415,7 +429,7 @@ const AddFamily: React.FC = () => {
                 >
                   0%
                 </div>
-                <div>Complete</div>
+                <div>{t("add.Complete")}</div>
               </div>
 
               <div
@@ -427,7 +441,7 @@ const AddFamily: React.FC = () => {
                   color: "#45474b",
                 }}
               >
-                Personal Details
+                {t("add.Personal Details")}
               </div>
             </>
           ) : formPage === 2 ? (
@@ -450,7 +464,7 @@ const AddFamily: React.FC = () => {
                 >
                   25%
                 </div>
-                <div>Complete</div>
+                <div>{t("add.Complete")}</div>
               </div>
 
               <div
@@ -462,7 +476,7 @@ const AddFamily: React.FC = () => {
                   color: "#45474b",
                 }}
               >
-                Skills Details
+                {t("add.Skills Details")}
               </div>
             </>
           ) : formPage === 3 ? (
@@ -485,7 +499,7 @@ const AddFamily: React.FC = () => {
                 >
                   50%
                 </div>
-                <div>Complete</div>
+                <div>{t("add.Complete")}</div>
               </div>
 
               <div
@@ -497,7 +511,7 @@ const AddFamily: React.FC = () => {
                   color: "#45474b",
                 }}
               >
-                Communication Details
+                {t("add.Communication Details")}
               </div>
             </>
           ) : formPage === 4 ? (
@@ -520,7 +534,7 @@ const AddFamily: React.FC = () => {
                 >
                   75%
                 </div>
-                <div>Complete</div>
+                <div>{t("add.Complete")}</div>
               </div>
 
               <div
@@ -532,7 +546,7 @@ const AddFamily: React.FC = () => {
                   color: "#45474b",
                 }}
               >
-                Account Details
+                {t("add.Account Details")}
               </div>
             </>
           ) : (
@@ -570,7 +584,7 @@ const AddFamily: React.FC = () => {
               {/* First Name */}
               <div className="inputBox">
                 <label>
-                  First Name <span style={{ color: "red" }}>*</span>
+                  {t("Register User.First Name")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
@@ -581,7 +595,7 @@ const AddFamily: React.FC = () => {
                     className="addFamilyInputText"
                     value={formData.refUserFname}
                     onChange={handleInputChange}
-                    placeholder="Enter First Name"
+                    placeholder={t("Register User.Enter") + " " + t("Register User.First Name")}
                     name="refUserFname"
                   />
                 </div>
@@ -589,7 +603,7 @@ const AddFamily: React.FC = () => {
               {/* Last Name */}
               <div className="inputBox">
                 <label>
-                  Last Name <span style={{ color: "red" }}>*</span>
+                  {t("Register User.Last Name")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
@@ -600,7 +614,7 @@ const AddFamily: React.FC = () => {
                     className="addFamilyInputText"
                     value={formData.refUserLname}
                     onChange={handleInputChange}
-                    placeholder="Enter Last Name"
+                    placeholder={t("Register User.Enter") + " " + t("Register User.Last Name")}
                     name="refUserLname"
                   />
                 </div>
@@ -608,7 +622,7 @@ const AddFamily: React.FC = () => {
               {/* Gender */}
               <div className="inputBox">
                 <label>
-                  Gender <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Gender")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
@@ -618,8 +632,10 @@ const AddFamily: React.FC = () => {
                     value={formData.refGender}
                     onChange={(e) => handleDropdownChange(e, "refGender")}
                     options={genderOpt}
+                    optionValue="value"
+                    optionLabel="label"
                     style={{ textAlign: "left" }}
-                    placeholder="Select Gender"
+                    placeholder={t("userProfile.Select") + " " + t("userProfile.Gender")}
                     name="refGender"
                     className="addFamilyDropdown"
                     checkmark={true}
@@ -630,7 +646,7 @@ const AddFamily: React.FC = () => {
               {/* Date of Birth */}
               <div className="inputBox">
                 <label>
-                  Date of Birth <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Date of Birth")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
@@ -640,7 +656,7 @@ const AddFamily: React.FC = () => {
                     style={{ width: "100%", textAlign: "left" }}
                     className="addFamilyInputText"
                     value={formData.refDOB ? formData.refDOB.split("T")[0] : ""}
-                    placeholder="Date of Birth"
+                    placeholder={t("userProfile.Select") + " " + t("userProfile.Date of Birth")}
                     name="refDOB"
                     onClick={openModal}
                   />
@@ -718,7 +734,7 @@ const AddFamily: React.FC = () => {
               {/* Marital Status */}
               <div className="inputBox">
                 <label>
-                  Marital Status <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Marital Status")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
@@ -731,7 +747,9 @@ const AddFamily: React.FC = () => {
                       handleDropdownChange(e, "refMaritalStatus")
                     }
                     options={refMaritalStatus}
-                    placeholder="Select Marital Status"
+                    optionValue="value"
+                    optionLabel="label"
+                    placeholder={t("userProfile.Marital Status")}
                     name="refGender"
                     className="addFamilyDropdown"
                     checkmark={true}
@@ -753,7 +771,7 @@ const AddFamily: React.FC = () => {
               {/* Education */}
               <div className="inputBox">
                 <label>
-                  Education <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Education")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
@@ -765,8 +783,9 @@ const AddFamily: React.FC = () => {
                     onChange={(e) => handleDropdownChange(e, "refEducation")}
                     options={educationOpt}
                     style={{ textAlign: "left" }}
-                    optionLabel="name"
-                    placeholder="Select Education"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder={t("userProfile.Select") + " " + t("userProfile.Education")}
                     className="addFamilyDropdown"
                     checkmark={true}
                     highlightOnSelect={false}
@@ -776,7 +795,7 @@ const AddFamily: React.FC = () => {
               {/* Occupation */}
               <div className="inputBox">
                 <label>
-                  Occupation <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Occupation")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
@@ -787,9 +806,10 @@ const AddFamily: React.FC = () => {
                     name="refProfession"
                     style={{ textAlign: "left" }}
                     onChange={(e) => handleDropdownChange(e, "refProfession")}
-                    options={occupationcategoryOtp}
-                    optionLabel="name"
-                    placeholder="Occupation Category"
+                    options={occupationCategoryOpt}
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder={t("userProfile.Occupational Category")}
                     className="addFamilyDropdown"
                     checkmark={true}
                     highlightOnSelect={false}
@@ -801,13 +821,13 @@ const AddFamily: React.FC = () => {
                   }}
                   style={{ marginTop: "10px", textDecoration: "underline" }}
                 >
-                  Example
+                  {t("userProfile.Example")}
                 </label>
               </div>
               {/* Sector */}
               <div className="inputBox">
                 <label>
-                  Sector <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Sector")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   {/* <span className="p-inputgroup-addon">
@@ -818,7 +838,7 @@ const AddFamily: React.FC = () => {
                     className="addFamilyInputText"
                     value={formData.refSector}
                     onChange={handleInputChange}
-                    placeholder="Enter Sector"
+                    placeholder={t("Register User.Enter") + " " + t("userProfile.Sector")}
                     name="refSector"
                   />
                 </div>
@@ -828,7 +848,7 @@ const AddFamily: React.FC = () => {
                   }}
                   style={{ marginTop: "10px", textDecoration: "underline" }}
                 >
-                  Example
+                  {t("userProfile.Example")}
                 </label>
               </div>
               {/* Occupation Model */}
@@ -877,7 +897,7 @@ const AddFamily: React.FC = () => {
                               borderBottom: "1px solid #e0e0e0",
                             }}
                           >
-                            Occupational Category
+                            {t("userProfile.Occupational Category")}
                           </th>
                           <th
                             style={{
@@ -887,7 +907,7 @@ const AddFamily: React.FC = () => {
                               borderBottom: "1px solid #e0e0e0",
                             }}
                           >
-                            Definition with example
+                            {t("userProfile.Definition with example")}
                           </th>
                         </tr>
                       </thead>
@@ -938,7 +958,7 @@ const AddFamily: React.FC = () => {
                     }}
                   >
                     <IonRippleEffect></IonRippleEffect>
-                    Close
+                    {t("userProfile.Close")}
                   </button>
                 </div>
               </IonModal>
@@ -955,7 +975,7 @@ const AddFamily: React.FC = () => {
               >
                 <div className="doctor-modal-content">
                   {/* Header */}
-                  <div className="doctor-modal-header">Occupation Sector</div>
+                  <div className="doctor-modal-header">{t("userProfile.Occupation Sector")}</div>
 
                   {/* Content */}
                   <div
@@ -967,7 +987,7 @@ const AddFamily: React.FC = () => {
                     className="ion-padding"
                   >
                     <div>
-                      <b>Production and Manufacturing</b>
+                      <b>{t("userProfile.Production and Manufacturing")}</b>
                     </div>
                     <div
                       style={{
@@ -977,11 +997,11 @@ const AddFamily: React.FC = () => {
                         marginTop: "10px",
                       }}
                     >
-                      <li>Agriculture and fishing</li>
-                      <li>Mining and Quarrying</li>
-                      <li>Forestry</li>
-                      <li>Food processing</li>
-                      <li>Factories and industries</li>
+                      <li>{t("userProfile.Agriculture and fishing")}</li>
+                      <li>{t("userProfile.Mining and Quarrying")}</li>
+                      <li>{t("userProfile.Forestry")}</li>
+                      <li>{t("userProfile.Food processing")}</li>
+                      <li>{t("userProfile.Factories and industries")}</li>
                       <div
                         style={{
                           display: "flex",
@@ -991,15 +1011,15 @@ const AddFamily: React.FC = () => {
                           paddingLeft: "10px",
                         }}
                       >
-                        <li>Textiles</li>
-                        <li>Automobiles</li>
-                        <li>Electrical and electronics</li>
-                        <li>Mechanical</li>
-                        <li>Constructions</li>
+                        <li>{t("userProfile.Textiles")}</li>
+                        <li>{t("userProfile.Automobiles")}</li>
+                        <li>{t("userProfile.Electrical and electronics")}</li>
+                        <li>{t("userProfile.Mechanical")}</li>
+                        <li>{t("userProfile.Constructions")}</li>
                       </div>
                     </div>
                     <div style={{ marginTop: "10px" }}>
-                      <b>Service sectors</b>
+                      <b>{t("userProfile.Service sectors")}</b>
                     </div>
                     <div
                       style={{
@@ -1009,20 +1029,20 @@ const AddFamily: React.FC = () => {
                         marginTop: "10px",
                       }}
                     >
-                      <li>Health care</li>
-                      <li>Education</li>
-                      <li>Sales and marketing</li>
-                      <li>IT and software solutions</li>
-                      <li>Finance and banking</li>
-                      <li>Transport and logistics- road and railways</li>
-                      <li>Hotels and lodges</li>
-                      <li>Media</li>
-                      <li>Judicial</li>
-                      <li>Defence and police</li>
-                      <li>Disaster management and rescue</li>
+                      <li>{t("userProfile.Health care")}</li>
+                      <li>{t("userProfile.Education")}</li>
+                      <li>{t("userProfile.Sales and marketing")}</li>
+                      <li>{t("userProfile.IT and software solutions")}</li>
+                      <li>{t("userProfile.Finance and banking")}</li>
+                      <li>{t("userProfile.Transport and logistics- road and railways")}</li>
+                      <li>{t("userProfile.Hotels and lodges")}</li>
+                      <li>{t("userProfile.Media")}</li>
+                      <li>{t("userProfile.Judicial")}</li>
+                      <li>{t("userProfile.Defence and police")}</li>
+                      <li>{t("userProfile.Disaster management and rescue")}</li>
                     </div>
                     <div style={{ marginTop: "10px" }}>
-                      <b>Others</b>
+                      <b>{t("userProfile.Others")}</b>
                     </div>
                     <div
                       style={{
@@ -1032,10 +1052,10 @@ const AddFamily: React.FC = () => {
                         marginTop: "10px",
                       }}
                     >
-                      <li>Research and development</li>
-                      <li>Consultancy</li>
-                      <li>Advisories</li>
-                      <li>Intelligence</li>
+                      <li>{t("userProfile.Research and development")}</li>
+                      <li>{t("userProfile.Consultancy")}</li>
+                      <li>{t("userProfile.Advisories")}</li>
+                      <li>{t("userProfile.Intelligence")}</li>
                     </div>
                   </div>
 
@@ -1047,7 +1067,7 @@ const AddFamily: React.FC = () => {
                     }}
                   >
                     <IonRippleEffect></IonRippleEffect>
-                    Close
+                    {t("userProfile.Close")}
                   </button>
                 </div>
               </IonModal>
@@ -1063,7 +1083,7 @@ const AddFamily: React.FC = () => {
               </div>
               {/* Education */}
               <div className="inputBox">
-                <label>Email</label>
+                <label>{t("Register User.E-Mail")}</label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
                     <i className="pi pi-envelope"></i>
@@ -1073,7 +1093,7 @@ const AddFamily: React.FC = () => {
                     className="addFamilyInputText"
                     value={formData.refUserEmail}
                     onChange={handleInputChange}
-                    placeholder="Enter Email"
+                    placeholder={t("Register User.Enter") + " " + t("Register User.E-Mail")}
                     name="refUserEmail"
                   />
                 </div>
@@ -1081,7 +1101,7 @@ const AddFamily: React.FC = () => {
               {/* Address */}
               <div className="inputBox">
                 <label>
-                  Address <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Address")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
@@ -1092,7 +1112,7 @@ const AddFamily: React.FC = () => {
                     className="addFamilyInputText"
                     value={formData.refAddress}
                     onChange={handleInputChange}
-                    placeholder="Enter Address"
+                    placeholder={t("Register User.Enter") + " " + t("userProfile.Address")}
                     name="refAddress"
                   />
                 </div>
@@ -1100,7 +1120,7 @@ const AddFamily: React.FC = () => {
               {/* District */}
               <div className="inputBox">
                 <label>
-                  District <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.District")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
@@ -1111,7 +1131,7 @@ const AddFamily: React.FC = () => {
                     className="addFamilyInputText"
                     value={formData.refDistrict}
                     onChange={handleInputChange}
-                    placeholder="Enter District"
+                    placeholder={t("Register User.Enter") + " " + t("userProfile.District")}
                     name="refDistrict"
                   />
                 </div>
@@ -1119,7 +1139,7 @@ const AddFamily: React.FC = () => {
               {/* Pincode */}
               <div className="inputBox">
                 <label>
-                  Pincode <span style={{ color: "red" }}>*</span>
+                  {t("userProfile.Pincode")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="p-inputgroup addFamilyInputField">
                   <span className="addFamilyInputField_Icon">
@@ -1137,7 +1157,7 @@ const AddFamily: React.FC = () => {
                       }
                     }}
                     maxLength={6}
-                    placeholder="Enter Pincode"
+                    placeholder={t("Register User.Enter") + " " + t("userProfile.Pincode")}
                     name="refPincode"
                   />
                 </div>
@@ -1149,7 +1169,7 @@ const AddFamily: React.FC = () => {
             <div style={{ padding: "15px" }}>
               <div className="inputBox">
                 <label>
-                  Relation Type <span style={{ color: "red" }}>*</span>
+                  {t("link.Relation Type")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
@@ -1159,8 +1179,10 @@ const AddFamily: React.FC = () => {
                     value={formData.realtionType}
                     onChange={(e) => handleDropdownChange(e, "realtionType")}
                     options={familyRelationOpt}
+                    optionValue="value"
+                    optionLabel="label"
                     style={{ textAlign: "left" }}
-                    placeholder="Select Relation"
+                    placeholder={t("link.Select a Relation Type")}
                     name="realtionType"
                     className="addFamilyDropdown"
                     checkmark={true}
@@ -1192,15 +1214,13 @@ const AddFamily: React.FC = () => {
               )}
 
               <div className="inputBox">
-                <label>Use Same Account Login</label>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "1rem",
-                  }}
-                >
+                <label>{t("add.Use Same Account Login")}</label>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "1rem"
+                }}>
                   <InputSwitch
                     checked={formData.isSame}
                     onChange={(e: InputSwitchChangeEvent) =>
@@ -1217,7 +1237,7 @@ const AddFamily: React.FC = () => {
                 <>
                   <div className="inputBox">
                     <label>
-                      Enter Number <span style={{ color: "red" }}>*</span>
+                      {t("link.Enter Number")} <span style={{ color: "red" }}>*</span>
                     </label>
 
                     <div className="p-inputgroup addFamilyInputField">
@@ -1239,7 +1259,7 @@ const AddFamily: React.FC = () => {
                               mobilenumber: numericValue,
                             }));
                           }}
-                          placeholder="Enter Phone Number"
+                          placeholder={t("link.Enter Phone Number")}
                           name="mobilenumber"
                         />
                       </div>
@@ -1248,7 +1268,7 @@ const AddFamily: React.FC = () => {
 
                   <div className="inputBox">
                     <label>
-                      Password <span style={{ color: "red" }}>*</span>
+                      {t("login.Password")} <span style={{ color: "red" }}>*</span>
                     </label>
                     <div
                       className="addFamilyInputField"
@@ -1264,7 +1284,7 @@ const AddFamily: React.FC = () => {
                         onPaste={(e) => e.preventDefault()}
                         value={formData.userpassword}
                         onChange={handleInputChange}
-                        placeholder="Enter Password"
+                        placeholder={t("Register User.Enter Password")}
                         name="userpassword"
                         toggleMask
                         feedback={false}
@@ -1325,7 +1345,7 @@ const AddFamily: React.FC = () => {
                           ></i>
                         </div>
                       )}
-                      &nbsp; Atleast One Character
+                      &nbsp; {t("Register User.Atleast One Character")}
                     </div>
                     <div
                       style={{
@@ -1370,7 +1390,7 @@ const AddFamily: React.FC = () => {
                           ></i>
                         </div>
                       )}
-                      &nbsp; Atleast One Number
+                      &nbsp; {t("Register User.Atleast One Number")}
                     </div>
                     <div
                       style={{
@@ -1415,7 +1435,7 @@ const AddFamily: React.FC = () => {
                           ></i>
                         </div>
                       )}
-                      &nbsp; Atleast One Special Character
+                      &nbsp; {t("Register User.Atleast One Special Character")}
                     </div>
                     <div
                       style={{
@@ -1460,13 +1480,13 @@ const AddFamily: React.FC = () => {
                           ></i>
                         </div>
                       )}
-                      &nbsp; Minimum 8 Characters
+                      &nbsp; {t("Register User.Minimum 8 Characters")}
                     </div>
                   </div>
 
                   <div className="inputBox">
                     <label>
-                      Confirm Password <span style={{ color: "red" }}>*</span>
+                      {t("Register User.Confirm Password")} <span style={{ color: "red" }}>*</span>
                     </label>
                     <div
                       className="addFamilyInputField"
@@ -1482,7 +1502,7 @@ const AddFamily: React.FC = () => {
                         onPaste={(e) => e.preventDefault()}
                         value={formData.refUserConPassword}
                         onChange={handleInputChange}
-                        placeholder="Re-Enter Password"
+                        placeholder={t("Register User.Confirm Password")}
                         name="refUserConPassword"
                         toggleMask
                         feedback={false}
@@ -1544,7 +1564,7 @@ const AddFamily: React.FC = () => {
                           ></i>
                         </div>
                       )}
-                      &nbsp; Confirm Password
+                      &nbsp; {t("Register User.Confirm Password")}
                     </div>
                   </div>
                 </>
@@ -1606,7 +1626,7 @@ const AddFamily: React.FC = () => {
                     }
                   }}
                 >
-                  <span>Sign Up</span>
+                  <span>{t("add.Sign Up")}</span>
                 </button>
               )}
             </>

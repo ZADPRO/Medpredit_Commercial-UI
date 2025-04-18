@@ -21,6 +21,10 @@ import { ScoreVerify } from "../../ScoreVerify/ScoreVerify2";
 
 import backgroundImage1 from "../../assets/PDFTemplate/background-1.png";
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
+
+import { IonIcon, IonText, IonToast, isPlatform } from "@ionic/react";
+import { download } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
 import { IonToast, isPlatform } from "@ionic/react";
 
 interface DoctorDetails {
@@ -49,6 +53,9 @@ interface ReportPDFProps {
 }
 
 const ReportPDF: React.FC<ReportPDFProps> = ({ reportDate, selectedUser }) => {
+
+  const {t, i18n} = useTranslation("global");
+
   const [showToast, setShowToast] = useState(false);
 
   const tokenString: any = localStorage.getItem("userDetails");
@@ -4021,9 +4028,9 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ reportDate, selectedUser }) => {
               handleDownloadPDF();
               setLoading(true);
             }}
-            className="medCustom-button01"
-          >
-            Download Report
+        className="medCustom-button01">
+            {t("reports.Download Report")}
+
           </button>
         </>
       )}

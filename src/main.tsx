@@ -19,7 +19,7 @@ import global_hindi from "../src/translations/hindi/global.json";
 
 i18next.init({
   interpolation: { escapeValue: false },
-  lng: "english",
+  lng: localStorage.getItem("lang") || "english",
   resources: {
     tamil: {
       global: global_tamil,

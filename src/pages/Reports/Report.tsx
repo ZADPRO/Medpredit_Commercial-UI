@@ -31,6 +31,7 @@ import { RadioButton } from "primereact/radiobutton";
 import { ScoreSlider } from "../../ScoreVerify/ScoreSlider";
 import ReportPDF from "../ReportPDF/ReportPDF";
 import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
+import { useTranslation } from "react-i18next";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -235,6 +236,7 @@ const Report: React.FC = () => {
               employeeId: null,
               hospitalId: "undefined",
               reportDate: tempselectedDate,
+              refLanCode: localStorage.getItem("refLanCode")
             },
             {
               headers: {
@@ -610,6 +612,7 @@ const Report: React.FC = () => {
               patientId: selectedUser?.toString(),
               employeeId: null,
               hospitalId: "undefined",
+              refLanCode: localStorage.getItem("refLanCode")
             },
             {
               headers: {
@@ -646,10 +649,15 @@ const Report: React.FC = () => {
     if (selectedUser) {
       getCategory();
 
-      if (isFirstRender == true && location.state?.selectedUser) {
+  useEffect(() => {
+     if (isFirstRender == true && location.state?.selectedUser) {
         setIsFirstRender(false);
         reportData();
       }
+    if (selectedUser) {
+      getCategory();
+
+     
     }
   }, [selectedUser]);
 
@@ -670,6 +678,8 @@ const Report: React.FC = () => {
     modal.current?.dismiss();
   }
 
+  const { t, i18n } = useTranslation("global");
+
   console.log("item colors==========================", itemColors);
   return (
     <IonPage className="cus-ion-page">
@@ -681,7 +691,7 @@ const Report: React.FC = () => {
           <IonTitle>
             {userData.length > 0
               ? userData.find((item) => item.refUserId === selectedUser)
-                  ?.refUserFname
+                ?.refUserFname
               : location.state?.selectedUserInfo?.refUserFname}
           </IonTitle>
 
@@ -726,7 +736,7 @@ const Report: React.FC = () => {
                 transform: "translateX(-50%)",
               }}
             >
-              Reports
+              {t("reports.Reports")}
             </h1>
             <IonIcon
               onClick={() => {
@@ -740,7 +750,7 @@ const Report: React.FC = () => {
             />
           </div>
 
-          <h4>Select User</h4>
+          <h4>{t("reports.Select User")}</h4>
           <IonList className="reports-user-list">
             {userData?.map((item, index) => (
               <div
@@ -760,7 +770,7 @@ const Report: React.FC = () => {
                           color: "var(--med-dark-green)",
                         }}
                       >
-                        Primary
+                        {t("login.Primary")}
                       </span>
                     )}
                   </div>
@@ -794,7 +804,7 @@ const Report: React.FC = () => {
               }
             }}
           >
-            <button className="medCustom-button01">Next</button>
+            <button className="medCustom-button01">{t("Register User.Next")}</button>
           </div>
         </div>
       </IonModal>
@@ -828,7 +838,7 @@ const Report: React.FC = () => {
                 transform: "translateX(-50%)",
               }}
             >
-              Reports
+              {t("reports.Reports")}
             </h1>
             <IonIcon
               onClick={() => {
@@ -841,7 +851,7 @@ const Report: React.FC = () => {
               icon={close}
             />
           </div>
-          <h4>Select Date</h4>
+          <h4>{t("reports.Select Date")}</h4>
           <div className="flex justify-content-center">
             <Calendar
               value={tempselectedDate}
@@ -866,11 +876,11 @@ const Report: React.FC = () => {
                 }}
                 className="medCustom-button01"
               >
-                Back
+                {t("reports.Back")}
               </button>
             )}
             <button onClick={() => reportData()} className="medCustom-button01">
-              Select
+              {t("reports.Select")}
             </button>
           </div>
         </div>
@@ -1034,7 +1044,7 @@ const Report: React.FC = () => {
                     <div className="content">
                       <h4 className="title">{item.refCategoryLabel}</h4>
                       <p className="date-range">
-                        <b>Taken: </b>
+                        <b>{t("reports.Taken")}: </b>
                         {allScore?.find(
                           (answer) =>
                             answer.refQCategoryId ===
@@ -1050,7 +1060,7 @@ const Report: React.FC = () => {
                       </p>
 
                       <p className="date-range">
-                        <b>Valid Till: </b>
+                        <b>{t("reports.Valid Till")}: </b>
                         {addDaysToDate(
                           allScore?.find(
                             (answer) =>
@@ -1124,7 +1134,7 @@ const Report: React.FC = () => {
                           display: "inline-block",
                         }}
                       >
-                        No Data Filled
+                        {t("reports.No Data Filled")}
                       </span>
                     </div>
                     <IonIcon icon={chevronForward} />
