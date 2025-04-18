@@ -35,7 +35,7 @@ interface UserInfo {
   headStatus: string;
   refUserId: number;
   refUserCustId: string;
-  refUserMobileno: number;
+  refUserMobileno: string;
   refUserFname: string;
   refUserLname?: string;
   refGender: string;
@@ -392,6 +392,10 @@ console.log(subscriptionData);
                         <table className="manage-family-table">
                           <tbody>
                             <tr>
+                              <td>Phone Number:</td>
+                              <td>{item.refUserMobileno}</td>
+                            </tr>
+                            <tr>
                               <td>Gender:</td>
                               <td>{item.refGender}</td>
                             </tr>
@@ -411,12 +415,20 @@ console.log(subscriptionData);
                             </tr>
                             <tr>
                               <td>Education:</td>
-                              <td>{item.refEducation}</td>
+                              <td>
+                                {item.refEducation ? item.refEducation : "-"}
+                              </td>
                             </tr>
                             <tr>
                               <td>Sector & Occupation Lvl</td>
                               <td>
-                                {item.refSector + " & " + item.refOccupationLvl}
+                                {item.refSector && item.refOccupationLvl
+                                  ? item.refSector +
+                                    " & " +
+                                    item.refOccupationLvl
+                                  : item.refSector || item.refOccupationLvl
+                                  ? item.refSector + item.refOccupationLvl
+                                  : "-"}
                               </td>
                             </tr>
                             {/* <tr>
@@ -519,7 +531,6 @@ console.log(subscriptionData);
           setToastOpen({ status: false, message: "", textColor: "black" })
         }
       />
-
     </IonPage>
   );
 };

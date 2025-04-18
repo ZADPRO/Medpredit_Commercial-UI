@@ -198,6 +198,7 @@ const Home: React.FC = () => {
 
   const knowAbout = [
     {
+      disease: 'diabetes',
       bgImage: diabetesKnowAbout,
       title: "What is Diabetes?",
       subTitle:
@@ -205,6 +206,7 @@ const Home: React.FC = () => {
       bgColor: "#F2F6D0",
     },
     {
+      disease: 'hypertension',
       bgImage: hypertensionKnowAbout,
       title: "What is Hypertension?",
       subTitle:
@@ -212,6 +214,7 @@ const Home: React.FC = () => {
       bgColor: "#EFDCAB",
     },
     {
+      disease: 'coronary heart disease',
       bgImage: coronaryKnowAbout,
       title: "What is Coronary artery disease?",
       subTitle:
@@ -219,6 +222,7 @@ const Home: React.FC = () => {
       bgColor: "#D98324",
     },
     {
+      disease: 'stroke',
       bgImage: stokeKnowAbout,
       title: "What is Stroke?",
       subTitle:
@@ -296,6 +300,7 @@ const Home: React.FC = () => {
             );
             console.log(data);
             if (data.status) {
+              setLoading(false);
               localStorage.setItem(
                 "subValid",
                 data.checkSubscriptions.length > 0 ? "true" : "false"
@@ -390,7 +395,12 @@ const Home: React.FC = () => {
             >
               <div
                 className="carouselDiv"
-                onClick={() => history.push("/reports")}
+                onClick={() =>
+                  history.push("/reports", {
+                    direction: "forward",
+                    animation: "slide",
+                  })
+                }
               >
                 <img src={carousel1} className="carousel-image" />
               </div>
@@ -755,7 +765,7 @@ const Home: React.FC = () => {
             </div> */}
               </div>
             )}
-          <div className="home-riskFactor">
+          {/* <div className="home-riskFactor">
             <div className="home-riskFactor-title">
               <div>
                 <h2
@@ -768,7 +778,7 @@ const Home: React.FC = () => {
                 </span>
               </div>
 
-              {/* <span>View All</span> */}
+              {/* <span>View All</span> */} {/*
             </div>
 
             <div className="home-riskFactor-content">
@@ -875,7 +885,7 @@ const Home: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="home-knowAbout">
             <div className="home-knowAbout-title">
@@ -902,7 +912,7 @@ const Home: React.FC = () => {
                   <img src={item.bgImage} />
                   <h3>{item.title}</h3>
                   <p>{item.subTitle}</p>
-                  {/* <div
+                  <div
                     style={{
                       padding: "1rem 0 0 0",
                       textAlign: "start",
@@ -912,18 +922,19 @@ const Home: React.FC = () => {
                       alignItems: "center",
                       gap: "0.3rem",
                     }}
+                    onClick={() => history.push(`/knowAbout/${item.disease}`)}
                   >
                     Read More <i className="pi pi-arrow-right" />
-                  </div> */}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="home-faq">
+          {/* <div className="home-faq">
             <h2>FAQ</h2>
             <IonIcon size="large" src={chevronForward} />
-          </div>
+          </div> */}
 
           <div className="home-footer">
             <h3>

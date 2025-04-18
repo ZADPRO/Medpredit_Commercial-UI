@@ -52,11 +52,11 @@ const Profile: React.FC = () => {
           label: "Notification Settings",
           path: "/notificationSettings",
         },
-        {
-          icon: "pi pi-language",
-          label: "Choose Language",
-          path: "/ChooseLanguage_02",
-        },
+        // {
+        //   icon: "pi pi-language",
+        //   label: "Choose Language",
+        //   path: "/ChooseLanguage_02",
+        // },
         { icon: "pi pi-headphones", label: "Help Center", path: "/helpCenter" },
         { icon: "pi pi-comment", label: "Feedback", path: "/feedback" },
       ],

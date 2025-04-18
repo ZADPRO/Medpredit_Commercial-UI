@@ -5,13 +5,14 @@ import {
   IonDatetime,
   IonFooter,
   IonHeader,
+  IonIcon,
   IonModal,
   IonPage,
   IonRippleEffect,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
+import { chevronBack, information, informationCircleOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import Toast from "../CustomIonToast/CustomIonToast";
 import { InputText } from "primereact/inputtext";
@@ -22,6 +23,7 @@ import axios from "axios";
 import { useHistory } from "react-router";
 import { InputSwitch, InputSwitchChangeEvent } from "primereact/inputswitch";
 import { Password } from "primereact/password";
+import BackNavigationGuard from "../BackNavigationGuard/BackNavigationGuard ";
 
 const AddFamily: React.FC = () => {
   const [formPage, setFormPage] = useState(1);
@@ -124,7 +126,7 @@ const AddFamily: React.FC = () => {
         "Spouse",
         "Son",
         "Daughter",
-        "Other"
+        "Others"
       ];
 
 
@@ -152,7 +154,8 @@ const AddFamily: React.FC = () => {
     isSame: false,
     mobilenumber: "",
     userpassword: "",
-    realtionType: ""
+    realtionType: "",
+    otherRelationType: "",
   });
 
   const handleInputChange = (e: any) => {
@@ -241,6 +244,12 @@ const AddFamily: React.FC = () => {
       setToastOpen({ status: true, textColor: "red", message: "Select Relation Type" });
       return false;
     } 
+    else if (formData.realtionType == "Others") {
+      if(formData.otherRelationType.length === 0) {
+        setToastOpen({ status: true, textColor: "red", message: "Specify Relation Type" });
+        return false;
+      } 
+    }
     else if (formData.isSame == false) {
       if(!formData.mobilenumber || !/^\d{10}$/.test(formData.mobilenumber)) {
         setToastOpen({
@@ -300,7 +309,7 @@ const AddFamily: React.FC = () => {
             isSame: formData.isSame,
             mobilenumber: formData.mobilenumber,
             userpassword: formData.userpassword,
-            realtionType: formData.realtionType
+            realtionType: formData.realtionType == "Others" ? formData.otherRelationType : formData.realtionType
           },
           {
             headers: {
@@ -347,6 +356,7 @@ const AddFamily: React.FC = () => {
               mobilenumber: "",
               userpassword: "",
               realtionType: "",
+              otherRelationType: "",
             });
           }, 3000);
         } else {
@@ -365,7 +375,7 @@ const AddFamily: React.FC = () => {
     }
   };
 
-  console.log(formData.refUserMobileno)
+  console.log(formData.realtionType == "Others" ? formData.otherRelationType : formData.realtionType)
 
   return (
     <IonPage className="cus-ion-page">
@@ -733,6 +743,13 @@ const AddFamily: React.FC = () => {
           )}
           {formPage === 2 && (
             <div style={{ padding: "15px" }}>
+              <div style={{display: "flex", alignItems: "flex-start"}}>
+              <IonIcon icon={informationCircleOutline} color="primary"/>
+              <label style={{fontSize: "0.8rem"}}>
+                Your education and occupation help us personalize your care.
+              </label>
+              </div>
+
               {/* Education */}
               <div className="inputBox">
                 <label>
@@ -1038,6 +1055,12 @@ const AddFamily: React.FC = () => {
           )}
           {formPage === 3 && (
             <div style={{ padding: "15px" }}>
+              <div style={{display: "flex", alignItems: "flex-start"}}>
+              <IonIcon icon={informationCircleOutline} color="primary"/>
+              <label style={{fontSize: "0.8rem"}}>
+              Your address helps us analyze regional health trends and improve our services.
+              </label>
+              </div>
               {/* Education */}
               <div className="inputBox">
                 <label>Email</label>
@@ -1146,21 +1169,47 @@ const AddFamily: React.FC = () => {
                 </div>
               </div>
 
+              {formData.realtionType == "Others" && (
+                <div className="inputBox">
+                  <label>
+                    Others - Please Specify{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <div className="p-inputgroup addFamilyInputField">
+                    <span className="addFamilyInputField_Icon">
+                      <i className="pi pi-user"></i>
+                    </span>
+                    <InputText
+                      style={{ width: "100%", textAlign: "left" }}
+                      className="addFamilyInputText"
+                      value={formData.otherRelationType}
+                      onChange={handleInputChange}
+                      placeholder="Enter Relation Type"
+                      name="otherRelationType"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="inputBox">
                 <label>Use Same Account Login</label>
-                <div style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "1rem"
-                }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "1rem",
+                  }}
+                >
                   <InputSwitch
                     checked={formData.isSame}
                     onChange={(e: InputSwitchChangeEvent) =>
                       setFormData({ ...formData, isSame: e.value })
                     }
                   />
-                  <span style={{fontSize: "0.8rem", fontWeight: "300"}}>{"(" + formData.refUserMobileno + ")"}</span>
+                  <span style={{ fontSize: "0.8rem", fontWeight: "300" }}>
+                    {"(" + formData.refUserMobileno + ")"}
+                  </span>
                 </div>
               </div>
 
@@ -1331,9 +1380,7 @@ const AddFamily: React.FC = () => {
                         color: "#45474b",
                       }}
                     >
-                      {/[!@#$%^&*(),.?":{}|<>]/.test(
-                        formData.userpassword
-                      ) ? (
+                      {/[!@#$%^&*(),.?":{}|<>]/.test(formData.userpassword) ? (
                         <div
                           style={{
                             width: "25px",
@@ -1445,56 +1492,61 @@ const AddFamily: React.FC = () => {
                   </div>
 
                   <div
-              className="inputBox"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-                fontWeight: "600",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", fontSize: "1rem", color: "#45474b" }}
-              >
-                {formData.userpassword === formData.refUserConPassword &&
-                formData.userpassword.length > 0 ? (
-                  <div
+                    className="inputBox"
                     style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "green",
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
+                      flexDirection: "column",
+                      gap: "10px",
+                      fontWeight: "600",
                     }}
                   >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-check"
-                    ></i>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: "1rem",
+                        color: "#45474b",
+                      }}
+                    >
+                      {formData.userpassword === formData.refUserConPassword &&
+                      formData.userpassword.length > 0 ? (
+                        <div
+                          style={{
+                            width: "25px",
+                            height: "25px",
+                            background: "green",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: "50%",
+                          }}
+                        >
+                          <i
+                            style={{ fontSize: "15px", color: "#fff" }}
+                            className="pi pi-check"
+                          ></i>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            width: "25px",
+                            height: "25px",
+                            background: "red",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: "50%",
+                          }}
+                        >
+                          <i
+                            style={{ fontSize: "15px", color: "#fff" }}
+                            className="pi pi-times"
+                          ></i>
+                        </div>
+                      )}
+                      &nbsp; Confirm Password
+                    </div>
                   </div>
-                ) : (
-                  <div
-                    style={{
-                      width: "25px",
-                      height: "25px",
-                      background: "red",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderRadius: "50%",
-                    }}
-                  >
-                    <i
-                      style={{ fontSize: "15px", color: "#fff" }}
-                      className="pi pi-times"
-                    ></i>
-                  </div>
-                )}
-                &nbsp; Confirm Password
-              </div>
-            </div>
                 </>
               )}
             </div>
@@ -1584,6 +1636,7 @@ const AddFamily: React.FC = () => {
           )}
         </div>
       </IonFooter>
+      {/* <BackNavigationGuard when={true} /> */}
     </IonPage>
   );
 };

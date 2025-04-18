@@ -15,28 +15,20 @@ const Splashscreen: React.FC = () => {
         const userId = tokenObject.userId;
         const flag = localStorage.getItem("detailsFlag");
 
-        if(userId !== null) {
-          if (flag == "true") {
-              history.replace("/userProfile", {
-                direction: "forward",
-                animation: "slide",
-              });
-            } else {
-              history.replace("/home", {
-                direction: "forward",
-                animation: "slide",
-              });
-            }
-        }
-        else {
-          history.replace("/chooselanguage", {
+        if (userId !== null) {
+          history.replace("/home", {
+            direction: "forward",
+            animation: "slide",
+          });
+        } else {
+          history.replace("/login", {
             direction: "forward",
             animation: "slide",
           });
         }
       }
       else {
-        history.replace("/chooselanguage", {
+        history.replace("/login", {
           direction: "forward",
           animation: "slide",
         });

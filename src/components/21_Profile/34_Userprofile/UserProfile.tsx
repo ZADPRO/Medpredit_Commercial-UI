@@ -17,10 +17,12 @@ import {
     IonSegmentButton,
     IonSegmentContent,
     IonSegmentView,
+    IonText,
     IonTitle,
     IonToolbar,
+    useIonAlert,
   } from "@ionic/react";
-  import { chevronBack, closeSharp, createOutline, settings } from "ionicons/icons";
+  import { chevronBack, closeSharp, createOutline, informationCircleOutline, settings } from "ionicons/icons";
   import { InputText } from "primereact/inputtext";
   import React, { useEffect, useState } from "react";
   import "./UserProfile.css";
@@ -35,6 +37,7 @@ import { useHistory } from "react-router";
     const [selectedSegment, setSelectedSegment] =
       useState<string>("Personal Details");
     const [isEditing, setIsEditing] = useState(false);
+    const [presentAlert] = useIonAlert();
   
     const userDetails = localStorage.getItem("userDetails");
   
@@ -210,9 +213,20 @@ import { useHistory } from "react-router";
   
     useEffect(() => {
       fetchUserDetals();
-      if (localStorage.getItem("detailsFlag") === "true") {
+      if (localStorage.getItem("firstLogin") == "true"){
         setIsEditing(true);
-        setToastOpen({ status: true, textColor: "red", position: "top",  message: "Please Complete your Profile" });
+
+        presentAlert({
+          message:
+            "Please Complete Your Profile",
+          buttons: [
+            {
+              text: "Close",
+              role: "cancel",
+              cssClass: "close-button",
+            },
+          ],
+        });
       }
     }, []);
   
@@ -224,6 +238,7 @@ import { useHistory } from "react-router";
           setTimeout(() => {
             history.replace("/home");
             localStorage.setItem("detailsFlag", "false");
+            localStorage.setItem("firstLogin", "false");
           }, 3000);
         } else{
           setToastOpen({ status: true, textColor: "green", message: "Profile Saved" });
@@ -301,18 +316,23 @@ import { useHistory } from "react-router";
     const verifyForm1 = () => {
       if (formData.refUserFname.length === 0) {
         setToastOpen({ status: true, textColor: "red", message: "Enter Valid First Name" });
+        setSelectedSegment("Personal Details");
         return false;
       } else if (formData.refUserLname.length === 0) {
         setToastOpen({ status: true, textColor: "red", message: "Enter Valid Last Name" });
+        setSelectedSegment("Personal Details");
         return false;
       } else if (!formData.refGender || formData.refGender === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Select Gender" });
+        setSelectedSegment("Personal Details");
         return false;
       } else if (!formData.refDOB || formData.refDOB === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Enter Date of Birth" });
+        setSelectedSegment("Personal Details");
         return false;
       } else if (!formData.refMaritalStatus || formData.refMaritalStatus === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Select Marital Status" });
+        setSelectedSegment("Personal Details");
         return false;
       }
       return true;
@@ -321,12 +341,15 @@ import { useHistory } from "react-router";
     const verifyForm2 = () => {
       if (formData.refEducation.length === 0 || formData.refEducation === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Select Education" });
+        setSelectedSegment("Career Details");
         return false;
       } else if (formData.refOccupationLvl == null || formData.refOccupationLvl === "-" || formData.refOccupationLvl.length === 0) {
         setToastOpen({ status: true, textColor: "red", message: "Select Occupation Category" });
+        setSelectedSegment("Career Details");
         return false;
       } else if (formData.refSector.length === 0 || formData.refSector === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Enter Sector" });
+        setSelectedSegment("Career Details");
         return false;
       }
       return true;
@@ -338,15 +361,20 @@ import { useHistory } from "react-router";
         formData.refUserEmail.length === 0
       ) {
         setToastOpen({ status: true, textColor: "red", message: "Enter Valid Email" });
+        setSelectedSegment("Contact Details");
         return false;
       } else if (formData.refAddress.length === 0 || formData.refAddress === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Enter Address" });
+        setSelectedSegment("Contact Details");
         return false;
-      } else if (formData.refDistrict.length === 0 || formData.refDistrict === "-") {
+      } 
+      else if (formData.refDistrict.length === 0 || formData.refDistrict === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Enter District" });
+        setSelectedSegment("Contact Details");
         return false;
       } else if (formData.refPincode.length === 0 || formData.refPincode === "-") {
         setToastOpen({ status: true, textColor: "red", message: "Enter Pincode" });
+        setSelectedSegment("Contact Details");
         return false;
       }
       return true;
@@ -356,7 +384,8 @@ import { useHistory } from "react-router";
       <IonPage className="cus-ion-page">
         <IonHeader>
           <IonToolbar>
-            {localStorage.getItem("detailsFlag") == "false" && (
+            {(localStorage.getItem("firstLogin") == "false" ||
+              localStorage.getItem("firstLogin") == undefined) && (
               <IonButtons slot="start">
                 <IonBackButton
                   mode="md"
@@ -366,13 +395,32 @@ import { useHistory } from "react-router";
               </IonButtons>
             )}
             <IonTitle>My Profile</IonTitle>
-            <IonButton
-              fill="clear"
-              slot="end"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              <IonIcon icon={isEditing ? closeSharp : createOutline} />
-            </IonButton>
+            {localStorage.getItem("firstLogin") === "true" ? (
+              <IonButton
+                fill="clear"
+                slot="end"
+                color={"dark"}
+                onClick={() => {
+                  history.replace("/home");
+                  localStorage.setItem("firstLogin", "false");
+                }}
+              >
+                <IonText>Skip</IonText>
+              </IonButton>
+            ) : (
+              <IonButton
+                fill="clear"
+                slot="end"
+                color={"dark"}
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                {isEditing ? (
+                  <IonIcon icon={closeSharp} />
+                ) : (
+                  <IonText>Edit</IonText>
+                )}
+              </IonButton>
+            )}
           </IonToolbar>
         </IonHeader>
 
@@ -491,7 +539,13 @@ import { useHistory } from "react-router";
                   <InputText
                     style={{ width: "100%", textAlign: "left" }}
                     className="addFamilyInputText"
-                    value={formData.refDOB ? (formData.refDOB == "-" ? new Date().toISOString().split("T")[0] : formData.refDOB.split("T")[0]) : ""}
+                    value={
+                      formData.refDOB
+                        ? formData.refDOB === "-"
+                          ? ""
+                          : formData.refDOB.split("T")[0]
+                        : ""
+                    }
                     placeholder="Date of Birth"
                     name="refDOB"
                     onClick={openModal}
@@ -509,7 +563,11 @@ import { useHistory } from "react-router";
                   <IonDatetime
                     presentation="date"
                     preferWheel={true}
-                    value={(formData.refDOB == "-" || !formData.refDOB) ? new Date().toISOString().split("T")[0] : formData.refDOB}
+                    value={
+                      formData.refDOB == "-" || !formData.refDOB
+                        ? new Date().toISOString().split("T")[0]
+                        : formData.refDOB
+                    }
                     onIonChange={(e) => {
                       const selectedDate = e.detail.value;
                       setFormData({
@@ -600,8 +658,16 @@ import { useHistory } from "react-router";
             </IonSegmentContent>
             <IonSegmentContent id="Career Details">
               {/* Education */}
+              <div style={{ display: "flex", alignItems: "flex-start" }}>
+                <IonIcon icon={informationCircleOutline} color="primary" />
+                <label style={{ fontSize: "0.8rem" }}>
+                  Your education and occupation help us personalize your care.
+                </label>
+              </div>
               <div className="inputBox">
-                <label>Education <span style={{ color: "red" }}>*</span></label>
+                <label>
+                  Education <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -628,7 +694,9 @@ import { useHistory } from "react-router";
               </div>
               {/* Occupation */}
               <div className="inputBox">
-                <label>Occupation <span style={{ color: "red" }}>*</span></label>
+                <label>
+                  Occupation <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -642,7 +710,9 @@ import { useHistory } from "react-router";
                     value={formData.refOccupationLvl}
                     name="refOccupationLvl"
                     style={{ textAlign: "left" }}
-                    onChange={(e) => handleDropdownChange(e, "refOccupationLvl")}
+                    onChange={(e) =>
+                      handleDropdownChange(e, "refOccupationLvl")
+                    }
                     options={occupationcategoryOtp}
                     optionLabel="name"
                     placeholder="Occupation Category"
@@ -663,7 +733,9 @@ import { useHistory } from "react-router";
               </div>
               {/* Sector */}
               <div className="inputBox">
-                <label>Sector <span style={{ color: "red" }}>*</span></label>
+                <label>
+                  Sector <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -919,9 +991,7 @@ import { useHistory } from "react-router";
                 <label>
                   Mobile Number <span style={{ color: "red" }}>*</span>
                 </label>
-                <div
-                  className="p-inputgroup addFamilyInputField inputDisabled"
-                >
+                <div className="p-inputgroup addFamilyInputField inputDisabled">
                   <span className="addFamilyInputField_Icon">
                     <i className="pi pi-phone"></i>
                   </span>
@@ -942,7 +1012,9 @@ import { useHistory } from "react-router";
                 </div>
               </div>
               <div className="inputBox">
-                <label>Email <span style={{ color: "red" }}>*</span></label>
+                <label>
+                  Email <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -961,9 +1033,19 @@ import { useHistory } from "react-router";
                   />
                 </div>
               </div>
+              
               {/* Address */}
               <div className="inputBox">
-                <label>Address <span style={{ color: "red" }}>*</span></label>
+              <div style={{ display: "flex", alignItems: "flex-start" }}>
+                <IonIcon icon={informationCircleOutline} color="primary" />
+                <label style={{ fontSize: "0.8rem" }}>
+                  Your address helps us analyze regional health trends and
+                  improve our services.
+                </label>
+              </div>
+                <label>
+                  Address <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -984,7 +1066,9 @@ import { useHistory } from "react-router";
               </div>
               {/* District */}
               <div className="inputBox">
-                <label>District <span style={{ color: "red" }}>*</span></label>
+                <label>
+                  District <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -1005,7 +1089,9 @@ import { useHistory } from "react-router";
               </div>
               {/* Pincode */}
               <div className="inputBox">
-                <label>Pincode <span style={{ color: "red" }}>*</span></label>
+                <label>
+                  Pincode <span style={{ color: "red" }}>*</span>
+                </label>
                 <div
                   className={`p-inputgroup addFamilyInputField ${
                     !isEditing ? "inputDisabled" : ""
@@ -1037,18 +1123,32 @@ import { useHistory } from "react-router";
         {isEditing && (
           <IonFooter>
             <IonToolbar>
-              <IonTitle onClick={() => handleSave()}>Save</IonTitle>
+              {selectedSegment == "Contact Details" ? (
+                <IonTitle onClick={() => handleSave()}>Save</IonTitle>
+              ) : (
+                <IonTitle
+                  onClick={() =>
+                    selectedSegment == "Personal Details"
+                      ? setSelectedSegment("Career Details")
+                      : setSelectedSegment("Contact Details")
+                  }
+                >
+                  Next
+                </IonTitle>
+              )}
             </IonToolbar>
           </IonFooter>
         )}
 
-<Toast 
-        isOpen={toastOpen.status} 
-        message={toastOpen.message} 
-        textColor={toastOpen.textColor}
-        position={toastOpen.position} 
-        onClose={() => setToastOpen({ status: false, message: "", textColor: "black" })} 
-      />
+        <Toast
+          isOpen={toastOpen.status}
+          message={toastOpen.message}
+          textColor={toastOpen.textColor}
+          position={toastOpen.position}
+          onClose={() =>
+            setToastOpen({ status: false, message: "", textColor: "black" })
+          }
+        />
       </IonPage>
     );
   };
