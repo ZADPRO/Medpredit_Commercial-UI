@@ -22,6 +22,7 @@ import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { Divider } from "primereact/divider";
+import { useTranslation } from "react-i18next";
 
 interface Package {
   createdAt: string;
@@ -41,7 +42,7 @@ interface Package {
   updatedBy: string | null;
 }
 
-interface SubscriptionInfo{
+interface SubscriptionInfo {
   packageStatus: boolean;
   packageData: any;
 }
@@ -53,61 +54,62 @@ const SubscriptionPlans: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionInfo>();
 
-const getPackage = () => {
-  setLoading(true);
-  const tokenString = localStorage.getItem("userDetails");
-  if (tokenString) {
-    try {
-      const tokenObject = JSON.parse(tokenString);
-      const token = tokenObject.token;
+  const getPackage = () => {
+    setLoading(true);
+    const tokenString = localStorage.getItem("userDetails");
+    if (tokenString) {
+      try {
+        const tokenObject = JSON.parse(tokenString);
+        const token = tokenObject.token;
 
-      console.log(token)
-      axios
-        .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`, {
-          headers: {
-            Authorization: token,
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          const data = decrypt(
-            response.data[1],
-            response.data[0],
-            import.meta.env.VITE_ENCRYPTION_KEY
-          );
-          console.log(data);
-          if (data.status) {
-          setPackages(data.result);
-          setSubscriptionData({
-            packageStatus: data.packageStatus ?? false, 
-            packageData: Array.isArray(data.packageData) ? data.packageData : []
+        console.log(token)
+        axios
+          .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`, {
+            headers: {
+              Authorization: token,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+            console.log(data);
+            if (data.status) {
+              setPackages(data.result);
+              setSubscriptionData({
+                packageStatus: data.packageStatus ?? false,
+                packageData: Array.isArray(data.packageData) ? data.packageData : []
+              });
+              setLoading(false);
+            } else {
+              console.error("Data consoled false - chekc this");
+              setLoading(false);
+            }
           });
-          setLoading(false);
-          } else {
-            console.error("Data consoled false - chekc this");
-            setLoading(false);
-          }
-        });
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
     }
-  }
-};
+  };
 
-console.log(packages);
+  console.log(packages);
 
-useEffect(() => {
-  if(location.state?.refreshPage) {
+  useEffect(() => {
+    if (location.state?.refreshPage) {
+      getPackage();
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     getPackage();
-  }
-}, [location.state]);
+  }, []);
 
-useEffect(() => {
-  getPackage();
-}, []);
+  const { t, i18n } = useTranslation("global")
 
-console.log(subscriptionData);
   return (
     <IonPage>
       <IonHeader>
@@ -115,17 +117,17 @@ console.log(subscriptionData);
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Manage Subscription</IonTitle>
+          <IonTitle>{t("manageSub.Manage Subscription")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       {subscriptionData?.packageStatus == true ? (
         <IonContent>
           <Divider className="subscribe-current-divider" align="left">
-              <span className="p-tag">Current Package</span>
-            </Divider>
+            <span className="p-tag">{t("manageSub.Current Package")}</span>
+          </Divider>
           {subscriptionData?.packageData
             .map((plan: any, index: number) => (
-              <IonCard key={index}className="subscription-cards">
+              <IonCard key={index} className="subscription-cards">
                 <IonCardHeader>
                   <IonCardTitle>{plan.refPkgName}</IonCardTitle>
                   {/* <Divider/>
@@ -137,75 +139,75 @@ console.log(subscriptionData);
                     {plan.refPkgDescription}
                   </p>
                   <p className="subscribe-card-features">
-                    {"✔ " + plan.refPkgValidDays + " days validity"}
+                    {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
                   </p>
                   <p className="subscribe-card-features">
                     {"✔ 1" +
                       (plan.refPkgValidMembers > 1
                         ? ` + ${plan.refPkgValidMembers - 1}`
                         : "") +
-                      " Member"}
+                      " " + t("home.Member")}
                   </p>
                   <h1 className="subscribe-card-price">
                     {"Rs. " + plan.refPkgAmount}
                   </h1>
-                  <Divider/>
-                  <h2 >Expires On: <b>{plan.refSubEndDate}</b></h2>
+                  <Divider />
+                  <h2 >{t("manageSub.Expires On")}: <b>{plan.refSubEndDate}</b></h2>
                 </IonCardContent>
               </IonCard>
             ))}
 
-            {packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).length != 0 && 
+          {packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).length != 0 &&
             <Divider className="subscribe-upgrade-divider" align="left">
               <span className="p-tag">Upgrade Package</span>
             </Divider>
-}
-            <div className="subscribe-upgrade">
+          }
+          <div className="subscribe-upgrade">
             {packages !== undefined &&
-            packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).map((plan, index) => (
-              <IonCard key={index} className="subscription-cards">
-                <IonCardHeader>
-                  <IonCardTitle>{plan.refPkgName}</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent className="subscribe-card-content">
-                  <p className="subscribe-card-description">
-                    {plan.refPkgDescription}
-                  </p>
-                  <p className="subscribe-card-features">
-                    {"✔ " + plan.refPkgValidDays + " days validity"}
-                  </p>
-                  <p className="subscribe-card-features">
-                    {"✔ 1" +
-                      (plan.refPkgValidMembers > 1
-                        ? ` + ${plan.refPkgValidMembers - 1}`
-                        : "") +
-                      " Member"}
-                  </p>
+              packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).map((plan, index) => (
+                <IonCard key={index} className="subscription-cards">
+                  <IonCardHeader>
+                    <IonCardTitle>{plan.refPkgName}</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className="subscribe-card-content">
+                    <p className="subscribe-card-description">
+                      {plan.refPkgDescription}
+                    </p>
+                    <p className="subscribe-card-features">
+                      {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
+                    </p>
+                    <p className="subscribe-card-features">
+                      {"✔ 1" +
+                        (plan.refPkgValidMembers > 1
+                          ? ` + ${plan.refPkgValidMembers - 1}`
+                          : "") +
+                        " " + t("home.Member")}
+                    </p>
 
-                  <h1 className="subscribe-card-price">
-                    {"Rs. " + plan.refPkgAmount}
-                  </h1>
-                  <button
-                    className="medCustom-button02"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/subscriptionDetail",
-                        state: { plan:  packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers)[index].refPkgId },
-                      })
-                    }
-                  >
-                    Subscribe
-                  </button>
-                </IonCardContent>
-              </IonCard>
-            ))}
-            </div>
+                    <h1 className="subscribe-card-price">
+                      {"Rs. " + plan.refPkgAmount}
+                    </h1>
+                    <button
+                      className="medCustom-button02"
+                      onClick={() =>
+                        history.push({
+                          pathname: "/subscriptionDetail",
+                          state: { plan: packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers)[index].refPkgId },
+                        })
+                      }
+                    >
+                      {t("manageSub.Subscribe")}
+                    </button>
+                  </IonCardContent>
+                </IonCard>
+              ))}
+          </div>
         </IonContent>
       ) : (
         <IonContent className="ion-padding">
-          <h2>Choose Your Plan</h2>
+          <h2>{t("manageSub.Choose Your Plan")}</h2>
           <p style={{ margin: "0" }}>
-            Select a subscription plan that suits your needs.
+            {t("manageSub.Select a subscription plan that suits your needs")}
           </p>
 
           {packages !== undefined &&
@@ -219,14 +221,14 @@ console.log(subscriptionData);
                     {plan.refPkgDescription}
                   </p>
                   <p className="subscribe-card-features">
-                    {"✔ " + plan.refPkgValidDays + " days validity"}
+                    {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
                   </p>
                   <p className="subscribe-card-features">
                     {"✔ 1" +
                       (plan.refPkgValidMembers > 1
                         ? ` + ${plan.refPkgValidMembers - 1}`
                         : "") +
-                      " Member"}
+                      " " + t("home.Member")}
                   </p>
 
                   <h1 className="subscribe-card-price">
@@ -241,7 +243,7 @@ console.log(subscriptionData);
                       })
                     }
                   >
-                    Subscribe
+                    {t("manageSub.Subscribe")}
                   </button>
                 </IonCardContent>
               </IonCard>

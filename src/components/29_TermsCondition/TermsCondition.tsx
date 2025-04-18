@@ -11,11 +11,13 @@ import {
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import React, { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 const TermsCondition: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const contentRef = useRef<HTMLIonContentElement | null>(null);
 
+  const { t, i18n } = useTranslation("global");
 
   const handleScroll = () => {
     if (contentRef.current) {
@@ -27,159 +29,159 @@ const TermsCondition: React.FC = () => {
       });
     }
   };
-  
+
 
   const termsAndConditions = [
     {
-      subtitle: "1. Introduction",
+      subtitle: t("terms.Introduction"),
       details: [
         {
-          label: "Overview",
-          text: "Welcome to Medpredit! These Terms and Conditions ('Terms') govern your use of the Medpredit mobile application ('App'), operated by Medpredit Technologies ('we,' 'our,' 'us'). Medpredit provides healthcare-related services, including online consultations, appointment scheduling, prescription management, health tracking, and more.",
+          label: t("terms.Overview"),
+          text: t("terms.OverviewAns"),
         },
         {
-          label: "Agreement",
-          text: "By accessing or using the App, you agree to comply with these Terms and Conditions. If you do not agree to these Terms, you must immediately stop using the App.",
+          label: t("terms.Agreement"),
+          text: t("terms.AgreementAns"),
         },
       ],
     },
     {
-      subtitle: "2. Acceptance of Terms",
+      subtitle: t("terms.Acceptance of Terms"),
       details: [
         {
-          label: "User Agreement",
-          text: "By using Medpredit, you confirm that you accept and agree to these Terms. If you do not agree with these Terms, you should not use the App.",
+          label: t("terms.User Agreement"),
+          text: t("terms.User AgreementAns"),
         },
       ],
     },
     {
-      subtitle: "3. Services Provided",
+      subtitle: t("terms.Services Provided"),
+      details: [
+        // {
+        //   label: "Online Consultations",
+        //   text: "Connect with licensed healthcare providers (doctors, therapists, specialists, etc.) for virtual consultations.",
+        // },
+        // {
+        //   label: "Appointment Booking",
+        //   text: "Schedule appointments with healthcare professionals and service providers.",
+        // },
+        {
+          label: t("terms.Health Record Management"),
+          text: t("terms.Health Record ManagementAns"),
+        },
+        {
+          label: t("terms.Health Content and Tools"),
+          text: t("terms.Health Content and ToolsAns"),
+        },
+        {
+          label: t("terms.Document Management"),
+          text: t("terms.Document ManagementAns"),
+        }
+      ],
+    },
+    {
+      subtitle: t("terms.User Eligibility"),
       details: [
         {
-          label: "Online Consultations",
-          text: "Connect with licensed healthcare providers (doctors, therapists, specialists, etc.) for virtual consultations.",
+          label: t("terms.Age Requirement"),
+          text: t("terms.Age RequirementAns"),
         },
         {
-          label: "Appointment Booking",
-          text: "Schedule appointments with healthcare professionals and service providers.",
-        },
-        {
-          label: "Prescription Management",
-          text: "Manage and track your prescriptions.",
-        },
-        {
-          label: "Health Record Management",
-          text: "Store, access, and share your medical records securely.",
-        },
-        {
-          label: "Health Content and Tools",
-          text: "Access health-related articles, blogs, and tools to help monitor your well-being.",
+          label: t("terms.Legal Capacity"),
+          text: t("terms.Legal CapacityAns"),
         },
       ],
     },
     {
-      subtitle: "4. User Eligibility",
+      subtitle: t("terms.Registration and Account"),
       details: [
         {
-          label: "Age Requirement",
-          text: "You must be at least 18 years old, or have the consent of a parent or guardian if you are under 18.",
+          label: t("terms.Account Creation"),
+          text: t("terms.Account CreationAns")
         },
         {
-          label: "Legal Capacity",
-          text: "You must have the legal capacity to enter into a binding agreement.",
+          label: t("terms.Account Security"),
+          text: t("terms.Account SecurityAns"),
         },
       ],
     },
     {
-      subtitle: "5. Registration and Account",
+      subtitle: t("terms.Use of the App"),
+      details: [
+        { label: t("terms.Lawful Use"), text: t("terms.Use the App only for lawful purposes") },
+        { label: t("terms.No Disruptions"), text: t("terms.Do not disrupt or interfere with the functioning of the App") },
+        { label: t("terms.No Impersonation"), text: t("terms.Do not impersonate any individual or entity or misrepresent your affiliation with anyone") },
+        { label: t("terms.No Harmful Content"), text: t("terms.Do not upload, post, or transmit harmful content, including but not limited to malware, viruses, or illegal material") },
+      ],
+    },
+    {
+      subtitle: t("terms.Healthcare Services"),
       details: [
         {
-          label: "Account Creation",
-          text: "To access certain services, you will need to create an account with Medpredit. You must provide accurate and complete information during registration and keep your account details up-to-date.",
+          label: t("terms.Service Disclaimer"),
+          text: t("terms.Service DisclaimerAns")
         },
         {
-          label: "Account Security",
-          text: "You are responsible for maintaining the confidentiality of your account credentials and all activities conducted under your account.",
+          label: t("terms.Consultation Advice"),
+          text: t("terms.Consultation AdviceAns")
+        },
+        {
+          label: t("terms.Right to Refuse"),
+          text: t("terms.Right to RefuseAns")
         },
       ],
     },
     {
-      subtitle: "6. Use of the App",
-      details: [
-        { label: "Lawful Use", text: "Use the App only for lawful purposes." },
-        { label: "No Disruptions", text: "Do not disrupt or interfere with the functioning of the App." },
-        { label: "No Impersonation", text: "Do not impersonate any individual or entity or misrepresent your affiliation with anyone." },
-        { label: "No Harmful Content", text: "Do not upload, post, or transmit harmful content, including but not limited to malware, viruses, or illegal material." },
-      ],
-    },
-    {
-      subtitle: "7. Healthcare Services",
+      subtitle: t("terms.Prescriptions and Medications"),
       details: [
         {
-          label: "Service Disclaimer",
-          text: "The healthcare services provided through the App are not a substitute for in-person medical care.",
-        },
-        {
-          label: "Consultation Advice",
-          text: "You should always consult with a physician or other qualified healthcare provider before making any medical decisions.",
-        },
-        {
-          label: "Right to Refuse",
-          text: "Healthcare providers have the right to refuse service if they believe it is not in the patient’s best interest.",
+          label: t("terms.Responsibility"),
+          text: t("terms.ResponsibilityAns")
         },
       ],
     },
     {
-      subtitle: "8. Prescriptions and Medications",
+      subtitle: t("terms.User Content"),
       details: [
         {
-          label: "Responsibility",
-          text: "It is your responsibility to ensure that prescriptions are filled at licensed pharmacies and follow the instructions provided by the healthcare provider. Medpredit is not responsible for any errors or issues related to prescriptions or medications.",
+          label: t("terms.Data Submission"),
+          text: t("terms.Data SubmissionAns")
         },
       ],
     },
     {
-      subtitle: "9. User Content",
+      subtitle: t("terms.Privacy and Data Protection"),
       details: [
         {
-          label: "Data Submission",
-          text: "By submitting health-related information, including medical records, health data, or communications to healthcare providers, you grant Medpredit a non-exclusive, worldwide license to use, process, and display this information for the purpose of delivering services through the App.",
+          label: t("terms.Privacy Policy"),
+          text: t("terms.Privacy PolicyAns")
         },
       ],
     },
     {
-      subtitle: "10. Privacy and Data Protection",
+      subtitle: t("terms.Fees and Payments"),
       details: [
         {
-          label: "Privacy Policy",
-          text: "Your privacy is important to us. Please refer to our Privacy Policy to understand how we collect, use, and protect your personal and medical data. By using Medpredit, you consent to the collection and use of your information as described in the Privacy Policy.",
+          label: t("terms.Service Fees"),
+          text: t("terms.Service FeesAns")
+        },
+        {
+          label: t("terms.Payment Authorization"),
+          text: t("terms.Payment AuthorizationAns")
         },
       ],
     },
     {
-      subtitle: "11. Fees and Payments",
+      subtitle: t("terms.Third-Party Services"),
       details: [
         {
-          label: "Service Fees",
-          text: "Certain services on Medpredit may require payment. You agree to pay any applicable fees for services provided through the App, such as consultation fees, prescription charges, or appointment fees.",
-        },
-        {
-          label: "Payment Authorization",
-          text: "Payments are processed securely, and you authorize Medpredit to charge your payment method accordingly.",
-        },
-      ],
-    },
-    {
-      subtitle: "12. Third-Party Services",
-      details: [
-        {
-          label: "Third-Party Disclaimer",
-          text: "Medpredit may link to third-party websites or services not operated by us. We are not responsible for the content, privacy policies, or practices of third-party services. You access these services at your own risk.",
+          label: t("terms.Third-Party Disclaimer"),
+          text: t("terms.Third-Party DisclaimerAns")
         },
       ],
     },
   ];
-  
+
   return (
     <IonPage>
       <IonHeader>
@@ -187,7 +189,7 @@ const TermsCondition: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
-          <IonTitle>Terms and Conditions</IonTitle>
+          <IonTitle>{t("terms.Terms and Conditions")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -199,7 +201,7 @@ const TermsCondition: React.FC = () => {
               {section.details.map((item, i) => (
                 <div key={i}>
                   <strong>{item.label}: </strong>
-                  <span style={{textAlign: "justify"}}>{item.text}</span>
+                  <span style={{ textAlign: "justify" }}>{item.text}</span>
                 </div>
               ))}
             </div>

@@ -6,7 +6,7 @@ const Splashscreen: React.FC = () => {
 
   const history = useHistory();
 
- useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       const tokenString = localStorage.getItem("userDetails");
 
@@ -15,28 +15,28 @@ const Splashscreen: React.FC = () => {
         const userId = tokenObject.userId;
         const flag = localStorage.getItem("detailsFlag");
 
-        if(userId !== null) {
+        if (userId !== null) {
           if (flag == "true") {
-              history.replace("/userProfile", {
-                direction: "forward",
-                animation: "slide",
-              });
-            } else {
-              history.replace("/home", {
-                direction: "forward",
-                animation: "slide",
-              });
-            }
+            history.replace("/userProfile", {
+              direction: "forward",
+              animation: "slide",
+            });
+          } else {
+            history.replace("/home", {
+              direction: "forward",
+              animation: "slide",
+            });
+          }
         }
         else {
-          history.replace("/chooselanguage", {
+          history.replace(localStorage.getItem("refLanCode") ? "/login" : "/chooselanguage", {
             direction: "forward",
             animation: "slide",
           });
         }
       }
       else {
-        history.replace("/chooselanguage", {
+        history.replace(localStorage.getItem("refLanCode") ? "/login" : "/chooselanguage", {
           direction: "forward",
           animation: "slide",
         });

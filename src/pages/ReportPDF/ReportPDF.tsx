@@ -24,6 +24,7 @@ import backgroundImage1 from "../../assets/PDFTemplate/background-1.png";
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { IonIcon, IonText, IonToast, isPlatform } from "@ionic/react";
 import { download } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
 
 interface DoctorDetails {
   refHospitalName: any;
@@ -51,6 +52,8 @@ interface ReportPDFProps {
 }
 
 const ReportPDF: React.FC<ReportPDFProps> = ({ reportDate, selectedUser }) => {
+
+  const {t, i18n} = useTranslation("global");
 
   const [showToast, setShowToast] = useState(false);
 
@@ -3831,7 +3834,7 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ reportDate, selectedUser }) => {
               backgroundColor: "transparent",
               color: "#0c436c"
             }}>
-            Download Report
+            {t("reports.Download Report")}
           </button>
         </>
       )}

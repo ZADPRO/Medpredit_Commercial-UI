@@ -29,6 +29,7 @@ import { Divider } from "primereact/divider";
 import { Dropdown } from "primereact/dropdown";
 import { Password } from "primereact/password";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
+import { useTranslation } from "react-i18next";
 
 interface LocationState {
   familyMembers?: any; // Replace 'any' with your actual plan type
@@ -56,12 +57,12 @@ interface UserInfo {
 
 const LinkFamilyMember: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const location= useLocation();
+  const location = useLocation();
   const state = location.state as LocationState | null;
   const history = useHistory();
-  const familyMembers = state?.familyMembers; 
+  const familyMembers = state?.familyMembers;
   const [userData, setUserData] = useState<Array<UserInfo>>([]);
-  
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -69,17 +70,20 @@ const LinkFamilyMember: React.FC = () => {
     refUserPassword: "",
     refUserRelation: "",
   });
+  const { t, i18n } = useTranslation("global");
 
-  const familyRelationOpt: string[] = [
-    "Father",
-    "Mother",
-    "Brother",
-    "Sister",
-    "Spouse",
-    "Son",
-    "Daughter",
-    "Other"
+  const familyRelationOpt: { label: string; value: string }[] = [
+    { label: t("link.Father"), value: "Father" },
+    { label: t("link.Mother"), value: "Mother" },
+    { label: t("link.Brother"), value: "Brother" },
+    { label: t("link.Sister"), value: "Sister" },
+    { label: t("link.Spouse"), value: "Spouse" },
+    { label: t("link.Son"), value: "Son" },
+    { label: t("link.Daughter"), value: "Daughter" },
+    { label: t("link.Other"), value: "Other" }
   ];
+
+
   const [selectedUser, setSelectedUser] = useState<UserInfo>();
 
   const [toastOpen, setToastOpen] = useState({ status: false, message: "", textColor: "black" });
@@ -99,7 +103,7 @@ const LinkFamilyMember: React.FC = () => {
             `${import.meta.env.VITE_API_COMMERCIAL_URL}/linkFamilyMember`,
             {
               refUserId: selectedUser?.refUserId,
-              headMobileNumber: tokenObject.phNumber, 
+              headMobileNumber: tokenObject.phNumber,
               relationName: formData.refUserRelation,
               password: formData.refUserPassword
             },
@@ -123,9 +127,9 @@ const LinkFamilyMember: React.FC = () => {
 
             if (data.status) {
               setLoading(false);
-              setToastOpen({ status: true, textColor: "green", message: "Account Linked Successfully"});
+              setToastOpen({ status: true, textColor: "green", message: t("link.Account Linked Successfully") });
               setTimeout(() => {
-                history.replace("/manageFamily", {refreshFamily: true});
+                history.replace("/manageFamily", { refreshFamily: true });
               }, 1000);
             } else {
               setLoading(false);
@@ -184,30 +188,30 @@ const LinkFamilyMember: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
-              if(data.userData.length > 0) {
+              if (data.userData.length > 0) {
                 const uniqueUsers: UserInfo[] = data.userData
-                .filter(
-                  (user: UserInfo, index: number, self: any) =>
-                    index ===
-                    self.findIndex((u: UserInfo) => u.refUserId === user.refUserId)
-                )
-                .filter(
-                  (user: UserInfo) =>
-                    !familyMembers.some(
-                      (member: any) => member.refUserId === user.refUserId
-                    )
-                );
+                  .filter(
+                    (user: UserInfo, index: number, self: any) =>
+                      index ===
+                      self.findIndex((u: UserInfo) => u.refUserId === user.refUserId)
+                  )
+                  .filter(
+                    (user: UserInfo) =>
+                      !familyMembers.some(
+                        (member: any) => member.refUserId === user.refUserId
+                      )
+                  );
 
-              setUserData(uniqueUsers);
-              setLoading(false);
-              setIsOpen(true);
+                setUserData(uniqueUsers);
+                setLoading(false);
+                setIsOpen(true);
               }
-              
+
               else {
                 setToastOpen({ status: true, textColor: "red", message: `No User available for ${formData.refUserMobileno}` });
                 setLoading(false);
               }
-              
+
             } else {
               setLoading(false);
               console.error("Data consoled false - chekc this");
@@ -231,18 +235,21 @@ const LinkFamilyMember: React.FC = () => {
     setSelectedUser(user);
     setIsOpen(false);
   };
-  
+
   const verifyForm = () => {
-    if(formData.refUserRelation.length < 1) {
-      setToastOpen({ status: true, textColor: "red", message: "Select a Relation Type" });
+    if (formData.refUserRelation.length < 1) {
+      setToastOpen({ status: true, textColor: "red", message: t("link.Select a Relation Type") });
       return false;
     }
-    else if(formData.refUserPassword.length < 1) {
-      setToastOpen({ status: true, textColor: "red", message: "Enter your password to verify" });
+    else if (formData.refUserPassword.length < 1) {
+      setToastOpen({ status: true, textColor: "red", message: t("link.Enter your password to verify") });
       return false;
     }
     return true;
   }
+
+
+
 
   console.log(userData);
   return (
@@ -252,7 +259,7 @@ const LinkFamilyMember: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Link Family</IonTitle>
+          <IonTitle>{t("link.Link Family")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -260,7 +267,7 @@ const LinkFamilyMember: React.FC = () => {
         <div>
           <div className="inputBox">
             <label>
-              Enter Number
+              {t("link.Enter Number")}
               {/* <span style={{ color: "red" }}>*</span> */}
             </label>
             <div style={{ display: "flex", gap: "0.5rem" }}>
@@ -283,7 +290,7 @@ const LinkFamilyMember: React.FC = () => {
                         refUserMobileno: numericValue,
                       }));
                     }}
-                    placeholder="Enter Phone Number"
+                    placeholder={t("link.Enter Phone Number")}
                     name="refUserMobileno"
                   />
                 </div>
@@ -302,7 +309,7 @@ const LinkFamilyMember: React.FC = () => {
                     setToastOpen({
                       status: true,
                       textColor: "red",
-                      message: "Enter Valid Mobile Number",
+                      message: t("link.Enter Valid Mobile Number"),
                     });
                   }
                 }}
@@ -352,13 +359,13 @@ const LinkFamilyMember: React.FC = () => {
                               : "red",
                         }}
                       >
-                        {selectedUser.activeStatus.toUpperCase()}
+                        {t("link." + selectedUser.activeStatus.toUpperCase())}
                       </span>
                       {selectedUser.activeStatus.toLowerCase() === "active" &&
-                      selectedUser.createdAt
+                        selectedUser.createdAt
                         ? `: ${new Date(
-                            selectedUser.createdAt
-                          ).toLocaleDateString("en-gb")}`
+                          selectedUser.createdAt
+                        ).toLocaleDateString("en-gb")}`
                         : ""}
                     </span>
 
@@ -366,37 +373,37 @@ const LinkFamilyMember: React.FC = () => {
                       <table className="manage-family-table">
                         <tbody>
                           <tr>
-                            <td>Gender:</td>
-                            <td>{selectedUser.refGender}</td>
+                            <td>{t("userProfile.Gender")}:</td>
+                            <td>{t("userProfile." + selectedUser.refGender)}</td>
                           </tr>
                           <tr>
-                            <td>Maritial Status:</td>
-                            <td>{selectedUser.refMaritalStatus}</td>
+                            <td>{t("userProfile.Marital Status")}:</td>
+                            <td>{t("userProfile." + selectedUser.refMaritalStatus)}</td>
                           </tr>
                           <tr>
                             <td>DOB:</td>
                             <td>
                               {selectedUser.refDOB
                                 ? new Date(
-                                    selectedUser.refDOB
-                                  ).toLocaleDateString("en-gb")
+                                  selectedUser.refDOB
+                                ).toLocaleDateString("en-gb")
                                 : "N/A"}
                             </td>
                           </tr>
                           <tr>
-                            <td>Education:</td>
-                            <td>{selectedUser.refEducation}</td>
+                            <td>{t("userProfile.Education")}:</td>
+                            <td>{t("userProfile." + selectedUser.refEducation)}</td>
                           </tr>
                           <tr>
-                            <td>Sector & Occupation Lvl</td>
+                            <td>{t("link.Sector & Occupation Lvl")}</td>
                             <td>
                               {selectedUser.refSector +
                                 " & " +
-                                selectedUser.refOccupationLvl}
+                                t("userProfile." + selectedUser.refOccupationLvl)}
                             </td>
                           </tr>
                           <tr>
-                            <td>Address:</td>
+                            <td>{t("link.Address")}:</td>
                             <td>
                               {selectedUser.refAddress +
                                 ", " +
@@ -414,7 +421,7 @@ const LinkFamilyMember: React.FC = () => {
 
               <div className="inputBox">
                 <label>
-                  Relation Type <span style={{ color: "red" }}>*</span>
+                  {t("link.Relation Type")} <span style={{ color: "red" }}>*</span>
                 </label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
@@ -429,8 +436,10 @@ const LinkFamilyMember: React.FC = () => {
                       })
                     }
                     options={familyRelationOpt}
+                    optionValue="value"
+                    optionLabel="label"
                     style={{ textAlign: "left" }}
-                    placeholder="Select Relation"
+                    placeholder={t("link.Select Relation")}
                     name="refUserRelation"
                     className="addFamilyDropdown"
                     checkmark={true}
@@ -440,25 +449,25 @@ const LinkFamilyMember: React.FC = () => {
               </div>
 
               <div className="inputBox">
-                <label>Verify Password <span style={{ color: "red" }}>*</span></label>
+                <label>{t("link.Verify Password")} <span style={{ color: "red" }}>*</span></label>
                 <div className="addFamilyInputField" style={{ width: "100%" }}>
                   <span className="addFamilyInputField_Icon">
                     <i className="pi pi-key"></i>
                   </span>
-                              <Password
-                                type="password"
-                                name="refUserPassword"
-                                toggleMask
-                                placeholder="Enter Password"
-                                value={formData.refUserPassword}
-                                required
-                                onChange={(e) => setFormData((prevData) => ({
-                                  ...prevData,
-                                  refUserPassword: e.target.value,
-                                }))}
-                                feedback={false}
-                              />
-                              </div>
+                  <Password
+                    type="password"
+                    name="refUserPassword"
+                    toggleMask
+                    placeholder={t("link.Enter Password")}
+                    value={formData.refUserPassword}
+                    required
+                    onChange={(e) => setFormData((prevData) => ({
+                      ...prevData,
+                      refUserPassword: e.target.value,
+                    }))}
+                    feedback={false}
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -471,7 +480,7 @@ const LinkFamilyMember: React.FC = () => {
         >
           <IonContent>
             <IonToolbar>
-              <IonTitle>Select User</IonTitle>
+              <IonTitle>{t("link.Select User")}</IonTitle>
             </IonToolbar>
             <IonList>
               {userData.map((item, index) => (
@@ -480,12 +489,12 @@ const LinkFamilyMember: React.FC = () => {
                   button
                   onClick={() => handleItemClick(item)}
                 >
-                  <div className="profile_top_bar_avatar" style={{marginRight: "1rem"}}>
-              <span>
-                {item.refUserFname.charAt(0) +
-                  item.refUserLname?.charAt(0)}
-              </span>
-              </div>
+                  <div className="profile_top_bar_avatar" style={{ marginRight: "1rem" }}>
+                    <span>
+                      {item.refUserFname.charAt(0) +
+                        item.refUserLname?.charAt(0)}
+                    </span>
+                  </div>
                   <IonLabel>
                     <h2>{item.refUserFname + " " + item.refUserLname}</h2>
                     <p>{item.refUserCustId}</p>
@@ -500,16 +509,16 @@ const LinkFamilyMember: React.FC = () => {
       </IonContent>
 
       {selectedUser &&
-      <IonFooter>
-        <IonToolbar>
-          <IonTitle onClick={() => {
-            if(verifyForm()) {
-              linkUser();
-            }
-          }}>Link User</IonTitle>
-        </IonToolbar>
-      </IonFooter>
-}
+        <IonFooter>
+          <IonToolbar>
+            <IonTitle onClick={() => {
+              if (verifyForm()) {
+                linkUser();
+              }
+            }}>{t("link.Link User")}</IonTitle>
+          </IonToolbar>
+        </IonFooter>
+      }
 
       <Toast
         isOpen={toastOpen.status}
@@ -520,7 +529,7 @@ const LinkFamilyMember: React.FC = () => {
         }
       />
 
-<CustomIonLoading isOpen={loading} />
+      <CustomIonLoading isOpen={loading} />
 
     </IonPage>
   );

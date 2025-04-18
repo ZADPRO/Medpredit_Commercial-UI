@@ -11,9 +11,12 @@ import React from "react";
 import "./Profile.css";
 import { chevronBack, chevronForward } from "ionicons/icons";
 import { useHistory } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const Profile: React.FC = () => {
   const history = useHistory();
+
+  const { t, i18n } = useTranslation("global")
 
   const userDetails = localStorage.getItem("userDetails");
 
@@ -26,54 +29,54 @@ const Profile: React.FC = () => {
 
   const sections = [
     {
-      title: "Account",
+      title: t("profile.Account"),
       items: [
-        { icon: "pi pi-user", label: "Profile", path: "/userprofile" },
-        { icon: "pi pi-users", label: "Manage Family", path: "/manageFamily", headStatus: true },
+        { icon: "pi pi-user", label: t("profile.Profile"), path: "/userprofile" },
+        { icon: "pi pi-users", label: t("profile.Manage Family"), path: "/manageFamily", headStatus: true },
         {
           icon: "pi pi-receipt",
-          label: "Manage Subscriptions",
+          label: t("profile.Manage Subscriptions"),
           path: "/subscriptionPlans",
           headStatus: true
         },
         {
           icon: "pi pi-indian-rupee",
-          label: "Transaction History",
+          label: t("profile.Transaction History"),
           path: "/transactionHistory",
           headStatus: true
         },
       ],
     },
     {
-      title: "Settings",
+      title: t("profile.Settings"),
       items: [
         {
           icon: "pi pi-cog",
-          label: "Notification Settings",
+          label: t("profile.Notification Settings"),
           path: "/notificationSettings",
         },
         {
           icon: "pi pi-language",
-          label: "Choose Language",
+          label: t("profile.Choose Language"),
           path: "/ChooseLanguage_02",
         },
-        { icon: "pi pi-headphones", label: "Help Center", path: "/helpCenter" },
-        { icon: "pi pi-comment", label: "Feedback", path: "/feedback" },
+        { icon: "pi pi-headphones", label: t("profile.Help Center"), path: "/helpCenter" },
+        { icon: "pi pi-comment", label: t("profile.Feedback"), path: "/feedback" },
       ],
     },
     {
-      title: "More",
+      title: t("profile.More"),
       items: [
-        { icon: "pi pi-info", label: "About", path: "/about" },
+        { icon: "pi pi-info", label: t("profile.About"), path: "/about" },
         {
           icon: "pi pi-book",
-          label: "Terms and Conditions",
+          label: t("profile.Terms and Conditions"),
           path: "/termsCondition",
         },
-        { icon: "pi pi-lock", label: "Privacy Policy", path: "/privacyPolicy" },
+        { icon: "pi pi-lock", label: t("profile.Privacy Policy"), path: "/privacyPolicy" },
         {
           icon: "pi pi-sign-out",
-          label: "Log Out",
+          label: t("profile.Log Out"),
           path: "/login",
         },
       ],
@@ -83,7 +86,7 @@ const Profile: React.FC = () => {
   const handleDelete = () => {
     window.location.href = "https://www.medpredit.com/dashboard";
   };
-  
+
 
   return (
     <IonPage className="cus-ion-page">
@@ -107,7 +110,7 @@ const Profile: React.FC = () => {
                 MEDPREDiT ID: <b>{userDeatilsObj.userCustId}</b>
               </p>
               <p>
-                Phone Number: <b>{userDeatilsObj.phNumber}</b>
+                {t("profile.Phone Number")}: <b>{userDeatilsObj.phNumber}</b>
               </p>
             </div>
             <div className="profile_top_bar_avatar">
@@ -118,8 +121,8 @@ const Profile: React.FC = () => {
             </div>
           </div>
           {(headStatus == "true" && (localStorage.getItem("subValid") == "false")) && (
-            <div className="profile_top_bar_footer" onClick={()=>history.push("/subscriptionPlans")}>
-              <h3>Join Premium</h3>
+            <div className="profile_top_bar_footer" onClick={() => history.push("/subscriptionPlans")}>
+              <h3>{t("profile.Join Premium")}</h3>
               <IonIcon icon={chevronForward} />
             </div>
           )}
@@ -132,16 +135,21 @@ const Profile: React.FC = () => {
             <div key={index} className="profile-body">
               <h3 className="profile-body-header">{section.title}</h3>
               {section.items.filter((item) => {
-    if (headStatus == "false") {
-      return !item.headStatus; // if userStatus is true, remove items with headStatus
-    }
-    return true; // else show all items
-  }).map((item, itemIndex) => (
+                if (headStatus == "false") {
+                  return !item.headStatus; // if userStatus is true, remove items with headStatus
+                }
+                return true; // else show all items
+              }).map((item, itemIndex) => (
                 <div
                   key={itemIndex}
                   onClick={() => {
                     if (item.label == "Log Out") {
+                      let refLanCode = localStorage.getItem("refLanCode") ? localStorage.getItem("refLanCode") : "1";
+                      let lang = localStorage.getItem("lang") ? localStorage.getItem("lang") : "english"
                       localStorage.clear();
+                      localStorage.setItem("refLanCode", refLanCode ? refLanCode : "1");
+                      localStorage.setItem("lang", lang ? lang : "english");
+
 
                       item.path.length > 0 && location.replace(item.path);
                     } else item.path.length > 0 && history.push(item.path);
@@ -161,15 +169,15 @@ const Profile: React.FC = () => {
           ))}
 
           <div className="profile-delete" onClick={() => handleDelete()}>
-            <span>Delete Account</span>
+            <span>{t("profile.Delete Account")}</span>
             <i className="pi pi-trash" />
           </div>
 
           <div className="profile-copyright">
             <p>
-              &copy; {new Date().getFullYear()} Medpredit. All rights reserved.
+              &copy; {new Date().getFullYear()} Medpredit. {t("profile.All rights reserved")}
             </p>
-            <p>Empowering you with seamless healthcare solutions.</p>
+            <p>{t("profile.Empowering you with seamless healthcare solutions")}</p>
           </div>
         </div>
       </IonContent>

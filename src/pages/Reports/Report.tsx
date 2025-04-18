@@ -26,6 +26,7 @@ import { RadioButton } from "primereact/radiobutton";
 import { ScoreSlider } from "../../ScoreVerify/ScoreSlider";
 import ReportPDF from "../ReportPDF/ReportPDF";
 import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
+import { useTranslation } from "react-i18next";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -37,7 +38,7 @@ const Report: React.FC = () => {
     refGender: string;
     headStatus: string;
   }
-  
+
   interface CardData {
     refQCategoryId: number;
     refCategoryLabel: string;
@@ -65,7 +66,7 @@ const Report: React.FC = () => {
 
   const [selectedUser, setSelectedUser] = useState<number>();
   const [selectedDate, setSelectedDate] = useState<Nullable<Date>>();
-  
+
   const [tempselectedUser, settempSelectedUser] = useState<number>();
   const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(new Date());
 
@@ -73,7 +74,7 @@ const Report: React.FC = () => {
 
   const userDeatilsObj = userDetails
     ? JSON.parse(userDetails)
-    : { userId: null, firstName: null};
+    : { userId: null, firstName: null };
 
   const [reportUser, setReportUser] = useState<{
     reUserId?: number;
@@ -216,7 +217,7 @@ const Report: React.FC = () => {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
 
-        localStorage.setItem("currentPatientGender", "male"); 
+        localStorage.setItem("currentPatientGender", "male");
         // setLoadingStatus(true);
         console.log("tgttggtttt", tempselectedUser)
         axios
@@ -227,6 +228,7 @@ const Report: React.FC = () => {
               employeeId: null,
               hospitalId: "undefined",
               reportDate: tempselectedDate,
+              refLanCode: localStorage.getItem("refLanCode")
             },
             {
               headers: {
@@ -288,8 +290,8 @@ const Report: React.FC = () => {
 
             // setLoadingStatus(false);
           });
-          setSelectedDate(tempselectedDate);
-          setSelectedUser(tempselectedUser);
+        setSelectedDate(tempselectedDate);
+        setSelectedUser(tempselectedUser);
       } catch (error) {
         console.error("Error parsing token:", error);
       }
@@ -487,10 +489,10 @@ const Report: React.FC = () => {
   function addDaysToDate(isoDate: string, daysToAdd: number): string {
     console.log(isoDate, daysToAdd);
     const date = new Date(isoDate);
-    date.setDate(date.getDate()-1 + daysToAdd);
+    date.setDate(date.getDate() - 1 + daysToAdd);
     return date.toLocaleDateString("en-GB");
   }
-  
+
   const getValidity = (refQCategoryId: number) => {
     switch (refQCategoryId) {
       case 8:
@@ -554,7 +556,7 @@ const Report: React.FC = () => {
   useEffect(() => {
     // Exit early if location.state is undefined and the router hasn't restored it yet
     if (location.state === undefined) return;
-  
+
     if (location.state?.selectedUser) {
       setShowModal1(false);
       setShowModal2(false);
@@ -576,7 +578,7 @@ const Report: React.FC = () => {
       settempSelectedUser(userDeatilsObj.userId);
     }
   }, [location.state?.selectedUser]);
-  
+
 
   console.log("eeeeeeeeeeeeeeeeee", tempselectedDate, selectedDate)
   console.log("reportModalCategories", reportModalCategories);
@@ -590,7 +592,7 @@ const Report: React.FC = () => {
       try {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
-        
+
         axios
           .post(
             `${import.meta.env.VITE_API_URL}/getCategory `,
@@ -599,6 +601,7 @@ const Report: React.FC = () => {
               patientId: selectedUser?.toString(),
               employeeId: null,
               hospitalId: "undefined",
+              refLanCode: localStorage.getItem("refLanCode")
             },
             {
               headers: {
@@ -615,7 +618,7 @@ const Report: React.FC = () => {
             );
             console.log(data);
             setCategories(data.data);
-            
+
             setLoading(false);
             // setLoadingStatus(false);
             console.log("----------->Val", data.data);
@@ -632,16 +635,16 @@ const Report: React.FC = () => {
   };
 
 
-useEffect(() => {
-  if (selectedUser) {
-    getCategory();
+  useEffect(() => {
+    if (selectedUser) {
+      getCategory();
 
-    if (isFirstRender == true && location.state?.selectedUser) {
-      setIsFirstRender(false);
-      reportData();
+      if (isFirstRender == true && location.state?.selectedUser) {
+        setIsFirstRender(false);
+        reportData();
+      }
     }
-  }
-}, [selectedUser]);
+  }, [selectedUser]);
 
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -659,7 +662,9 @@ useEffect(() => {
     modal.current?.dismiss();
   }
 
-console.log("item colors==========================",itemColors);
+  const { t, i18n } = useTranslation("global");
+
+  console.log("item colors==========================", itemColors);
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
@@ -670,7 +675,7 @@ console.log("item colors==========================",itemColors);
           <IonTitle>
             {userData.length > 0
               ? userData.find((item) => item.refUserId === selectedUser)
-                  ?.refUserFname
+                ?.refUserFname
               : location.state?.selectedUserInfo?.refUserFname}
           </IonTitle>
 
@@ -715,7 +720,7 @@ console.log("item colors==========================",itemColors);
                 transform: "translateX(-50%)",
               }}
             >
-              Reports
+              {t("reports.Reports")}
             </h1>
             <IonIcon
               onClick={() => {
@@ -729,7 +734,7 @@ console.log("item colors==========================",itemColors);
             />
           </div>
 
-          <h4>Select User</h4>
+          <h4>{t("reports.Select User")}</h4>
           <IonList className="reports-user-list">
             {userData?.map((item, index) => (
               <div
@@ -749,7 +754,7 @@ console.log("item colors==========================",itemColors);
                           color: "var(--med-dark-green)",
                         }}
                       >
-                        Primary
+                        {t("login.Primary")}
                       </span>
                     )}
                   </div>
@@ -783,7 +788,7 @@ console.log("item colors==========================",itemColors);
               }
             }}
           >
-            <button className="medCustom-button01">Next</button>
+            <button className="medCustom-button01">{t("Register User.Next")}</button>
           </div>
         </div>
       </IonModal>
@@ -798,7 +803,7 @@ console.log("item colors==========================",itemColors);
         presentingElement={presentingElement}
       >
         <div className="report-modalContent">
-        <div
+          <div
             style={{
               display: "flex",
               alignItems: "center",
@@ -817,7 +822,7 @@ console.log("item colors==========================",itemColors);
                 transform: "translateX(-50%)",
               }}
             >
-              Reports
+              {t("reports.Reports")}
             </h1>
             <IonIcon
               onClick={() => {
@@ -830,7 +835,7 @@ console.log("item colors==========================",itemColors);
               icon={close}
             />
           </div>
-          <h4>Select Date</h4>
+          <h4>{t("reports.Select Date")}</h4>
           <div className="flex justify-content-center">
             <Calendar
               value={tempselectedDate}
@@ -855,11 +860,11 @@ console.log("item colors==========================",itemColors);
                 }}
                 className="medCustom-button01"
               >
-                Back
+                {t("reports.Back")}
               </button>
             )}
             <button onClick={() => reportData()} className="medCustom-button01">
-              Select
+              {t("reports.Select")}
             </button>
           </div>
         </div>
@@ -1023,7 +1028,7 @@ console.log("item colors==========================",itemColors);
                     <div className="content">
                       <h4 className="title">{item.refCategoryLabel}</h4>
                       <p className="date-range">
-                        <b>Taken: </b>
+                        <b>{t("reports.Taken")}: </b>
                         {allScore?.find(
                           (answer) =>
                             answer.refQCategoryId ===
@@ -1039,7 +1044,7 @@ console.log("item colors==========================",itemColors);
                       </p>
 
                       <p className="date-range">
-                        <b>Valid Till: </b>
+                        <b>{t("reports.Valid Till")}: </b>
                         {addDaysToDate(
                           allScore?.find(
                             (answer) =>
@@ -1113,7 +1118,7 @@ console.log("item colors==========================",itemColors);
                           display: "inline-block",
                         }}
                       >
-                        No Data Filled
+                        {t("reports.No Data Filled")}
                       </span>
                     </div>
                     <IonIcon icon={chevronForward} />
