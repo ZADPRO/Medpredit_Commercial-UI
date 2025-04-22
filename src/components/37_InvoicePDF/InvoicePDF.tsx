@@ -5,6 +5,7 @@ import PopBold from "../../assets/Fonts/Montserrat-Bold.ttf";
 import PopBoldItalic from "../../assets/Fonts/AbrilFatface-Regular.ttf";
 import PopSemiboldItalic from "../../assets/Fonts/Montserrat-MediumItalic.ttf";
 import { Directory, Filesystem } from '@capacitor/filesystem';
+import { useTranslation } from 'react-i18next';
 
 interface Transaction {
   refInvoiceId: number;
@@ -67,6 +68,8 @@ const InvoicePDF: React.FC<Transaction> = ({
       reader.onerror = (error) => reject(error);
     });
   };
+
+  const { t } = useTranslation("global");
 
   const handleInvoiceDownload = async () => {
     const doc = (
@@ -185,8 +188,8 @@ const InvoicePDF: React.FC<Transaction> = ({
 
   return (
     <div>
-      <div onClick={handleInvoiceDownload} style={{ fontSize: "0.8rem", textDecoration: "underline" }}>
-        Download Invoice
+      <div onClick={handleInvoiceDownload} style={{ fontSize: "0.8rem", textDecoration: "underline", margin: "0.4rem", color: "var(--med-dark-green)", fontWeight: "700" }}>
+        {t("transactionhis.Download Invoice")}
       </div>
     </div>
   )

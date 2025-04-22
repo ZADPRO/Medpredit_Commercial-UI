@@ -264,6 +264,7 @@ const Questions: React.FC = () => {
     console.log("submittedAnswer", submittedAnswer);
     console.log("serviceId", selectedServiceId, selectedUserId);
     setLoadingStatus(true);
+    
     try {
       axios
         .post(
@@ -280,6 +281,7 @@ const Questions: React.FC = () => {
             //   : null,
             employeeId: null,
             hospitalId: "undefined",
+            refLanCode: localStorage.getItem("refLanCode")
           },
           {
             headers: {

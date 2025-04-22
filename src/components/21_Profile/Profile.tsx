@@ -143,7 +143,7 @@ const Profile: React.FC = () => {
                 <div
                   key={itemIndex}
                   onClick={() => {
-                    if (item.label == "Log Out") {
+                    if (item.label == t("profile.Log Out")) {
                       let refLanCode = localStorage.getItem("refLanCode") ? localStorage.getItem("refLanCode") : "1";
                       let lang = localStorage.getItem("lang") ? localStorage.getItem("lang") : "english"
                       localStorage.clear();
@@ -158,7 +158,7 @@ const Profile: React.FC = () => {
                   <div className="profile-body-item">
                     <i className={item.icon}></i>
                     <span className="profile-body-label">{item.label}</span>
-                    {item.label != "Log Out" && <IonIcon icon={chevronForward} />}
+                    {item.label != t("profile.Log Out") && <IonIcon icon={chevronForward} />}
                   </div>
                   {itemIndex !== section.items.length - 1 && (
                     <div className="profile-body-short-divider"></div>

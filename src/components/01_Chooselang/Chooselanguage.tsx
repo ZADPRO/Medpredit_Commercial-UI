@@ -22,32 +22,37 @@ interface Category {
 }
 
 const Chooselanguage: React.FC = () => {
-
-
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getLanguage`).then((response) => {
-      const data = decrypt(
-        response.data[1],
-        response.data[0],
-        import.meta.env.VITE_ENCRYPTION_KEY
-      );
+    axios
+      .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getLanguage`)
+      .then((response) => {
+        const data = decrypt(
+          response.data[1],
+          response.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
 
-      if (data.status) {
-        setCategories(data.getLanguage);
-      }
+        if (data.status) {
+          setCategories(data.getLanguage);
+          setSelectedCategory(
+            localStorage.getItem("refLanCode")
+              ? localStorage.getItem("refLanCode")
+              : (data.getLanguage.length > 0 ? data.getLanguage[0].refLKey : "1")
+          );
+          localStorage.getItem("refLanCode") == undefined && localStorage.setItem("refLanCode", data.getLanguage.length > 0 ? data.getLanguage[0].refLKey : "1");
+          localStorage.getItem("lang") == undefined && localStorage.setItem("lang", data.getLanguage.length > 0 ? data.getLanguage[0].refLlandcode: "english");
+        }
 
-
-      console.log(data)
-    })
-  }, [])
+        console.log(data);
+      });
+  }, []);
 
   // const categories = [
   //   { name: "English", key: "1", langCode: "english", image: english },
   //   { name: "हिंदी", key: "2", langCode: "hindi", image: hindi },
   // ];
 
-
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const { t, i18n } = useTranslation("global");
 
@@ -58,15 +63,13 @@ const Chooselanguage: React.FC = () => {
 
   const history = useHistory();
 
-  const [selectedCategory, setSelectedCategory] = useState(
-    localStorage.getItem("refLanCode") ? localStorage.getItem("refLanCode") : categories[0].refLKey
-  );
+  const [selectedCategory, setSelectedCategory]: any = useState();
 
   const handleSelectCategory = (category: Category) => {
     setSelectedCategory(category.refLKey);
     handleChangeLang(category.refLlandcode);
     localStorage.setItem("refLanCode", category.refLKey);
-    localStorage.setItem("lang", category.refLlandcode)
+    localStorage.setItem("lang", category.refLlandcode);
   };
 
   return (
@@ -84,8 +87,9 @@ const Chooselanguage: React.FC = () => {
               {categories.map((category) => (
                 <div
                   key={category.refLKey}
-                  className={`language-option ${selectedCategory === category.refLKey ? "selected" : ""
-                    }`}
+                  className={`language-option ${
+                    selectedCategory === category.refLKey ? "selected" : ""
+                  }`}
                   onClick={() => handleSelectCategory(category)}
                 >
                   <div className="radio-group">
@@ -97,10 +101,21 @@ const Chooselanguage: React.FC = () => {
                       checked={selectedCategory === category.refLKey}
                       onChange={() => handleSelectCategory(category)}
                     />
-                    <label htmlFor={category.refLKey}>{category.refLName}</label>
+                    <label htmlFor={category.refLKey}>
+                      {category.refLName}
+                    </label>
                   </div>
                   <div className="imageForLang">
-                    <img src={category.refLId === "1" ? english : category.refLId === "2" ? hindi : english} alt={category.refLName} />
+                    <img
+                      src={
+                        category.refLId === "1"
+                          ? english
+                          : category.refLId === "2"
+                          ? hindi
+                          : english
+                      }
+                      alt={category.refLName}
+                    />
                   </div>
                 </div>
               ))}
@@ -111,7 +126,8 @@ const Chooselanguage: React.FC = () => {
           <div className="button-container">
             <button
               onClick={() =>
-                history.push("/login", {
+                
+                history.push("/getStarted", {
                   direction: "forward",
                   animation: "slide",
                 })

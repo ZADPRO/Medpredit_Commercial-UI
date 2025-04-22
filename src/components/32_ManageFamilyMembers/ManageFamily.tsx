@@ -395,7 +395,7 @@ const ManageFamily: React.FC = () => {
                         <table className="manage-family-table">
                           <tbody>
                             <tr>
-                              <td>Phone Number:</td>
+                              <td>{t("Register User.Mobile Number")}</td>
                               <td>{item.refUserMobileno}</td>
                             </tr>
                             <tr>

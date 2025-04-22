@@ -5,6 +5,16 @@
     "subtitle": "Where Technology Meets Trusted Care.",
     "select": "Select"
   },
+  "getStarted": {
+  "carousel01_heading": "All-in-One Health Platform",
+  "carousel01_text": "Predict illnesses, track health trends, and store your journey securely - all in one place.",
+
+  "carousel02_heading": "Family-Wide Peace of Mind",
+  "carousel02_text": "Track and protect your entire family's health with ease and confidence every day.",
+
+  "carousel03_heading": "Your Health, Seamlessly Connected",
+  "carousel03_text": "Access your full health history and future - smart, secure, and always available."
+},
   "login": {
     "welcome": "Hi, Welcome!",
     "Mobile Number/ Email Address": "Enter Mobile Number",
@@ -115,6 +125,7 @@
     "What is Coronary artery diseaseans": "Coronary artery disease (CAD) occurs when heart arteries narrow due to plaque buildup, significantly increasing heart attack risk.",
     "What is Stroke": "What is Stroke?",
     "What is StrokeAns": "Stroke is when blood flow to the brain is blocked or ruptured, often causing brain damage and impairing vital functions.",
+    "Read More": "Read More",
     "made with": "Made with",
     "by": "by",
     "Made in India": "Made in India"
@@ -147,6 +158,7 @@
     "Career": "Career",
     "Contact": "Contact",
     "Save": "Save",
+    "Edit": "Edit",
     "Gender": "Gender",
     "Select": "Select",
     "Date of Birth": "Date of Birth",
@@ -159,6 +171,8 @@
     "Address": "Address",
     "District": "District",
     "Pincode": "Pincode",
+    "CareerInfo": "Your education and occupation help us personalize your care.",
+    "ContactInfo": "Your address helps us analyze regional health trends and improve our services.",
     "Occupational Category": "Occupational Category",
     "Definition with example": "Definition with example",
     "Top level management of any organisation": "Top level management of any organisation",
@@ -210,9 +224,9 @@
     "Married": "Married",
     "Unmarried": "Unmarried",
     "Illiteracy": "Illiteracy",
-    "PrimarySchool": "Primary School",
-    "MiddleSchool": "Middle School",
-    "HigherSecondary": "Higher Secondary",
+    "Primary School": "Primary School",
+    "Middle School": "Middle School",
+    "Higher Secondary": "Higher Secondary",
     "Undergraduate": "Undergraduate (UG)",
     "Postgraduate": "Postgraduate (PG)",
     "Professional": "Professional",
@@ -233,13 +247,25 @@
     "Subscribe": "Subscribe",
     "Expires On": "Expires On"
   },
+  "subPayment": {
+    "Proceed": "Proceed",
+    "Payment": "Payment",
+    "Plan Type": "Plan Type",
+    "Description": "Description",
+    "Plan Validity": "Plan Validity",
+    "days": "days",
+    "Valid Members": "Valid Members",
+    "Start Date": "Start Date",
+    "Expiry Date": "Expiry Date"
+  },
   "transactionhis": {
     "Transaction History": "Transaction History",
     "Plan Validity": "Plan Validity",
     "Transaction Method": "Transaction Method:",
     "Start your subscription": "Start your subscription",
     "to begin your journey": "to begin your journey",
-    "No Transactions Yet": "No Transactions Yet"
+    "No Transactions Yet": "No Transactions Yet",
+    "Download Invoice": "Download Invoice"
   },
   "notificationSettings": {
     "Notification Settings": "Notification Settings",
@@ -475,7 +501,8 @@
     "Download Report": "Download Report",
     "Taken": "Taken",
     "Valid Till": "Valid Till",
-    "No Data Filled": "No Data Filled"
+    "No Data Filled": "No Data Filled",
+    "Assessment Score": "Assessment Score"
   },
   "manage": {
     "Manage Family": "Manage Family",

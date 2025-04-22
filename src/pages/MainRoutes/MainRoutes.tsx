@@ -42,6 +42,7 @@ import ManageFamily from "../../components/32_ManageFamilyMembers/ManageFamily";
 import SubscriptionDetail from "../Subscription/SubscriptionDetail";
 import LinkFamilyMember from "../../components/32_ManageFamilyMembers/LinkFamilyMember";
 import KnowAbout from "../KnowAbout/KnowAbout";
+import GetStarted from "../../components/001_GetStarted/GetStarted";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -86,6 +87,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/getStarted">
+          <GetStarted/>
         </Route>
         <Route path="/registerUser">
           <RegisterUser />

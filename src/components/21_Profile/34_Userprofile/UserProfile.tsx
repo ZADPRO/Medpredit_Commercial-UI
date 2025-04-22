@@ -1,57 +1,62 @@
 import {
-    IonBackButton,
-    IonButton,
-    IonButtons,
-    IonCard,
-    IonCardContent,
-    IonContent,
-    IonDatetime,
-    IonFooter,
-    IonHeader,
-    IonIcon,
-    IonLabel,
-    IonModal,
-    IonPage,
-    IonRippleEffect,
-    IonSegment,
-    IonSegmentButton,
-    IonSegmentContent,
-    IonSegmentView,
-    IonText,
-    IonTitle,
-    IonToolbar,
-    useIonAlert,
-  } from "@ionic/react";
-  import { chevronBack, closeSharp, createOutline, informationCircleOutline, settings } from "ionicons/icons";
-  import { InputText } from "primereact/inputtext";
-  import React, { useEffect, useState } from "react";
-  import "./UserProfile.css";
-  import { Dropdown } from "primereact/dropdown";
-  import { Divider } from "primereact/divider";
-  import axios from "axios";
-  import decrypt from "../../../helper";
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonContent,
+  IonDatetime,
+  IonFooter,
+  IonHeader,
+  IonIcon,
+  IonLabel,
+  IonModal,
+  IonPage,
+  IonRippleEffect,
+  IonSegment,
+  IonSegmentButton,
+  IonSegmentContent,
+  IonSegmentView,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  useIonAlert,
+} from "@ionic/react";
+
+import {
+  chevronBack,
+  closeSharp,
+  createOutline,
+  informationCircleOutline,
+  settings,
+} from "ionicons/icons";
+
+import { InputText } from "primereact/inputtext";
+
+import React, { useEffect, useState } from "react";
+
+import "./UserProfile.css";
+
+import { Dropdown } from "primereact/dropdown";
+
+import { Divider } from "primereact/divider";
+
+import axios from "axios";
+
+import decrypt from "../../../helper";
+
 import Toast from "../../CustomIonToast/CustomIonToast";
+
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
-  
-  const UserProfile: React.FC = () => {
-    const [selectedSegment, setSelectedSegment] =
-      useState<string>("Personal Details");
-    const [isEditing, setIsEditing] = useState(false);
-    const [presentAlert] = useIonAlert();
-  
-    const userDetails = localStorage.getItem("userDetails");
-  
-    const userDeatilsObj = userDetails
-      ? JSON.parse(userDetails)
-      : { userId: null, token: null };
-  
-    console.log(userDeatilsObj);
 
 const UserProfile: React.FC = () => {
   const [selectedSegment, setSelectedSegment] =
     useState<string>("Personal Details");
+
   const [isEditing, setIsEditing] = useState(false);
+
+  const [presentAlert] = useIonAlert();
 
   const userDetails = localStorage.getItem("userDetails");
 
@@ -64,33 +69,40 @@ const UserProfile: React.FC = () => {
   console.log(userDeatilsObj);
 
   const history = useHistory();
+
   const [toastOpen, setToastOpen] = useState<{
     status: boolean;
+
     message: string;
+
     position?: "bottom" | "top" | "middle"; // Make position optional
+
     textColor?: string;
   }>({
     status: false,
+
     message: "",
+
     position: "bottom",
+
     textColor: "black", // Optional fields don't require a default value
   });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [occupationModel, setOccupationModel] = useState(false);
   const [occupationalSector, setOccupationalSector] = useState(false);
+
   const occupationData = [
     {
       category: t("userProfile.Professional"),
       heading: t("userProfile.Top level management of any organisation"),
-      content:
-        t("userProfile.Example1"),
+      content: t("userProfile.Example1"),
     },
     {
       category: t("userProfile.SemiProfessional"),
       heading: t("userProfile.Mid level management of any organisation"),
-      content:
-        t("userProfile.Example2"),
+      content: t("userProfile.Example2"),
     },
     {
       category: t("userProfile.ClericalShopOwnerFarmer"),
@@ -99,72 +111,92 @@ const UserProfile: React.FC = () => {
     },
     {
       category: t("userProfile.SkilledWorker"),
-      heading: t("userProfile.Technicians with a degree certificate related to the work"),
-      content:
-        t("userProfile.Tailor, mason, carpenter, Electrician, plumber, factory machine operator"),
+      heading: t(
+        "userProfile.Technicians with a degree certificate related to the work"
+      ),
+      content: t(
+        "userProfile.Tailor, mason, carpenter, Electrician, plumber, factory machine operator"
+      ),
     },
     {
       category: t("userProfile.SemiSkilledWorker"),
-      heading: t("userProfile.Technicians without degree certificate related to the work"),
-      content:
-        t("userProfile.Example4"),
+      heading: t(
+        "userProfile.Technicians without degree certificate related to the work"
+      ),
+      content: t("userProfile.Example4"),
     },
     {
       category: t("userProfile.UnskilledWorker"),
       heading: t("userProfile.Helpers"),
-      content:
-        t("userProfile.sweepers, gardeners, helpers in construction site, house keeping, office unskilled assistants etc"),
+      content: t(
+        "userProfile.sweepers, gardeners, helpers in construction site, house keeping, office unskilled assistants etc"
+      ),
     },
     {
       category: t("userProfile.Homemaker"),
       heading: "",
-      content: t("userProfile.Family member who are involved in domestic chores of a family"),
+      content: t(
+        "userProfile.Family member who are involved in domestic chores of a family"
+      ),
     },
     {
       category: t("userProfile.Unemployed"),
       heading: "",
-      content: t("userProfile.Those who are not employed in any of the organisation"),
+      content: t(
+        "userProfile.Those who are not employed in any of the organisation"
+      ),
     },
     {
       category: t("userProfile.Student"),
       heading: "",
-      content:
-        t("userProfile.Those who are involved in learning activity and not employed in any organisation"),
+      content: t(
+        "userProfile.Those who are involved in learning activity and not employed in any organisation"
+      ),
     },
   ];
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const genderOpt: any = [{
-    label: t("userProfile.Male"),
-    value: "Male"
-  }, {
-    label: t("userProfile.Female"),
-    value: "Female"
-  }, {
-    label: t("userProfile.Transgender"),
-    value: "Transgender"
-  }];
-  const refMaritalStatus: any = [{
-    label: t("userProfile.Male"),
-    value: "Married"
-  }, {
-    label: t("userProfile.Female"),
-    value: "Unmarried"
-  }];
+  const genderOpt: any = [
+    {
+      label: t("userProfile.Male"),
+      value: "Male",
+    },
+    {
+      label: t("userProfile.Female"),
+      value: "Female",
+    },
+    {
+      label: t("userProfile.Transgender"),
+      value: "Transgender",
+    },
+  ];
+  const refMaritalStatus: any = [
+    {
+      label: t("userProfile.Married"),
+      value: "Married",
+    },
+    {
+      label: t("userProfile.Unmarried"),
+      value: "Unmarried",
+    },
+  ];
   const educationOpt: { label: string; value: string }[] = [
     { label: t("userProfile.Illiteracy"), value: "Illiteracy" },
-    { label: t("userProfile.PrimarySchool"), value: "PrimarySchool" },
-    { label: t("userProfile.MiddleSchool"), value: "MiddleSchool" },
-    { label: t("userProfile.HigherSecondary"), value: "HigherSecondary" },
+    { label: t("userProfile.Primary School"), value: "Primary School" },
+    { label: t("userProfile.Middle School"), value: "Middle School" },
+    { label: t("userProfile.Higher Secondary"), value: "Higher Secondary" },
     { label: t("userProfile.Undergraduate"), value: "Undergraduate" },
     { label: t("userProfile.Postgraduate"), value: "Postgraduate" },
   ];
-  const occupationCategoryOpt: { label: string; value: string }[] = [
+  const occupationCategoryOtp: { label: string; value: string }[] = [
     { label: t("userProfile.Professional"), value: "Professional" },
     { label: t("userProfile.SemiProfessional"), value: "SemiProfessional" },
-    { label: t("userProfile.ClericalShopOwnerFarmer"), value: "ClericalShopOwnerFarmer" },
+    {
+      label: t("userProfile.ClericalShopOwnerFarmer"),
+      value: "ClericalShopOwnerFarmer",
+    },
     { label: t("userProfile.SkilledWorker"), value: "SkilledWorker" },
     { label: t("userProfile.SemiSkilledWorker"), value: "SemiSkilledWorker" },
     { label: t("userProfile.UnskilledWorker"), value: "UnskilledWorker" },
@@ -173,10 +205,9 @@ const UserProfile: React.FC = () => {
     { label: t("userProfile.Student"), value: "Student" },
   ];
 
-
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    console.log(name, value)
+    console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -185,105 +216,43 @@ const UserProfile: React.FC = () => {
 
   const handleDropdownChange = (e: any, field: string) => {
     const selectedValue = e.value;
-    console.log(e.value)
     setFormData({
       ...formData,
       [field]: selectedValue,
     });
-  
-    const fetchUserDetals = () => {
-      try {
-        axios
-          .post(
-            `${import.meta.env.VITE_API_COMMERCIAL_URL}/getUsers`,
-            {
-              userId: userDeatilsObj.userId,
-            },
-            {
-              headers: {
-                Authorization: userDeatilsObj.token,
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((response) => {
-            const data = decrypt(
-              response.data[1],
-              response.data[0],
-              import.meta.env.VITE_ENCRYPTION_KEY
-            );
-            console.log(data);
-            if (data.status) {
-              if(data.result.length > 0) {
-                  setFormData(data.result[0]);
-              }
-            }
-          });
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchUserDetals();
-      if (localStorage.getItem("firstLogin") == "true"){
-        setIsEditing(true);
+  };
 
-        presentAlert({
-          message:
-            "Please Complete Your Profile",
-          buttons: [
-            {
-              text: "Close",
-              role: "cancel",
-              cssClass: "close-button",
-            },
-          ],
-        });
-      }
-    }, []);
-  
-    const handleSave = () => {
-      if (verifyForm1() && verifyForm2() && verifyForm3()) {
-        updateUSerDetails();
-        if (localStorage.getItem("detailsFlag") === "true") {
-          setToastOpen({ status: true, textColor: "green",  message: "Profile Complete!" });
-          setTimeout(() => {
-            history.replace("/home");
-            localStorage.setItem("detailsFlag", "false");
-            localStorage.setItem("firstLogin", "false");
-          }, 3000);
-        } else{
-          setToastOpen({ status: true, textColor: "green", message: "Profile Saved" });
-        }
-      };
-    };
-  
-    const updateUSerDetails = async() => {
-      const tokenString = localStorage.getItem("userDetails");
-      if (tokenString) {
-        try {
-          const tokenObject = JSON.parse(tokenString);
-          const token = tokenObject.token;
-          console.log(token);
-          const response = await axios.post(
-            `${import.meta.env.VITE_API_COMMERCIAL_URL}/userupdate`,
-            {
-              id: userDeatilsObj.userId,
-              refUserFname: formData.refUserFname,
-              refUserLname: formData.refUserLname,
-              refUserEmail: formData.refUserEmail,
-              refDOB: formData.refDOB,
-              refMaritalStatus: formData.refMaritalStatus,
-              refEducation: formData.refEducation,
-              refOccupationLvl: formData.refOccupationLvl,
-              refSector: formData.refSector,
-              refAddress: formData.refAddress,
-              refDistrict: formData.refDistrict,
-              refPincode: formData.refPincode,
-              refGender: formData.refGender,
-              activeStatus: formData.activeStatus,
-              updatedBy: userDeatilsObj.userId,
+  const [formData, setFormData] = useState({
+    id: "",
+    refUserFname: "",
+    refUserLname: "",
+    refUserEmail: "",
+    refGender: null as string | null,
+    refMaritalStatus: null as string | null,
+    refDOB: null as any | null,
+    refEducation: "",
+    refOccupationLvl: "",
+    activeStatus: "",
+    updatedBy: "",
+    refSector: "",
+    refAddress: "",
+    refDistrict: "",
+    refPincode: null as any | null,
+    refUserMobileno: "",
+  });
+
+  const fetchUserDetals = () => {
+    try {
+      axios
+        .post(
+          `${import.meta.env.VITE_API_COMMERCIAL_URL}/getUsers`,
+          {
+            userId: userDeatilsObj.userId,
+          },
+          {
+            headers: {
+              Authorization: userDeatilsObj.token,
+              "Content-Type": "application/json",
             },
           }
         )
@@ -307,9 +276,19 @@ const UserProfile: React.FC = () => {
 
   useEffect(() => {
     fetchUserDetals();
-    if (localStorage.getItem("detailsFlag") === "true") {
+    if (localStorage.getItem("firstLogin") == "true") {
       setIsEditing(true);
-      setToastOpen({ status: true, textColor: "red", position: "top", message: "Please Complete your Profile" });
+
+      presentAlert({
+        message: "Please Complete Your Profile",
+        buttons: [
+          {
+            text: "Close",
+            role: "cancel",
+            cssClass: "close-button",
+          },
+        ],
+      });
     }
   }, []);
 
@@ -317,15 +296,24 @@ const UserProfile: React.FC = () => {
     if (verifyForm1() && verifyForm2() && verifyForm3()) {
       updateUSerDetails();
       if (localStorage.getItem("detailsFlag") === "true") {
-        setToastOpen({ status: true, textColor: "green", message: "Profile Complete!" });
+        setToastOpen({
+          status: true,
+          textColor: "green",
+          message: "Profile Complete!",
+        });
         setTimeout(() => {
           history.replace("/home");
           localStorage.setItem("detailsFlag", "false");
+          localStorage.setItem("firstLogin", "false");
         }, 3000);
       } else {
-        setToastOpen({ status: true, textColor: "green", message: "Profile Saved" });
+        setToastOpen({
+          status: true,
+          textColor: "green",
+          message: "Profile Saved",
+        });
       }
-    };
+    }
   };
 
   const updateUSerDetails = async () => {
@@ -368,142 +356,196 @@ const UserProfile: React.FC = () => {
           import.meta.env.VITE_ENCRYPTION_KEY
         );
 
+        console.log(data);
 
-    const verifyForm1 = () => {
-      if (formData.refUserFname.length === 0) {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Valid First Name" });
-        setSelectedSegment("Personal Details");
-        return false;
-      } else if (formData.refUserLname.length === 0) {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Valid Last Name" });
-        setSelectedSegment("Personal Details");
-        return false;
-      } else if (!formData.refGender || formData.refGender === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Select Gender" });
-        setSelectedSegment("Personal Details");
-        return false;
-      } else if (!formData.refDOB || formData.refDOB === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Date of Birth" });
-        setSelectedSegment("Personal Details");
-        return false;
-      } else if (!formData.refMaritalStatus || formData.refMaritalStatus === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Select Marital Status" });
-        setSelectedSegment("Personal Details");
-        return false;
-      }
-      return true;
-    };
-  
-    const verifyForm2 = () => {
-      if (formData.refEducation.length === 0 || formData.refEducation === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Select Education" });
-        setSelectedSegment("Career Details");
-        return false;
-      } else if (formData.refOccupationLvl == null || formData.refOccupationLvl === "-" || formData.refOccupationLvl.length === 0) {
-        setToastOpen({ status: true, textColor: "red", message: "Select Occupation Category" });
-        setSelectedSegment("Career Details");
-        return false;
-      } else if (formData.refSector.length === 0 || formData.refSector === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Sector" });
-        setSelectedSegment("Career Details");
-        return false;
-      }
-      return true;
-    };
-  
-    const verifyForm3 = () => {
-      if (
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.refUserEmail) ||
-        formData.refUserEmail.length === 0
-      ) {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Valid Email" });
-        setSelectedSegment("Contact Details");
-        return false;
-      } else if (formData.refAddress.length === 0 || formData.refAddress === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Address" });
-        setSelectedSegment("Contact Details");
-        return false;
-      } 
-      else if (formData.refDistrict.length === 0 || formData.refDistrict === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Enter District" });
-        setSelectedSegment("Contact Details");
-        return false;
-      } else if (formData.refPincode.length === 0 || formData.refPincode === "-") {
-        setToastOpen({ status: true, textColor: "red", message: "Enter Pincode" });
-        setSelectedSegment("Contact Details");
-        return false;
-
+        if (data.status) {
+          fetchUserDetals();
+          setIsEditing(false);
+          updateLocalStorage();
+        }
+      } catch {
+        console.error("tesitng - false");
       }
     } else {
       console.log("Token Invalid");
     }
   };
 
-    return (
-      <IonPage className="cus-ion-page">
-        <IonHeader>
-          <IonToolbar>
-            {(localStorage.getItem("firstLogin") == "false" ||
-              localStorage.getItem("firstLogin") == undefined) && (
-              <IonButtons slot="start">
-                <IonBackButton
-                  mode="md"
-                  icon={chevronBack}
-                  defaultHref="/home"
-                />
-              </IonButtons>
-            )}
-            <IonTitle>My Profile</IonTitle>
-            {localStorage.getItem("firstLogin") === "true" ? (
-              <IonButton
-                fill="clear"
-                slot="end"
-                color={"dark"}
-                onClick={() => {
-                  history.replace("/home");
-                  localStorage.setItem("firstLogin", "false");
-                }}
-              >
-                <IonText>Skip</IonText>
-              </IonButton>
-            ) : (
-              <IonButton
-                fill="clear"
-                slot="end"
-                color={"dark"}
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                {isEditing ? (
-                  <IonIcon icon={closeSharp} />
-                ) : (
-                  <IonText>Edit</IonText>
-                )}
-              </IonButton>
-            )}
-          </IonToolbar>
-        </IonHeader>
+
+  console.log(formData);
+  const updateLocalStorage = () => {
+    const userDetails = JSON.parse(localStorage.getItem("userDetails") || "{}");
+    // Update only firstName and lastName
+    userDetails.firstName = formData.refUserFname;
+    userDetails.lastName = formData.refUserLname;
+    userDetails.phNumber = formData.refUserMobileno;
+    // Save back to localStorage
+    localStorage.setItem("userDetails", JSON.stringify(userDetails));
+  };
+
+  const verifyForm1 = () => {
+    if (formData.refUserFname.length === 0) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter Valid First Name",
+      });
+      setSelectedSegment("Personal Details");
+      return false;
+    } else if (formData.refUserLname.length === 0) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter Valid Last Name",
+      });
+      setSelectedSegment("Personal Details");
+      return false;
+    } else if (!formData.refGender || formData.refGender === "-") {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Select Gender",
+      });
+      setSelectedSegment("Personal Details");
+      return false;
+    } else if (!formData.refDOB || formData.refDOB === "-") {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter Date of Birth",
+      });
+      setSelectedSegment("Personal Details");
+      return false;
+    } else if (
+      !formData.refMaritalStatus ||
+      formData.refMaritalStatus === "-"
+    ) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Select Marital Status",
+      });
+      setSelectedSegment("Personal Details");
+      return false;
+    }
+    return true;
+  };
+
+  const verifyForm2 = () => {
+    if (formData.refEducation.length === 0 || formData.refEducation === "-") {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Select Education",
+      });
+      setSelectedSegment("Career Details");
+      return false;
+    } else if (
+      formData.refOccupationLvl == null ||
+      formData.refOccupationLvl === "-" ||
+      formData.refOccupationLvl.length === 0
+    ) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Select Occupation Category",
+      });
+      setSelectedSegment("Career Details");
+      return false;
+    } else if (formData.refSector.length === 0 || formData.refSector === "-") {
+      setToastOpen({ status: true, textColor: "red", message: "Enter Sector" });
+      setSelectedSegment("Career Details");
+      return false;
+    }
+    return true;
+  };
+
+  const verifyForm3 = () => {
+    if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.refUserEmail) ||
+      formData.refUserEmail.length === 0
+    ) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter Valid Email",
+      });
+      setSelectedSegment("Contact Details");
+      return false;
+    } else if (
+      formData.refAddress.length === 0 ||
+      formData.refAddress === "-"
+    ) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter Address",
+      });
+      setSelectedSegment("Contact Details");
+      return false;
+    } else if (
+      formData.refDistrict.length === 0 ||
+      formData.refDistrict === "-"
+    ) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter District",
+      });
+      setSelectedSegment("Contact Details");
+      return false;
+    } else if (
+      formData.refPincode.length === 0 ||
+      formData.refPincode === "-"
+    ) {
+      setToastOpen({
+        status: true,
+        textColor: "red",
+        message: "Enter Pincode",
+      });
+      setSelectedSegment("Contact Details");
+      return false;
+    }
+    return true;
+  };
 
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
-          {localStorage.getItem("detailsFlag") == "false" && (
+          {(localStorage.getItem("firstLogin") == "false" ||
+            localStorage.getItem("firstLogin") == undefined) && (
             <IonButtons slot="start">
-              <IonBackButton
-                mode="md"
-                icon={chevronBack}
-                defaultHref="/home"
-              />
+              <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
             </IonButtons>
           )}
           <IonTitle>{t("userProfile.My Profile")}</IonTitle>
-          <IonButton
-            fill="clear"
-            slot="end"
-            onClick={() => setIsEditing(!isEditing)}
-          >
-            <IonIcon icon={isEditing ? closeSharp : createOutline} />
-          </IonButton>
+          {localStorage.getItem("firstLogin") === "true" ? (
+            <IonButton
+              fill="clear"
+              slot="end"
+              color={"dark"}
+              onClick={() => {
+                history.replace("/home");
+                localStorage.setItem("firstLogin", "false");
+              }}
+            >
+              <IonText>Skip</IonText>
+            </IonButton>
+          ) : (
+            <IonButton
+              fill="clear"
+              slot="end"
+              color={"dark"}
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              {isEditing ? (
+                <IonIcon icon={closeSharp} />
+              ) : (
+                <IonText>{t("userProfile.Edit")}</IonText>
+              )}
+            </IonButton>
+          )}
         </IonToolbar>
       </IonHeader>
 
@@ -519,13 +561,12 @@ const UserProfile: React.FC = () => {
           >
             <IonLabel>{t("userProfile.Personal")}</IonLabel>
           </IonSegmentButton>
+
           <IonSegmentButton value="Career Details" contentId="Career Details">
             <IonLabel>{t("userProfile.Career")}</IonLabel>
           </IonSegmentButton>
-          <IonSegmentButton
-            value="Contact Details"
-            contentId="Contact Details"
-          >
+
+          <IonSegmentButton value="Contact Details" contentId="Contact Details">
             <IonLabel>{t("userProfile.Contact")}</IonLabel>
           </IonSegmentButton>
         </IonSegment>
@@ -534,11 +575,13 @@ const UserProfile: React.FC = () => {
           <IonSegmentContent id="Personal Details">
             <div className="inputBox">
               <label>
-                {t("Register User.First Name")} <span style={{ color: "red" }}>*</span>
+                {t("Register User.First Name")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
-                className={`p-inputgroup addFamilyInputField ${!isEditing ? "inputDisabled" : ""
-                  }`}
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
                 <span className="addFamilyInputField_Icon">
                   <i className="pi pi-user"></i>
@@ -549,7 +592,11 @@ const UserProfile: React.FC = () => {
                   disabled={!isEditing}
                   value={formData.refUserFname}
                   onChange={handleInputChange}
-                  placeholder={t("Register User.Enter") + " " + t("Register User.First Name")}
+                  placeholder={
+                    t("Register User.Enter") +
+                    " " +
+                    t("Register User.First Name")
+                  }
                   name="refUserFname"
                 />
               </div>
@@ -557,11 +604,13 @@ const UserProfile: React.FC = () => {
             {/* Last Name */}
             <div className="inputBox">
               <label>
-                {t("Register User.Last Name")} <span style={{ color: "red" }}>*</span>
+                {t("Register User.Last Name")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
-                className={`p-inputgroup addFamilyInputField ${!isEditing ? "inputDisabled" : ""
-                  }`}
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
                 <span className="addFamilyInputField_Icon">
                   <i className="pi pi-user"></i>
@@ -571,7 +620,11 @@ const UserProfile: React.FC = () => {
                   className="addFamilyInputText"
                   value={formData.refUserLname}
                   onChange={handleInputChange}
-                  placeholder={t("Register User.Enter") + " " + t("Register User.Last Name")}
+                  placeholder={
+                    t("Register User.Enter") +
+                    " " +
+                    t("Register User.Last Name")
+                  }
                   name="refUserLname"
                 />
               </div>
@@ -579,11 +632,13 @@ const UserProfile: React.FC = () => {
             {/* Gender */}
             <div className="inputBox">
               <label>
-                {t("userProfile.Gender")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.Gender")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
-                className={`p-inputgroup addFamilyInputField ${!isEditing ? "inputDisabled" : ""
-                  }`}
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
                 style={{ width: "100%" }}
               >
                 <span className="addFamilyInputField_Icon">
@@ -593,10 +648,12 @@ const UserProfile: React.FC = () => {
                   value={formData.refGender}
                   onChange={(e) => handleDropdownChange(e, "refGender")}
                   options={genderOpt}
+                  style={{ textAlign: "left" }}
                   optionLabel="label"
                   optionValue="value"
-                  style={{ textAlign: "left" }}
-                  placeholder={t("userProfile.Select") + " " + t("userProfile.Gender")}
+                  placeholder={
+                    t("userProfile.Select") + " " + t("userProfile.Gender")
+                  }
                   name="refGender"
                   className="addFamilyDropdown"
                   disabled={!isEditing ? true : false}
@@ -608,49 +665,69 @@ const UserProfile: React.FC = () => {
             {/* Date of Birth */}
             <div className="inputBox">
               <label>
-                {t("userProfile.Date of Birth")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.Date of Birth")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
-                className={`p-inputgroup addFamilyInputField ${!isEditing ? "inputDisabled" : ""
-                  }`}
-                >
-                  <span className="addFamilyInputField_Icon">
-                    <i className="pi pi-calendar "></i>
-                  </span>
-                  <InputText
-                    style={{ width: "100%", textAlign: "left" }}
-                    className="addFamilyInputText"
-                    value={
-                      formData.refDOB
-                        ? formData.refDOB === "-"
-                          ? ""
-                          : formData.refDOB.split("T")[0]
-                        : ""
-                    }
-                    placeholder="Date of Birth"
-                    name="refDOB"
-                    onClick={openModal}
-                  />
-                </div>
-              </div>
-              <IonModal
-                isOpen={isOpen}
-                id="ion-custom-modal-01"
-                initialBreakpoint={1}
-                onDidDismiss={closeModal}
-                animated={false}
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
-                <div style={{ width: "100%", background: "#effafe" }}>
-                  <IonDatetime
-                    presentation="date"
-                    preferWheel={true}
-                    value={
-                      formData.refDOB == "-" || !formData.refDOB
-                        ? new Date().toISOString().split("T")[0]
-                        : formData.refDOB
-                    }
-                    onIonChange={(e) => {
-                      const selectedDate = e.detail.value;
+                <span className="addFamilyInputField_Icon">
+                  <i className="pi pi-calendar "></i>
+                </span>
+                <InputText
+                  style={{ width: "100%", textAlign: "left" }}
+                  className="addFamilyInputText"
+                  value={
+                    formData.refDOB
+                      ? formData.refDOB === "-"
+                        ? ""
+                        : formData.refDOB.split("T")[0]
+                      : ""
+                  }
+                  placeholder="Date of Birth"
+                  name="refDOB"
+                  onClick={openModal}
+                />
+              </div>
+            </div>
+            <IonModal
+              isOpen={isOpen}
+              id="ion-custom-modal-01"
+              initialBreakpoint={1}
+              onDidDismiss={closeModal}
+              animated={false}
+            >
+              <div style={{ width: "100%", background: "#effafe" }}>
+                <IonDatetime
+                  presentation="date"
+                  preferWheel={true}
+                  value={
+                    formData.refDOB == "-" || !formData.refDOB
+                      ? new Date().toISOString().split("T")[0]
+                      : formData.refDOB
+                  }
+                  onIonChange={(e) => {
+                    const selectedDate = e.detail.value;
+                    setFormData({
+                      ...formData,
+                      refDOB: selectedDate,
+                    });
+                  }}
+                ></IonDatetime>
+                <Divider />
+                <div
+                  style={{
+                    background: "#effafe",
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    width: "100%",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <div
+                    onClick={() => {
                       setFormData({
                         ...formData,
                         refDOB: "",
@@ -691,11 +768,13 @@ const UserProfile: React.FC = () => {
             {/* Marital Status */}
             <div className="inputBox">
               <label>
-                {t("userProfile.Marital Status")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.Marital Status")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
-                className={`p-inputgroup addFamilyInputField ${!isEditing ? "inputDisabled" : ""
-                  }`}
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
                 style={{ width: "100%" }}
               >
                 <span className="addFamilyInputField_Icon">
@@ -704,11 +783,13 @@ const UserProfile: React.FC = () => {
                 <Dropdown
                   value={formData.refMaritalStatus}
                   style={{ textAlign: "left" }}
-                  onChange={(e) =>
-                    handleDropdownChange(e, "refMaritalStatus")
-                  }
+                  onChange={(e) => handleDropdownChange(e, "refMaritalStatus")}
                   options={refMaritalStatus}
-                  placeholder={t("userProfile.Select") + " " + t("userProfile.Marital Status")}
+                  placeholder={
+                    t("userProfile.Select") +
+                    " " +
+                    t("userProfile.Marital Status")
+                  }
                   name="refGender"
                   className="addFamilyDropdown"
                   disabled={!isEditing ? true : false}
@@ -716,23 +797,25 @@ const UserProfile: React.FC = () => {
                   highlightOnSelect={false}
                 />
               </div>
-            </IonSegmentContent>
-            <IonSegmentContent id="Career Details">
-              {/* Education */}
-              <div style={{ display: "flex", alignItems: "flex-start" }}>
-                <IonIcon icon={informationCircleOutline} color="primary" />
-                <label style={{ fontSize: "0.8rem" }}>
-                  Your education and occupation help us personalize your care.
-                </label>
-              </div>
-              <div className="inputBox">
-                <label>
-                  Education <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+            </div>
+          </IonSegmentContent>
+          <IonSegmentContent id="Career Details">
+            {/* Education */}
+            <div style={{ display: "flex", alignItems: "flex-start" }}>
+              <IonIcon icon={informationCircleOutline} color="primary" />
+              <label style={{ fontSize: "0.8rem" }}>
+                {t("userProfile.CareerInfo")}
+              </label>
+            </div>
+            <div className="inputBox">
+              <label>
+                {t("userProfile.Education")}{" "}
+                <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
                 style={{ width: "100%" }}
               >
                 <span className="addFamilyInputField_Icon">
@@ -743,75 +826,80 @@ const UserProfile: React.FC = () => {
                   name="educationOpt"
                   onChange={(e) => handleDropdownChange(e, "refEducation")}
                   options={educationOpt}
-                  optionValue="value"
                   style={{ textAlign: "left" }}
                   optionLabel="label"
-                  placeholder={t("userProfile.Select") + " " + t("userProfile.Education")}
+                  optionValue="value"
+                  placeholder={
+                    t("userProfile.Select") + " " + t("userProfile.Education")
+                  }
                   className="addFamilyDropdown"
                   disabled={!isEditing ? true : false}
                   checkmark={true}
                   highlightOnSelect={false}
                 />
               </div>
-              {/* Occupation */}
-              <div className="inputBox">
-                <label>
-                  Occupation <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
-                  style={{ width: "100%" }}
-                >
-                  <span className="addFamilyInputField_Icon">
-                    <i className="pi pi-briefcase"></i>
-                  </span>
-                  <Dropdown
-                    value={formData.refOccupationLvl}
-                    name="refOccupationLvl"
-                    style={{ textAlign: "left" }}
-                    onChange={(e) =>
-                      handleDropdownChange(e, "refOccupationLvl")
-                    }
-                    options={occupationcategoryOtp}
-                    optionLabel="name"
-                    placeholder="Occupation Category"
-                    className="addFamilyDropdown"
-                    disabled={!isEditing ? true : false}
-                    checkmark={true}
-                    highlightOnSelect={false}
-                  />
-                </div>
-                <label
-                  onClick={() => {
-                    setOccupationModel(true);
-                  }}
-                  style={{ marginTop: "10px", textDecoration: "underline" }}
-                >
-                  Example
-                </label>
+            </div>
+            {/* Occupation */}
+            <div className="inputBox">
+              <label>
+                {t("userProfile.Occupation")} <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
+                style={{ width: "100%" }}
+              >
+                <span className="addFamilyInputField_Icon">
+                  <i className="pi pi-briefcase"></i>
+                </span>
+                <Dropdown
+                  value={formData.refOccupationLvl}
+                  name="refOccupationLvl"
+                  style={{ textAlign: "left" }}
+                  onChange={(e) => handleDropdownChange(e, "refOccupationLvl")}
+                  options={occupationCategoryOtp}
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Occupation Category"
+                  className="addFamilyDropdown"
+                  disabled={!isEditing ? true : false}
+                  checkmark={true}
+                  highlightOnSelect={false}
+                />
               </div>
-              {/* Sector */}
-              <div className="inputBox">
-                <label>
-                  Sector <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+              <label
+                onClick={() => {
+                  setOccupationModel(true);
+                }}
+                style={{ marginTop: "10px", textDecoration: "underline" }}
+              >
+                {t("userProfile.Example")}
+              </label>
+            </div>
+            {/* Sector */}
+            <div className="inputBox">
+              <label>
+                {t("userProfile.Sector")}{" "}
+                <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
                 style={{ width: "100%" }}
               >
                 {/* <span className="p-inputgroup-addon">
-                                                <i className="pi pi-user"></i>
-                                              </span> */}
+                                              <i className="pi pi-user"></i>
+                                            </span> */}
                 <InputText
                   style={{ width: "100%", textAlign: "left" }}
                   className="addFamilyInputText"
                   value={formData.refSector}
                   onChange={handleInputChange}
-                  placeholder={t("Register User.Enter") + " " + t("userProfile.Sector")}
+                  placeholder={
+                    t("Register User.Enter") + " " + t("userProfile.Sector")
+                  }
                   name="refSector"
                 />
               </div>
@@ -949,7 +1037,9 @@ const UserProfile: React.FC = () => {
             >
               <div className="doctor-modal-content">
                 {/* Header */}
-                <div className="doctor-modal-header">{t("userProfile.Occupation Sector")}</div>
+                <div className="doctor-modal-header">
+                  {t("userProfile.Occupation Sector")}
+                </div>
 
                 {/* Content */}
                 <div
@@ -972,9 +1062,13 @@ const UserProfile: React.FC = () => {
                     }}
                   >
                     <li>{t("userProfile.Agriculture and fishing")}</li>
+
                     <li>{t("userProfile.Mining and Quarrying")}</li>
+
                     <li>{t("userProfile.Forestry")}</li>
+
                     <li>{t("userProfile.Food processing")}</li>
+
                     <li>{t("userProfile.Factories and industries")}</li>
                     <div
                       style={{
@@ -986,9 +1080,13 @@ const UserProfile: React.FC = () => {
                       }}
                     >
                       <li>{t("userProfile.Textiles")}</li>
+
                       <li>{t("userProfile.Automobiles")}</li>
+
                       <li>{t("userProfile.Electrical and electronics")}</li>
+
                       <li>{t("userProfile.Mechanical")}</li>
+
                       <li>{t("userProfile.Constructions")}</li>
                     </div>
                   </div>
@@ -1003,36 +1101,35 @@ const UserProfile: React.FC = () => {
                       marginTop: "10px",
                     }}
                   >
-                    <IonRippleEffect></IonRippleEffect>
-                    Close
-                  </button>
-                </div>
-              </IonModal>
-            </IonSegmentContent>
-            <IonSegmentContent id="Contact Details">
-              {/* Mobile Number */}
-              <div className="inputBox">
-                <label>
-                  Mobile Number <span style={{ color: "red" }}>*</span>
-                </label>
-                <div className="p-inputgroup addFamilyInputField inputDisabled">
-                  <span className="addFamilyInputField_Icon">
-                    <i className="pi pi-phone"></i>
-                  </span>
-                  <InputText
-                    type="number"
-                    className="addFamilyInputText"
-                    value={formData.refUserMobileno}
-                    onChange={(e) => {
-                      const input = e.target.value;
-                      if (/^\d{0,10}$/.test(input)) {
-                        handleInputChange(e);
-                      }
+                    <li>{t("userProfile.Health care")}</li>
+                    <li>{t("userProfile.Education")}</li>
+                    <li>{t("userProfile.Sales and marketing")}</li>
+                    <li>{t("userProfile.IT and software solutions")}</li>
+                    <li>{t("userProfile.Finance and banking")}</li>
+                    <li>{t("userProfile.Transport and logistics- road and railways")}</li>
+                    <li>{t("userProfile.Hotels and lodges")}</li>
+                    <li>{t("userProfile.Media")}</li>
+                    <li>{t("userProfile.Judicial")}</li>
+                    <li>{t("userProfile.Defence and police")}</li>
+                    <li>{t("userProfile.Disaster management and rescue")}</li>
+                  </div>
+                  <div style={{ marginTop: "10px" }}>
+                    <b>{t("userProfile.others")}</b>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "5px",
+                      marginTop: "10px",
                     }}
                   >
                     <li>{t("userProfile.Research and development")}</li>
+
                     <li>{t("userProfile.Consultancy")}</li>
+
                     <li>{t("userProfile.Advisories")}</li>
+
                     <li>{t("userProfile.Intelligence")}</li>
                   </div>
                 </div>
@@ -1048,14 +1145,46 @@ const UserProfile: React.FC = () => {
                   {t("userProfile.Close")}
                 </button>
               </div>
-              <div className="inputBox">
-                <label>
-                  Email <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+            </IonModal>
+          </IonSegmentContent>
+          <IonSegmentContent id="Contact Details">
+            {/* Mobile Number */}
+            <div className="inputBox">
+              <label>
+                {t("Register User.Mobile Number")} <span style={{ color: "red" }}>*</span>
+              </label>
+              <div className="p-inputgroup addFamilyInputField inputDisabled">
+                <span className="addFamilyInputField_Icon">
+                  <i className="pi pi-phone"></i>
+                </span>
+                <InputText
+                  type="number"
+                  className="addFamilyInputText"
+                  value={formData.refUserMobileno}
+                  onChange={(e) => {
+                    const input = e.target.value;
+                    if (/^\d{0,10}$/.test(input)) {
+                      handleInputChange(e);
+                    }
+                  }}
+                  maxLength={10} // Ensures max length of 10
+                  placeholder={
+                    t("Register User.Enter") +
+                    " " +
+                    t("Register User.Mobile Number")
+                  }
+                  name="refUserMobileno"
+                />
+              </div>
+            </div>
+            <div className="inputBox">
+              <label>
+                {t("Register User.E-Mail")} <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
                 <span className="addFamilyInputField_Icon">
                   <i className="pi pi-envelope"></i>
@@ -1065,27 +1194,29 @@ const UserProfile: React.FC = () => {
                   className="addFamilyInputText"
                   value={formData.refUserEmail}
                   onChange={handleInputChange}
-                  placeholder={t("Register User.Enter") + " " + t("Register User.E-Mail")}
+                  placeholder={
+                    t("Register User.Enter") + " " + t("Register User.E-Mail")
+                  }
                   name="refUserEmail"
                 />
               </div>
+            </div>
 
-              {/* Address */}
-              <div className="inputBox">
+            {/* Address */}
+            <div className="inputBox">
               <div style={{ display: "flex", alignItems: "flex-start" }}>
                 <IonIcon icon={informationCircleOutline} color="primary" />
                 <label style={{ fontSize: "0.8rem" }}>
-                  Your address helps us analyze regional health trends and
-                  improve our services.
+                  {t("userProfile.ContactInfo")}
                 </label>
               </div>
-                <label>
-                  Address <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+              <label>
+                {t("userProfile.Address")} <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
                 <span className="addFamilyInputField_Icon">
                   <i className="pi pi-map-marker"></i>
@@ -1095,20 +1226,22 @@ const UserProfile: React.FC = () => {
                   className="addFamilyInputText"
                   value={formData.refAddress}
                   onChange={handleInputChange}
-                  placeholder={t("Register User.Enter") + " " + t("userProfile.Address")}
+                  placeholder={
+                    t("Register User.Enter") + " " + t("userProfile.Address")
+                  }
                   name="refAddress"
                 />
               </div>
-
-              {/* District */}
-              <div className="inputBox">
-                <label>
-                  District <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+            </div>
+            {/* District */}
+            <div className="inputBox">
+              <label>
+                {t("userProfile.District")} <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
                 <span className="addFamilyInputField_Icon">
                   <i className="pi pi-map-marker"></i>
@@ -1118,19 +1251,22 @@ const UserProfile: React.FC = () => {
                   className="addFamilyInputText"
                   value={formData.refDistrict}
                   onChange={handleInputChange}
-                  placeholder={t("Register User.Enter") + " " + t("userProfile.District")}
+                  placeholder={
+                    t("Register User.Enter") + " " + t("userProfile.District")
+                  }
                   name="refDistrict"
                 />
               </div>
-              {/* Pincode */}
-              <div className="inputBox">
-                <label>
-                  Pincode <span style={{ color: "red" }}>*</span>
-                </label>
-                <div
-                  className={`p-inputgroup addFamilyInputField ${
-                    !isEditing ? "inputDisabled" : ""
-                  }`}
+            </div>
+            {/* Pincode */}
+            <div className="inputBox">
+              <label>
+                {t("userProfile.Pincode")} <span style={{ color: "red" }}>*</span>
+              </label>
+              <div
+                className={`p-inputgroup addFamilyInputField ${
+                  !isEditing ? "inputDisabled" : ""
+                }`}
               >
                 <span className="addFamilyInputField_Icon">
                   <i className="pi pi-map-marker"></i>
@@ -1147,45 +1283,47 @@ const UserProfile: React.FC = () => {
                     }
                   }}
                   maxLength={6}
-                  placeholder={t("Register User.Enter") + " " + t("userProfile.Pincode")}
+                  placeholder={
+                    t("Register User.Enter") + " " + t("userProfile.Pincode")
+                  }
                   name="refPincode"
                 />
               </div>
-            </IonSegmentContent>
-          </IonSegmentView>
-        </IonContent>
-        {isEditing && (
-          <IonFooter>
-            <IonToolbar>
-              {selectedSegment == "Contact Details" ? (
-                <IonTitle onClick={() => handleSave()}>Save</IonTitle>
-              ) : (
-                <IonTitle
-                  onClick={() =>
-                    selectedSegment == "Personal Details"
-                      ? setSelectedSegment("Career Details")
-                      : setSelectedSegment("Contact Details")
-                  }
-                >
-                  Next
-                </IonTitle>
-              )}
-            </IonToolbar>
-          </IonFooter>
-        )}
+            </div>
+          </IonSegmentContent>
+        </IonSegmentView>
+      </IonContent>
+      {isEditing && (
+        <IonFooter>
+          <IonToolbar>
+            {selectedSegment == "Contact Details" ? (
+              <IonTitle onClick={() => handleSave()}>{t("userProfile.Save")}</IonTitle>
+            ) : (
+              <IonTitle
+                onClick={() =>
+                  selectedSegment == "Personal Details"
+                    ? setSelectedSegment("Career Details")
+                    : setSelectedSegment("Contact Details")
+                }
+              >
+                {t("Register User.Next")}
+              </IonTitle>
+            )}
+          </IonToolbar>
+        </IonFooter>
+      )}
 
-        <Toast
-          isOpen={toastOpen.status}
-          message={toastOpen.message}
-          textColor={toastOpen.textColor}
-          position={toastOpen.position}
-          onClose={() =>
-            setToastOpen({ status: false, message: "", textColor: "black" })
-          }
-        />
-      </IonPage>
-    );
-  };
-  
-  export default UserProfile;
+      <Toast
+        isOpen={toastOpen.status}
+        message={toastOpen.message}
+        textColor={toastOpen.textColor}
+        position={toastOpen.position}
+        onClose={() =>
+          setToastOpen({ status: false, message: "", textColor: "black" })
+        }
+      />
+    </IonPage>
+  );
+};
 
+export default UserProfile;

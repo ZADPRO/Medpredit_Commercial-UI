@@ -372,6 +372,10 @@ const LinkFamilyMember: React.FC = () => {
                     <div className="manage-family-container">
                       <table className="manage-family-table">
                         <tbody>
+                        <tr>
+                              <td>{t("Register User.Mobile Number")}</td>
+                              <td>{selectedUser.refUserMobileno}</td>
+                            </tr>
                           <tr>
                             <td>{t("userProfile.Gender")}:</td>
                             <td>{t("userProfile." + selectedUser.refGender)}</td>

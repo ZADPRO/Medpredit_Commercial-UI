@@ -433,27 +433,27 @@ const SubscriptionDetail: React.FC = () => {
             <table className="subscription-detail-table">
               <tbody>
                 <tr>
-                  <td>Plan Type</td>
+                  <td>{t("subPayment.Plan Type")}</td>
                   <td>{selectPackage?.refPkgName}</td>
                 </tr>
                 <tr>
-                  <td>Description</td>
+                  <td>{t("subPayment.Description")}</td>
                   <td>{selectPackage?.refPkgDescription}</td>
                 </tr>
                 <tr>
-                  <td>Plan Validity</td>
-                  <td>{selectPackage?.refPkgValidDays} days</td>
+                  <td>{t("subPayment.Plan Validity")}</td>
+                  <td>{selectPackage?.refPkgValidDays} {t("subPayment.days")}</td>
                 </tr>
                 <tr>
-                  <td>Valid Members</td>
+                  <td>{t("subPayment.Valid Members")}</td>
                   <td>{selectPackage?.refPkgValidMembers}</td>
                 </tr>
                 <tr>
-                  <td>Start Date</td>
+                  <td>{t("subPayment.Start Date")}</td>
                   <td>{new Date().toISOString().split("T")[0]}</td>
                 </tr>
                 <tr>
-                  <td>Expiry Date</td>
+                  <td>{t("subPayment.Expiry Date")}</td>
                   <td>
                     {selectPackage?.refPkgValidDays &&
                       addDaysToDate(
@@ -486,8 +486,8 @@ const SubscriptionDetail: React.FC = () => {
             </h1>
 
             <p style={{ fontStyle: "italic" }}>
-              {`₹${(upgradeInfo?.newPackage_amount ?? 0) -
-                (upgradeInfo?.minus_amount ?? 0)
+              {`₹${((upgradeInfo?.newPackage_amount ?? 0) -
+                (upgradeInfo?.minus_amount ?? 0)).toFixed(2)
                 } Base + ₹${(
                   (upgradeInfo?.newPackage_cgst ?? 0) +
                   (upgradeInfo?.newPackage_sgst ?? 0) -
@@ -499,27 +499,27 @@ const SubscriptionDetail: React.FC = () => {
             <table className="subscription-detail-table">
               <tbody>
                 <tr>
-                  <td>Plan Type</td>
+                  <td>{t("subPayment.Plan Type")}</td>
                   <td>{selectPackage?.refPkgName}</td>
                 </tr>
                 <tr>
-                  <td>Description</td>
+                  <td>{t("subPayment.Description")}</td>
                   <td>{selectPackage?.refPkgDescription}</td>
                 </tr>
                 <tr>
-                  <td>Plan Validity</td>
-                  <td>{selectPackage?.refPkgValidDays} days</td>
+                  <td>{t("subPayment.Plan Validity")}</td>
+                  <td>{selectPackage?.refPkgValidDays} {t("subPayment.days")}</td>
                 </tr>
                 <tr>
-                  <td>Valid Members</td>
+                  <td>{t("subPayment.Valid Members")}</td>
                   <td>{selectPackage?.refPkgValidMembers}</td>
                 </tr>
                 <tr>
-                  <td>Start Date</td>
+                  <td>{t("subPayment.Start Date")}</td>
                   <td>{new Date().toISOString().split("T")[0]}</td>
                 </tr>
                 <tr>
-                  <td>Expiry Date</td>
+                  <td>{t("subPayment.Expiry Date")}</td>
                   <td>
                     {selectPackage?.refPkgValidDays &&
                       addDaysToDate(
@@ -552,7 +552,7 @@ const SubscriptionDetail: React.FC = () => {
               style={{ borderRadius: "20px" }}
               className="medCustom-button02"
             >
-              Proceed Payment
+              {t("subPayment.Proceed") + " " + t("subPayment.Payment")}
             </button>
           )}
         </div>

@@ -59,7 +59,7 @@ const Chooselanguage_02: React.FC = () => {
   const history = useHistory();
 
   const [selectedCategory, setSelectedCategory] = useState(
-    localStorage.getItem("refLanCode") ? localStorage.getItem("refLanCode") : categories[0].refLKey
+    localStorage.getItem("refLanCode") ? localStorage.getItem("refLanCode") : categories[0]?.refLKey
   );
 
   const handleSelectCategory = (category: Category) => {
@@ -71,7 +71,7 @@ const Chooselanguage_02: React.FC = () => {
   };
 
   return (
-    <IonPage className="pagelanguage">
+    <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -80,7 +80,7 @@ const Chooselanguage_02: React.FC = () => {
           <IonTitle>{t("chooseLanguage.language")}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
         <div className="ionContentsLoginScreen">
           {/* Centered content */}
           <div className="language-container">

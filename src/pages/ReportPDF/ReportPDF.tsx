@@ -22,7 +22,6 @@ import { ScoreVerify } from "../../ScoreVerify/ScoreVerify2";
 import backgroundImage1 from "../../assets/PDFTemplate/background-1.png";
 import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 
-import { IonIcon, IonText, IonToast, isPlatform } from "@ionic/react";
 import { download } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { IonToast, isPlatform } from "@ionic/react";
@@ -3952,51 +3951,51 @@ const ReportPDF: React.FC<ReportPDFProps> = ({ reportDate, selectedUser }) => {
 
     /* -----------------Mobile----------------------*/
 
-    try {
-      // Generate PDF as Blob
-      const pdfBlob = await pdf(doc).toBlob();
+    // try {
+    //   // Generate PDF as Blob
+    //   const pdfBlob = await pdf(doc).toBlob();
 
-      // Convert Blob to Base64
-      const base64data = await blobToBase64(pdfBlob);
+    //   // Convert Blob to Base64
+    //   const base64data = await blobToBase64(pdfBlob);
 
-      // Save PDF file
-      await Filesystem.writeFile({
-        path: `${patientDetails?.refUserCustId}_${reportDate}.pdf`,
-        data: base64data,
-        directory: Directory.Documents
-      });
+    //   // Save PDF file
+    //   await Filesystem.writeFile({
+    //     path: `${patientDetails?.refUserCustId}_${reportDate}.pdf`,
+    //     data: base64data,
+    //     directory: Directory.Documents
+    //   });
 
-      console.log("PDF saved successfully!");
-    } catch (error) {
-      console.error("Error generating or saving PDF:", error);
-    }
+    //   console.log("PDF saved successfully!");
+    // } catch (error) {
+    //   console.error("Error generating or saving PDF:", error);
+    // }
 
 
     /*-------------------------Mobile Ends---------------------------*/
     
     
-    // try {
-    //   // Generate PDF as Blob
-    //   const pdfBlob = await pdf(doc).toBlob();
+    try {
+      // Generate PDF as Blob
+      const pdfBlob = await pdf(doc).toBlob();
 
-    //   // Create a URL for the Blob
-    //   const url = URL.createObjectURL(pdfBlob);
+      // Create a URL for the Blob
+      const url = URL.createObjectURL(pdfBlob);
 
-    //   // Create an anchor element and trigger download
-    //   const a = document.createElement("a");
-    //   a.href = url;
-    //   a.download = `${patientDetails?.refUserCustId}_${reportDate}.pdf`;
-    //   document.body.appendChild(a);
-    //   a.click();
+      // Create an anchor element and trigger download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${patientDetails?.refUserCustId}_${reportDate}.pdf`;
+      document.body.appendChild(a);
+      a.click();
 
-    //   // Cleanup
-    //   document.body.removeChild(a);
-    //   URL.revokeObjectURL(url);
+      // Cleanup
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
-    //   console.log("PDF downloaded successfully!");
-    // } catch (error) {
-    //   console.error("Error generating or downloading PDF:", error);
-    // }
+      console.log("PDF downloaded successfully!");
+    } catch (error) {
+      console.error("Error generating or downloading PDF:", error);
+    }
 
     setShowToast(true);
 

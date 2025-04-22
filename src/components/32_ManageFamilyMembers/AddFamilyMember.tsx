@@ -59,9 +59,9 @@ const AddFamily: React.FC = () => {
   }];
   const educationOpt: { label: string; value: string }[] = [
     { label: t("userProfile.Illiteracy"), value: "Illiteracy" },
-    { label: t("userProfile.PrimarySchool"), value: "PrimarySchool" },
-    { label: t("userProfile.MiddleSchool"), value: "MiddleSchool" },
-    { label: t("userProfile.HigherSecondary"), value: "HigherSecondary" },
+    { label: t("userProfile.Primary School"), value: "Primary School" },
+    { label: t("userProfile.Middle School"), value: "Middle School" },
+    { label: t("userProfile.Higher Secondary"), value: "Higher Secondary" },
     { label: t("userProfile.Undergraduate"), value: "Undergraduate" },
     { label: t("userProfile.Postgraduate"), value: "Postgraduate" },
   ];
@@ -764,7 +764,7 @@ const AddFamily: React.FC = () => {
               <div style={{display: "flex", alignItems: "flex-start"}}>
               <IonIcon icon={informationCircleOutline} color="primary"/>
               <label style={{fontSize: "0.8rem"}}>
-                Your education and occupation help us personalize your care.
+              {t("userProfile.CareerInfo")}
               </label>
               </div>
 
@@ -1078,7 +1078,7 @@ const AddFamily: React.FC = () => {
               <div style={{display: "flex", alignItems: "flex-start"}}>
               <IonIcon icon={informationCircleOutline} color="primary"/>
               <label style={{fontSize: "0.8rem"}}>
-              Your address helps us analyze regional health trends and improve our services.
+              {t("userProfile.ContactInfo")}
               </label>
               </div>
               {/* Education */}

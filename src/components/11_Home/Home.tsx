@@ -178,6 +178,7 @@ const Home: React.FC = () => {
 
   const knowAbout = [
     {
+      id: 1,
       disease: 'diabetes',
       bgImage: diabetesKnowAbout,
       title: t("home.What is Diabetes"),
@@ -186,6 +187,7 @@ const Home: React.FC = () => {
       bgColor: "#F2F6D0",
     },
     {
+      id: 2,
       disease: 'hypertension',
       bgImage: hypertensionKnowAbout,
       title: t("home.What is Hypertension"),
@@ -194,6 +196,7 @@ const Home: React.FC = () => {
       bgColor: "#EFDCAB",
     },
     {
+      id: 3,
       disease: 'coronary heart disease',
       bgImage: coronaryKnowAbout,
       title: t("home.What is Coronary artery disease"),
@@ -202,6 +205,7 @@ const Home: React.FC = () => {
       bgColor: "#D98324",
     },
     {
+      id: 4,
       disease: 'stroke',
       bgImage: stokeKnowAbout,
       title: t("home.What is Stroke"),
@@ -305,9 +309,7 @@ const Home: React.FC = () => {
     getHomeDetails();
   }, []);
 
-  useEffect(() => {
-    getHomeDetails();
-  }, [location.state]);
+   
 
   console.log(packages);
   return (
@@ -351,7 +353,7 @@ const Home: React.FC = () => {
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>
         <div className="medpredit_home">
           <div className="home-search-bar">
-            <input className="home-search-input" placeholder={t("home.Search Service")} />
+            <input className="home-search-input" placeholder={t("home.Search Service")} disabled/>
             <div
               style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
             >
@@ -605,8 +607,8 @@ const Home: React.FC = () => {
                               <p>
                                 {"1" +
                                   (plan.refPkgValidMembers > 1
-                                    ? ` + ${plan.refPkgValidMembers - 1}`
-                                    : "") +
+                                    ? ` + ${plan.refPkgValidMembers - 1} `
+                                    : ` `) + 
                                   t("home.Member")}
                               </p>
                             </div>
@@ -902,9 +904,9 @@ const Home: React.FC = () => {
                       alignItems: "center",
                       gap: "0.3rem",
                     }}
-                    onClick={() => history.push(`/knowAbout/${item.disease}`)}
+                    onClick={() => history.push(`/knowAbout/${item.id}`)}
                   >
-                    Read More <i className="pi pi-arrow-right" />
+                    {t("home.Read More")} <i className="pi pi-arrow-right" />
                   </div>
                 </div>
               ))}

@@ -568,6 +568,7 @@ const Report: React.FC = () => {
     if (location.state === undefined) return;
 
     if (location.state?.selectedUser) {
+      console.log(location.state?.selectedUser);
       setShowModal1(false);
       setShowModal2(false);
       setSelectedDate(new Date());
@@ -648,16 +649,10 @@ const Report: React.FC = () => {
   useEffect(() => {
     if (selectedUser) {
       getCategory();
-
-  useEffect(() => {
-     if (isFirstRender == true && location.state?.selectedUser) {
+      if (isFirstRender == true && location.state?.selectedUser) {
         setIsFirstRender(false);
         reportData();
       }
-    if (selectedUser) {
-      getCategory();
-
-     
     }
   }, [selectedUser]);
 
@@ -911,7 +906,7 @@ const Report: React.FC = () => {
           <div className="report-progress-status">
             {categories && (
               <>
-                <span>Assessment Score</span>
+                <span>{t("reports.Assessment Score")}</span>
                 <div
                   style={{
                     margin: "0 auto",

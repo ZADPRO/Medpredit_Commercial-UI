@@ -29,14 +29,14 @@ const Splashscreen: React.FC = () => {
           }
         }
         else {
-          history.replace(localStorage.getItem("refLanCode") ? "/login" : "/chooselanguage", {
+          history.replace("/chooselanguage", {
             direction: "forward",
             animation: "slide",
           });
         }
       }
       else {
-        history.replace(localStorage.getItem("refLanCode") ? "/login" : "/chooselanguage", {
+        history.replace("/chooselanguage", {
           direction: "forward",
           animation: "slide",
         });

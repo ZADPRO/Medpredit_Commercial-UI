@@ -5,6 +5,16 @@
     "subtitle": "जहाँ तकनीक मिलती है भरोसेमंद देखभाल से।",
     "select": "चुनें"
   },
+  "getStarted": {
+  "carousel01_heading": "एकीकृत हेल्थ प्लेटफ़ॉर्म",
+  "carousel01_text": "बीमारियाँ पहचानें, ट्रेंड्स देखें और अपनी हेल्थ स्टोरी सुरक्षित रखें - एक ही जगह।",
+
+  "carousel02_heading": "परिवार की संपूर्ण देखभाल",
+  "carousel02_text": "हर सदस्य का स्वास्थ्य आसानी से ट्रैक करें और निश्चिंत रहें।",
+
+  "carousel03_heading": "आपका स्वास्थ्य, एक साथ जुड़ा",
+  "carousel03_text": "पूरा इतिहास और भविष्य सुरक्षित रूप से एक क्लिक पर पाएं।"
+  },
   "login": {
     "welcome": "नमस्ते, स्वागत है!",
     "Mobile Number/ Email Address": "मोबाइल नंबर दर्ज करें",
@@ -115,6 +125,7 @@
     "What is Coronary artery diseaseans": "कोरोनरी आर्टरी रोग (CAD) तब होता है जब हृदय की आर्टरी प्लाक के जमा होने के कारण संकुचित हो जाती हैं, जो हृदयाघात के जोखिम को काफी बढ़ा देती हैं।",
     "What is Stroke": "स्ट्रोक क्या है?",
     "What is StrokeAns": "स्ट्रोक तब होता है जब मस्तिष्क की रक्त प्रवाह रुक जाती है या फट जाती है, जो अक्सर मस्तिष्क को नुकसान पहुँचाती है और महत्वपूर्ण कार्यों को प्रभावित करती है।",
+    "Read More": "और पढ़ें",
     "made with": "बनाया के साथ",
     "by": "द्वारा",
     "Made in India": "भारत में बना"
@@ -147,6 +158,7 @@
     "Career": "करियर",
     "Contact": "संपर्क",
     "Save": "सहेजें",
+    "Edit": "बदलें",
     "Gender": "लिंग",
     "Select": "चुनें",
     "Date of Birth": "जन्म तिथि",
@@ -159,6 +171,8 @@
     "Address": "एड्रेस",
     "District": "जिला",
     "Pincode": "पिनकोड",
+    "CareerInfo": "आपकी शिक्षा और पेशा हमें आपकी देखभाल को व्यक्तिगत बनाने में मदद करते हैं।",
+    "ContactInfo": "आपका पता हमें क्षेत्रीय स्वास्थ्य प्रवृत्तियों का विश्लेषण करने और हमारी सेवाओं में सुधार करने में मदद करता है।",
     "Occupational Category": "व्यवसायिक श्रेणी",
     "Definition with example": "परिभाषा उदाहरण के साथ",
     "Top level management of any organisation": "किसी संगठन की शीर्ष स्तर प्रबंधन",
@@ -210,9 +224,9 @@
     "Married": "शादीशुदा",
     "Unmarried": "अविवाहित",
     "Illiteracy": "निरक्षरता",
-    "PrimarySchool": "प्राथमिक विद्यालय",
-    "MiddleSchool": "माध्यमिक",
-    "HigherSecondary": "उच्च माध्यमिक",
+    "Primary School": "प्राथमिक विद्यालय",
+    "Middle School": "माध्यमिक",
+    "Higher Secondary": "उच्च माध्यमिक",
     "Undergraduate": "स्नातक (UG)",
     "Postgraduate": "परास्नातक (PG)",
     "Professional": "पेशेवर",
@@ -233,13 +247,25 @@
     "Subscribe": "सब्सक्राइब करें",
     "Expires On": "अवसान तारीख"
   },
+  "subPayment": {
+    "Proceed": "आगे बढ़ें",
+    "Payment": "भुगतान",
+    "Plan Type": "प्लान प्रकार",
+    "Description": "विवरण",
+    "Plan Validity": "प्लान वैधता",
+    "days": "दिन",
+    "Valid Members": "मान्य सदस्य",
+    "Start Date": "प्रारंभ तिथि",
+    "Expiry Date": "समाप्ति तिथि"
+  },
   "transactionhis": {
     "Transaction History": "लेन-देन का इतिहास",
     "Plan Validity": "योजना की वैधता",
     "Transaction Method": "लेन-देन का तरीका",
     "Start your subscription": "अपनी सदस्यता प्रारंभ करें",
     "to begin your journey": "अपनी यात्रा शुरू करने के लिए",
-    "No Transactions Yet": "अभी तक कोई लेनदेन नहीं हुआ है"
+    "No Transactions Yet": "अभी तक कोई लेनदेन नहीं हुआ है",
+    "Download Invoice": "चालान डाउनलोड करें"
   },
   "notificationSettings": {
     "Notification Settings": "सूचना सेटिंग्स",
@@ -475,7 +501,8 @@
     "Download Report": "रिपोर्ट डाउनलोड करें",
     "Taken": "लिया गया",
     "Valid Till": "मान्य तक",
-    "No Data Filled": "कोई डेटा नहीं भरा गया"
+    "No Data Filled": "कोई डेटा नहीं भरा गया",
+    "Assessment Score": "आकलन अंक"
   },
   "manage": {
     "Manage Family": "परिवार प्रबंधन करें",
