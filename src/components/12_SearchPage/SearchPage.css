@@ -1,0 +1,26 @@
+  .searchBar-page-header {
+      padding-top: 1rem
+  }
+
+  .searchbar-page-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+  }
+
+  .searchbar-page-searchbar {
+      --background: var(--med-dark-green);
+      --color: var(--med-light-green);
+      --placeholder-color: var(--med-light-green);
+      --icon-color: #fff;
+      --clear-button-color: var(--med-light-green);
+    --border-radius:1.5rem
+  }
+
+  .searchbar-page-no-results {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--ion-color-medium);
+  }
+  

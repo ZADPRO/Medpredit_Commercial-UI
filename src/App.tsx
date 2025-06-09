@@ -31,6 +31,7 @@ import "@ionic/react/css/display.css";
 /* Theme variables */
 import "./theme/variables.css";
 import MainRoutes from "./pages/MainRoutes/MainRoutes";
+import AppExitHandler from "./components/AppExitHandler/AppExitHandler";
 
 setupIonicReact({
   mode: "ios",
@@ -38,6 +39,7 @@ setupIonicReact({
 
 const App: React.FC = () => (
   <IonApp>
+    <AppExitHandler/>
     <IonReactRouter>
       <MainRoutes />
     </IonReactRouter>

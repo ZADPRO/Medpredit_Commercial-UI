@@ -4,12 +4,16 @@ import {
   IonContent,
   IonFooter,
   IonHeader,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
   IonModal,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
+import { chevronBack, close } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import "./SubscriptionDetail.css";
 import { useHistory, useLocation } from "react-router";
@@ -43,13 +47,13 @@ interface Package {
   updatedBy: string | null;
 }
 
-interface GstInfo{
+interface GstInfo {
   refGSTId: number;
   refCGST: string;
   refSGST: string;
 }
 
-interface UpgradeInfo{
+interface UpgradeInfo {
   isFirstPackage: boolean;
   minus_amount: number;
   minus_cgst: number;
@@ -69,7 +73,9 @@ const SubscriptionDetail: React.FC = () => {
 
   const { t } = useTranslation("global");
   const [showModal, setShowModal] = useState<boolean>(false);
-  
+
+  const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
+
   const history = useHistory();
   const [toastOpen, setToastOpen] = useState<{
     status: boolean;
@@ -96,10 +102,17 @@ const SubscriptionDetail: React.FC = () => {
   const [upgradeInfo, setUpgradeInfo] = useState<UpgradeInfo>();
   const [loading, setLoading] = useState<boolean>(true);
 
+  const paymentMethod = [
+    "UPI", "Credit Card", "Debit Card", "Net Banking"
+  ];
+
+  const[selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>();
+
   function addDaysToDate(convertDate: string, daysToAdd: number): string {
-    const date = new Date(convertDate);
+    const [day, month, year] = convertDate.split("/").map(Number);
+    const date = new Date(year, month - 1, day); // month is 0-indexed
     date.setDate(date.getDate() + daysToAdd);
-    return date.toISOString().split("T")[0]; // Returns in YYYY-MM-DD format
+    return date.toISOString().split("T")[0];
   };
 
   useEffect(() => {
@@ -136,18 +149,18 @@ const SubscriptionDetail: React.FC = () => {
             if (data.status) {
               setSelectedPackage(data.result[0]);
               setGstInfo(data.getGST[0]);
-                setUpgradeInfo({
-                  isFirstPackage: data.isFirstPackage ?? false,
-                  minus_amount: data.minus_amount ?? 0,
-                  minus_cgst: data.minus_cgst ?? 0,
-                  minus_sgst: data.minus_sgst ?? 0,
-                  newPackage_amount: data.newPackage_amount ?? 0,
-                  newPackage_cgst: data.newPackage_cgst ?? 0,
-                  newPackage_sgst: data.newPackage_sgst ?? 0,
-                  totalPackage: data.totalPackage ?? 0,
-                  totalPackageValue: data.totalPackageValue ?? 0,
-                  totalminus: data.totalminus ?? 0,
-                });
+              setUpgradeInfo({
+                isFirstPackage: data.isFirstPackage ?? false,
+                minus_amount: data.minus_amount ?? 0,
+                minus_cgst: data.minus_cgst ?? 0,
+                minus_sgst: data.minus_sgst ?? 0,
+                newPackage_amount: data.newPackage_amount ?? 0,
+                newPackage_cgst: data.newPackage_cgst ?? 0,
+                newPackage_sgst: data.newPackage_sgst ?? 0,
+                totalPackage: data.totalPackage ?? 0,
+                totalPackageValue: data.totalPackageValue ?? 0,
+                totalminus: data.totalminus ?? 0,
+              });
               setLoading(false);
             } else {
               console.error("Data consoled false - chekc this");
@@ -164,38 +177,44 @@ const SubscriptionDetail: React.FC = () => {
   console.log(selectPackage);
   // const floatPkgAmount = parseFloat(String(selectPackage?.refPkgAmount ?? "0"));
   
-  let selectedPaymentMethod = "upi";
     let gstAmount;
     let grandTotal;
     
+  useEffect(()=> {
+    console.log(selectedPaymentMethod)
+    selectedPaymentMethod && handlePayment()
+  }, [selectedPaymentMethod]);
+
   const handlePayment = () => {
+    console.log(selectedPaymentMethod);
     console.log("Payment---------------------------------->");
-   
+
     if (upgradeInfo?.isFirstPackage == true) {
-      gstAmount = (selectPackage?.refPkgAmount || 0) * (Number(gstInfo?.refCGST)+Number(gstInfo?.refSGST))/100;
+
+      gstAmount =
+        ((selectPackage?.refPkgAmount || 0) *
+          (Number(gstInfo?.refCGST) + Number(gstInfo?.refSGST))) /
+        100;
       grandTotal = ((selectPackage?.refPkgAmount || 0) + gstAmount) * 100;
     } else {
       grandTotal = (upgradeInfo?.totalPackageValue || 0) * 100;
     }
+
     
-    console.log(grandTotal);
-
-    if (selectedPaymentMethod === "credit_card") {
-      let finalAmount = selectPackage?.refPkgAmount || 0; // Convert string to number
-      if (selectedPaymentMethod === "credit_card") {
-        finalAmount += finalAmount * 0.03; // Add 3% extra charge
-      }
-
+    if (selectedPaymentMethod === "Credit Card") {
       const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: Math.round(finalAmount * 100), // Razorpay requires amount in paise
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount: Math.round(grandTotal), // Razorpay requires amount in paise
         currency: "INR",
         name: "Medpredit",
         description: "Payment for services",
         handler: function (response: any) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
+          console.log(response);
+          if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
+            sendPayment(response.razorpay_payment_id);
+          }
           // paymentToBackend(
           //   response.razorpay_payment_id,
           //   Math.round(finalAmount * 100)
@@ -203,41 +222,9 @@ const SubscriptionDetail: React.FC = () => {
           // stepperRef.current?.nextCallback();
         },
         prefill: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9876543210",
-        },
-        method: {
-          upi: true,
-          card: false,
-          netbanking: false,
-          wallet: false,
-        },
-        theme: {
-          color: "#f95005",
-        },
-      };
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-    } else if (selectedPaymentMethod === "debit_card") {
-      const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: grandTotal * 100,
-        currency: "INR",
-        name: "Ublisyoga",
-        description: "Payment for services",
-        handler: function (response: any) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
-          // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
-
-          // stepperRef.current?.nextCallback();
-        },
-        prefill: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9876543210",
+          name: `${userDeatilsObj.firstName + " " + userDeatilsObj.lastName}`,
+          // email: "johndoe@example.com",
+          contact: `${userDeatilsObj.phNumber}`,
         },
         method: {
           upi: false,
@@ -246,15 +233,50 @@ const SubscriptionDetail: React.FC = () => {
           wallet: false,
         },
         theme: {
-          color: "#f95005",
+          color: "rgba(12, 75, 65, 1)",
+        },
+      }; 
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    } else if (selectedPaymentMethod === "Debit Card") {
+      const options = {
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount: Math.round(grandTotal),
+        currency: "INR",
+        name: "Medpredit",
+        description: "Payment for Package",
+        handler: function (response: any) {
+          console.log(response);
+          if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
+            sendPayment(response.razorpay_payment_id);
+          }
+          // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
+
+          // stepperRef.current?.nextCallback();
+        },
+        prefill: {
+          name: `${userDeatilsObj.firstName + " " + userDeatilsObj.lastName}`,
+          // email: "johndoe@example.com",
+          contact: `${userDeatilsObj.phNumber}`,
+        },
+        method: {
+          upi: false,
+          card: true,
+          netbanking: false,
+          wallet: false,
+        },
+        theme: {
+          color: "rgba(12, 75, 65, 1)",
         },
       };
       const razorpay = new window.Razorpay(options);
       razorpay.open();
-    } else if (selectedPaymentMethod === "upi") {
+    } else if (selectedPaymentMethod === "UPI") {
       const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: parseInt(grandTotal.toString()),
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount: Math.round(grandTotal),
         currency: "INR",
         name: "Medpredit",
         description: "Payment for Package",
@@ -286,25 +308,28 @@ const SubscriptionDetail: React.FC = () => {
       };
       const razorpay = new window.Razorpay(options);
       razorpay.open();
-    } else if (selectedPaymentMethod === "net_banking") {
+    } else if (selectedPaymentMethod === "Net Banking") {
       const options = {
-        key: "rzp_test_JqdIktzG8fnGWd",
-        amount: grandTotal * 100,
+        key: `${import.meta.env.VITE_RZR_API_KEY}`,
+        amount:  Math.round(grandTotal),
         currency: "INR",
-        name: "Ublisyoga",
-        description: "Payment for services",
+        name: "Medpredit",
+        description: "Payment for Package",
         handler: function (response: any) {
-          alert(
-            `Payment successful! Payment ID: ${response.razorpay_payment_id}`
-          );
+          console.log(response);
+          if (response.razorpay_payment_id) {
+            setLoading(true);
+            // setShowModal(true);
+            sendPayment(response.razorpay_payment_id);
+          }
           // paymentToBackend(response.razorpay_payment_id, grandTotal * 100);
 
           // stepperRef.current?.nextCallback();
         },
         prefill: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          contact: "9876543210",
+          name: `${userDeatilsObj.firstName + " " + userDeatilsObj.lastName}`,
+          // email: "johndoe@example.com",
+          contact: `${userDeatilsObj.phNumber}`,
         },
         method: {
           upi: false,
@@ -313,7 +338,7 @@ const SubscriptionDetail: React.FC = () => {
           wallet: false,
         },
         theme: {
-          color: "#f95005",
+          color: "rgba(12, 75, 65, 1)",
         },
       };
       const razorpay = new window.Razorpay(options);
@@ -396,39 +421,39 @@ const SubscriptionDetail: React.FC = () => {
               {"₹" +
                 (selectPackage?.refPkgAmount != undefined
                   ? selectPackage.refPkgAmount +
-                    " Base" +
-                    " + " +
-                    "₹" +
-                    selectPackage?.refPkgAmount *
-                      (Number(gstInfo?.refCGST) / 100 +
-                        Number(gstInfo?.refSGST) / 100) +
-                    "GST"
+                  " Base" +
+                  " + " +
+                  "₹" +
+                  selectPackage?.refPkgAmount *
+                  (Number(gstInfo?.refCGST) / 100 +
+                    Number(gstInfo?.refSGST) / 100) +
+                  "GST"
                   : "0")}
             </p>
             <table className="subscription-detail-table">
               <tbody>
                 <tr>
-                  <td>Plan Type</td>
+                  <td>{t("subPayment.Plan Type")}</td>
                   <td>{selectPackage?.refPkgName}</td>
                 </tr>
                 <tr>
-                  <td>Description</td>
+                  <td>{t("subPayment.Description")}</td>
                   <td>{selectPackage?.refPkgDescription}</td>
                 </tr>
                 <tr>
-                  <td>Plan Validity</td>
-                  <td>{selectPackage?.refPkgValidDays} days</td>
+                  <td>{t("subPayment.Plan Validity")}</td>
+                  <td>{selectPackage?.refPkgValidDays} {t("subPayment.days")}</td>
                 </tr>
                 <tr>
-                  <td>Valid Members</td>
+                  <td>{t("subPayment.Valid Members")}</td>
                   <td>{selectPackage?.refPkgValidMembers}</td>
                 </tr>
                 <tr>
-                  <td>Start Date</td>
+                  <td>{t("subPayment.Start Date")}</td>
                   <td>{new Date().toISOString().split("T")[0]}</td>
                 </tr>
                 <tr>
-                  <td>Expiry Date</td>
+                  <td>{t("subPayment.Expiry Date")}</td>
                   <td>
                     {selectPackage?.refPkgValidDays &&
                       addDaysToDate(
@@ -446,10 +471,12 @@ const SubscriptionDetail: React.FC = () => {
               className="subscription-detail-price"
               style={{ display: "flex", flexDirection: "row", gap: "1.5rem" }}
             >
-              <s>{"₹ " +
-                (upgradeInfo?.totalPackage != undefined
-                  ? upgradeInfo?.totalPackage
-                  : "0")}</s>
+              <s>
+                {"₹ " +
+                  (upgradeInfo?.totalPackage != undefined
+                    ? upgradeInfo?.totalPackage
+                    : "0")}
+              </s>
               <span>
                 {"₹ " +
                   (upgradeInfo?.totalPackageValue != undefined
@@ -459,41 +486,40 @@ const SubscriptionDetail: React.FC = () => {
             </h1>
 
             <p style={{ fontStyle: "italic" }}>
-              {`₹${
-                (upgradeInfo?.newPackage_amount ?? 0) -
-                (upgradeInfo?.minus_amount ?? 0)
-              } Base + ₹${(
-                (upgradeInfo?.newPackage_cgst ?? 0) +
-                (upgradeInfo?.newPackage_sgst ?? 0) -
-                (upgradeInfo?.minus_cgst ?? 0) -
-                (upgradeInfo?.minus_sgst ?? 0)
-              ).toFixed(2)} GST`}
+              {`₹${((upgradeInfo?.newPackage_amount ?? 0) -
+                (upgradeInfo?.minus_amount ?? 0)).toFixed(2)
+                } Base + ₹${(
+                  (upgradeInfo?.newPackage_cgst ?? 0) +
+                  (upgradeInfo?.newPackage_sgst ?? 0) -
+                  (upgradeInfo?.minus_cgst ?? 0) -
+                  (upgradeInfo?.minus_sgst ?? 0)
+                ).toFixed(2)} GST`}
             </p>
 
             <table className="subscription-detail-table">
               <tbody>
                 <tr>
-                  <td>Plan Type</td>
+                  <td>{t("subPayment.Plan Type")}</td>
                   <td>{selectPackage?.refPkgName}</td>
                 </tr>
                 <tr>
-                  <td>Description</td>
+                  <td>{t("subPayment.Description")}</td>
                   <td>{selectPackage?.refPkgDescription}</td>
                 </tr>
                 <tr>
-                  <td>Plan Validity</td>
-                  <td>{selectPackage?.refPkgValidDays} days</td>
+                  <td>{t("subPayment.Plan Validity")}</td>
+                  <td>{selectPackage?.refPkgValidDays} {t("subPayment.days")}</td>
                 </tr>
                 <tr>
-                  <td>Valid Members</td>
+                  <td>{t("subPayment.Valid Members")}</td>
                   <td>{selectPackage?.refPkgValidMembers}</td>
                 </tr>
                 <tr>
-                  <td>Start Date</td>
+                  <td>{t("subPayment.Start Date")}</td>
                   <td>{new Date().toISOString().split("T")[0]}</td>
                 </tr>
                 <tr>
-                  <td>Expiry Date</td>
+                  <td>{t("subPayment.Expiry Date")}</td>
                   <td>
                     {selectPackage?.refPkgValidDays &&
                       addDaysToDate(
@@ -516,47 +542,94 @@ const SubscriptionDetail: React.FC = () => {
         >
           {toastOpen.status == false && (
             <button
+              // onClick={() => {
+              //   selectPackage?.refPkgAmount && handlePayment();
+              // }}
               onClick={() => {
-                selectPackage?.refPkgAmount && handlePayment();
+                setSelectedPaymentMethod("");
+                setShowPaymentModal(true);
               }}
               style={{ borderRadius: "20px" }}
               className="medCustom-button02"
             >
-              Proceed Payment
+              {t("subPayment.Proceed") + " " + t("subPayment.Payment")}
             </button>
           )}
         </div>
       </IonFooter>
 
       <IonModal
-          isOpen={showModal}
-          onDidDismiss={() => setShowModal(false)}
-          className="half-screen-modal"
-        >
-          <div className="modalContent">
-            <div className="lottie-container">
-              <Lottie
-                animationData={tickAnimation}
-                loop={false}
-                style={{ width: 150, height: 150 }}
-                onComplete={() => setTimeout(() => {
-                  history.replace("/subscriptionPlans", {refreshPage: true});
+        isOpen={showModal}
+        onDidDismiss={() => setShowModal(false)}
+        className="half-screen-modal"
+      >
+        <div className="modalContent">
+          <div className="lottie-container">
+            <Lottie
+              animationData={tickAnimation}
+              loop={false}
+              style={{ width: 150, height: 150 }}
+              onComplete={() =>
+                setTimeout(() => {
+                  history.replace("/subscriptionPlans", { refreshPage: true });
                   setShowModal(false);
-                }, 1000)}
-              />
-            </div>
-            <p
-              style={{
-                fontWeight: "700",
-                fontSize: "x-large",
-                marginTop: "0%",
-              }}
-            >
-              {" "}
-              {"Payment Successful"}
-            </p>
+                }, 1000)
+              }
+            />
           </div>
-        </IonModal>
+          <p
+            style={{
+              fontWeight: "700",
+              fontSize: "x-large",
+              marginTop: "0%",
+            }}
+          >
+            {" "}
+            {"Payment Successful"}
+          </p>
+        </div>
+      </IonModal>
+
+      <IonModal
+        isOpen={showPaymentModal}
+        onDidDismiss={() => setShowModal(false)}
+        id="ion-custom-modal-02"
+      >
+        <div className="report-modalContent">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <h4>Payment Method</h4>
+            <IonIcon
+              onClick={() => {
+                setShowPaymentModal(false);
+              }}
+              style={{ "font-size": "1.5rem" }}
+              icon={close}
+            />
+          </div>
+
+          <IonList className="">
+            {paymentMethod.map((method) => (
+              <IonItem
+                button
+                onClick={() => {
+                  setSelectedPaymentMethod(method);
+                  setShowPaymentModal(false);
+                }}
+                key={method}
+              >
+                <IonLabel>{method}</IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
+        </div>
+      </IonModal>
 
       <Toast
         isOpen={toastOpen.status}
@@ -565,7 +638,7 @@ const SubscriptionDetail: React.FC = () => {
         duration={1000}
         onClose={() => {
           setToastOpen({ status: false, message: "", textColor: "black" }),
-            history.replace("/transactionHistory", {refreshPage: true});
+            history.replace("/transactionHistory", { refreshPage: true });
         }}
       />
 

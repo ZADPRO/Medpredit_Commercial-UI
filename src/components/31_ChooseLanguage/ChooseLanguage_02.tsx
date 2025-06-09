@@ -1,28 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-
-import logo from "../../assets/images/Splashscreen/logo.png";
+import logo from "../../assets/images/Icons/Medpredit Icon.png";
 
 import tamil from "../../assets/images/Chooselanguage/Tamil1.png";
 import english from "../../assets/images/Chooselanguage/English.png";
 import hindi from "../../assets/images/Chooselanguage/Hindi.png";
 
 import { useTranslation } from "react-i18next";
-import { IonContent, IonPage } from "@ionic/react";
+import { IonBackButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import { useHistory } from "react-router";
+import axios from "axios";
+import decrypt from "../../helper";
+import { chevronBack } from "ionicons/icons";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 interface Category {
-  name: string;
-  key: string;
-  langCode: string;
+  refLId: any;
+  refLKey: string;
+  refLName: string;
+  refLimage: string;
+  refLlandcode: string;
 }
 
-const ChooseLanguage_02: React.FC = () => {
-  const categories = [
-    { name: "English", key: "E", langCode: "english", image: english },
-    { name: "தமிழ்", key: "T", langCode: "tamil", image: tamil },
-    { name: "हिंदी", key: "H", langCode: "hindi", image: hindi },
-  ];
+const Chooselanguage_02: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    setLoading(true);
+    axios.get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getLanguage`).then((response) => {
+      const data = decrypt(
+        response.data[1],
+        response.data[0],
+        import.meta.env.VITE_ENCRYPTION_KEY
+      );
+
+      if (data.status) {
+        setLoading(false);
+        setCategories(data.getLanguage);
+      }
+
+
+      console.log(data)
+    })
+  }, [])
+
+  // const categories = [
+  //   { name: "English", key: "1", langCode: "english", image: english },
+  //   { name: "हिंदी", key: "2", langCode: "hindi", image: hindi },
+  // ];
+
+
+  const [categories, setCategories] = useState<Category[]>([])
 
   const { t, i18n } = useTranslation("global");
 
@@ -33,44 +61,58 @@ const ChooseLanguage_02: React.FC = () => {
 
   const history = useHistory();
 
-  const [selectedCategory, setSelectedCategory] = useState<Category>(
-    categories[0]
+  const [selectedCategory, setSelectedCategory] = useState(
+    localStorage.getItem("refLanCode") ? localStorage.getItem("refLanCode") : categories[0]?.refLKey
   );
 
   const handleSelectCategory = (category: Category) => {
-    setSelectedCategory(category);
-    handleChangeLang(category.langCode);
+    setSelectedCategory(category.refLKey);
+    handleChangeLang(category.refLlandcode);
+    localStorage.setItem("refLanCode", category.refLKey);
+    localStorage.setItem("lang", category.refLlandcode)
+    location.replace("/")
   };
 
   return (
-    <IonPage className="pagelanguage">
-      <IonContent fullscreen>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
+          </IonButtons>
+          <IonTitle>{t("chooseLanguage.language")}</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
         <div className="ionContentsLoginScreen">
           {/* Centered content */}
           <div className="language-container">
-            <p className="text">{t("chooseLanguage.language")}</p>
+            {/* <div className="pageLanguage-logo">
+              <img src={logo} />
+              <h2>{t("chooseLanguage.subtitle")}</h2>
+            </div> */}
+            {/* <p className="text">{t("chooseLanguage.language")}</p> */}
             <div className="card">
               {categories.map((category) => (
                 <div
-                  key={category.key}
-                  className={`language-option ${
-                    selectedCategory.key === category.key ? "selected" : ""
-                  }`}
+                  key={category.refLKey}
+                  className={`language-option ${selectedCategory === category.refLKey ? "selected" : ""
+                    }`}
                   onClick={() => handleSelectCategory(category)}
                 >
                   <div className="radio-group">
                     <input
                       type="radio"
-                      id={category.key}
+                      id={category.refLKey}
                       name="category"
-                      value={category.key}
-                      checked={selectedCategory.key === category.key}
+                      value={category.refLKey}
+                      checked={selectedCategory === category.refLKey}
                       onChange={() => handleSelectCategory(category)}
                     />
-                    <label htmlFor={category.key}>{category.name}</label>
+                    <label htmlFor={category.refLKey}>{category.refLName}</label>
                   </div>
                   <div className="imageForLang">
-                    <img src={category.image} alt={category.name} />
+                    <img src={category.refLId === "1" ? english : category.refLId === "2" ? hindi : english} alt={category.refLName} />
                   </div>
                 </div>
               ))}
@@ -78,13 +120,24 @@ const ChooseLanguage_02: React.FC = () => {
           </div>
 
           {/* Button at the bottom */}
-          <div className="button-container">
-            <button onClick={() => history.goBack()} className="select-button">{t("chooseLanguage.select")}</button>
-          </div>
+          {/* <div className="button-container">
+            <button
+              onClick={() =>
+                history.push("/login", {
+                  direction: "forward",
+                  animation: "slide",
+                })
+              }
+              className="select-button"
+            >
+              {t("chooseLanguage.select")}
+            </button>
+          </div> */}
         </div>
       </IonContent>
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };
 
-export default ChooseLanguage_02;
+export default Chooselanguage_02;

@@ -125,7 +125,12 @@ ion-content {
   box-shadow: none;
 }
 
+.p-dropdown .p-dropdown-label.p-placeholder{
+  color: #6b7280;
+}
+
 .p-inputtext{
+  color: black;
   border: none;
 }
 

@@ -22,20 +22,21 @@ import { Divider } from "primereact/divider";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Avatar } from "primereact/avatar";
 import { Badge } from "primereact/badge";
-import { useHistory, useLocation } from "react-router"; 
+import { useHistory, useLocation } from "react-router";
 import crownimg from "../../assets/images/Icons/Crown.svg";
 import familyImage from "../../assets/images/Manage Family/family.png";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { ToggleButton, ToggleButtonChangeEvent } from "primereact/togglebutton";
 import { InputSwitch, InputSwitchChangeEvent } from "primereact/inputswitch";
 import Toast from "../CustomIonToast/CustomIonToast";
+import { useTranslation } from "react-i18next";
 
 interface UserInfo {
   activeStatus: string;
   headStatus: string;
   refUserId: number;
   refUserCustId: string;
-  refUserMobileno: number;
+  refUserMobileno: string;
   refUserFname: string;
   refUserLname?: string;
   refGender: string;
@@ -51,7 +52,7 @@ interface UserInfo {
   createdAt: string;
 }
 
-interface SubscriptionInfo{
+interface SubscriptionInfo {
   packageStatus: boolean;
   packageData: any[];
 }
@@ -66,7 +67,7 @@ const ManageFamily: React.FC = () => {
   const [toastOpen, setToastOpen] = useState({ status: false, message: "", textColor: "black" });
 
   const [presentAlert] = useIonAlert();
-  
+
   const searchPatient = () => {
     const tokenString = localStorage.getItem("userDetails");
 
@@ -110,7 +111,7 @@ const ManageFamily: React.FC = () => {
               setPrimaryUser(data.familyMembers.find((item: any) => item.headStatus == "true"));
               setUserData(data.familyMembers.filter((item: any) => item.headStatus != "true"));
               setSubscriptionData({
-                packageStatus: data.checkSubscriptions.length > 0 ? true : false, 
+                packageStatus: data.checkSubscriptions.length > 0 ? true : false,
                 packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
               });
               setLoading(false);
@@ -167,19 +168,19 @@ const ManageFamily: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
-              setToastOpen({ status: true, textColor: "green", message: `Unlinked ${userData[userIndex].refUserFname + " " + userData[userIndex].refUserLname} Successfully`});
+              setToastOpen({ status: true, textColor: "green", message: `Unlinked ${userData[userIndex].refUserFname + " " + userData[userIndex].refUserLname} Successfully` });
               setTimeout(() => {
                 window.location.reload();
               }, 1500);
             } else {
               setLoading(false);
-              setToastOpen({ status: true, textColor: "red", message: `${data.message}`});
+              setToastOpen({ status: true, textColor: "red", message: `${data.message}` });
               console.error("Data consoled false - chekc this");
             }
           })
       } catch (error) {
         setLoading(false);
-        setToastOpen({ status: true, textColor: "red", message: "Unexpected Error!!"});
+        setToastOpen({ status: true, textColor: "red", message: "Unexpected Error!!" });
         console.error("Error parsing token:", error);
       }
     }
@@ -191,12 +192,14 @@ const ManageFamily: React.FC = () => {
 
   useEffect(() => {
     if (location.state?.refreshFamily) {
-        searchPatient();
+      searchPatient();
     }
-}, [location.state]);
+  }, [location.state]);
 
-console.log("totalusers: ", userData.length + (primaryUser != undefined ? 1 : 0));
-console.log(subscriptionData);
+  const { t } = useTranslation("global")
+
+  console.log("totalusers: ", userData.length + (primaryUser != undefined ? 1 : 0));
+  console.log(subscriptionData);
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
@@ -204,7 +207,7 @@ console.log(subscriptionData);
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Manage Family</IonTitle>
+          <IonTitle>{t("manage.Manage Family")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -242,7 +245,8 @@ console.log(subscriptionData);
                               : "normal",
                         }}
                       >
-                        {primaryUser.headStatus === "true" && "Primary"}
+                        {primaryUser.headStatus === "true" &&
+                          t("login.Primary")}
                       </span>
                     </div>
 
@@ -265,7 +269,7 @@ console.log(subscriptionData);
               borderRadius: "10px",
             }}
           >
-            Family Member Count:{" "}
+            {t("manage.Family Member Count")}:{" "}
             <span style={{ fontWeight: "bold" }}>{userData.length}</span>
           </div>
 
@@ -302,8 +306,8 @@ console.log(subscriptionData);
                             }}
                           >
                             {item.headStatus === "true"
-                              ? "Primary"
-                              : `Member ${index + 1}`}
+                              ? t("login.Primary")
+                              : t("home.Member") + ` ${index + 1}`}
                           </span>
                         </div>
 
@@ -333,7 +337,7 @@ console.log(subscriptionData);
                                   : "red",
                             }}
                           >
-                            {item.activeStatus.toUpperCase()}
+                            {t("link." + item.activeStatus.toUpperCase())}
                           </span>
                           {item.activeStatus.toLowerCase() === "active" &&
                           item.createdAt
@@ -384,7 +388,7 @@ console.log(subscriptionData);
                             })
                           }
                         >
-                          Unlink
+                          {t("manage.Unlink")}
                         </button>
                       </div>
 
@@ -392,12 +396,18 @@ console.log(subscriptionData);
                         <table className="manage-family-table">
                           <tbody>
                             <tr>
-                              <td>Gender:</td>
-                              <td>{item.refGender}</td>
+                              <td>{t("Register User.Mobile Number")}</td>
+                              <td>{item.refUserMobileno}</td>
                             </tr>
                             <tr>
-                              <td>Maritial Status:</td>
-                              <td>{item.refMaritalStatus}</td>
+                              <td>{t("userProfile.Gender")}:</td>
+                              <td>{t("userProfile." + item.refGender)}</td>
+                            </tr>
+                            <tr>
+                              <td>{t("userProfile.Marital Status")}:</td>
+                              <td>
+                                {t("userProfile." + item.refMaritalStatus)}
+                              </td>
                             </tr>
                             <tr>
                               <td>DOB:</td>
@@ -410,13 +420,25 @@ console.log(subscriptionData);
                               </td>
                             </tr>
                             <tr>
-                              <td>Education:</td>
-                              <td>{item.refEducation}</td>
+                              <td>{t("userProfile.Education")}:</td>
+                              <td>
+                                {item.refEducation
+                                  ? t("userProfile." + item.refEducation)
+                                  : "-"}
+                              </td>
                             </tr>
                             <tr>
-                              <td>Sector & Occupation Lvl</td>
+                              <td>{t("link.Sector & Occupation Lvl")}</td>
                               <td>
-                                {item.refSector + " & " + item.refOccupationLvl}
+                                {item.refSector && item.refOccupationLvl
+                                  ? `${item.refSector} & ${t(
+                                      "userProfile." + item.refOccupationLvl
+                                    )}`
+                                  : item.refSector
+                                  ? item.refSector
+                                  : item.refOccupationLvl
+                                  ? t("userProfile." + item.refOccupationLvl)
+                                  : "-"}
                               </td>
                             </tr>
                             {/* <tr>
@@ -460,7 +482,7 @@ console.log(subscriptionData);
                       color: "white",
                     }}
                   >
-                    Add
+                    {t("manage.Add")}
                   </span>
                 </IonFabButton>
                 <IonFabButton
@@ -478,7 +500,7 @@ console.log(subscriptionData);
                       color: "white",
                     }}
                   >
-                    Link
+                    {t("manage.Link")}
                   </span>
                 </IonFabButton>
               </IonFabList>
@@ -488,16 +510,17 @@ console.log(subscriptionData);
               onClick={() =>
                 presentAlert({
                   cssClass: "custom-alert",
-                  message:
-                    "Please Upgrade your membership to add family member",
+                  message: t(
+                    "manage.Please Upgrade your membership to add family member"
+                  ),
                   buttons: [
                     {
-                      text: "Cancel",
+                      text: t("manage.Cancel"),
                       role: "cancel", // Close alert
                       cssClass: "close-button",
                     },
                     {
-                      text: "Upgrade Now",
+                      text: t("manage.Upgrade Now"),
                       handler: () => history.replace("/subscriptionPlans"),
                     },
                   ],
@@ -519,7 +542,6 @@ console.log(subscriptionData);
           setToastOpen({ status: false, message: "", textColor: "black" })
         }
       />
-
     </IonPage>
   );
 };

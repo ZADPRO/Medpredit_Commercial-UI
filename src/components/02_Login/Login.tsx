@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import login from "../../assets/images/Login/login (1).png";
-import login1 from "../../assets/images/Login/login1.png";
+import login1 from "../../assets/images/Login/login img.png";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { close, logoApple, logoFacebook, logoGoogle } from "ionicons/icons";
 import "./Login.css";
-
 import {
   IonButton,
   IonContent,
@@ -15,22 +14,20 @@ import {
   IonText,
   IonList,
 } from "@ionic/react";
-import { Divider } from "primereact/divider";
 import { useHistory } from "react-router-dom";
-import { Checkbox } from "primereact/checkbox";
 import { useTranslation } from "react-i18next";
 import Lottie from "lottie-react";
 import tickAnimation from "../../assets/Animations/tickanimation.json";
-import popupbg from "../../assets/images/Backgroundimg/popupbg.png";
 import axios from "axios";
 import decrypt from "../../helper";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 const Login: React.FC = () => {
-  const [value, setValue] = useState("");
-  const [checked, setChecked] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [userSelectionModal, setUserSelectionModal] = useState<boolean>(false);
   const [userSelectionList, setUserSelectionList] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const { t } = useTranslation("global");
 
   const history = useHistory();
@@ -57,6 +54,7 @@ const Login: React.FC = () => {
   };
 
   const handleLogIn = async () => {
+    setLoading(true);
     setErrorMessage("");
     try {
       const response = await axios.post(
@@ -71,9 +69,10 @@ const Login: React.FC = () => {
       );
       console.log(data);
       if (data.status) {
+        setLoading(false);
         setErrorMessage("");
         if(data.users.length > 1) {
-          setUserSelectionList(data.users);
+          setUserSelectionList(data.users.sort((a: any, b: any) => a.refUserId - b.refUserId));
           setUserSelectionModal(true);
         }
         else {
@@ -85,10 +84,12 @@ const Login: React.FC = () => {
             lastName: data.users[0].refUserLname,
             phNumber: data.users[0].refUserMobileno,
           };
-  
+
           localStorage.setItem("userDetails", JSON.stringify(userDetails));
-  
+
           localStorage.setItem("detailsFlag", data.isDetails);
+
+          localStorage.setItem("firstLogin", data.isDetails);
 
           localStorage.setItem("headStatus", data.users[0].headStatus)
           setShowModal(true);
@@ -97,25 +98,28 @@ const Login: React.FC = () => {
             password: "",
           });
         }
-        
+
 
       } else {
-        setErrorMessage("Invalid username or password");
+        setLoading(false);
+        setErrorMessage(t("login.Invalid username or password"));
 
         // setToastMessage("*Invalid username or password");
         // setShowToast(true);
       }
     } catch (error) {
       console.error("Error during Sign In:", error);
-      setErrorMessage("An error occurred. Please try again.");
+      setLoading(false);
+      setErrorMessage(t("login.An error occurred. Please try again"));
       // setToastMessage("An error occurred. Please try again.");
       // setShowToast(true);
       // setLoadingStatus(false);
     }
   };
 
-  const handleSubLogin = async(selectedUser: any) => {
+  const handleSubLogin = async (selectedUser: any) => {
     setUserSelectionModal(false);
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_COMMERCIAL_URL}/handleMultipleUserSignin`,
@@ -142,7 +146,7 @@ const Login: React.FC = () => {
           lastName: selectedUser.refUserLname,
           phNumber: selectedUser.refUserMobileno,
         };
-        
+        setLoading(false);
         setErrorMessage("");
 
         localStorage.setItem("userDetails", JSON.stringify(userDetails));
@@ -157,16 +161,18 @@ const Login: React.FC = () => {
         });
       } else {
         console.log("Error during Sign In:");
-        setErrorMessage("An error occurred. Please try again.");
+        setLoading(false);
+        setErrorMessage(t("login.An error occurred. Please try again"));
       }
     } catch (error) {
       console.error("Error during Sign In:", error);
-      setErrorMessage("An error occurred. Please try again.");
+      setLoading(false);
+      setErrorMessage(t("login.An error occurred. Please try again"));
+    };
   };
-};
 
   const routeCondition = () => {
-    const flag = localStorage.getItem("detailsFlag");
+    const flag = localStorage.getItem("firstLogin");
 
     if (flag == "true") {
       setTimeout(() => {
@@ -281,57 +287,57 @@ const Login: React.FC = () => {
           id="ion-custom-modal-02"
         >
           <div className="report-modalContent">
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <h4>Select User</h4>
-                      <IonIcon
-                        onClick={() => {
-                          setUserSelectionModal(false);
-                        }}
-                        style={{ "font-size": "1.5rem" }}
-                        icon={close}
-                      />
-                    </div>
-                    <IonList className="reports-user-list">
-                      {userSelectionList?.map((item: any, index: number) => (
-                        <div
-                          key={index}
-                          className="reports-user-data"
-                          onClick={() => handleSubLogin(item)}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <h4>{t("login.Select User")}</h4>
+              <IonIcon
+                onClick={() => {
+                  setUserSelectionModal(false);
+                }}
+                style={{ "font-size": "1.5rem" }}
+                icon={close}
+              />
+            </div>
+            <IonList className="reports-user-list">
+              {userSelectionList?.map((item: any, index: number) => (
+                <div
+                  key={index}
+                  className="reports-user-data"
+                  onClick={() => handleSubLogin(item)}
+                >
+                  <div className="reports-user-profile">
+                    <i className="pi pi-user"></i>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <span>{item.refUserFname + " " + item.refUserLname}</span>
+                      {item.headStatus == "true" && (
+                        <span
+                          style={{
+                            fontSize: "0.7rem",
+                            fontWeight: "bold",
+                            color: "var(--med-dark-green)",
+                          }}
                         >
-                          <div className="reports-user-profile">
-                            <i className="pi pi-user"></i>
-                            <div style={{ display: "flex", flexDirection: "column" }}>
-                              <span>{item.refUserFname + " " + item.refUserLname}</span>
-                              {item.headStatus == "true" && (
-                                <span
-                                  style={{
-                                    fontSize: "0.7rem",
-                                    fontWeight: "bold",
-                                    color: "var(--med-dark-green)",
-                                  }}
-                                >
-                                  Primary
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          {/* <RadioButton
+                          {t("login.Primary")}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {/* <RadioButton
                             value={item.refUserCustId}
                             checked={tempselectedUser === item.refUserId}
                             onChange={() => settempSelectedUser(item.refUserId)}
                           /> */}
-                        </div>
-                      ))}
-                    </IonList>
-          
-                    {/* <div
+                </div>
+              ))}
+            </IonList>
+
+            {/* <div
                       onClick={() => {
                         if (tempselectedUser) {
                           setCanDismissModal1(true);
@@ -353,7 +359,7 @@ const Login: React.FC = () => {
                     >
                       <button className="medCustom-button01">Next</button>
                     </div> */}
-                  </div>
+          </div>
         </IonModal>
 
         <IonModal
@@ -383,6 +389,7 @@ const Login: React.FC = () => {
           </div>
         </IonModal>
       </IonContent>
+       <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

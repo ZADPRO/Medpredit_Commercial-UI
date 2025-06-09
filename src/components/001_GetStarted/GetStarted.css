@@ -1,0 +1,108 @@
+.get-started {
+    --background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(244, 252, 237, 1) 45%, rgba(234, 249, 220, 1) 78%, rgba(165, 231, 104, 1) 100%);
+    height: 100vh;
+    width: 100vw;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .get-started-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .get-started-div {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 4vh;
+  }
+  
+  .get-started-carousel-div {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+
+.get-started-carousel{
+    padding: 1.5rem;
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: var(--med-dark-green);
+}
+
+.get-started-carousel div h2{
+    font-weight: bold;
+}
+
+.get-started-carousel div span{
+    line-height: 28px;
+    width: 80%;
+    display: flex;
+    margin: 0 auto;
+    font-weight: 300;
+    text-align: justify;
+    text-align-last: center;
+}
+
+.get-started-carousel-container {
+    padding: 1.5rem;
+  }
+  
+  .get-started-carousel > img {
+    max-width: 100%;
+    max-height: 22rem;
+    width: 20rem;
+    height: 20rem;
+    display: block;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+    object-fit: contain;
+  }
+  
+
+.get-started-slide{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 1.5rem;
+}
+
+.get-started-slide-button {
+  background-color: var(--med-dark-green);
+  color: var(--med-light-green);
+  border-radius: 50%;
+  padding: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  font-size: 1.5rem;
+}
+
+.get-started-div .carousel .control-dots {
+  margin: 20px 0 0 0;
+  background: transparent;
+}
+
+.get-started-div .carousel .control-dots .dot.selected, .carousel .control-dots .dot:hover{
+  background: var(--med-dark-green);
+}

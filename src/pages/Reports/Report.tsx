@@ -13,7 +13,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import axios from "axios";
-import { chevronBack, chevronForward, close, filterOutline } from "ionicons/icons";
+import {
+  chevronBack,
+  chevronForward,
+  close,
+  filterOutline,
+} from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import decrypt from "../../helper";
 import "./Report.css";
@@ -26,6 +31,10 @@ import { RadioButton } from "primereact/radiobutton";
 import { ScoreSlider } from "../../ScoreVerify/ScoreSlider";
 import ReportPDF from "../ReportPDF/ReportPDF";
 import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
+import { useTranslation } from "react-i18next";
+import { exists } from "i18next";
+import ViewReport from "../ReportPDF/ViewReport";
+import { PDFViewer } from "@react-pdf/renderer";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -37,7 +46,7 @@ const Report: React.FC = () => {
     refGender: string;
     headStatus: string;
   }
-  
+
   interface CardData {
     refQCategoryId: number;
     refCategoryLabel: string;
@@ -48,7 +57,7 @@ const Report: React.FC = () => {
 
   interface LocationState {
     selectedUser?: number; // Replace 'any' with your actual plan type
-    selectedUserInfo?: any
+    selectedUserInfo?: any;
   }
 
   const history = useHistory();
@@ -65,15 +74,19 @@ const Report: React.FC = () => {
 
   const [selectedUser, setSelectedUser] = useState<number>();
   const [selectedDate, setSelectedDate] = useState<Nullable<Date>>();
-  
+
   const [tempselectedUser, settempSelectedUser] = useState<number>();
-  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(new Date());
+  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(
+  );
+
+  const [filledDates, setFilledDates] = useState<any[]>([]);
+
 
   const userDetails = localStorage.getItem("userDetails");
 
   const userDeatilsObj = userDetails
     ? JSON.parse(userDetails)
-    : { userId: null, firstName: null};
+    : { userId: null, firstName: null };
 
   const [reportUser, setReportUser] = useState<{
     reUserId?: number;
@@ -133,7 +146,8 @@ const Report: React.FC = () => {
 
   useEffect(() => {
     if (scrollableDivRef.current) {
-      scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
+      scrollableDivRef.current.scrollTop =
+        scrollableDivRef.current.scrollHeight;
     }
   }, [reportModalCategories, allScore, stressAnswer]);
 
@@ -207,6 +221,70 @@ const Report: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (tempselectedUser) {
+      getReport();
+    }
+  }, [tempselectedUser]);
+
+  const getReport = async () => {
+    // setReportLoading(true);
+    const tokenString = localStorage.getItem("userDetails");
+    if (tokenString) {
+      const tokenObject = JSON.parse(tokenString);
+      const token = tokenObject.token;
+      try {
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/postPastReport`,
+            {
+              patientId: tempselectedUser,
+            },
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+  
+            console.log("====================================");
+            console.log("########", data);
+            console.log("====================================");
+  
+            if (data.status) {
+              // setAllReports(data.data);
+              let ar = [];
+              for (let i = 0; i < data.data.length; i++) {
+                ar[i] = data.data[i].multipleDate.map(
+                  (item: any) => item.refptcreateddate
+                );
+              }
+
+              const flatSortedDates = ar.flat().sort((a: string, b: string) => {
+                return new Date(b).getTime() - new Date(a).getTime();
+              });
+
+              setFilledDates(flatSortedDates);
+
+              settempSelectedDate(new Date(flatSortedDates[0]));
+            }
+          });
+      } catch (error) {
+        console.error("Error fetching patient data:", error);
+      }
+    } else {
+      console.error("No token found in localStorage.");
+    }
+  };
+
+
   const reportData = () => {
     // console.log("---------------------->", reportDate);
     const tokenString = localStorage.getItem("userDetails");
@@ -216,9 +294,9 @@ const Report: React.FC = () => {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
 
-        localStorage.setItem("currentPatientGender", "male"); 
+        localStorage.setItem("currentPatientGender", "male");
         // setLoadingStatus(true);
-        console.log("tgttggtttt", tempselectedUser)
+        console.log("tgttggtttt", tempselectedUser);
         axios
           .post(
             `${import.meta.env.VITE_API_URL}/getPastReportData `,
@@ -227,6 +305,7 @@ const Report: React.FC = () => {
               employeeId: null,
               hospitalId: "undefined",
               reportDate: tempselectedDate,
+              refLanCode: localStorage.getItem("refLanCode")
             },
             {
               headers: {
@@ -245,7 +324,7 @@ const Report: React.FC = () => {
             console.log("====================================");
             console.log("134", data);
             console.log("====================================");
-            setItemColors({});
+            // setItemColors({});
             setRbs(data.rbs);
             setFbs(data.fbs);
             setPpbs(data.ppbs);
@@ -284,12 +363,12 @@ const Report: React.FC = () => {
             setCanDismissModal1(true);
             setCanDismissModal2(true);
             setShowModal1(false);
-            setShowModal2(false);  //both for date selection modal
+            setShowModal2(false); //both for date selection modal
 
             // setLoadingStatus(false);
           });
-          setSelectedDate(tempselectedDate);
-          setSelectedUser(tempselectedUser);
+        setSelectedDate(tempselectedDate);
+        setSelectedUser(tempselectedUser);
       } catch (error) {
         console.error("Error parsing token:", error);
       }
@@ -444,7 +523,6 @@ const Report: React.FC = () => {
 
     console.log(subCategoryIdStr, "matchedAnswer", matchedAnswer);
 
-
     if (!matchedAnswer || !matchedAnswer.refPTcreatedDate) return false;
 
     // Calculate the duration and days difference
@@ -453,7 +531,11 @@ const Report: React.FC = () => {
       matchedAnswer.refPTcreatedDate
     );
 
-    console.log(subCategoryIdStr, "dduration > -daysDifference", duration > -daysDifference)
+    console.log(
+      subCategoryIdStr,
+      "dduration > -daysDifference",
+      duration > -daysDifference
+    );
 
     return duration > -daysDifference;
   }
@@ -487,10 +569,10 @@ const Report: React.FC = () => {
   function addDaysToDate(isoDate: string, daysToAdd: number): string {
     console.log(isoDate, daysToAdd);
     const date = new Date(isoDate);
-    date.setDate(date.getDate()-1 + daysToAdd);
+    date.setDate(date.getDate() - 1 + daysToAdd);
     return date.toLocaleDateString("en-GB");
   }
-  
+
   const getValidity = (refQCategoryId: number) => {
     switch (refQCategoryId) {
       case 8:
@@ -550,19 +632,21 @@ const Report: React.FC = () => {
     }
   };
 
-
   useEffect(() => {
     // Exit early if location.state is undefined and the router hasn't restored it yet
     if (location.state === undefined) return;
-  
+
     if (location.state?.selectedUser) {
+      console.log(location.state?.selectedUser);
       setShowModal1(false);
       setShowModal2(false);
       setSelectedDate(new Date());
       settempSelectedDate(new Date());
       settempSelectedUser(location.state.selectedUser);
       setSelectedUser(location.state.selectedUser);
-      if (headStatus === "true") { searchPatient() };
+      if (headStatus === "true") {
+        searchPatient();
+      }
     } else {
       if (headStatus === "true") {
         searchPatient();
@@ -576,9 +660,8 @@ const Report: React.FC = () => {
       settempSelectedUser(userDeatilsObj.userId);
     }
   }, [location.state?.selectedUser]);
-  
 
-  console.log("eeeeeeeeeeeeeeeeee", tempselectedDate, selectedDate)
+  console.log("eeeeeeeeeeeeeeeeee", tempselectedDate, selectedDate);
   console.log("reportModalCategories", reportModalCategories);
 
   console.log("Structured Categories: ", structuredCategories);
@@ -590,7 +673,7 @@ const Report: React.FC = () => {
       try {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
-        
+
         axios
           .post(
             `${import.meta.env.VITE_API_URL}/getCategory `,
@@ -599,6 +682,7 @@ const Report: React.FC = () => {
               patientId: selectedUser?.toString(),
               employeeId: null,
               hospitalId: "undefined",
+              refLanCode: localStorage.getItem("refLanCode")
             },
             {
               headers: {
@@ -615,7 +699,7 @@ const Report: React.FC = () => {
             );
             console.log(data);
             setCategories(data.data);
-            
+
             setLoading(false);
             // setLoadingStatus(false);
             console.log("----------->Val", data.data);
@@ -631,25 +715,24 @@ const Report: React.FC = () => {
     console.log(history.location.pathname);
   };
 
-
-useEffect(() => {
-  if (selectedUser) {
-    getCategory();
-
-    if (isFirstRender == true && location.state?.selectedUser) {
-      setIsFirstRender(false);
-      reportData();
+  useEffect(() => {
+    if (selectedUser) {
+      getCategory();
+      if (isFirstRender == true && location.state?.selectedUser) {
+        setIsFirstRender(false);
+        reportData();
+      }
     }
-  }
-}, [selectedUser]);
-
+  }, [selectedUser]);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const page = useRef(undefined);
 
   const [canDismissModal1, setCanDismissModal1] = useState(false);
   const [canDismissModal2, setCanDismissModal2] = useState(false);
-  const [presentingElement, setPresentingElement] = useState<HTMLElement | undefined>(undefined);
+  const [presentingElement, setPresentingElement] = useState<
+    HTMLElement | undefined
+  >(undefined);
 
   useEffect(() => {
     setPresentingElement(page.current);
@@ -659,7 +742,52 @@ useEffect(() => {
     modal.current?.dismiss();
   }
 
-console.log("item colors==========================",itemColors);
+  console.log("filleddates.......", filledDates);
+
+  const formatDate = (date: Date): string => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  
+  const dateTemplate = (dateInfo: any) => {
+    const { year, month, day } = dateInfo;
+    const dateObj = new Date(year, month, day);
+    const isAllowed = filledDates.includes(formatDate(dateObj));
+  
+    return (
+      <span
+        style={{
+          color: isAllowed ? 'inherit' : '#ccc',
+          opacity: isAllowed ? 1 : 0.5,
+          pointerEvents: 'none', // optional, purely for UI feel
+        }}
+      >
+        {day}
+      </span>
+    );
+  };
+  
+  console.log("selectedDate",selectedDate);
+  const [doc, setDoc] = useState<React.ReactNode>(null);
+
+  const handleViewReport = () => {
+    if (selectedDate && selectedUser) {
+      const pdfDoc = ViewReport({ reportDate: selectedDate, selectedUser });
+      setDoc(pdfDoc);
+    }
+  }
+
+  console.log(doc);
+
+
+  const [showReport, setShowReport] = useState(false);
+
+  const { t, i18n } = useTranslation("global");
+
+  console.log("item colors==========================", itemColors);
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
@@ -715,7 +843,7 @@ console.log("item colors==========================",itemColors);
                 transform: "translateX(-50%)",
               }}
             >
-              Reports
+              {t("reports.Reports")}
             </h1>
             <IonIcon
               onClick={() => {
@@ -729,7 +857,7 @@ console.log("item colors==========================",itemColors);
             />
           </div>
 
-          <h4>Select User</h4>
+          <h4>{t("reports.Select User")}</h4>
           <IonList className="reports-user-list">
             {userData?.map((item, index) => (
               <div
@@ -749,7 +877,7 @@ console.log("item colors==========================",itemColors);
                           color: "var(--med-dark-green)",
                         }}
                       >
-                        Primary
+                        {t("login.Primary")}
                       </span>
                     )}
                   </div>
@@ -783,7 +911,9 @@ console.log("item colors==========================",itemColors);
               }
             }}
           >
-            <button className="medCustom-button01">Next</button>
+            <button className="medCustom-button01">
+              {t("Register User.Next")}
+            </button>
           </div>
         </div>
       </IonModal>
@@ -798,7 +928,7 @@ console.log("item colors==========================",itemColors);
         presentingElement={presentingElement}
       >
         <div className="report-modalContent">
-        <div
+          <div
             style={{
               display: "flex",
               alignItems: "center",
@@ -817,11 +947,11 @@ console.log("item colors==========================",itemColors);
                 transform: "translateX(-50%)",
               }}
             >
-              Reports
+              {t("reports.Reports")}
             </h1>
             <IonIcon
               onClick={() => {
-                setShowModal1(false);
+                setShowModal2(false);
                 if (structuredCategories.length === 0) {
                   history.replace("/home");
                 }
@@ -830,12 +960,20 @@ console.log("item colors==========================",itemColors);
               icon={close}
             />
           </div>
-          <h4>Select Date</h4>
-          <div className="flex justify-content-center">
+          <h4>{t("reports.Select Date")}</h4>
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "95%",
+            height: "95%",
+            margin: "0 auto"
+          }}>
             <Calendar
+            style={{width: "100%"}}
               value={tempselectedDate}
               onChange={(e) => settempSelectedDate(e.value)}
               maxDate={maxDate}
+              enabledDates={filledDates.map((dateStr) => new Date(dateStr))}
               inline
             />
           </div>
@@ -855,11 +993,11 @@ console.log("item colors==========================",itemColors);
                 }}
                 className="medCustom-button01"
               >
-                Back
+                {t("reports.Back")}
               </button>
             )}
             <button onClick={() => reportData()} className="medCustom-button01">
-              Select
+              {t("reports.Select")}
             </button>
           </div>
         </div>
@@ -890,7 +1028,7 @@ console.log("item colors==========================",itemColors);
           <div className="report-progress-status">
             {categories && (
               <>
-                <span>Assessment Score</span>
+                <span>{t("reports.Assessment Score")}</span>
                 <div
                   style={{
                     margin: "0 auto",
@@ -956,6 +1094,7 @@ console.log("item colors==========================",itemColors);
       </IonModal>
 
       <IonContent className="ion-padding">
+
         {/* {selectedUser && (
           <div
             style={{
@@ -1023,7 +1162,7 @@ console.log("item colors==========================",itemColors);
                     <div className="content">
                       <h4 className="title">{item.refCategoryLabel}</h4>
                       <p className="date-range">
-                        <b>Taken: </b>
+                        <b>{t("reports.Taken")}: </b>
                         {allScore?.find(
                           (answer) =>
                             answer.refQCategoryId ===
@@ -1039,7 +1178,7 @@ console.log("item colors==========================",itemColors);
                       </p>
 
                       <p className="date-range">
-                        <b>Valid Till: </b>
+                        <b>{t("reports.Valid Till")}: </b>
                         {addDaysToDate(
                           allScore?.find(
                             (answer) =>
@@ -1113,7 +1252,7 @@ console.log("item colors==========================",itemColors);
                           display: "inline-block",
                         }}
                       >
-                        No Data Filled
+                        {t("reports.No Data Filled")}
                       </span>
                     </div>
                     <IonIcon icon={chevronForward} />
@@ -1130,12 +1269,7 @@ console.log("item colors==========================",itemColors);
               padding: "1rem 1.5rem",
             }}
           >
-            <button className="medCustom-button01">
-              <ReportPDF
-                reportDate={selectedDate}
-                selectedUser={selectedUser}
-              />
-            </button>
+            <ReportPDF reportDate={selectedDate} selectedUser={selectedUser} />
           </div>
         )}
       </IonFooter>

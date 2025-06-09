@@ -14,9 +14,15 @@ import React, { useEffect, useState } from "react";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { useHistory } from "react-router";
+import { useTranslation } from "react-i18next";
+import InvoicePDF from "../37_InvoicePDF/InvoicePDF";
 
 interface Transaction {
   refTransactionId: number;
+  refInvoiceId: number;
+  refPkgName: string;
+  refPkgDescription: string;
+  refTransactionKey: string;
   refTransactionDate: string;
   refPkgAmount: number;
   refTransactionAmount: number;
@@ -43,8 +49,7 @@ const TransactionHistory: React.FC = () => {
         console.log(token);
         axios
           .get(
-            `${
-              import.meta.env.VITE_API_COMMERCIAL_URL
+            `${import.meta.env.VITE_API_COMMERCIAL_URL
             }/getPaymentTransactionHistory`,
             {
               headers: {
@@ -64,7 +69,7 @@ const TransactionHistory: React.FC = () => {
               setTransHistory(
                 data.result.sort((a: Transaction, b: Transaction) => b.refTransactionId - a.refTransactionId)
               );
-              
+
               setLoading(false);
             } else {
               console.error("Data consoled false - chekc this");
@@ -85,25 +90,27 @@ const TransactionHistory: React.FC = () => {
 
   const formatDate = (dateString: string | number | Date, format: "dd-mmm-yyyy" | "dd/mm/yyyy"): string => {
     const date = new Date(dateString);
-    
+
     if (format === "dd-mmm-yyyy") {
       return date
         .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
         .replace(/ /g, "-"); // Converts "01 Jan 2025" → "01-Jan-2025"
     } else if (format === "dd/mm/yyyy") {
       return date
-        .toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" }); 
+        .toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
       // Converts "01/01/2025"
     }
-  
+
     return ""; // Fallback (should not happen due to strict type)
   };
-  
+
   function addDaysToDate(convertDate: string, daysToAdd: number): string {
     const date = new Date(convertDate);
     date.setDate(date.getDate() + daysToAdd);
     return date.toISOString().split("T")[0]; // Returns in YYYY-MM-DD format
   };
+
+  const { t, i18n } = useTranslation("global")
 
   return (
     <IonPage>
@@ -112,7 +119,7 @@ const TransactionHistory: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Transaction History</IonTitle>
+          <IonTitle>{t("transactionhis.Transaction History")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -148,7 +155,7 @@ const TransactionHistory: React.FC = () => {
                     " GST)"}
                 </p>
                 <p>
-                  Plan Validity:{" "}
+                  {t("transactionhis.Plan Validity")}:{" "}
                   {formatDate(item.refTransactionDate, "dd/mm/yyyy") +
                     " - " +
                     formatDate(
@@ -160,11 +167,23 @@ const TransactionHistory: React.FC = () => {
                     )}
                 </p>
                 <p>
-                  Transaction Method:{" "}
+                  {t("transactionhis.Transaction Method")}{" "}
                   <span style={{ fontWeight: "bold" }}>
                     {item.refTransactionMethod.toUpperCase()}
                   </span>
                 </p>
+                <InvoicePDF
+                  refInvoiceId={item.refInvoiceId}
+                  refTransactionDate={item.refTransactionDate.split("T")[0]}
+                  refPkgName={item.refPkgName}
+                  refPkgValidDays={item.refPkgValidDays}
+                  refPkgDescription={item.refPkgDescription}
+                  refTransactionAmount={item.refTransactionAmount}
+                  refTransactionCGST={item.refTransactionCGST}
+                  refTransactionSGST={item.refTransactionSGST}
+                  refTransactionMethod={item.refTransactionMethod}
+                  refTransactionKey={item.refTransactionKey}
+                />
               </div>
             ))
           ) : (
@@ -172,7 +191,7 @@ const TransactionHistory: React.FC = () => {
               paddingLeft: "0.5rem",
               color: "var(--med-dark-green)"
             }}>
-              <h3>No Transactions Yet</h3>
+              <h3>{t("transactionhis.No Transactions Yet")}</h3>
               <p style={{
                 lineHeight: "1.5rem"
               }}>
@@ -180,8 +199,8 @@ const TransactionHistory: React.FC = () => {
                   color: "var(--med-light-green)",
                   fontWeight: "bold"
                 }}
-                onClick={() => history.replace("/subscriptionPlans")
-                }>Start your subscription</u> to begin your journey!
+                  onClick={() => history.replace("/subscriptionPlans")
+                  }>{t("transactionhis.Start your subscription")}</u> {t("transactionhis.to begin your journey")}!
               </p>
             </div>
           )}
