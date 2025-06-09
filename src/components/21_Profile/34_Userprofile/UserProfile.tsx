@@ -49,8 +49,11 @@ import Toast from "../../CustomIonToast/CustomIonToast";
 
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
+import CustomIonLoading from "../../CustomIonLoading/CustomIonLoading";
 
 const UserProfile: React.FC = () => {
+    const [loading, setLoading] = useState<boolean>(false);
+  
   const [selectedSegment, setSelectedSegment] =
     useState<string>("Personal Details");
 
@@ -242,6 +245,7 @@ const UserProfile: React.FC = () => {
   });
 
   const fetchUserDetals = () => {
+    setLoading(true);
     try {
       axios
         .post(
@@ -264,12 +268,25 @@ const UserProfile: React.FC = () => {
           );
           console.log(data);
           if (data.status) {
+            setLoading(false);
             if (data.result.length > 0) {
               setFormData(data.result[0]);
             }
+          } else {
+             setToastOpen({
+               status: true,
+               textColor: "red",
+               message: t("login.An error occurred. Please try again"),
+             });
           }
         });
     } catch (error) {
+      setLoading(false);
+      setToastOpen({
+               status: true,
+               textColor: "red",
+               message: t("login.An error occurred. Please try again"),
+             });
       console.error("Error fetching user details:", error);
     }
   };
@@ -318,6 +335,7 @@ const UserProfile: React.FC = () => {
 
   const updateUSerDetails = async () => {
     const tokenString = localStorage.getItem("userDetails");
+    setLoading(true);
     if (tokenString) {
       try {
         const tokenObject = JSON.parse(tokenString);
@@ -359,14 +377,17 @@ const UserProfile: React.FC = () => {
         console.log(data);
 
         if (data.status) {
+          setLoading(false);
           fetchUserDetals();
           setIsEditing(false);
           updateLocalStorage();
         }
       } catch {
+        setLoading(false);
         console.error("tesitng - false");
       }
     } else {
+      setLoading(false);
       console.log("Token Invalid");
     }
   };
@@ -1322,6 +1343,7 @@ const UserProfile: React.FC = () => {
           setToastOpen({ status: false, message: "", textColor: "black" })
         }
       />
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

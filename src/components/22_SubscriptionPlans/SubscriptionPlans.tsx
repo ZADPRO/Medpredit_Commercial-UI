@@ -125,82 +125,111 @@ const SubscriptionPlans: React.FC = () => {
           <Divider className="subscribe-current-divider" align="left">
             <span className="p-tag">{t("manageSub.Current Package")}</span>
           </Divider>
-          {subscriptionData?.packageData
-            .map((plan: any, index: number) => (
-              <IonCard key={index} className="subscription-cards">
-                <IonCardHeader>
-                  <IonCardTitle>{plan.refPkgName}</IonCardTitle>
-                  {/* <Divider/>
+          {subscriptionData?.packageData.map((plan: any, index: number) => (
+            <IonCard key={index} className="subscription-cards">
+              <IonCardHeader>
+                <IonCardTitle>{plan.refPkgName}</IonCardTitle>
+                {/* <Divider/>
                   <IonCardSubtitle>Current Package</IonCardSubtitle> */}
-                </IonCardHeader>
+              </IonCardHeader>
 
-                <IonCardContent className="subscribe-card-content">
-                  <p className="subscribe-card-description">
-                    {plan.refPkgDescription}
-                  </p>
-                  <p className="subscribe-card-features">
-                    {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
-                  </p>
-                  <p className="subscribe-card-features">
-                    {"✔ 1" +
-                      (plan.refPkgValidMembers > 1
-                        ? ` + ${plan.refPkgValidMembers - 1}`
-                        : "") +
-                      " " + t("home.Member")}
-                  </p>
-                  <h1 className="subscribe-card-price">
-                    {"Rs. " + plan.refPkgAmount}
-                  </h1>
-                  <Divider />
-                  <h2 >{t("manageSub.Expires On")}: <b>{plan.refSubEndDate}</b></h2>
-                </IonCardContent>
-              </IonCard>
-            ))}
+              <IonCardContent className="subscribe-card-content">
+                <p className="subscribe-card-description">
+                  {plan.refPkgDescription}
+                </p>
+                <p className="subscribe-card-features">
+                  {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
+                </p>
+                <p className="subscribe-card-features">
+                  {"✔ 1" +
+                    (plan.refPkgValidMembers > 1
+                      ? ` + ${plan.refPkgValidMembers - 1}`
+                      : "") +
+                    " " +
+                    t("home.Member")}
+                </p>
+                <h1 className="subscribe-card-price">
+                  {"Rs. " + plan.refPkgAmount}
+                </h1>
+                <Divider />
+                <h2>
+                  {t("manageSub.Expires On")}: <b>{plan.refSubEndDate}</b>
+                </h2>
+              </IonCardContent>
+            </IonCard>
+          ))}
 
-          {packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).length != 0 &&
+          {packages.filter(
+            (plan) =>
+              plan.refPkgValidMembers >
+              subscriptionData?.packageData[0].refPkgValidMembers
+          ).length != 0 && (
             <Divider className="subscribe-upgrade-divider" align="left">
               <span className="p-tag">Upgrade Package</span>
             </Divider>
-          }
+          )}
           <div className="subscribe-upgrade">
             {packages !== undefined &&
-              packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers).map((plan, index) => (
-                <IonCard key={index} className="subscription-cards">
-                  <IonCardHeader>
-                    <IonCardTitle>{plan.refPkgName}</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent className="subscribe-card-content">
-                    <p className="subscribe-card-description">
-                      {plan.refPkgDescription}
-                    </p>
-                    <p className="subscribe-card-features">
-                      {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
-                    </p>
-                    <p className="subscribe-card-features">
-                      {"✔ 1" +
-                        (plan.refPkgValidMembers > 1
-                          ? ` + ${plan.refPkgValidMembers - 1}`
-                          : "") +
-                        " " + t("home.Member")}
-                    </p>
+              packages
+                .filter(
+                  (plan) =>
+                    plan.refPkgValidMembers >
+                    subscriptionData?.packageData[0].refPkgValidMembers
+                )
+                .map((plan, index) => (
+                  <IonCard key={index} className="subscription-cards">
+                    <IonCardHeader>
+                      <IonCardTitle>{plan.refPkgName}</IonCardTitle>
+                    </IonCardHeader>
+                    <IonCardContent className="subscribe-card-content">
+                      <p className="subscribe-card-description">
+                        {plan.refPkgDescription}
+                      </p>
+                      <p className="subscribe-card-features">
+                        {"✔ " +
+                          plan.refPkgValidDays +
+                          " " +
+                          t("home.days validity")}
+                      </p>
+                      <p className="subscribe-card-features">
+                        {"✔ 1" +
+                          (plan.refPkgValidMembers > 1
+                            ? ` + ${plan.refPkgValidMembers - 1}`
+                            : "") +
+                          " " +
+                          t("home.Member")}
+                      </p>
 
-                    <h1 className="subscribe-card-price">
-                      {"Rs. " + plan.refPkgAmount}
-                    </h1>
-                    <button
-                      className="medCustom-button02"
-                      onClick={() =>
-                        history.push({
-                          pathname: "/subscriptionDetail",
-                          state: { plan: packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers)[index].refPkgId },
-                        })
-                      }
-                    >
-                      {t("manageSub.Subscribe")}
-                    </button>
-                  </IonCardContent>
-                </IonCard>
-              ))}
+                      <h1 className="subscribe-card-price">
+                        {"Rs. " + plan.refPkgAmount}
+                      </h1>
+                      <button
+                        className="medCustom-button02"
+                        // onClick={() =>
+                        //   history.push({
+                        //     pathname: "/subscriptionDetail",
+                        //     state: { plan: packages.filter((plan) => plan.refPkgValidMembers > subscriptionData?.packageData[0].refPkgValidMembers)[index].refPkgId },
+                        //   })
+                        // }
+                        onClick={() => {
+                          const tokenString =
+                            localStorage.getItem("userDetails");
+                          const tokenObject = JSON.parse(tokenString || "");
+                          const token = tokenObject.token;
+                          window.location.href =
+                            "https://medpredit.com/subscription?token=" +
+                            token +
+                            "&packageId=" +
+                            plan.refPkgId +
+                            "&refLanCode=" +
+                            localStorage.getItem("lang");
+                        }}
+                      >
+                        {t("manageSub.Subscribe")}
+                      </button>
+                    </IonCardContent>
+                  </IonCard>
+                ))}
           </div>
         </IonContent>
       ) : (
@@ -221,14 +250,18 @@ const SubscriptionPlans: React.FC = () => {
                     {plan.refPkgDescription}
                   </p>
                   <p className="subscribe-card-features">
-                    {"✔ " + plan.refPkgValidDays + " " + t("home.days validity")}
+                    {"✔ " +
+                      plan.refPkgValidDays +
+                      " " +
+                      t("home.days validity")}
                   </p>
                   <p className="subscribe-card-features">
                     {"✔ 1" +
                       (plan.refPkgValidMembers > 1
                         ? ` + ${plan.refPkgValidMembers - 1}`
                         : "") +
-                      " " + t("home.Member")}
+                      " " +
+                      t("home.Member")}
                   </p>
 
                   <h1 className="subscribe-card-price">
@@ -236,12 +269,24 @@ const SubscriptionPlans: React.FC = () => {
                   </h1>
                   <button
                     className="medCustom-button02"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/subscriptionDetail",
-                        state: { plan: packages[index].refPkgId },
-                      })
-                    }
+                    // onClick={() =>
+                    //   history.push({
+                    //     pathname: "/subscriptionDetail",
+                    //     state: { plan: packages[index].refPkgId },
+                    //   })
+                    // }
+                    onClick={() => {
+                      const tokenString = localStorage.getItem("userDetails");
+                      const tokenObject = JSON.parse(tokenString || "");
+                      const token = tokenObject.token;
+                      window.location.href =
+                        "https://medpredit.com/subscription?token=" +
+                        token +
+                        "&packageId=" +
+                        plan.refPkgId +
+                        "&refLanCode=" +
+                        localStorage.getItem("lang");
+                    }}
                   >
                     {t("manageSub.Subscribe")}
                   </button>

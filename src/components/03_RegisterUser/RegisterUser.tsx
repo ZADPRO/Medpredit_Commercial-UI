@@ -13,6 +13,7 @@ import { Divider } from "primereact/divider";
 import axios from "axios";
 import decrypt from "../../helper";
 import { chevronBack } from "ionicons/icons";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 const RegisterUser = () => {
   const { t, i18n } = useTranslation("global");
@@ -59,6 +60,8 @@ const RegisterUser = () => {
     textColor: "white"
   });
 
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const validateForm = () => {
     if (!formData.refUserFname) {
       setToastOpen({
@@ -190,6 +193,7 @@ const RegisterUser = () => {
   };
 
   const handleSignup = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_COMMERCIAL_URL}/usersignup`,
@@ -225,7 +229,7 @@ const RegisterUser = () => {
         //   message: "Successfully Signup",
         // });
 
-
+        setLoading(false);
         setShowModal(true);
 
         setTimeout(() => {
@@ -255,7 +259,7 @@ const RegisterUser = () => {
           });
         }, 3000);
       } else {
-        // setLoading(false);
+        setLoading(false);
         setToastOpen({
           status: true,
           message: t("Register User.Already Mobile Number Exists"),
@@ -263,7 +267,13 @@ const RegisterUser = () => {
         });
       }
     } catch {
+      setLoading(false);
       console.error("tesitng - false");
+      setToastOpen({
+          status: true,
+          message: t("login.An error occurred. Please try again"),
+          textColor: "red"
+        });
     }
   };
 
@@ -287,7 +297,7 @@ const RegisterUser = () => {
             />
             <div className="title">{t("Register User.Register")}</div>
             <div className="registerUserFields">
-              <label>{t("Register User.First Name")}</label>
+              <label>{t("Register User.First Name")} <span style={{ color: "red" }}>*</span></label>
               <InputText
                 type="text"
                 name="refUserFname"
@@ -301,7 +311,7 @@ const RegisterUser = () => {
             </div>
 
             <div className="registerUserFields">
-              <label>{t("Register User.Last Name")}</label>
+              <label>{t("Register User.Last Name")} <span style={{ color: "red" }}>*</span></label>
               <InputText
                 type="text"
                 name="refUserLname"
@@ -315,7 +325,7 @@ const RegisterUser = () => {
             </div>
 
             <div className="registerUserFields">
-              <label>{t("Register User.E-Mail")}</label>
+              <label>{t("Register User.E-Mail")} <span style={{ color: "red" }}>*</span></label>
               <InputText
                 type="email"
                 name="refUserEmail"
@@ -328,7 +338,7 @@ const RegisterUser = () => {
               />
             </div>
             <div className="registerUserFields">
-              <label>{t("Register User.Mobile Number")}</label>
+              <label>{t("Register User.Mobile Number")} <span style={{ color: "red" }}>*</span></label>
               <InputText
                 type="number"
                 name="refUserMobileno"
@@ -349,7 +359,7 @@ const RegisterUser = () => {
             </div>
 
             <div className="registerUserFields">
-              <label>{t("Register User.Enter Password")}</label>
+              <label>{t("Register User.Enter Password")} <span style={{ color: "red" }}>*</span></label>
               <Password
                 type="password"
                 name="refUserPassword"
@@ -534,7 +544,7 @@ const RegisterUser = () => {
             </div>
 
             <div className="registerUserFields">
-              <label>{t("Register User.Confirm Password")}</label>
+              <label>{t("Register User.Confirm Password")} <span style={{ color: "red" }}>*</span></label>
               <Password
                 type="password"
                 name="refUserConPassword"
@@ -682,6 +692,7 @@ const RegisterUser = () => {
           duration={3000}
         />
       </IonContent>
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

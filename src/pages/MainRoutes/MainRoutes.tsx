@@ -43,6 +43,8 @@ import SubscriptionDetail from "../Subscription/SubscriptionDetail";
 import LinkFamilyMember from "../../components/32_ManageFamilyMembers/LinkFamilyMember";
 import KnowAbout from "../KnowAbout/KnowAbout";
 import GetStarted from "../../components/001_GetStarted/GetStarted";
+import SearchPage from "../../components/12_SearchPage/SearchPage";
+import { App } from "@capacitor/app";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -76,6 +78,28 @@ const MainRoutes: React.FC = () => {
     roleType = tokenObject.roleType;
   }
 
+  const history = useHistory();
+
+  useEffect(() => {
+    App.addListener('appUrlOpen', (event) => {
+      const url = event.url; // e.g., "medpreditcommercial://open/reports/sales"
+      if (url) {
+        try {
+          const parsedUrl = new URL(url);
+          const path = parsedUrl.pathname; // "/reports/sales"
+          console.log('Navigating to', path);
+          history.replace(path); // Navigate inside your app
+        } catch (e) {
+          console.error('Invalid deep link URL', e);
+        }
+      }
+    });
+
+    return () => {
+      App.removeAllListeners();
+    };
+  }, [history]);
+
   return (
     <IonTabs>
       <IonRouterOutlet id="main">
@@ -108,6 +132,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/home">
           <Home />
+        </Route>
+        <Route path="/searchPage">
+          <SearchPage/>
         </Route>
         <Route path="/profile">
           <Profile />

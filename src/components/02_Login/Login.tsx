@@ -20,11 +20,14 @@ import Lottie from "lottie-react";
 import tickAnimation from "../../assets/Animations/tickanimation.json";
 import axios from "axios";
 import decrypt from "../../helper";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 const Login: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [userSelectionModal, setUserSelectionModal] = useState<boolean>(false);
   const [userSelectionList, setUserSelectionList] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
+  
   const { t } = useTranslation("global");
 
   const history = useHistory();
@@ -51,6 +54,7 @@ const Login: React.FC = () => {
   };
 
   const handleLogIn = async () => {
+    setLoading(true);
     setErrorMessage("");
     try {
       const response = await axios.post(
@@ -65,6 +69,7 @@ const Login: React.FC = () => {
       );
       console.log(data);
       if (data.status) {
+        setLoading(false);
         setErrorMessage("");
         if(data.users.length > 1) {
           setUserSelectionList(data.users.sort((a: any, b: any) => a.refUserId - b.refUserId));
@@ -96,6 +101,7 @@ const Login: React.FC = () => {
 
 
       } else {
+        setLoading(false);
         setErrorMessage(t("login.Invalid username or password"));
 
         // setToastMessage("*Invalid username or password");
@@ -103,6 +109,7 @@ const Login: React.FC = () => {
       }
     } catch (error) {
       console.error("Error during Sign In:", error);
+      setLoading(false);
       setErrorMessage(t("login.An error occurred. Please try again"));
       // setToastMessage("An error occurred. Please try again.");
       // setShowToast(true);
@@ -112,6 +119,7 @@ const Login: React.FC = () => {
 
   const handleSubLogin = async (selectedUser: any) => {
     setUserSelectionModal(false);
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_COMMERCIAL_URL}/handleMultipleUserSignin`,
@@ -138,7 +146,7 @@ const Login: React.FC = () => {
           lastName: selectedUser.refUserLname,
           phNumber: selectedUser.refUserMobileno,
         };
-
+        setLoading(false);
         setErrorMessage("");
 
         localStorage.setItem("userDetails", JSON.stringify(userDetails));
@@ -153,11 +161,13 @@ const Login: React.FC = () => {
         });
       } else {
         console.log("Error during Sign In:");
-        setErrorMessage("An error occurred. Please try again.");
+        setLoading(false);
+        setErrorMessage(t("login.An error occurred. Please try again"));
       }
     } catch (error) {
       console.error("Error during Sign In:", error);
-      setErrorMessage("An error occurred. Please try again.");
+      setLoading(false);
+      setErrorMessage(t("login.An error occurred. Please try again"));
     };
   };
 
@@ -379,6 +389,7 @@ const Login: React.FC = () => {
           </div>
         </IonModal>
       </IonContent>
+       <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

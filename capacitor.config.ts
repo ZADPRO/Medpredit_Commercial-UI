@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.medpredit.commercial',
+  appId: 'io.zadroit.medpredit',
   appName: 'Medpredit_Commercial',
   webDir: 'dist',
   plugins: {

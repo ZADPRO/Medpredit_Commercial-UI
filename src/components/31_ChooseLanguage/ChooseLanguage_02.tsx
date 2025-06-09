@@ -12,6 +12,7 @@ import { useHistory } from "react-router";
 import axios from "axios";
 import decrypt from "../../helper";
 import { chevronBack } from "ionicons/icons";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 interface Category {
   refLId: any;
@@ -22,9 +23,10 @@ interface Category {
 }
 
 const Chooselanguage_02: React.FC = () => {
-
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLoading(true);
     axios.get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getLanguage`).then((response) => {
       const data = decrypt(
         response.data[1],
@@ -33,6 +35,7 @@ const Chooselanguage_02: React.FC = () => {
       );
 
       if (data.status) {
+        setLoading(false);
         setCategories(data.getLanguage);
       }
 
@@ -132,6 +135,7 @@ const Chooselanguage_02: React.FC = () => {
           </div> */}
         </div>
       </IonContent>
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

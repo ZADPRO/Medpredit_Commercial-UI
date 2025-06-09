@@ -35,10 +35,14 @@ import {
   search,
 } from "ionicons/icons";
 import { Carousel } from "react-responsive-carousel";
-import carousel1 from "../../assets/images/Home/BANNER1.jpg";
-import carousel2 from "../../assets/images/Home/BANNER2.jpg";
-import carousel3 from "../../assets/images/Home/BANNER3.jpg";
-import carousel4 from "../../assets/images/Home/BANNER4.jpg";
+import carousel1_eng from "../../assets/images/Home/BANNER1_ENG.jpg";
+import carousel2_eng from "../../assets/images/Home/BANNER2_ENG.jpg";
+import carousel3_eng from "../../assets/images/Home/BANNER3_ENG.jpg";
+import carousel4_eng from "../../assets/images/Home/BANNER4_ENG.jpg";
+import carousel1_hin from "../../assets/images/Home/BANNER1_HINDI.jpg";
+import carousel2_hin from "../../assets/images/Home/BANNER2_HINDI.jpg";
+import carousel3_hin from "../../assets/images/Home/BANNER3_HINDI.jpg";
+import carousel4_hin from "../../assets/images/Home/BANNER4_HINDI.jpg";
 import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
 import { useHistory, useLocation } from "react-router";
@@ -98,6 +102,14 @@ const Home: React.FC = () => {
     higherCount: 0,
     lowerCount: 0
   });
+
+  const language = localStorage.getItem('lang') || 'english';
+
+const carouselImages =
+  language === "hindi"
+    ? [carousel1_hin, carousel2_hin, carousel3_hin, carousel4_hin]
+    : [carousel1_eng, carousel2_eng, carousel3_eng, carousel4_eng];
+
 
   const services = [
     {
@@ -335,7 +347,7 @@ const Home: React.FC = () => {
                 }
                 icon={newspaperOutline}
               />
-              <IonIcon icon={notificationsOutline} />
+              {/* <IonIcon icon={notificationsOutline} /> */}
               <IonIcon
                 onClick={() =>
                   history.push("/profile", {
@@ -352,8 +364,8 @@ const Home: React.FC = () => {
 
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>
         <div className="medpredit_home">
-          <div className="home-search-bar">
-            <input className="home-search-input" placeholder={t("home.Search Service")} disabled/>
+          <div className="home-search-bar" onClick={()=>history.push("/searchPage")}>
+            <input className="home-search-input" placeholder={t("home.Search Service")} />
             <div
               style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
             >
@@ -384,23 +396,23 @@ const Home: React.FC = () => {
                   })
                 }
               >
-                <img src={carousel1} className="carousel-image" />
+                <img src={carouselImages[0]} className="carousel-image" />
               </div>
               <div
                 className="carouselDiv"
                 onClick={() => history.push("/serviceAssessment/9")}
               >
-                <img src={carousel2} className="carousel-image" />
+                <img src={carouselImages[1]} className="carousel-image" />
               </div>
               <div
                 className="carouselDiv"
-                onClick={() => (headStatus == "true" && history.push("/manageFamily"))}
+                onClick={() => (headStatus == "true" ? (history.push("/manageFamily")) : (history.push("/profile")))}
               >
-                <img src={carousel3} className="carousel-image" />
+                <img src={carouselImages[2]} className="carousel-image" />
               </div>
-              <div className="carouselDiv">
-                <img src={carousel4} className="carousel-image" />
-              </div>
+              {/* <div className="carouselDiv">
+                <img src={carouselImages[3]} className="carousel-image" />
+              </div> */}
             </Carousel>
           </div>
 
@@ -596,6 +608,11 @@ const Home: React.FC = () => {
                           <Card
                             key={index}
                             className="home-pricing-card-content"
+                             onClick={() =>
+                                history.push({
+                                  pathname: "/subscriptionPlans",
+                                })
+                              }
                           >
                             <span
                               style={{ fontSize: "1rem", fontWeight: "bold" }}
@@ -623,11 +640,7 @@ const Home: React.FC = () => {
                             </span>
                             <div
                               className="home-pricing-card-getstarted"
-                              onClick={() =>
-                                history.push({
-                                  pathname: "/subscriptionPlans",
-                                })
-                              }
+                             
                             >
                               {t("home.Get Started")}
                             </div>
@@ -638,6 +651,11 @@ const Home: React.FC = () => {
                           <Card
                             key={index}
                             className="home-pricing-card-content"
+                             onClick={() =>
+                                history.push({
+                                  pathname: "/subscriptionPlans",
+                                })
+                              }
                           >
                             <span
                               style={{
@@ -668,11 +686,7 @@ const Home: React.FC = () => {
                             </span>
                             <div
                               className="home-pricing-card-getstarted-pro"
-                              onClick={() =>
-                                history.push({
-                                  pathname: "/subscriptionPlans",
-                                })
-                              }
+                             
                             >
                               {t("home.Get Started")}
                             </div>
@@ -890,6 +904,7 @@ const Home: React.FC = () => {
                   key={index}
                   style={{ backgroundColor: `${item.bgColor}` }}
                   className="home-knowAbout-cards"
+                  onClick={() => history.push(`/knowAbout/${item.id}`)}
                 >
                   <img src={item.bgImage} />
                   <h3>{item.title}</h3>

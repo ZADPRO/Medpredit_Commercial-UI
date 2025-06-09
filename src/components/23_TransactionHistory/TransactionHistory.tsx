@@ -167,7 +167,7 @@ const TransactionHistory: React.FC = () => {
                     )}
                 </p>
                 <p>
-                  {t("transactionhis.Transaction Method")}:{" "}
+                  {t("transactionhis.Transaction Method")}{" "}
                   <span style={{ fontWeight: "bold" }}>
                     {item.refTransactionMethod.toUpperCase()}
                   </span>

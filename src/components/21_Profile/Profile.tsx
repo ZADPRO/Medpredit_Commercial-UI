@@ -50,18 +50,18 @@ const Profile: React.FC = () => {
     {
       title: t("profile.Settings"),
       items: [
-        {
-          icon: "pi pi-cog",
-          label: t("profile.Notification Settings"),
-          path: "/notificationSettings",
-        },
+        // {
+        //   icon: "pi pi-cog",
+        //   label: t("profile.Notification Settings"),
+        //   path: "/notificationSettings",
+        // },
         {
           icon: "pi pi-language",
           label: t("profile.Choose Language"),
           path: "/ChooseLanguage_02",
         },
-        { icon: "pi pi-headphones", label: t("profile.Help Center"), path: "/helpCenter" },
-        { icon: "pi pi-comment", label: t("profile.Feedback"), path: "/feedback" },
+        // { icon: "pi pi-headphones", label: t("profile.Help Center"), path: "/helpCenter" },
+        // { icon: "pi pi-comment", label: t("profile.Feedback"), path: "/feedback" },
       ],
     },
     {

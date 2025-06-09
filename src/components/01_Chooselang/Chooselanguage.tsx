@@ -12,6 +12,7 @@ import { IonContent, IonPage } from "@ionic/react";
 import { useHistory } from "react-router";
 import axios from "axios";
 import decrypt from "../../helper";
+import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 
 interface Category {
   refLId: any;
@@ -22,7 +23,10 @@ interface Category {
 }
 
 const Chooselanguage: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  
   useEffect(() => {
+    setLoading(true);
     axios
       .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getLanguage`)
       .then((response) => {
@@ -33,6 +37,7 @@ const Chooselanguage: React.FC = () => {
         );
 
         if (data.status) {
+          setLoading(false);
           setCategories(data.getLanguage);
           setSelectedCategory(
             localStorage.getItem("refLanCode")
@@ -139,6 +144,7 @@ const Chooselanguage: React.FC = () => {
           </div>
         </div>
       </IonContent>
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

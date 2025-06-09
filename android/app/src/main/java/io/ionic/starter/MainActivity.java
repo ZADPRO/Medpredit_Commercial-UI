@@ -1,4 +1,4 @@
-package io.medpredit.commercial;
+package io.zadroit.medpredit;
 
 import com.getcapacitor.BridgeActivity;
 

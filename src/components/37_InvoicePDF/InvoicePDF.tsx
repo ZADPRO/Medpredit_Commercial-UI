@@ -6,6 +6,9 @@ import PopBoldItalic from "../../assets/Fonts/AbrilFatface-Regular.ttf";
 import PopSemiboldItalic from "../../assets/Fonts/Montserrat-MediumItalic.ttf";
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { useTranslation } from 'react-i18next';
+import { FileOpener } from '@capacitor-community/file-opener';
+import { useState } from 'react';
+import { IonIcon } from '@ionic/react';
 
 interface Transaction {
   refInvoiceId: number;
@@ -70,8 +73,10 @@ const InvoicePDF: React.FC<Transaction> = ({
   };
 
   const { t } = useTranslation("global");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleInvoiceDownload = async () => {
+    setLoading(true);
     const doc = (
       <Document>
         <Page size="A4">
@@ -142,57 +147,76 @@ const InvoicePDF: React.FC<Transaction> = ({
       </Document>
     )
 
-    // try {
-    //   // Generate PDF as Blob
-    //   const pdfBlob = await pdf(doc).toBlob();
-
-    //   // Convert Blob to Base64
-    //   const base64data = await blobToBase64(pdfBlob);
-
-    //   // Save PDF file
-    //   await Filesystem.writeFile({
-    //     path: `Medpredit_Invoice_.pdf`,
-    //     data: base64data,
-    //     directory: Directory.Documents
-    //   });
-
-    //   console.log("PDF saved successfully!");
-    // } catch (error) {
-    //   console.error("Error generating or saving PDF:", error);
-    // }
-
-
     try {
       // Generate PDF as Blob
       const pdfBlob = await pdf(doc).toBlob();
 
-      // Create a URL for the Blob
-      const url = URL.createObjectURL(pdfBlob);
+      // Convert Blob to Base64
+      const base64data = await blobToBase64(pdfBlob);
 
-      // Create an anchor element and trigger download
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `Medpredit_Invoice_${refInvoiceId}.pdf`;
-      document.body.appendChild(a);
-      a.click();
+      // Save PDF file
+      const savedFile = await Filesystem.writeFile({
+        path: `Medpredit_Invoice_${refInvoiceId}.pdf`,
+        data: base64data,
+        directory: Directory.Documents,
+      });
 
-      // Cleanup
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      console.log('PDF saved:', savedFile);
+      setLoading(false);
+      // Open the file using FileOpener
+      await FileOpener.open({
+        filePath: savedFile.uri,
+        contentType: "application/pdf",
+      });
 
-      console.log("PDF downloaded successfully!");
+      console.log("PDF saved successfully!");
     } catch (error) {
-      console.error("Error generating or downloading PDF:", error);
+      console.error("Error generating or saving PDF:", error);
     }
+
+
+    // try {
+    //   // Generate PDF as Blob
+    //   const pdfBlob = await pdf(doc).toBlob();
+
+    //   // Create a URL for the Blob
+    //   const url = URL.createObjectURL(pdfBlob);
+
+    //   // Create an anchor element and trigger download
+    //   const a = document.createElement("a");
+    //   a.href = url;
+    //   a.download = `Medpredit_Invoice_${refInvoiceId}.pdf`;
+    //   document.body.appendChild(a);
+    //   a.click();
+
+    //   // Cleanup
+    //   document.body.removeChild(a);
+    //   URL.revokeObjectURL(url);
+
+    //   console.log("PDF downloaded successfully!");
+    // } catch (error) {
+    //   console.error("Error generating or downloading PDF:", error);
+    // }
   }
 
   return (
     <div>
-      <div onClick={handleInvoiceDownload} style={{ fontSize: "0.8rem", textDecoration: "underline", margin: "0.4rem", color: "var(--med-dark-green)", fontWeight: "700" }}>
-        {t("transactionhis.Download Invoice")}
+      <div
+        onClick={handleInvoiceDownload}
+        style={{
+          fontSize: "0.8rem",
+          margin: "0.4rem",
+          color: "var(--med-dark-green)",
+          fontWeight: "700",
+          display: "flex",
+          alignItems: "center",
+          gap: "0.3rem"
+        }}
+      >
+        <span style={{textDecoration: "underline"}}>{t("transactionhis.Download Invoice")} </span>{loading && (<i className="pi pi-spin pi-spinner"></i>)}
       </div>
     </div>
-  )
+  );
 }
 
 export default InvoicePDF

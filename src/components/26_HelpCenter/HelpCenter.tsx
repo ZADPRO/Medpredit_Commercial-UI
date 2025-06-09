@@ -44,8 +44,8 @@ const HelpCenter: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      {/* <IonContent className="ion-padding">
-        <h2 className="ion-text-center">We’re here to help you</h2>
+      <IonContent className="ion-padding">
+        {/* <h2 className="ion-text-center">We’re here to help you</h2>
         <p className="ion-text-center">Share your concern or check our FAQ below.</p>
 
     
@@ -78,8 +78,8 @@ const HelpCenter: React.FC = () => {
         <div className="ion-text-center ion-margin-top">
           <p>Still stuck? Help is a mail away</p>
           <IonButton expand="full" color="danger">Send a Message</IonButton>
-        </div>
-      </IonContent> */}
+        </div> */}
+      </IonContent>
     </IonPage>
   );
 };

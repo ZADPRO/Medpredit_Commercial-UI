@@ -245,7 +245,8 @@ const ManageFamily: React.FC = () => {
                               : "normal",
                         }}
                       >
-                        {primaryUser.headStatus === "true" && t("login.Primary")}
+                        {primaryUser.headStatus === "true" &&
+                          t("login.Primary")}
                       </span>
                     </div>
 
@@ -339,10 +340,10 @@ const ManageFamily: React.FC = () => {
                             {t("link." + item.activeStatus.toUpperCase())}
                           </span>
                           {item.activeStatus.toLowerCase() === "active" &&
-                            item.createdAt
+                          item.createdAt
                             ? `: ${new Date(item.createdAt).toLocaleDateString(
-                              "en-gb"
-                            )}`
+                                "en-gb"
+                              )}`
                             : ""}
                         </span>
 
@@ -404,31 +405,39 @@ const ManageFamily: React.FC = () => {
                             </tr>
                             <tr>
                               <td>{t("userProfile.Marital Status")}:</td>
-                              <td>{t("userProfile." + item.refMaritalStatus)}</td>
+                              <td>
+                                {t("userProfile." + item.refMaritalStatus)}
+                              </td>
                             </tr>
                             <tr>
                               <td>DOB:</td>
                               <td>
                                 {item.refDOB
                                   ? new Date(item.refDOB).toLocaleDateString(
-                                    "en-gb"
-                                  )
+                                      "en-gb"
+                                    )
                                   : "N/A"}
                               </td>
                             </tr>
                             <tr>
                               <td>{t("userProfile.Education")}:</td>
-                              <td>{item.refEducation ? t("userProfile." + item.refEducation) : "-"}</td>
+                              <td>
+                                {item.refEducation
+                                  ? t("userProfile." + item.refEducation)
+                                  : "-"}
+                              </td>
                             </tr>
                             <tr>
                               <td>{t("link.Sector & Occupation Lvl")}</td>
                               <td>
                                 {item.refSector && item.refOccupationLvl
-                                  ? item.refSector +
-                                    " & " +
-                                    item.refOccupationLvl
-                                  : item.refSector || t("userProfile." + item.refOccupationLvl)
-                                  ? item.refSector + t("userProfile." + item.refOccupationLvl)
+                                  ? `${item.refSector} & ${t(
+                                      "userProfile." + item.refOccupationLvl
+                                    )}`
+                                  : item.refSector
+                                  ? item.refSector
+                                  : item.refOccupationLvl
+                                  ? t("userProfile." + item.refOccupationLvl)
                                   : "-"}
                               </td>
                             </tr>
@@ -458,7 +467,7 @@ const ManageFamily: React.FC = () => {
 
         <IonFab slot="fixed" vertical="bottom" horizontal="end" edge={false}>
           {subscriptionData?.packageStatus == true &&
-            subscriptionData?.packageData[0].refPkgValidMembers >
+          subscriptionData?.packageData[0].refPkgValidMembers >
             userData.length + (primaryUser != undefined ? 1 : 0) ? (
             <>
               <IonFabButton>
@@ -501,8 +510,9 @@ const ManageFamily: React.FC = () => {
               onClick={() =>
                 presentAlert({
                   cssClass: "custom-alert",
-                  message:
-                    t("manage.Please Upgrade your membership to add family member"),
+                  message: t(
+                    "manage.Please Upgrade your membership to add family member"
+                  ),
                   buttons: [
                     {
                       text: t("manage.Cancel"),

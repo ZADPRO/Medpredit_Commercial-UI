@@ -32,6 +32,9 @@ import { ScoreSlider } from "../../ScoreVerify/ScoreSlider";
 import ReportPDF from "../ReportPDF/ReportPDF";
 import CustomIonLoading from "../../components/CustomIonLoading/CustomIonLoading";
 import { useTranslation } from "react-i18next";
+import { exists } from "i18next";
+import ViewReport from "../ReportPDF/ViewReport";
+import { PDFViewer } from "@react-pdf/renderer";
 
 const Report: React.FC = () => {
   interface UserInfo {
@@ -74,8 +77,10 @@ const Report: React.FC = () => {
 
   const [tempselectedUser, settempSelectedUser] = useState<number>();
   const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(
-    new Date()
   );
+
+  const [filledDates, setFilledDates] = useState<any[]>([]);
+
 
   const userDetails = localStorage.getItem("userDetails");
 
@@ -216,6 +221,70 @@ const Report: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (tempselectedUser) {
+      getReport();
+    }
+  }, [tempselectedUser]);
+
+  const getReport = async () => {
+    // setReportLoading(true);
+    const tokenString = localStorage.getItem("userDetails");
+    if (tokenString) {
+      const tokenObject = JSON.parse(tokenString);
+      const token = tokenObject.token;
+      try {
+        axios
+          .post(
+            `${import.meta.env.VITE_API_URL}/postPastReport`,
+            {
+              patientId: tempselectedUser,
+            },
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            const data = decrypt(
+              response.data[1],
+              response.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+  
+            console.log("====================================");
+            console.log("########", data);
+            console.log("====================================");
+  
+            if (data.status) {
+              // setAllReports(data.data);
+              let ar = [];
+              for (let i = 0; i < data.data.length; i++) {
+                ar[i] = data.data[i].multipleDate.map(
+                  (item: any) => item.refptcreateddate
+                );
+              }
+
+              const flatSortedDates = ar.flat().sort((a: string, b: string) => {
+                return new Date(b).getTime() - new Date(a).getTime();
+              });
+
+              setFilledDates(flatSortedDates);
+
+              settempSelectedDate(new Date(flatSortedDates[0]));
+            }
+          });
+      } catch (error) {
+        console.error("Error fetching patient data:", error);
+      }
+    } else {
+      console.error("No token found in localStorage.");
+    }
+  };
+
+
   const reportData = () => {
     // console.log("---------------------->", reportDate);
     const tokenString = localStorage.getItem("userDetails");
@@ -255,7 +324,7 @@ const Report: React.FC = () => {
             console.log("====================================");
             console.log("134", data);
             console.log("====================================");
-            setItemColors({});
+            // setItemColors({});
             setRbs(data.rbs);
             setFbs(data.fbs);
             setPpbs(data.ppbs);
@@ -673,6 +742,49 @@ const Report: React.FC = () => {
     modal.current?.dismiss();
   }
 
+  console.log("filleddates.......", filledDates);
+
+  const formatDate = (date: Date): string => {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  
+  const dateTemplate = (dateInfo: any) => {
+    const { year, month, day } = dateInfo;
+    const dateObj = new Date(year, month, day);
+    const isAllowed = filledDates.includes(formatDate(dateObj));
+  
+    return (
+      <span
+        style={{
+          color: isAllowed ? 'inherit' : '#ccc',
+          opacity: isAllowed ? 1 : 0.5,
+          pointerEvents: 'none', // optional, purely for UI feel
+        }}
+      >
+        {day}
+      </span>
+    );
+  };
+  
+  console.log("selectedDate",selectedDate);
+  const [doc, setDoc] = useState<React.ReactNode>(null);
+
+  const handleViewReport = () => {
+    if (selectedDate && selectedUser) {
+      const pdfDoc = ViewReport({ reportDate: selectedDate, selectedUser });
+      setDoc(pdfDoc);
+    }
+  }
+
+  console.log(doc);
+
+
+  const [showReport, setShowReport] = useState(false);
+
   const { t, i18n } = useTranslation("global");
 
   console.log("item colors==========================", itemColors);
@@ -686,7 +798,7 @@ const Report: React.FC = () => {
           <IonTitle>
             {userData.length > 0
               ? userData.find((item) => item.refUserId === selectedUser)
-                ?.refUserFname
+                  ?.refUserFname
               : location.state?.selectedUserInfo?.refUserFname}
           </IonTitle>
 
@@ -799,7 +911,9 @@ const Report: React.FC = () => {
               }
             }}
           >
-            <button className="medCustom-button01">{t("Register User.Next")}</button>
+            <button className="medCustom-button01">
+              {t("Register User.Next")}
+            </button>
           </div>
         </div>
       </IonModal>
@@ -837,7 +951,7 @@ const Report: React.FC = () => {
             </h1>
             <IonIcon
               onClick={() => {
-                setShowModal1(false);
+                setShowModal2(false);
                 if (structuredCategories.length === 0) {
                   history.replace("/home");
                 }
@@ -847,11 +961,19 @@ const Report: React.FC = () => {
             />
           </div>
           <h4>{t("reports.Select Date")}</h4>
-          <div className="flex justify-content-center">
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "95%",
+            height: "95%",
+            margin: "0 auto"
+          }}>
             <Calendar
+            style={{width: "100%"}}
               value={tempselectedDate}
               onChange={(e) => settempSelectedDate(e.value)}
               maxDate={maxDate}
+              enabledDates={filledDates.map((dateStr) => new Date(dateStr))}
               inline
             />
           </div>
@@ -972,6 +1094,7 @@ const Report: React.FC = () => {
       </IonModal>
 
       <IonContent className="ion-padding">
+
         {/* {selectedUser && (
           <div
             style={{
@@ -1146,10 +1269,7 @@ const Report: React.FC = () => {
               padding: "1rem 1.5rem",
             }}
           >
-              <ReportPDF
-                reportDate={selectedDate}
-                selectedUser={selectedUser}
-              />
+            <ReportPDF reportDate={selectedDate} selectedUser={selectedUser} />
           </div>
         )}
       </IonFooter>

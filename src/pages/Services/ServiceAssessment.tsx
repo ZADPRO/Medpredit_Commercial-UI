@@ -482,7 +482,7 @@ const ServiceAssessment: React.FC = () => {
   // console.log("servicesDetails.find((item) => item.title === title)?.serviceId ", servicesDetails.find((item) => item.title === title)?.serviceId );
 
   return (
-    <IonPage>
+    <IonPage className="cus-ion-page">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

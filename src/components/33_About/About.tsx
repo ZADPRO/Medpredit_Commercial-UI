@@ -32,30 +32,30 @@ const About: React.FC = () => {
 
       <IonContent className="ion-padding">
         <IonList>
-          <IonItem
-          // routerLink="/termsofservice" button
+          {/* <IonItem
+          routerLink="/termsandprivacy" button
           >
             <IonLabel>{t("about.Terms of Service")}</IonLabel>
-          </IonItem>
+          </IonItem> */}
 
           <IonItem>
             <IonLabel>
               <p>{t("about.App version")}</p>
-              <h3>v18.7.9 {t("about.Live")}</h3>
+              <h3>v1.0.0 {t("about.Live")}</h3>
             </IonLabel>
           </IonItem>
 
-          <IonItem
-          // routerLink="/opensource" button
+          {/* <IonItem
+          routerLink="/opensource" button
           >
             <IonLabel>{t("about.Open Source Libraries")}</IonLabel>
-          </IonItem>
+          </IonItem> */}
 
-          <IonItem
-          // routerLink="/landr" button
+          {/* <IonItem
+          routerLink="/landr" button
           >
             <IonLabel>{t("about.Licenses and Registrations")}</IonLabel>
-          </IonItem>
+          </IonItem> */}
         </IonList>
       </IonContent>
     </IonPage>
