@@ -1,7 +1,10 @@
 import axios from "axios";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
-import { InputNumber } from "primereact/inputnumber";
+import {
+  InputNumber,
+  InputNumberValueChangeEvent,
+} from "primereact/inputnumber";
 import React, { useEffect, useState } from "react";
 import decrypt from "../../helper";
 import { IonAlert, IonDatetime, IonModal } from "@ionic/react";
@@ -51,12 +54,12 @@ const GraphValues: React.FC<GraphValuesProps> = ({
 
   const forwardQId = label.options[0]?.forwardQId || "";
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const [openModalIndex, setOpenModalIndex] = useState<number | null>(null);
 
   const openModal = (index: number) => setOpenModalIndex(index);
   const closeModal = () => setOpenModalIndex(null);
-  
+
   const handleChange = (
     index: number,
     field: keyof (typeof data)[0],
@@ -131,32 +134,30 @@ const GraphValues: React.FC<GraphValuesProps> = ({
     const allFieldsFilled = data.every(
       (item) => item.date !== null && item.number !== null
     );
-    
+
     if (allFieldsFilled) {
       // If all fields are filled, add a new item
       setData([...data, { id: null, date: null, number: null, flag: "ui" }]);
-    } 
+    }
     // else {
     //   // If any field is missing, show an alert or handle it accordingly
     //   alert("Please fill in all date and number fields before adding a new item.");
     // }
   };
-  
 
   useEffect(() => {
     if (data.length === 1) {
       const { date, number } = data[0];
       // Check if both are null or both are filled
       if (
-        (date === null && number === null) || 
+        (date === null && number === null) ||
         (date !== null && number !== null)
       ) {
         SubmitActive(false);
       } else {
         SubmitActive(true);
       }
-    }
-    else {
+    } else {
       const allFieldsFilled = data.every(
         (item) => item.date !== null && item.number !== null
       );
@@ -166,9 +167,8 @@ const GraphValues: React.FC<GraphValuesProps> = ({
         SubmitActive(false);
       }
     }
-    
   }, [data]);
-console.log(data);
+  console.log(data);
   useEffect(() => {
     console.log("====================================");
     console.log(label);
@@ -242,7 +242,7 @@ console.log(data);
       }
     }
   }, [localStorage.getItem("testQuestion")]);
-console.log(SubmitActive);
+  console.log(SubmitActive);
   return (
     <div className="questions inputText">
       <p className="questionText">{label.questionText}</p>
@@ -283,7 +283,8 @@ console.log(SubmitActive);
                 border: "1.5px solid #10416a",
                 borderRadius: "10px",
                 marginBottom: "10px",
-                backgroundColor: item.flag !== "ui" ? "lightblue" : "transparent",
+                backgroundColor:
+                  item.flag !== "ui" ? "lightblue" : "transparent",
               }}
             >
               {/* <Calendar
@@ -304,7 +305,11 @@ console.log(SubmitActive);
                 style={{ padding: "0", textAlign: "center" }}
                 id="hrsInputLeft"
                 disabled={item.flag === "perm" || item.flag === "temp"}
-                value={item.date ? new Date(item.date).toISOString().split("T")[0] : ""}
+                value={
+                  item.date
+                    ? new Date(item.date).toISOString().split("T")[0]
+                    : ""
+                }
                 placeholder="Date"
                 onClick={() => openModal(index)}
               />
@@ -327,7 +332,11 @@ console.log(SubmitActive);
                     }
                     onIonChange={(e) => {
                       const selectedDate = e.detail.value as string; // Cast to string
-                      handleChange(index, "date", selectedDate ? new Date(selectedDate).toISOString() : "");
+                      handleChange(
+                        index,
+                        "date",
+                        selectedDate ? new Date(selectedDate).toISOString() : ""
+                      );
                     }}
                   />
                   <Divider />
@@ -360,7 +369,9 @@ console.log(SubmitActive);
                     </div>
                     <div
                       onClick={() => {
-                        const finalDate = item.date ? new Date(item.date) : new Date();
+                        const finalDate = item.date
+                          ? new Date(item.date)
+                          : new Date();
                         handleChange(index, "date", finalDate.toISOString());
                         closeModal();
                       }}
@@ -388,6 +399,9 @@ console.log(SubmitActive);
                 style={{ borderRadius: "10px" }}
                 value={item.number}
                 onChange={(e) => handleChange(index, "number", e.value)}
+                onValueChange={(e: InputNumberValueChangeEvent) =>
+                  handleChange(index, "number", e.value as number)
+                }
                 placeholder="mg/dl"
               />
               <div

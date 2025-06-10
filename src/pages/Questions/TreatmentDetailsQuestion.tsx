@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
-import { InputNumber } from "primereact/inputnumber";
+import {
+  InputNumber,
+  InputNumberValueChangeEvent,
+} from "primereact/inputnumber";
 import { Calendar } from "primereact/calendar";
 import { IonToast } from "@ionic/react";
 import { Divider } from "primereact/divider";
@@ -79,34 +82,34 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
   };
 
   const [toastOpen, setToastOpen] = useState({
-      status: false,
-      message: "",
-    });
+    status: false,
+    message: "",
+  });
 
   console.log("questionSets", questionSets);
-  
 
   const handleAddSet = () => {
-    if(questionSets.length === 0) {
+    if (questionSets.length === 0) {
       setQuestionIndex(0);
       setQuestionSets([...questionSets, createNewQuestionSet()]);
-    }
-    else if (verifyForm() == true) {
+    } else if (verifyForm() == true) {
       setQuestionIndex(questionIndex + 1);
       setQuestionSets([...questionSets, createNewQuestionSet()]);
     }
   };
 
-  
   const handleRemoveSet = (index: number) => {
     const updatedSets = questionSets.filter((_, i) => i !== index);
     setQuestionSets(updatedSets);
-    setQuestionIndex(questionSets.length > 0 ?  questionIndex - 1 : 0);
+    setQuestionIndex(questionSets.length > 0 ? questionIndex - 1 : 0);
   };
 
   const verifyForm = () => {
     if (questionSets[questionIndex].nameOfMedicine?.length === 0) {
-      setToastOpen({ status: true, message: "Please enter a valid medicine name" });
+      setToastOpen({
+        status: true,
+        message: "Please enter a valid medicine name",
+      });
       return false;
     } else if (questionSets[questionIndex].category === null) {
       setToastOpen({ status: true, message: "Please select a valid category" });
@@ -115,34 +118,46 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
       setToastOpen({ status: true, message: "Please select a valid ROA" });
       return false;
     } else if (questionSets[questionIndex].relationToFood === null) {
-      setToastOpen({ status: true, message: "Please select a valid relation to food" });
+      setToastOpen({
+        status: true,
+        message: "Please select a valid relation to food",
+      });
       return false;
     } else if (
-      (questionSets[questionIndex].morningdosage === null || questionSets[questionIndex].morningtime === null) && 
-      (questionSets[questionIndex].afternoondosage === null || questionSets[questionIndex].afternoontime === null) &&
-      (questionSets[questionIndex].eveningdosage === null || questionSets[questionIndex].eveningtime === null) &&
-      (questionSets[questionIndex].nightdosage === null || questionSets[questionIndex].nighttime === null)
+      (questionSets[questionIndex].morningdosage === null ||
+        questionSets[questionIndex].morningtime === null) &&
+      (questionSets[questionIndex].afternoondosage === null ||
+        questionSets[questionIndex].afternoontime === null) &&
+      (questionSets[questionIndex].eveningdosage === null ||
+        questionSets[questionIndex].eveningtime === null) &&
+      (questionSets[questionIndex].nightdosage === null ||
+        questionSets[questionIndex].nighttime === null)
     ) {
-      setToastOpen({ status: true, message: "Please enter at least one Dosage and it's timing" });
+      setToastOpen({
+        status: true,
+        message: "Please enter at least one Dosage and it's timing",
+      });
       return false;
     }
-    
+
     return true;
   };
 
   useEffect(() => {
-    if (questionSets.length > 0 && questionSets.length == questionIndex+1) {
+    if (questionSets.length > 0 && questionSets.length == questionIndex + 1) {
       if (
         questionSets[questionIndex].nameOfMedicine.length !== 0 &&
         questionSets[questionIndex].category !== null &&
         questionSets[questionIndex].roa !== null &&
         questionSets[questionIndex].relationToFood !== null &&
-        (
-          (questionSets[questionIndex].morningdosage != null && questionSets[questionIndex].morningtime != null) ||
-          (questionSets[questionIndex].afternoondosage !== null && questionSets[questionIndex].afternoontime !== null) ||
-          (questionSets[questionIndex].eveningdosage !== null && questionSets[questionIndex].eveningtime !== null) ||
-          (questionSets[questionIndex].nightdosage !== null && questionSets[questionIndex].nighttime !== null)
-        )
+        ((questionSets[questionIndex].morningdosage != null &&
+          questionSets[questionIndex].morningtime != null) ||
+          (questionSets[questionIndex].afternoondosage !== null &&
+            questionSets[questionIndex].afternoontime !== null) ||
+          (questionSets[questionIndex].eveningdosage !== null &&
+            questionSets[questionIndex].eveningtime !== null) ||
+          (questionSets[questionIndex].nightdosage !== null &&
+            questionSets[questionIndex].nighttime !== null))
       ) {
         SubmitActive(false);
       } else {
@@ -211,7 +226,9 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
               }}
               id="fullInput"
               value={set.strength || undefined}
-              onChange={(e) => handleInputChange(index, "strength", e.value)}
+              onValueChange={(e: InputNumberValueChangeEvent) =>
+                handleInputChange(index, "strength", e.value as number)
+              }
               placeholder="Strength"
             />
           </div>
@@ -291,7 +308,7 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
                   id="hrsInputLeft"
                   style={{ width: "40%" }}
                   value={set[dosageKey as keyof QuestionSet] as number | null} // Cast to expected type
-                  onChange={(e) =>
+                  onValueChange={(e: InputNumberValueChangeEvent) =>
                     handleInputChange(
                       index,
                       dosageKey as keyof QuestionSet,
@@ -324,10 +341,17 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
                     borderLeft: "1.5px solid #10416a",
                   }}
                   onClick={() => {
-                    handleInputChange(index, dosageKey as keyof QuestionSet, null);
-                    handleInputChange(index, timeKey as keyof QuestionSet, null);
+                    handleInputChange(
+                      index,
+                      dosageKey as keyof QuestionSet,
+                      null
+                    );
+                    handleInputChange(
+                      index,
+                      timeKey as keyof QuestionSet,
+                      null
+                    );
                   }}
-                
                 >
                   <i className="pi pi-trash"></i>
                 </div>
@@ -347,8 +371,8 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
               <InputNumber
                 id="hrsInputLeft"
                 style={{ width: "40%" }}
-                onChange={(e) =>
-                  handleInputChange(index, "monthsduration", e.value)
+                onValueChange={(e: InputNumberValueChangeEvent) =>
+                  handleInputChange(index, "monthsduration", e.value as number)
                 }
                 placeholder="Months"
                 min={0}
@@ -358,8 +382,8 @@ const TreatmentDetailsQuestion: React.FC<TreatmentDetailsQuestionProps> = ({
                 id="fullInput"
                 style={{ width: "60%" }}
                 value={set.yearsduration || undefined}
-                onChange={(e) =>
-                  handleInputChange(index, "yearsduration", e.value)
+                onValueChange={(e: InputNumberValueChangeEvent) =>
+                  handleInputChange(index, "yearsduration", e.value as number)
                 }
                 placeholder="Years"
                 min={0}

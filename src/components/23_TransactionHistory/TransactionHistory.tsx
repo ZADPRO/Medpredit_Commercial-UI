@@ -30,7 +30,13 @@ interface Transaction {
   refTransactionSGST: number;
   refTransactionMethod: string;
   refPkgValidDays: number;
-};
+  refUserEmail: string;
+  refUserMobileno: string;
+  refUserFname: string;
+  refUserLname: string;
+  refUserCustId: string;
+  refAddress: string;
+}
 
 const TransactionHistory: React.FC = () => {
   const history = useHistory();
@@ -49,7 +55,8 @@ const TransactionHistory: React.FC = () => {
         console.log(token);
         axios
           .get(
-            `${import.meta.env.VITE_API_COMMERCIAL_URL
+            `${
+              import.meta.env.VITE_API_COMMERCIAL_URL
             }/getPaymentTransactionHistory`,
             {
               headers: {
@@ -66,8 +73,12 @@ const TransactionHistory: React.FC = () => {
             );
             console.log(data);
             if (data.status) {
+              console.log("data", data);
               setTransHistory(
-                data.result.sort((a: Transaction, b: Transaction) => b.refTransactionId - a.refTransactionId)
+                data.result.sort(
+                  (a: Transaction, b: Transaction) =>
+                    b.refTransactionId - a.refTransactionId
+                )
               );
 
               setLoading(false);
@@ -87,17 +98,26 @@ const TransactionHistory: React.FC = () => {
     getTransHistory();
   }, []);
 
-
-  const formatDate = (dateString: string | number | Date, format: "dd-mmm-yyyy" | "dd/mm/yyyy"): string => {
+  const formatDate = (
+    dateString: string | number | Date,
+    format: "dd-mmm-yyyy" | "dd/mm/yyyy"
+  ): string => {
     const date = new Date(dateString);
 
     if (format === "dd-mmm-yyyy") {
       return date
-        .toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })
+        .toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
         .replace(/ /g, "-"); // Converts "01 Jan 2025" → "01-Jan-2025"
     } else if (format === "dd/mm/yyyy") {
-      return date
-        .toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
       // Converts "01/01/2025"
     }
 
@@ -108,9 +128,9 @@ const TransactionHistory: React.FC = () => {
     const date = new Date(convertDate);
     date.setDate(date.getDate() + daysToAdd);
     return date.toISOString().split("T")[0]; // Returns in YYYY-MM-DD format
-  };
+  }
 
-  const { t, i18n } = useTranslation("global")
+  const { t, i18n } = useTranslation("global");
 
   return (
     <IonPage>
@@ -183,24 +203,38 @@ const TransactionHistory: React.FC = () => {
                   refTransactionSGST={item.refTransactionSGST}
                   refTransactionMethod={item.refTransactionMethod}
                   refTransactionKey={item.refTransactionKey}
+                  refUserEmail={item.refUserEmail}
+                  refUserMobileno={item.refUserMobileno}
+                  refUserFname={item.refUserFname}
+                  refUserLname={item.refUserLname}
+                  refUserCustId={item.refUserCustId}
+                  refAddress={item.refAddress}
                 />
               </div>
             ))
           ) : (
-            <div style={{
-              paddingLeft: "0.5rem",
-              color: "var(--med-dark-green)"
-            }}>
+            <div
+              style={{
+                paddingLeft: "0.5rem",
+                color: "var(--med-dark-green)",
+              }}
+            >
               <h3>{t("transactionhis.No Transactions Yet")}</h3>
-              <p style={{
-                lineHeight: "1.5rem"
-              }}>
-                <u style={{
-                  color: "var(--med-light-green)",
-                  fontWeight: "bold"
+              <p
+                style={{
+                  lineHeight: "1.5rem",
                 }}
-                  onClick={() => history.replace("/subscriptionPlans")
-                  }>{t("transactionhis.Start your subscription")}</u> {t("transactionhis.to begin your journey")}!
+              >
+                <u
+                  style={{
+                    color: "var(--med-light-green)",
+                    fontWeight: "bold",
+                  }}
+                  onClick={() => history.replace("/subscriptionPlans")}
+                >
+                  {t("transactionhis.Start your subscription")}
+                </u>{" "}
+                {t("transactionhis.to begin your journey")}!
               </p>
             </div>
           )}

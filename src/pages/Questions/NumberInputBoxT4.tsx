@@ -1,6 +1,9 @@
 import { Divider } from "primereact/divider";
-import { InputNumber } from "primereact/inputnumber";
-import React, { useEffect, useState } from "react";
+import {
+  InputNumber,
+  InputNumberValueChangeEvent,
+} from "primereact/inputnumber";
+import React, { useState } from "react";
 // import Domain from "../Domain/Domain";
 // import ShowCard from "../ShowCard/ShowCard";
 
@@ -29,7 +32,7 @@ const NumberInputBoxT4: React.FC<NumberInputBoxT4Props> = ({
   onClickOpt,
   onEdit,
 }) => {
-  const [value, setValue] = useState<number | null>(null);
+  const [value, setValue] = useState<number>();
 
   const handleButtonClick = () => {
     const forwardQId = label.options[0]?.forwardQId || "";
@@ -60,8 +63,9 @@ const NumberInputBoxT4: React.FC<NumberInputBoxT4Props> = ({
               id="fullInput"
               style={{ textAlign: "left" }}
               value={value}
-              onChange={(e) => {
-                setValue(e.value);
+              onValueChange={(e: InputNumberValueChangeEvent) => {
+                console.log("\n\n\ne line 67 ---->", e);
+                setValue(e.value as number);
               }}
               min={1}
               required
@@ -92,11 +96,6 @@ const NumberInputBoxT4: React.FC<NumberInputBoxT4Props> = ({
                 <i className="pi pi-arrow-right"></i>
               </button>
             </div>
-            {/* <button type="submit" style={{ background: "transparent", padding: "0px 5px", height: "100%" }}>
-              <span className="" style={{ background: "#10416a", color: "#fff", height: "100%", width: "100%" }}>
-                <i className="pi pi-arrow-right"></i>
-              </span>
-            </button> */}
           </div>
           <Divider />
         </div>
