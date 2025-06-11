@@ -43,6 +43,9 @@ import GetStarted from "../../components/001_GetStarted/GetStarted";
 import SearchPage from "../../components/12_SearchPage/SearchPage";
 import { App } from "@capacitor/app";
 import MedicalRecords from "../../components/40_MedicalRecords/MedicalRecords";
+import MRCameraCapture from "../../components/40_MedicalRecords/MRCameraCapture";
+import MRImageList from "../../components/40_MedicalRecords/MRImageList";
+import MRPdfUpload from "../../components/40_MedicalRecords/MRPdfUpload";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -190,6 +193,15 @@ const MainRoutes: React.FC = () => {
 
         <Route path="/MedicalRecords">
           <MedicalRecords />
+        </Route>
+        <Route path="/cameraRecords">
+          <MRCameraCapture />
+        </Route>
+        <Route path="/imageRecords">
+          <MRImageList />
+        </Route>
+        <Route path="/pdfRecords">
+          <MRPdfUpload />
         </Route>
 
         <Route path="/addFamilyMember">
