@@ -11,6 +11,8 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { ButtonGroup } from "primereact/buttongroup";
+
 import { chevronBack } from "ionicons/icons";
 import React, { useState } from "react";
 
@@ -18,16 +20,11 @@ import "./MedicalRecords.css";
 import MedicalRecordsReports from "./MedicalRecordsReports";
 import MedicalRecordsPrescriptions from "./MedicalRecordsPrescriptions";
 import MedicalRecordsDocuments from "./MedicalRecordsDocuments";
-import { SelectButton, SelectButtonChangeEvent } from "primereact/selectbutton";
+import { Button } from "primereact/button";
 
 const MedicalRecords: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState<string>("reports");
 
-  const options = [
-    { icon: "pi pi-camera", value: "camera" },
-    { icon: "pi pi-images", value: "images" },
-    { icon: "pi pi-file-pdf", value: "pdf" },
-  ];
   const [value, setValue] = useState<string>();
 
   return (
@@ -78,18 +75,44 @@ const MedicalRecords: React.FC = () => {
           horizontal="end"
           edge={false}
         >
-          <SelectButton
-            value={value}
-            onChange={(e: SelectButtonChangeEvent) => {
-              console.log("e", e.value);
-              setValue(e.value);
-            }}
-            options={options}
-            optionLabel="icon"
-            itemTemplate={(option) => (
-              <i className={option.icon} style={{ fontSize: "1rem" }} />
-            )}
-          />
+          <ButtonGroup>
+            <Button
+              icon="pi pi-camera"
+              className={
+                value === "camera"
+                  ? "p-button-primary buttonIconGroupStart"
+                  : "buttonIconGroupStart"
+              }
+              onClick={() => {
+                console.log("Camera selected");
+                setValue("camera");
+              }}
+            />
+            <Button
+              icon="pi pi-images"
+              className={
+                value === "images"
+                  ? "p-button-primary buttonIconGroup"
+                  : "buttonIconGroup"
+              }
+              onClick={() => {
+                console.log("Images selected");
+                setValue("images");
+              }}
+            />
+            <Button
+              icon="pi pi-file-pdf"
+              className={
+                value === "pdf"
+                  ? "p-button-primary buttonIconGroupEnd"
+                  : "buttonIconGroupEnd"
+              }
+              onClick={() => {
+                console.log("PDF selected");
+                setValue("pdf");
+              }}
+            />
+          </ButtonGroup>
         </IonFab>
       </IonContent>
     </IonPage>
