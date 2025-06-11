@@ -1,0 +1,28 @@
+.medicalRecFab ion-fab-button {
+  --background: var(--med-light-green);
+  --background-activated: #87d361;
+  --background-hover: #a3e681;
+  --box-shadow: 1px 1px 2px 0px rgba(12, 75, 65, 1);
+  --color: var(--med-dark-green);
+  height: 55px;
+  width: 55px;
+  font-weight: bold;
+}
+
+ion-segment-button {
+  padding: 5px;
+}
+
+.p-selectbutton.p-button-group.p-component .p-button {
+  padding: 10px 15px;
+}
+
+.medicalRecFab {
+  margin: 0.5rem;
+}
+
+/* On focus */
+.p-selectbutton .p-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0 rgba(63, 81, 181, 0.5); /* bluish outline */
+}

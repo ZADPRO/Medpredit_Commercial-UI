@@ -1,172 +1,166 @@
 .medpredit_profile {
-    inline-size: 100vw;
-    overflow: scroll;
-    /* padding-top: 1rem; */
+  inline-size: 100vw;
+  overflow: scroll;
+  /* padding-top: 1rem; */
 }
 
 .cus-ion-toolbar {
-    --background: #f7fff4 !important;
-    box-shadow: none !important;
-  }
-  
-.profile_top{
-    width: 95%;
-    margin: 0 auto;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  --background: #f7fff4 !important;
+  box-shadow: none !important;
+}
+
+.profile_top {
+  width: 95%;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .profile_top_bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 5% 5% 5% 5%;
-    
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 5% 5% 5% 5%;
 }
 
 .profile_top_bar_header {
-    width: 70%;
-    min-width: 0;
-    word-wrap: break-word; /* Allows long words to break */
+  width: 70%;
+  min-width: 0;
+  word-wrap: break-word; /* Allows long words to break */
 }
 
 .profile_top_bar_header h2 {
-    margin: 0;
-    width: 100%;
-    white-space: normal; /* Ensures the text wraps */
-    font-weight: 900;
-    font-size: 1.9rem;
-    padding: 0 0 0.4rem 0;
+  margin: 0;
+  width: 100%;
+  white-space: normal; /* Ensures the text wraps */
+  font-weight: 900;
+  font-size: 1.9rem;
+  padding: 0 0 0.4rem 0;
 }
 
-.profile_top_bar_header p{
-    margin: 0;
-    font-size: 0.8rem;
-
+.profile_top_bar_header p {
+  margin: 0;
+  font-size: 0.8rem;
 }
 
 .profile_top_bar_avatar {
-    flex-shrink: 0;
-    width: 2.5rem;
-    height: 2.5rem; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    background-color: var(--med-light-green);
-    border-radius: 50%;
-    text-transform: uppercase;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: var(--med-light-green);
+  border-radius: 50%;
+  text-transform: uppercase;
 }
 
-
-.profile_top_bar_footer{
-    background-color: black;
-    color: rgba(255,215,0,1);
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    padding: 5%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.profile_top_bar_footer {
+  background-color: black;
+  color: rgba(255, 215, 0, 1);
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.profile_top_bar_footer h3{
-    margin: 0;
-    font-size: 1rem;
+.profile_top_bar_footer h3 {
+  margin: 0;
+  font-size: 1rem;
 }
 
 .profile-body {
-    width: 95%;
-    margin: 2rem auto;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: white;
-  }
+  width: 95%;
+  margin: 1rem auto;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
 
-  .profile-delete{
-    width: 95%;
-    margin: 1rem auto;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    overflow: hidden;
-    /* border: 1.5px solid red; */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    background-color: rgb(255, 247, 247);
-    color: red;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    
-  }
+.profile-delete {
+  width: 95%;
+  margin: 1rem auto;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  /* border: 1.5px solid red; */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgb(255, 247, 247);
+  color: red;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
 
-  .profile-body-header {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--med-dark-green);
-    padding: 1rem;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .profile-body-item {
-    display: flex;
-    align-items: center; /* Ensures everything is in the same line */
-    gap: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-    width: 100%;
+.profile-body-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--med-dark-green);
+  padding: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-body-item {
+  display: flex;
+  align-items: center; /* Ensures everything is in the same line */
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  width: 100%;
 }
 
 .profile-body-item:hover {
-    background: rgb(250, 250, 250);
+  background: rgb(250, 250, 250);
 }
 
-.profile-body-item ion-icon{
+.profile-body-item ion-icon {
   color: var(--med-dark-green);
   font-size: 1.2rem;
 }
 
 .profile-body-item i {
-    font-size: 1.2rem;
-    color: var(--med-light-green);
-    background-color: var(--med-dark-green);
-    padding: 0.5rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-size: 1rem;
+  color: var(--med-light-green);
+  background-color: var(--med-dark-green);
+  padding: 0.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile-body-text {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .profile-body-label {
-    font-size: 1rem;
-    flex-grow: 1; /* Ensures it takes up remaining space */
+  font-size: 1rem;
+  flex-grow: 1; /* Ensures it takes up remaining space */
 }
 
 .profile-body-short-divider {
-    height: 1px;
-    width: 80%;
-    margin-left: auto;
-    background: rgba(224, 224, 224, 0.5);
+  height: 1px;
+  width: 80%;
+  margin-left: auto;
+  background: rgba(224, 224, 224, 0.5);
 }
 
-  
-  .profile-copyright {
-    text-align: center;
-    margin-top: 2rem;
-    padding: 1rem;
-    font-size: 0.9rem;
-    color: #666;
-    border-top: 1px solid #ddd;
-  }
-  
+.profile-copyright {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  border-top: 1px solid #ddd;
+}

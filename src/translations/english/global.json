@@ -11,15 +11,15 @@
     "select": "Select"
   },
   "getStarted": {
-  "carousel01_heading": "All-in-One Health Platform",
-  "carousel01_text": "Predict illnesses, track health trends, and store your journey securely - all in one place.",
+    "carousel01_heading": "All-in-One Health Platform",
+    "carousel01_text": "Predict illnesses, track health trends, and store your journey securely - all in one place.",
 
-  "carousel02_heading": "Family-Wide Peace of Mind",
-  "carousel02_text": "Track and protect your entire family's health with ease and confidence every day.",
+    "carousel02_heading": "Family-Wide Peace of Mind",
+    "carousel02_text": "Track and protect your entire family's health with ease and confidence every day.",
 
-  "carousel03_heading": "Your Health, Seamlessly Connected",
-  "carousel03_text": "Access your full health history and future - smart, secure, and always available."
-},
+    "carousel03_heading": "Your Health, Seamlessly Connected",
+    "carousel03_text": "Access your full health history and future - smart, secure, and always available."
+  },
   "login": {
     "welcome": "Hi, Welcome!",
     "Mobile Number/ Email Address": "Enter Mobile Number",
@@ -145,6 +145,8 @@
     "Transaction History": "Transaction History",
     "Settings": "Settings",
     "Notification Settings": "Notification Settings",
+    "MedicalRecords": "Medical Records",
+    "UploadMedicalRecords": "Manage Medical Records",
     "Choose Language": "Choose Language",
     "Help Center": "Help Center",
     "Feedback": "Feedback",
@@ -289,13 +291,27 @@
     "Tell us more about your experience": "Tell us more about your experience...",
     "Submit Feedback": "Submit Feedback"
   },
+
   "about": {
-    "About": "About",
-    "Terms of Service": "Terms of Service",
-    "App version": "App version",
-    "Live": "Live",
-    "Open Source Libraries": "Open Source Libraries",
-    "Licenses and Registrations": "Licenses and Registrations"
+    "About": "About Medpredit",
+    "YourPartner": "Your Partner in Personalized Health & Wellness",
+    "Description": "Medpredit is a user-friendly self-assessment healthcare app designed to empower you to take control of your well-being. Whether you're aiming to improve your lifestyle or simply want a clearer understanding of your health, Medpredit provides valuable insights.",
+    "KeyFeatures": "Key Features",
+    "ComprehensiveCare": {
+      "Title": "Comprehensive Care",
+      "Desc": "Evaluate your wellness in key areas like Stress, Alcohol Use, Sleep Quality, and Tobacco Usage to gain a detailed view of potential health risks."
+    },
+    "BasicCare": {
+      "Title": "Basic Care",
+      "Desc": "Assess your Diet, BMI, Physical Activity, and Family Medical History. These foundational checks help you monitor your day-to-day health."
+    },
+    "FamilyHealthManagement": {
+      "Title": "Family Health Management",
+      "Desc": "Add and manage family member profiles easily. Monitor and support their wellness journeys together with your own."
+    },
+    "OurMission": "Our Mission",
+    "MissionStatement": "At Medpredit, we believe in health awareness and preventive care. We aim to inspire healthy choices and provide accessible tools for your entire family.",
+    "CallToAction": "Download Medpredit and begin your journey to better health today!"
   },
   "terms": {
     "Terms and Conditions": "Terms and Conditions",
@@ -330,7 +346,7 @@
     "Intellectual Property Ans": "All content, trademarks, logos, and data on MedPredit are the property of MedPredit or its licensors. You may not reproduce, distribute, or exploit any part of the platform without prior written consent.",
     "Contact Us": "10. Contact Us",
     "Contact Us Ans": "If you have any questions or concerns regarding these Terms, please contact us at:",
-    "Contact Email": "Email: ", 
+    "Contact Email": "Email: ",
     "Medpredit Email": "med-info@zadroit.com",
     "Refund Policy": "11. Refund Policy",
     "Refund Policy Ans 1": "No Refunds: We do not offer refunds or credits for any partial usage, unused time, or uncompleted self-assessments, regardless of the reason.",
@@ -338,64 +354,64 @@
     "Refund Policy Ans 3": "Cancellation: Once a subscription is purchased, it cannot be cancelled, and no refunds will be issued for any reason."
   },
   "privacy": {
-  "Privacy Policy": "Privacy Policy",
-  "Introduction": "1. Introduction",
-  "IntroductionDesc1": "Welcome to Medpredit (\"we,\" \"our,\" or \"us\"). This Privacy Policy explains how we collect, use, disclose, and protect your personal and health-related information when you use our self-assessment health app (\"App\").",
-  "IntroductionDesc2": "By using the App, you agree to the terms of this Privacy Policy. If you do not agree, please do not use the App.",
-  
-  "Information We Collect": "2. Information We Collect",
-  "Personal Information": "a. Personal Information",
-  "Name": "Name",
-  "Email address": "Email address",
-  "Contact details": "Contact details",
-  "Date of Birth": "Date of Birth",
-  "Marital Status": "Marital Status",
-  "Occupation": "Occupation",
-  "Career details": "Career details",
+    "Privacy Policy": "Privacy Policy",
+    "Introduction": "1. Introduction",
+    "IntroductionDesc1": "Welcome to Medpredit (\"we,\" \"our,\" or \"us\"). This Privacy Policy explains how we collect, use, disclose, and protect your personal and health-related information when you use our self-assessment health app (\"App\").",
+    "IntroductionDesc2": "By using the App, you agree to the terms of this Privacy Policy. If you do not agree, please do not use the App.",
 
-  "Health-Related Information": "b. Health-Related Information",
-  "Self-reported symptoms": "Self-reported symptoms",
-  "Physical and mental health data": "Physical and mental health data",
-  "Lifestyle-related data": "Lifestyle-related data (e.g., physical activity, tobacco use, stress, sleep, BMI, diet)",
-  "Family medical history": "Family medical history",
+    "Information We Collect": "2. Information We Collect",
+    "Personal Information": "a. Personal Information",
+    "Name": "Name",
+    "Email address": "Email address",
+    "Contact details": "Contact details",
+    "Date of Birth": "Date of Birth",
+    "Marital Status": "Marital Status",
+    "Occupation": "Occupation",
+    "Career details": "Career details",
 
-  "Device & Usage Data": "c. Device & Usage Data",
-  "Mobile number": "Mobile number (if registered)",
+    "Health-Related Information": "b. Health-Related Information",
+    "Self-reported symptoms": "Self-reported symptoms",
+    "Physical and mental health data": "Physical and mental health data",
+    "Lifestyle-related data": "Lifestyle-related data (e.g., physical activity, tobacco use, stress, sleep, BMI, diet)",
+    "Family medical history": "Family medical history",
 
-  "How We Use Your Information": "3. How We Use Your Information",
-  "Use 1": "To deliver personalized health insights and self-assessments.",
-  "Use 2": "To store and analyze your responses to health questionnaires.",
+    "Device & Usage Data": "c. Device & Usage Data",
+    "Mobile number": "Mobile number (if registered)",
 
-  "Data Sharing & Disclosure": "4. Data Sharing & Disclosure",
-  "DisclosureDesc": "We do not sell your personal or health data. We may share information only under the following circumstances:",
-  "With providers": "With healthcare providers, only with your explicit consent, to provide health-related services and support.",
-  "With authorities": "With legal authorities, if required by law.",
-  "Confidentiality": "Your data is handled with strict confidentiality.",
+    "How We Use Your Information": "3. How We Use Your Information",
+    "Use 1": "To deliver personalized health insights and self-assessments.",
+    "Use 2": "To store and analyze your responses to health questionnaires.",
 
-  "Data Security": "5. Data Security",
-  "SecurityDesc": "We implement industry-standard security measures to protect your data, including:",
-  "SSL-secured communication": "SSL-secured communication.",
-  "256-bit encryption": "256-bit encryption protocols.",
-  "Strict access controls": "Strict access controls and cryptographic key protection.",
-  "No system secure": "However, no system is completely secure. Please use the App responsibly.",
+    "Data Sharing & Disclosure": "4. Data Sharing & Disclosure",
+    "DisclosureDesc": "We do not sell your personal or health data. We may share information only under the following circumstances:",
+    "With providers": "With healthcare providers, only with your explicit consent, to provide health-related services and support.",
+    "With authorities": "With legal authorities, if required by law.",
+    "Confidentiality": "Your data is handled with strict confidentiality.",
 
-  "Your Rights": "6. Your Rights",
-  "Access or update": "Access or update your personal information.",
-  "Delete account": "Delete your account.",
-  "Request data": "Request a copy of your data.",
-  "Contact to exercise rights": "To exercise these rights, please contact us at:",
+    "Data Security": "5. Data Security",
+    "SecurityDesc": "We implement industry-standard security measures to protect your data, including:",
+    "SSL-secured communication": "SSL-secured communication.",
+    "256-bit encryption": "256-bit encryption protocols.",
+    "Strict access controls": "Strict access controls and cryptographic key protection.",
+    "No system secure": "However, no system is completely secure. Please use the App responsibly.",
 
-  "Third-Party Links": "7. Third-Party Payment Services",
-  "Third-party disclaimer": "The app may contain links to third-party services used specifically for processing payments. Please note that we are not responsible for the privacy practices or policies of these external services.",
+    "Your Rights": "6. Your Rights",
+    "Access or update": "Access or update your personal information.",
+    "Delete account": "Delete your account.",
+    "Request data": "Request a copy of your data.",
+    "Contact to exercise rights": "To exercise these rights, please contact us at:",
 
-  "Changes to Policy": "8. Changes to This Policy",
-  "Policy updates": "We may update this Privacy Policy periodically. The latest version will always be available on our platform. Significant changes will be communicated to you.",
+    "Third-Party Links": "7. Third-Party Payment Services",
+    "Third-party disclaimer": "The app may contain links to third-party services used specifically for processing payments. Please note that we are not responsible for the privacy practices or policies of these external services.",
 
-  "Contact Us": "9. Contact Us",
-  "Contact info": "For questions or concerns, contact:\nZadroit IT Solutions.",
-  "Email label": "Email:",
-  "Email": "med-info@zadroit.com"
-},
+    "Changes to Policy": "8. Changes to This Policy",
+    "Policy updates": "We may update this Privacy Policy periodically. The latest version will always be available on our platform. Significant changes will be communicated to you.",
+
+    "Contact Us": "9. Contact Us",
+    "Contact info": "For questions or concerns, contact:\nZadroit IT Solutions.",
+    "Email label": "Email:",
+    "Email": "med-info@zadroit.com"
+  },
   "assessment": {
     "Evaluate your daily movement and exercise habits": "Evaluate your daily movement and exercise habits.",
     "Engage in at least 30 minutes of exercise daily": "Engage in at least 30 minutes of exercise daily.",

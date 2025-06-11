@@ -10,7 +10,7 @@
   scrollbar-width: auto !important;
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   width: 0;
 }
 
@@ -18,18 +18,27 @@
   --med-light-grey: rgba(243, 243, 243, 1);
   --med-dark-green: rgba(12, 75, 65, 1);
   --med-light-green: rgba(165, 231, 104, 1);
-  --med-light-green-gradient-background: linear-gradient(225deg, rgba(246,255,242,1) 0%, rgba(255,255,255,1) 100%);
-  --ion-background-color: linear-gradient(225deg, rgba(246,255,242,1) 0%, rgba(255,255,255,1) 100%);
+  --med-light-green-gradient-background: linear-gradient(
+    225deg,
+    rgba(246, 255, 242, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  --ion-background-color: linear-gradient(
+    225deg,
+    rgba(246, 255, 242, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
 body {
-  --ion-safe-area-top: env(safe-area-inset-top); /* Ensures safe area handling */
+  --ion-safe-area-top: env(
+    safe-area-inset-top
+  ); /* Ensures safe area handling */
 }
 
 ion-content {
   padding-top: var(--ion-safe-area-top); /* Pushes content below status bar */
 }
-
 
 .medCustom-button01 {
   background-color: var(--med-light-green);
@@ -53,7 +62,7 @@ ion-content {
 
 .medCustom-button03-premium {
   background-color: rgb(53, 53, 53);
-  color: rgba(255,215,0,1);
+  color: rgba(255, 215, 0, 1);
   font-weight: 800;
   font-size: 1rem;
   padding: 1rem;
@@ -70,14 +79,13 @@ ion-content {
   text-align: center;
 }
 
-.cus-ion-page{
+.cus-ion-page {
   background: var(--med-light-green-gradient-background);
 }
 
-.cus-ion-page ion-content{
-  --background: transparent!important;
+.cus-ion-page ion-content {
+  --background: transparent !important;
 }
-
 
 /*Prime React Input Fields CSS*/
 
@@ -101,7 +109,7 @@ ion-content {
   background: var(--med-dark-green);
 }
 
-.p-datepicker{
+.p-datepicker {
   /* background: transparent; */
   color: var(--med-dark-green);
   border: none;
@@ -111,7 +119,7 @@ ion-content {
   background: var(--med-light-grey);
 }
 
-.p-datepicker table td > .p-disabled{
+.p-datepicker table td > .p-disabled {
   opacity: 30%;
 }
 
@@ -120,63 +128,61 @@ ion-content {
   color: var(--med-light-green);
 }
 
-.p-dropdown:not(.p-disabled).p-focus{
+.p-dropdown:not(.p-disabled).p-focus {
   border: none;
   box-shadow: none;
 }
 
-.p-dropdown .p-dropdown-label.p-placeholder{
+.p-dropdown .p-dropdown-label.p-placeholder {
   color: #6b7280;
 }
 
-.p-inputtext{
+.p-inputtext {
   color: black;
   border: none;
 }
 
-.p-inputtext:enabled:focus{
+.p-inputtext:enabled:focus {
   box-shadow: none;
 }
 
-
 /* React TimeKeeper CSS Starts*/
 
-.input-react-timekeeper> .react-timekeeper{
-  width: 100%!important;
-  margin: 0!important;
+.input-react-timekeeper > .react-timekeeper {
+  width: 100% !important;
+  margin: 0 !important;
 }
 
-.input-react-timekeeper> .react-timekeeper>div{
+.input-react-timekeeper > .react-timekeeper > div {
   text-align: center;
-  font-weight: bold!important;
+  font-weight: bold !important;
 }
 
-.input-react-timekeeper> .react-timekeeper>div>div{
-  left:0!important;
-  color: var(--med-light-green)!important;
+.input-react-timekeeper > .react-timekeeper > div > div {
+  left: 0 !important;
+  color: var(--med-light-green) !important;
 }
 
-.input-react-timekeeper> .react-timekeeper>span{
-  background: var(--med-dark-green)!important;
-  color: white!important;
-  font-weight: bold!important;
-  font-size: medium!important;
+.input-react-timekeeper > .react-timekeeper > span {
+  background: var(--med-dark-green) !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: medium !important;
 }
 
-.react-timekeeper__clock{
-  background: var(--med-light-green)!important;
+.react-timekeeper__clock {
+  background: var(--med-light-green) !important;
 }
 
-.input-react-timekeeper> .react-timekeeper .react-timekeeper__clock-wrapper {
-    /* background: var(--med-dark-green-gradient-background)!important; */
+.input-react-timekeeper > .react-timekeeper .react-timekeeper__clock-wrapper {
+  /* background: var(--med-dark-green-gradient-background)!important; */
 }
 
-.react-timekeeper__clock-animations>span {
-  color: var(--med-dark-green)!important;
+.react-timekeeper__clock-animations > span {
+  color: var(--med-dark-green) !important;
 }
 
 /* React TimeKeeper CSS Ends*/
-
 
 ion-modal#med-modal {
   --width: 90%;
@@ -189,8 +195,7 @@ ion-modal#med-modal {
   overflow: auto; /* Allow scrolling if needed */
 }
 
-
-ion-modal#ion-custom-modal-01{
+ion-modal#ion-custom-modal-01 {
   --width: 90%;
   --height: auto;
   --border-radius: 6px;
@@ -201,7 +206,6 @@ ion-modal#ion-custom-modal-01{
   overflow: auto; /* Allow scrolling if needed */
 }
 
-
 ion-modal#ion-custom-modal-02 {
   --max-height: 80%;
   --border-radius: 30px 30px 0 0;
@@ -209,12 +213,12 @@ ion-modal#ion-custom-modal-02 {
   align-items: flex-end;
 }
 
-
 ion-modal#ion-custom-modal-03 {
   --height: 35%;
   --width: 95%;
   --border-radius: 16px;
-  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 ion-modal#ion-custom-modal-03::part(backdrop) {
@@ -245,20 +249,20 @@ ion-modal#ion-custom-modal-03 ion-toolbar {
   align-items: center;
 }
 
-.loading-container>ion-spinner{
+.loading-container > ion-spinner {
   height: 7vh;
   width: 7vh;
 }
 
-.cus-overflow{
+.cus-overflow {
   height: fit-content;
   overflow: scroll;
 }
 
 ion-datetime {
   --background: var(--med-light-green-gradient-background);
-  --background-rgb:  var(--med-light-green-gradient-background);
-  --wheel-highlight-background:  var(--med-dark-green);
+  --background-rgb: var(--med-light-green-gradient-background);
+  --wheel-highlight-background: var(--med-dark-green);
   --wheel-highlight-border-radius: 10px;
   --wheel-fade-background-rgb: 239, 250, 254;
 }
@@ -276,14 +280,14 @@ ion-toast::part(button) {
   font-size: 0.8rem;
 }
 
-ion-fab{
+ion-fab {
   margin: 0 1rem 1rem 0;
 }
 
 ion-fab-button {
   --background: var(--med-light-green);
   --background-activated: #87d361;
---background-hover: #a3e681;
+  --background-hover: #a3e681;
   --box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
   --color: var(--med-dark-green);
   height: 64px;
@@ -291,17 +295,25 @@ ion-fab-button {
   font-weight: bold;
 }
 
-ion-fab-list ion-fab-button{
+ion-fab-list ion-fab-button {
   --background: var(--med-dark-green);
 }
 
 ion-fab-button#fab-premium {
   --background: #353535;
   --background-activated: #353535;
---background-hover: #353535;;
-  --box-shadow: 5px 5px 10px 0px rgba(53, 53, 53,0.5);
-  --color: rgba(255,215,0,1);
+  --background-hover: #353535;
+  --box-shadow: 5px 5px 10px 0px rgba(53, 53, 53, 0.5);
+  --color: rgba(255, 215, 0, 1);
   height: 64px;
   width: 64px;
   font-weight: bold;
+}
+
+p {
+  margin: 0;
+}
+
+.medicalRecordsIcon {
+  width: 60px;
 }

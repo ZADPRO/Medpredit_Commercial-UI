@@ -1,7 +1,4 @@
-import {
-  IonRouterOutlet,
-  IonTabs,
-} from "@ionic/react";
+import { IonRouterOutlet, IonTabs } from "@ionic/react";
 
 import React, { useEffect } from "react";
 import { Route, useLocation } from "react-router";
@@ -45,6 +42,7 @@ import KnowAbout from "../KnowAbout/KnowAbout";
 import GetStarted from "../../components/001_GetStarted/GetStarted";
 import SearchPage from "../../components/12_SearchPage/SearchPage";
 import { App } from "@capacitor/app";
+import MedicalRecords from "../../components/40_MedicalRecords/MedicalRecords";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -53,10 +51,9 @@ const MainRoutes: React.FC = () => {
     const configureStatusBar = async () => {
       if (Capacitor.isNativePlatform()) {
         let bgcolor;
-        if(location.pathname != "/home") {
+        if (location.pathname != "/home") {
           bgcolor = "#f8fff5";
-        }
-        else {
+        } else {
           bgcolor = "none";
         }
 
@@ -69,7 +66,6 @@ const MainRoutes: React.FC = () => {
     configureStatusBar();
   }, [location.pathname]);
 
-
   const tokenString = localStorage.getItem("userDetails");
   let roleType = 1;
 
@@ -81,16 +77,16 @@ const MainRoutes: React.FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    App.addListener('appUrlOpen', (event) => {
+    App.addListener("appUrlOpen", (event) => {
       const url = event.url; // e.g., "medpreditcommercial://open/reports/sales"
       if (url) {
         try {
           const parsedUrl = new URL(url);
           const path = parsedUrl.pathname; // "/reports/sales"
-          console.log('Navigating to', path);
+          console.log("Navigating to", path);
           history.replace(path); // Navigate inside your app
         } catch (e) {
-          console.error('Invalid deep link URL', e);
+          console.error("Invalid deep link URL", e);
         }
       }
     });
@@ -113,7 +109,7 @@ const MainRoutes: React.FC = () => {
           <Login />
         </Route>
         <Route path="/getStarted">
-          <GetStarted/>
+          <GetStarted />
         </Route>
         <Route path="/registerUser">
           <RegisterUser />
@@ -134,7 +130,7 @@ const MainRoutes: React.FC = () => {
           <Home />
         </Route>
         <Route path="/searchPage">
-          <SearchPage/>
+          <SearchPage />
         </Route>
         <Route path="/profile">
           <Profile />
@@ -143,10 +139,10 @@ const MainRoutes: React.FC = () => {
           <UserProfile />
         </Route>
         <Route path="/manageFamily">
-          <ManageFamily/>
+          <ManageFamily />
         </Route>
         <Route path="/addFamilyMember">
-          <AddFamilyMember/>
+          <AddFamilyMember />
         </Route>
         <Route path="/subscriptionPlans">
           <SubscriptionPlans />
@@ -169,7 +165,7 @@ const MainRoutes: React.FC = () => {
         <Route path="/landr">
           <LandR />
         </Route>
-     
+
         <Route path="/notificationSettings">
           <NotificationSettings />
         </Route>
@@ -191,17 +187,22 @@ const MainRoutes: React.FC = () => {
         <Route path="/ChooseLanguage_02">
           <ChooseLanguage_02 />
         </Route>
+
+        <Route path="/MedicalRecords">
+          <MedicalRecords />
+        </Route>
+
         <Route path="/addFamilyMember">
           <AddFamilyMember />
         </Route>
         <Route path="/linkFamilyMember">
-          <LinkFamilyMember/>
+          <LinkFamilyMember />
         </Route>
         <Route path="/about">
           <About />
         </Route>
         <Route path="/knowAbout/:sentDisease">
-          <KnowAbout/>
+          <KnowAbout />
         </Route>
         <Route path="/serviceAssessment/:serviceId">
           <ServiceAssessment />
@@ -210,7 +211,7 @@ const MainRoutes: React.FC = () => {
           <Questions />
         </Route>
         <Route path="/reports">
-          <Report/> 
+          <Report />
         </Route>
       </IonRouterOutlet>
 

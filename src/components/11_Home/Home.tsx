@@ -93,23 +93,24 @@ const Home: React.FC = () => {
     setIsScrolled(scrollTop > 20); // Track scroll state
 
     // Update StatusBar color dynamically
-    StatusBar.setBackgroundColor({ color: scrollTop > 20 ? "#f3f3f3" : "#f8fff5" });
+    StatusBar.setBackgroundColor({
+      color: scrollTop > 20 ? "#f3f3f3" : "#f8fff5",
+    });
   };
 
   const [packages, setPackages] = useState<any>([]);
 
   const [freeAssessment, setFreeAssessment] = useState({
     higherCount: 0,
-    lowerCount: 0
+    lowerCount: 0,
   });
 
-  const language = localStorage.getItem('lang') || 'english';
+  const language = localStorage.getItem("lang") || "english";
 
-const carouselImages =
-  language === "hindi"
-    ? [carousel1_hin, carousel2_hin, carousel3_hin, carousel4_hin]
-    : [carousel1_eng, carousel2_eng, carousel3_eng, carousel4_eng];
-
+  const carouselImages =
+    language === "hindi"
+      ? [carousel1_hin, carousel2_hin, carousel3_hin, carousel4_hin]
+      : [carousel1_eng, carousel2_eng, carousel3_eng, carousel4_eng];
 
   const services = [
     {
@@ -191,42 +192,37 @@ const carouselImages =
   const knowAbout = [
     {
       id: 1,
-      disease: 'diabetes',
+      disease: "diabetes",
       bgImage: diabetesKnowAbout,
       title: t("home.What is Diabetes"),
-      subTitle:
-        t("home.What is Diabetesans"),
+      subTitle: t("home.What is Diabetesans"),
       bgColor: "#F2F6D0",
     },
     {
       id: 2,
-      disease: 'hypertension',
+      disease: "hypertension",
       bgImage: hypertensionKnowAbout,
       title: t("home.What is Hypertension"),
-      subTitle:
-        t("home.What is Hypertensionans"),
+      subTitle: t("home.What is Hypertensionans"),
       bgColor: "#EFDCAB",
     },
     {
       id: 3,
-      disease: 'coronary heart disease',
+      disease: "coronary heart disease",
       bgImage: coronaryKnowAbout,
       title: t("home.What is Coronary artery disease"),
-      subTitle:
-        t("home.What is Coronary artery diseaseans"),
+      subTitle: t("home.What is Coronary artery diseaseans"),
       bgColor: "#D98324",
     },
     {
       id: 4,
-      disease: 'stroke',
+      disease: "stroke",
       bgImage: stokeKnowAbout,
       title: t("home.What is Stroke"),
-      subTitle:
-      t("home.What is StrokeAns"),
+      subTitle: t("home.What is StrokeAns"),
       bgColor: "#F2F6D0",
     },
   ];
-
 
   const getPackage = () => {
     const tokenString = localStorage.getItem("userDetails");
@@ -235,14 +231,17 @@ const carouselImages =
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
 
-        console.log(token)
+        console.log(token);
         axios
-          .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`, {
-            headers: {
-              Authorization: token,
-              "Content-Type": "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`,
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
           .then((response) => {
             const data = decrypt(
               response.data[1],
@@ -251,15 +250,21 @@ const carouselImages =
             );
             console.log(data);
             if (data.status) {
-              let tempPackages = data.result.sort((a: any, b: any) => a.refPkgValidMembers - b.refPkgValidMembers);
+              let tempPackages = data.result.sort(
+                (a: any, b: any) => a.refPkgValidMembers - b.refPkgValidMembers
+              );
 
               tempPackages = tempPackages.slice(0, 3);
 
-              tempPackages = [tempPackages[0], tempPackages[2], tempPackages[1]];     // Rearrange the package list for UI
+              tempPackages = [
+                tempPackages[0],
+                tempPackages[2],
+                tempPackages[1],
+              ]; // Rearrange the package list for UI
               setPackages(tempPackages);
 
               // setSubscriptionData({
-              //   packageStatus: data.packageStatus ?? false, 
+              //   packageStatus: data.packageStatus ?? false,
               //   packageData: Array.isArray(data.packageData) ? data.packageData : []
               // });
               setLoading(false);
@@ -303,11 +308,11 @@ const carouselImages =
               );
               setFreeAssessment({
                 higherCount: Number(data.isHigherQuestion[0].assessmenttakenno),
-                lowerCount: Number(data.isLowerQuestion[0].assessmenttakenno)
-              })
+                lowerCount: Number(data.isLowerQuestion[0].assessmenttakenno),
+              });
             }
             setLoading(false);
-          })
+          });
       } catch (error) {
         console.log(error);
         setLoading(false);
@@ -320,8 +325,6 @@ const carouselImages =
     getPackage();
     getHomeDetails();
   }, []);
-
-   
 
   console.log(packages);
   return (
@@ -364,8 +367,14 @@ const carouselImages =
 
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>
         <div className="medpredit_home">
-          <div className="home-search-bar" onClick={()=>history.push("/searchPage")}>
-            <input className="home-search-input" placeholder={t("home.Search Service")} />
+          <div
+            className="home-search-bar"
+            onClick={() => history.push("/searchPage")}
+          >
+            <input
+              className="home-search-input"
+              placeholder={t("home.Search Service")}
+            />
             <div
               style={{ display: "flex", flexDirection: "row", gap: "0.2rem" }}
             >
@@ -374,7 +383,6 @@ const carouselImages =
               </button>
             </div>
           </div>
-
           <div className="home-carousel">
             <Carousel
               autoPlay
@@ -406,7 +414,11 @@ const carouselImages =
               </div>
               <div
                 className="carouselDiv"
-                onClick={() => (headStatus == "true" ? (history.push("/manageFamily")) : (history.push("/profile")))}
+                onClick={() =>
+                  headStatus == "true"
+                    ? history.push("/manageFamily")
+                    : history.push("/profile")
+                }
               >
                 <img src={carouselImages[2]} className="carousel-image" />
               </div>
@@ -415,7 +427,6 @@ const carouselImages =
               </div> */}
             </Carousel>
           </div>
-
           {/* <div className="home-services">
             <div className="home-services-title">
               <h2
@@ -435,7 +446,6 @@ const carouselImages =
               ))}
             </div>
           </div> */}
-
           <div className="home-services">
             <div className="home-services-title">
               <h2
@@ -472,7 +482,8 @@ const carouselImages =
                           textAlign: "center",
                         }}
                       >
-                        {t("home.Free Assesstment Taken")}: {freeAssessment.higherCount > 0 ? 1 : 0}/1
+                        {t("home.Free Assesstment Taken")}:{" "}
+                        {freeAssessment.higherCount > 0 ? 1 : 0}/1
                       </p>
                     )}
                   </div>
@@ -523,7 +534,8 @@ const carouselImages =
                           textAlign: "center",
                         }}
                       >
-                        {t("home.Free Assesstment Taken")}: {freeAssessment.lowerCount > 0 ? 1 : 0}/1
+                        {t("home.Free Assesstment Taken")}:{" "}
+                        {freeAssessment.lowerCount > 0 ? 1 : 0}/1
                       </p>
                     )}
                   </div>
@@ -575,7 +587,6 @@ const carouselImages =
               </div>
             </div>
           </div>
-
           {headStatus == "true" &&
             localStorage.getItem("subValid") == "false" && (
               <div className="home-pricing">
@@ -608,11 +619,11 @@ const carouselImages =
                           <Card
                             key={index}
                             className="home-pricing-card-content"
-                             onClick={() =>
-                                history.push({
-                                  pathname: "/subscriptionPlans",
-                                })
-                              }
+                            onClick={() =>
+                              history.push({
+                                pathname: "/subscriptionPlans",
+                              })
+                            }
                           >
                             <span
                               style={{ fontSize: "1rem", fontWeight: "bold" }}
@@ -620,12 +631,16 @@ const carouselImages =
                               {plan.refPkgName}
                             </span>
                             <div>
-                              <p>{plan.refPkgValidDays + " " + t("home.days validity")}</p>
+                              <p>
+                                {plan.refPkgValidDays +
+                                  " " +
+                                  t("home.days validity")}
+                              </p>
                               <p>
                                 {"1" +
                                   (plan.refPkgValidMembers > 1
                                     ? ` + ${plan.refPkgValidMembers - 1} `
-                                    : ` `) + 
+                                    : ` `) +
                                   t("home.Member")}
                               </p>
                             </div>
@@ -638,10 +653,7 @@ const carouselImages =
                             >
                               {"Rs. " + plan.refPkgAmount}
                             </span>
-                            <div
-                              className="home-pricing-card-getstarted"
-                             
-                            >
+                            <div className="home-pricing-card-getstarted">
                               {t("home.Get Started")}
                             </div>
                           </Card>
@@ -651,11 +663,11 @@ const carouselImages =
                           <Card
                             key={index}
                             className="home-pricing-card-content"
-                             onClick={() =>
-                                history.push({
-                                  pathname: "/subscriptionPlans",
-                                })
-                              }
+                            onClick={() =>
+                              history.push({
+                                pathname: "/subscriptionPlans",
+                              })
+                            }
                           >
                             <span
                               style={{
@@ -666,7 +678,11 @@ const carouselImages =
                               {plan.refPkgName}
                             </span>
                             <div>
-                              <p>{plan.refPkgValidDays + " " + t("home.days validity")}</p>
+                              <p>
+                                {plan.refPkgValidDays +
+                                  " " +
+                                  t("home.days validity")}
+                              </p>
                               <p>
                                 {"1" +
                                   (plan.refPkgValidMembers > 1
@@ -684,10 +700,7 @@ const carouselImages =
                             >
                               {"Rs. " + plan.refPkgAmount}
                             </span>
-                            <div
-                              className="home-pricing-card-getstarted-pro"
-                             
-                            >
+                            <div className="home-pricing-card-getstarted-pro">
                               {t("home.Get Started")}
                             </div>
                           </Card>
@@ -774,7 +787,8 @@ const carouselImages =
                 </span>
               </div>
 
-              {/* <span>View All</span> */} {/*
+              {/* <span>View All</span> */}{" "}
+          {/*
             </div>
 
             <div className="home-riskFactor-content">
@@ -882,7 +896,6 @@ const carouselImages =
               </div>
             </div>
           </div> */}
-
           <div className="home-knowAbout">
             <div className="home-knowAbout-title">
               <div>
@@ -927,12 +940,10 @@ const carouselImages =
               ))}
             </div>
           </div>
-
           {/* <div className="home-faq">
             <h2>FAQ</h2>
             <IonIcon size="large" src={chevronForward} />
           </div> */}
-
           <div className="home-footer">
             <h3>
               {t("home.made with")} <img src={heartIcon} /> {t("home.by")}

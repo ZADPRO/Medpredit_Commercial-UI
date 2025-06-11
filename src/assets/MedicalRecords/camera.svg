@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+    xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve">
+    <g>
+        <path fill="#32cdff" d="M256 0c56.295 0 108.334 18.185 150.596 48.981L12.385 334.823C4.356 309.99 0 283.506 0 256 0 114.615 114.615 0 256 0z" opacity="1" data-original="#32cdff"></path>
+        <path fill="#00a0ff" d="M105.526 48.893 256 512C114.615 512 0 397.385 0 256 0 170.856 41.578 95.435 105.526 48.893z" opacity="1" data-original="#00a0ff"></path>
+        <path fill="#64f0ff" d="M499.519 335.121C466.187 437.778 369.769 512 256 512S45.813 437.778 12.481 335.121z" opacity="1" data-original="#64f0ff"></path>
+        <path fill="#32cdff" d="M256 335.121V512c113.77 0 210.187-74.222 243.519-176.879z" opacity="1" data-original="#32cdff"></path>
+        <path fill="#00a0ff" d="M406.474 48.893 256 512c141.385 0 256-114.615 256-256 0-85.144-41.578-160.565-105.526-207.107z" opacity="1" data-original="#00a0ff"></path>
+        <path fill="#3c73cd" d="M256 0v158.178l243.615 176.645C507.644 309.99 512 283.506 512 256 512 114.615 397.385 0 256 0z" opacity="1" data-original="#3c73cd"></path>
+        <path fill="#00a0ff" d="M256 0c56.295 0 108.334 18.185 150.596 48.981L256 158.178z" opacity="1" data-original="#00a0ff"></path>
+    </g>
+</svg>

@@ -45,7 +45,7 @@ interface UserInfo {
   refEducation: string;
   refOccupationLvl: string;
   refRId: number;
-  refSector: string
+  refSector: string;
   refAddress: string;
   refDistrict: string;
   refPincode: string;
@@ -64,7 +64,11 @@ const ManageFamily: React.FC = () => {
   const history = useHistory();
   const location = useLocation() as { state: { refreshFamily?: boolean } };
   const [loading, setLoading] = useState<boolean>(false);
-  const [toastOpen, setToastOpen] = useState({ status: false, message: "", textColor: "black" });
+  const [toastOpen, setToastOpen] = useState({
+    status: false,
+    message: "",
+    textColor: "black",
+  });
 
   const [presentAlert] = useIonAlert();
 
@@ -108,11 +112,22 @@ const ManageFamily: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
-              setPrimaryUser(data.familyMembers.find((item: any) => item.headStatus == "true"));
-              setUserData(data.familyMembers.filter((item: any) => item.headStatus != "true"));
+              setPrimaryUser(
+                data.familyMembers.find(
+                  (item: any) => item.headStatus == "true"
+                )
+              );
+              setUserData(
+                data.familyMembers.filter(
+                  (item: any) => item.headStatus != "true"
+                )
+              );
               setSubscriptionData({
-                packageStatus: data.checkSubscriptions.length > 0 ? true : false,
-                packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
+                packageStatus:
+                  data.checkSubscriptions.length > 0 ? true : false,
+                packageData: Array.isArray(data.checkSubscriptions)
+                  ? data.checkSubscriptions
+                  : [],
               });
               setLoading(false);
             } else {
@@ -168,19 +183,35 @@ const ManageFamily: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
-              setToastOpen({ status: true, textColor: "green", message: `Unlinked ${userData[userIndex].refUserFname + " " + userData[userIndex].refUserLname} Successfully` });
+              setToastOpen({
+                status: true,
+                textColor: "green",
+                message: `Unlinked ${
+                  userData[userIndex].refUserFname +
+                  " " +
+                  userData[userIndex].refUserLname
+                } Successfully`,
+              });
               setTimeout(() => {
                 window.location.reload();
               }, 1500);
             } else {
               setLoading(false);
-              setToastOpen({ status: true, textColor: "red", message: `${data.message}` });
+              setToastOpen({
+                status: true,
+                textColor: "red",
+                message: `${data.message}`,
+              });
               console.error("Data consoled false - chekc this");
             }
-          })
+          });
       } catch (error) {
         setLoading(false);
-        setToastOpen({ status: true, textColor: "red", message: "Unexpected Error!!" });
+        setToastOpen({
+          status: true,
+          textColor: "red",
+          message: "Unexpected Error!!",
+        });
         console.error("Error parsing token:", error);
       }
     }
@@ -196,9 +227,12 @@ const ManageFamily: React.FC = () => {
     }
   }, [location.state]);
 
-  const { t } = useTranslation("global")
+  const { t } = useTranslation("global");
 
-  console.log("totalusers: ", userData.length + (primaryUser != undefined ? 1 : 0));
+  console.log(
+    "totalusers: ",
+    userData.length + (primaryUser != undefined ? 1 : 0)
+  );
   console.log(subscriptionData);
   return (
     <IonPage className="cus-ion-page">
