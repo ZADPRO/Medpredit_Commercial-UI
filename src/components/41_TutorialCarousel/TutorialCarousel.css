@@ -1,0 +1,57 @@
+.tutorial-carousel-content {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  background-color: black;
+}
+
+.carousel-wrapper {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+}
+
+.carousel-wrapper .carousel-image {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.skip-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #a5e768d7;
+  border: none;
+  border-radius: 4px;
+}
+
+.navigation-buttons {
+  position: absolute;
+  bottom: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 10;
+}
+
+.back-btn,
+.next-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  font-weight: bold;
+  background-color: #a5e768;
+  border-radius: 4px;
+}
+
+.back-btn:disabled {
+  opacity: 0.5;
+}

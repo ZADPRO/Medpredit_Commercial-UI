@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import login from "../../assets/images/Login/login (1).png";
 import login1 from "../../assets/images/Login/login img.png";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
-import { close, logoApple, logoFacebook, logoGoogle } from "ionicons/icons";
+import { close } from "ionicons/icons";
 import "./Login.css";
 import {
-  IonButton,
   IonContent,
   IonIcon,
   IonPage,
@@ -91,6 +89,7 @@ const Login: React.FC = () => {
           localStorage.setItem("detailsFlag", data.isDetails);
 
           localStorage.setItem("firstLogin", data.isDetails);
+          localStorage.setItem("tutorial", "present");
 
           localStorage.setItem("headStatus", data.users[0].headStatus);
           setShowModal(true);
