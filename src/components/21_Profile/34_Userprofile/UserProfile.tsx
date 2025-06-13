@@ -544,8 +544,31 @@ const UserProfile: React.FC = () => {
             <IonButton
               fill="clear"
               slot="end"
-              color={"dark"}
+              color="dark"
               onClick={() => {
+                console.log("formData.refPincode", formData.refPincode);
+                if (
+                  !formData.refPincode ||
+                  formData.refPincode.trim() === "-"
+                ) {
+                  console.log("pincode was missing");
+
+                  // Check and set the segment if needed
+                  if (selectedSegment !== "Contact Details") {
+                    setSelectedSegment("Contact Details");
+                  }
+
+                  // Show toast message
+                  setToastOpen({
+                    status: true,
+                    textColor: "red", // You can use "red" for error
+                    message: "Pincode must be entered",
+                  });
+
+                  return; // Stop execution
+                }
+
+                // If pincode is entered, proceed
                 history.replace("/home");
                 localStorage.setItem("firstLogin", "false");
               }}

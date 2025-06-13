@@ -346,7 +346,7 @@ const Home: React.FC = () => {
   console.log(packages);
 
   const handleCloseTutorial = () => {
-    // localStorage.setItem("tutorial", "absent");
+    localStorage.setItem("tutorial", "absent");
     setShowTutorial(false);
   };
 

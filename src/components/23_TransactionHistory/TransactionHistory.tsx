@@ -36,6 +36,7 @@ interface Transaction {
   refUserLname: string;
   refUserCustId: string;
   refAddress: string;
+  refPincode: string;
 }
 
 const TransactionHistory: React.FC = () => {
@@ -209,6 +210,7 @@ const TransactionHistory: React.FC = () => {
                   refUserLname={item.refUserLname}
                   refUserCustId={item.refUserCustId}
                   refAddress={item.refAddress}
+                  refPincode={item.refPincode}
                 />
               </div>
             ))
