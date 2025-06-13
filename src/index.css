@@ -139,7 +139,7 @@ ion-content {
 
 .p-inputtext {
   color: black;
-  border: none;
+  /* border: none; */
 }
 
 .p-inputtext:enabled:focus {

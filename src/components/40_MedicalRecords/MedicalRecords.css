@@ -40,3 +40,13 @@ ion-segment-button {
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+
+.buttonIconGroup,
+.buttonIconGroupStart,
+.buttonIconGroupEnd {
+  background-color: #0c4b41;
+}
+
+.custom-border-box {
+  border: 2px dashed #a2a2a28c;
+}

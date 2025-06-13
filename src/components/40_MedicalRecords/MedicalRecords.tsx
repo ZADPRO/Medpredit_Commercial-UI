@@ -129,6 +129,7 @@ const MedicalRecords: React.FC = () => {
               }
               onClick={() => {
                 console.log("PDF selected");
+                history.push("/pdfRecords");
                 setValue("pdf");
               }}
             />

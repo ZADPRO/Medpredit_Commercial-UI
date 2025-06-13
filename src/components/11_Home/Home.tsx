@@ -330,39 +330,41 @@ const Home: React.FC = () => {
   return (
     <IonPage className="cus-ion-page">
       <IonHeader>
-        <div className="home-top">
-          <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
-            <div className="home-top-bar-greetings">
-              <span style={{ fontSize: "0.8rem" }}>{t("home.Hi")},</span>
-              <h2
-                style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
-              >
-                {userDeatilsObj.firstName}
-              </h2>
-            </div>
-            <div className="home-top-bar-icons">
-              <IonIcon
-                onClick={() =>
-                  history.push("/reports", {
-                    direction: "forward",
-                    animation: "slide",
-                  })
-                }
-                icon={newspaperOutline}
-              />
-              {/* <IonIcon icon={notificationsOutline} /> */}
-              <IonIcon
-                onClick={() =>
-                  history.push("/profile", {
-                    direction: "forward",
-                    animation: "slide",
-                  })
-                }
-                icon={personOutline}
-              />
+        <IonToolbar>
+          <div className="home-top">
+            <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
+              <div className="home-top-bar-greetings">
+                <span style={{ fontSize: "0.8rem" }}>{t("home.Hi")},</span>
+                <h2
+                  style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
+                >
+                  {userDeatilsObj.firstName}
+                </h2>
+              </div>
+              <div className="home-top-bar-icons">
+                <IonIcon
+                  onClick={() =>
+                    history.push("/reports", {
+                      direction: "forward",
+                      animation: "slide",
+                    })
+                  }
+                  icon={newspaperOutline}
+                />
+                {/* <IonIcon icon={notificationsOutline} /> */}
+                <IonIcon
+                  onClick={() =>
+                    history.push("/profile", {
+                      direction: "forward",
+                      animation: "slide",
+                    })
+                  }
+                  icon={personOutline}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </IonToolbar>
       </IonHeader>
 
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>

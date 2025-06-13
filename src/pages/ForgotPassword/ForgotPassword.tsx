@@ -1,4 +1,14 @@
-import { IonContent, IonIcon, IonPage, IonToast } from "@ionic/react";
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonPage,
+  IonTitle,
+  IonToast,
+  IonToolbar,
+} from "@ionic/react";
 import React, { useState } from "react";
 import "./ForgotPassword.css";
 import { InputText } from "primereact/inputtext";
@@ -41,8 +51,17 @@ const ForgotPassword = () => {
 
   return (
     <IonPage>
-      <IonContent fullscreen>
+      <IonContent>
         <div className="loginScreenIonic">
+          <div className="flex align-items-start w-full">
+            <IonButtons slot="start">
+              <IonBackButton
+                mode="md"
+                defaultHref="/profile"
+                icon={chevronBack}
+              ></IonBackButton>
+            </IonButtons>
+          </div>
           {/* <IonIcon size="large" onClick={() => history.goBack()} icon={chevronBack}></IonIcon> */}
           <img src={forgetpassword} alt="forgetpassword" />
           <div className="forgotPassword">

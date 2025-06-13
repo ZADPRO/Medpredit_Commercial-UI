@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   const [userSelectionModal, setUserSelectionModal] = useState<boolean>(false);
   const [userSelectionList, setUserSelectionList] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   const { t } = useTranslation("global");
 
   const history = useHistory();
@@ -71,11 +71,12 @@ const Login: React.FC = () => {
       if (data.status) {
         setLoading(false);
         setErrorMessage("");
-        if(data.users.length > 1) {
-          setUserSelectionList(data.users.sort((a: any, b: any) => a.refUserId - b.refUserId));
+        if (data.users.length > 1) {
+          setUserSelectionList(
+            data.users.sort((a: any, b: any) => a.refUserId - b.refUserId)
+          );
           setUserSelectionModal(true);
-        }
-        else {
+        } else {
           const userDetails = {
             token: "Bearer " + data.token,
             userId: data.users[0].refUserId,
@@ -91,15 +92,13 @@ const Login: React.FC = () => {
 
           localStorage.setItem("firstLogin", data.isDetails);
 
-          localStorage.setItem("headStatus", data.users[0].headStatus)
+          localStorage.setItem("headStatus", data.users[0].headStatus);
           setShowModal(true);
           setSignInData({
             username: "",
             password: "",
           });
         }
-
-
       } else {
         setLoading(false);
         setErrorMessage(t("login.Invalid username or password"));
@@ -126,7 +125,7 @@ const Login: React.FC = () => {
         {
           username: signInData.username,
           password: signInData.password,
-          userId: selectedUser.refUserId
+          userId: selectedUser.refUserId,
         }
       );
       console.log(response);
@@ -153,7 +152,7 @@ const Login: React.FC = () => {
 
         localStorage.setItem("detailsFlag", data.isDetails);
 
-        localStorage.setItem("headStatus", selectedUser.headStatus)
+        localStorage.setItem("headStatus", selectedUser.headStatus);
         setShowModal(true);
         setSignInData({
           username: "",
@@ -168,7 +167,7 @@ const Login: React.FC = () => {
       console.error("Error during Sign In:", error);
       setLoading(false);
       setErrorMessage(t("login.An error occurred. Please try again"));
-    };
+    }
   };
 
   const routeCondition = () => {
@@ -222,7 +221,7 @@ const Login: React.FC = () => {
               padding: "1rem 0",
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-between",
+              justifyContent: "end",
             }}
           >
             {/* <div
@@ -243,17 +242,17 @@ const Login: React.FC = () => {
                 {t("login.Remember Me")}
               </label>
             </div> */}
-            {/* <span
+            <span
               onClick={() => {
                 history.push("/forgotPassword", {
                   direction: "forward",
                   animation: "slide",
                 });
               }}
-              className="loginRegisterUser"
+              className="loginRegisterUser text-sm"
             >
               {t("login.Forgot Password")}?
-            </span> */}
+            </span>
           </div>
 
           <div style={{ width: "20rem" }}>
@@ -389,7 +388,7 @@ const Login: React.FC = () => {
           </div>
         </IonModal>
       </IonContent>
-       <CustomIonLoading isOpen={loading} />
+      <CustomIonLoading isOpen={loading} />
     </IonPage>
   );
 };

@@ -1,4 +1,3 @@
-import { Divider } from "primereact/divider";
 import React from "react";
 
 import folderIcon from "../../assets/MedicalRecords/folder.svg";
