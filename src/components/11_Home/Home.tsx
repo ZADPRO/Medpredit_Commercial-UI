@@ -2,17 +2,12 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
-  IonFabList,
   IonGrid,
   IonHeader,
   IonIcon,
-  IonicSafeString,
   IonPage,
   IonRow,
   IonToolbar,
@@ -22,15 +17,8 @@ import "./Home.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
   chevronDown,
-  chevronForward,
   chevronUp,
-  chevronUpCircle,
-  colorPalette,
-  document,
   newspaperOutline,
-  notificationsOutline,
-  peopleOutline,
-  personAddOutline,
   personOutline,
   search,
 } from "ionicons/icons";
@@ -45,7 +33,7 @@ import carousel3_hin from "../../assets/images/Home/BANNER3_HINDI.jpg";
 import carousel4_hin from "../../assets/images/Home/BANNER4_HINDI.jpg";
 import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { motion } from "framer-motion";
 import alcohol from "../../assets/images/Services/alchohol.png";
 import physical from "../../assets/images/Services/physical-activities.png";
@@ -61,31 +49,25 @@ import coronaryKnowAbout from "../../assets/images/Services/Coronary KnowAbout.p
 import stokeKnowAbout from "../../assets/images/Services/Stroke KnowAbout.png";
 import indiaFlag from "../../assets/images/Home/India Flag.png";
 import heartIcon from "../../assets/images/Home/heart.png";
-import goodImage from "../../assets/images/Home/good.svg";
-import averageImage from "../../assets/images/Home/average.svg";
-import riskImage from "../../assets/images/Home/risk.svg";
-import personAdd from "../../assets/images/Icons/PersonAdd.png";
-import personEdit from "../../assets/images/Icons/PersonEdit.png";
 import { StatusBar } from "@capacitor/status-bar";
 import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { useTranslation } from "react-i18next";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Autoplay,
-  Keyboard,
-  Pagination,
-  Scrollbar,
-  Zoom,
-} from "swiper/modules";
 import TutorialCarousel from "../41_TutorialCarousel/TutorialCarousel";
+
+import PINoPlan from "../../assets/UserIcons/noPlan.png";
+import PIBasicPlan from "../../assets/UserIcons/basic.png";
+import PIStandardPlan from "../../assets/UserIcons/standard.png";
+import PIFamilyPlan from "../../assets/UserIcons/familyPlan.png";
+import PIProPlan from "../../assets/UserIcons/proPlan.png";
 
 const Home: React.FC = () => {
   const history = useHistory();
-  const location = useLocation();
   const userDetails = localStorage.getItem("userDetails");
+
+  const [userProfileIcon, setUserProfileIcon] = useState("");
 
   const userDeatilsObj = userDetails
     ? JSON.parse(userDetails)
@@ -272,6 +254,29 @@ const Home: React.FC = () => {
                 tempPackages[1],
               ]; // Rearrange the package list for UI
               setPackages(tempPackages);
+              console.log("tempPackages", data);
+              if (data.packageStatus && data.packageData[0]) {
+                const refPkgId = data.packageData[0].refPkgId;
+                console.log("refPkgId", refPkgId);
+
+                switch (refPkgId) {
+                  case 0:
+                    setUserProfileIcon(PIBasicPlan);
+                    break;
+                  case 1:
+                    setUserProfileIcon(PIStandardPlan);
+                    break;
+                  case 2:
+                    setUserProfileIcon(PIFamilyPlan);
+                    break;
+                  case 3:
+                    setUserProfileIcon(PIProPlan);
+                    break;
+                  default:
+                    setUserProfileIcon(PINoPlan);
+                    break;
+                }
+              }
 
               // setSubscriptionData({
               //   packageStatus: data.packageStatus ?? false,
@@ -351,7 +356,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage className="">
       <IonHeader>
         <IonToolbar>
           <div className="home-top">
@@ -375,14 +380,17 @@ const Home: React.FC = () => {
                   icon={newspaperOutline}
                 />
                 {/* <IonIcon icon={notificationsOutline} /> */}
-                <IonIcon
+                <img
+                  src={userProfileIcon}
+                  className=""
+                  style={{ width: "40px" }}
+                  alt=""
                   onClick={() =>
                     history.push("/profile", {
                       direction: "forward",
                       animation: "slide",
                     })
                   }
-                  icon={personOutline}
                 />
               </div>
             </div>

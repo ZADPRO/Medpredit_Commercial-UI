@@ -530,7 +530,7 @@ const UserProfile: React.FC = () => {
   };
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage className="">
       <IonHeader>
         <IonToolbar>
           {(localStorage.getItem("firstLogin") == "false" ||
