@@ -26,7 +26,7 @@ const CategorySuccess: React.FC = () => {
   const tokenObject = JSON.parse(tokenString);
   const token = tokenObject.token;
 
-  const [pendingQuizzes, setPendingQuizzes] = useState<
+  const [pendingAssessments, setPendingAssessments] = useState<
     { id: string; title: string; description: string }[]
   >([]);
 
@@ -58,16 +58,14 @@ const CategorySuccess: React.FC = () => {
         );
 
         if (data.status && Array.isArray(data.data)) {
-          console.log("data", data.data);
           const filteredPending = data.data
             .filter((item: any) => item.refScore == null)
             .map((item: any) => ({
               id: item.refQCategoryId,
               title: item.refCategoryLabel,
-              description: "You haven't completed this quiz yet.",
+              description: "You haven't completed this assessment yet.",
             }));
-          setPendingQuizzes(filteredPending);
-          console.log("filteredPending", filteredPending);
+          setPendingAssessments(filteredPending);
         }
       });
   };
@@ -94,27 +92,30 @@ const CategorySuccess: React.FC = () => {
           />
           <h2 className="mainSuccessTitle">You're All Done!</h2>
           <p className="mainSuccessSubtitle">
-            Great work finishing your quiz. Here’s what’s next:
+            Great work finishing your assessment. Here’s what’s next:
           </p>
 
-          {pendingQuizzes.length > 0 ? (
+          {pendingAssessments.length > 0 ? (
             <>
-              <h3 className="pendingHeader">Pending Quizzes</h3>
+              <h3 className="pendingHeader">Pending Assessments</h3>
               <IonList lines="none" className="pendingQuizList">
-                {pendingQuizzes.map((quiz) => (
-                  <IonItem key={quiz.id} className="pendingQuizItem" button>
+                {pendingAssessments.map((assessment) => (
+                  <IonItem
+                    key={assessment.id}
+                    className="pendingQuizItem"
+                    button
+                  >
                     <IonLabel>
-                      <h4 className="quizTitle">{quiz.title}</h4>
-                      <p className="quizDesc">{quiz.description}</p>
+                      <h4 className="quizTitle">{assessment.title}</h4>
+                      <p className="quizDesc">{assessment.description}</p>
                     </IonLabel>
-                    {/* <div className="startButton">Start</div> */}
                   </IonItem>
                 ))}
               </IonList>
             </>
           ) : (
             <p className="noPendingQuizText">
-              🎉 No pending quizzes. Enjoy your day!
+              🎉 No pending assessments. Enjoy your day!
             </p>
           )}
         </div>
