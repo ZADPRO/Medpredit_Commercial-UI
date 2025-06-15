@@ -46,6 +46,7 @@ import MedicalRecords from "../../components/40_MedicalRecords/MedicalRecords";
 import MRCameraCapture from "../../components/40_MedicalRecords/MRCameraCapture";
 import MRImageList from "../../components/40_MedicalRecords/MRImageList";
 import MRPdfUpload from "../../components/40_MedicalRecords/MRPdfUpload";
+import CategorySuccess from "../CategorySuccess/CategorySuccess";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -212,6 +213,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/about">
           <About />
+        </Route>
+        <Route path="/successCategory">
+          <CategorySuccess />
         </Route>
         <Route path="/knowAbout/:sentDisease">
           <KnowAbout />

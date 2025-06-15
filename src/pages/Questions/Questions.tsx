@@ -51,7 +51,7 @@ interface QuestionSet {
 }
 
 const Questions: React.FC = () => {
-  const { t, i18n } = useTranslation("global");
+  const { t } = useTranslation("global");
   const tokenString: any = localStorage.getItem("userDetails");
   const tokenObject = JSON.parse(tokenString);
   const token = tokenObject.token;
@@ -312,8 +312,11 @@ const Questions: React.FC = () => {
               //   `/subCategories/${getQuestionsToken.id}/${getQuestionsToken.label}`
               // );
               setLoadingStatus(false);
-              history.replace(`/serviceAssessment/${selectedServiceId}`, {
-                getCategory: true,
+              // history.replace(`/serviceAssessment/${selectedServiceId}`, {
+              //   getCategory: true,
+              // });
+              history.push("/successCategory", {
+                selectedUserId: selectedUserId,
               });
               setSubmittedAnswer([]);
             } else {
@@ -433,7 +436,7 @@ const Questions: React.FC = () => {
       try {
         getQuestions();
       } catch (error) {
-        console.log("Error fetching questions");
+        console.log("Error fetching questions", error);
       }
     }
   }, [token]);

@@ -37,7 +37,7 @@ body {
 }
 
 ion-content {
-  padding-top: var(--ion-safe-area-top); /* Pushes content below status bar */
+  padding-top: var(--ion-safe-area-top);
 }
 
 .medCustom-button01 {
