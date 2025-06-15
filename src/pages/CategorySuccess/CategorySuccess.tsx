@@ -19,7 +19,7 @@ import decrypt from "../../helper";
 import { useLocation } from "react-router";
 
 const CategorySuccess: React.FC = () => {
-  const location = useLocation<{ selectedUserId: string }>(); // ✅ Step 2
+  const location = useLocation<{ selectedUserId: string }>();
   const selectedUserId = location.state?.selectedUserId;
 
   const tokenString: any = localStorage.getItem("userDetails");
@@ -31,10 +31,7 @@ const CategorySuccess: React.FC = () => {
   >([]);
 
   const getRemainingCategory = () => {
-    if (!selectedUserId) {
-      console.error("No selectedUserId found in navigation state");
-      return;
-    }
+    if (!selectedUserId) return;
 
     axios
       .post(
@@ -60,9 +57,8 @@ const CategorySuccess: React.FC = () => {
           import.meta.env.VITE_ENCRYPTION_KEY
         );
 
-        console.log("--->====>", data);
-
         if (data.status && Array.isArray(data.data)) {
+          console.log("data", data.data);
           const filteredPending = data.data
             .filter((item: any) => item.refScore == null)
             .map((item: any) => ({
@@ -70,8 +66,8 @@ const CategorySuccess: React.FC = () => {
               title: item.refCategoryLabel,
               description: "You haven't completed this quiz yet.",
             }));
-
           setPendingQuizzes(filteredPending);
+          console.log("filteredPending", filteredPending);
         }
       });
   };
@@ -83,40 +79,45 @@ const CategorySuccess: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButtons>
+        <IonToolbar color="light">
+          <IonButtons slot="start">
             <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent fullscreen className="successPage">
-        <IonIcon icon={checkmarkCircleOutline} className="successIcon" />
-        <h2 className="successTitle">Quiz Completed Successfully!</h2>
-        <p className="successSubtitle">
-          Well done! Keep learning and stay sharp.
-        </p>
+      <IonContent fullscreen className="categorySuccessContent">
+        <div className="successCard m-2">
+          <IonIcon
+            icon={checkmarkCircleOutline}
+            className="animatedSuccessIcon"
+          />
+          <h2 className="mainSuccessTitle">You're All Done!</h2>
+          <p className="mainSuccessSubtitle">
+            Great work finishing your quiz. Here’s what’s next:
+          </p>
 
-        <h3 className="pendingHeading">Pending Quizzes</h3>
-
-        <IonList lines="none" className="pendingList">
-          {pendingQuizzes.map((quiz) => (
-            <IonItem
-              key={quiz.id}
-              className="pendingCard"
-              button
-              detail={false}
-            >
-              <IonLabel>
-                <h4 className="quizTitle">{quiz.title}</h4>
-                <p className="quizDescription">{quiz.description}</p>
-              </IonLabel>
-              <IonLabel slot="end" className="startNow">
-                Start
-              </IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+          {pendingQuizzes.length > 0 ? (
+            <>
+              <h3 className="pendingHeader">Pending Quizzes</h3>
+              <IonList lines="none" className="pendingQuizList">
+                {pendingQuizzes.map((quiz) => (
+                  <IonItem key={quiz.id} className="pendingQuizItem" button>
+                    <IonLabel>
+                      <h4 className="quizTitle">{quiz.title}</h4>
+                      <p className="quizDesc">{quiz.description}</p>
+                    </IonLabel>
+                    {/* <div className="startButton">Start</div> */}
+                  </IonItem>
+                ))}
+              </IonList>
+            </>
+          ) : (
+            <p className="noPendingQuizText">
+              🎉 No pending quizzes. Enjoy your day!
+            </p>
+          )}
+        </div>
       </IonContent>
     </IonPage>
   );
