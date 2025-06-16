@@ -12,7 +12,7 @@
   background-position: center;
   background-repeat: no-repeat;
   overflow: scroll;
-  animation: fadeInScale 0.8s ease-out;
+  /* animation: fadeInScale 0.8s ease-out; */
 }
 
 .loginScreenIonic > img {

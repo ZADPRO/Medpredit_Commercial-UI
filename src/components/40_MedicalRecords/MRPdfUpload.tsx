@@ -144,12 +144,12 @@ const MRPdfUpload: React.FC = () => {
                 <p>Document Name</p>
                 <InputText
                   placeholder="Enter Document Name"
-                  className="w-full inputBoxMedrec mb-2"
+                  className="w-full inputBoxMedrec my-2"
                 />
                 <p>Date</p>
                 <Calendar
                   id="buttondisplay"
-                  className="w-full inputBoxMedrec mb-2"
+                  className="w-full inputBoxMedrec my-2"
                   value={date}
                   placeholder="Enter Date"
                   onChange={(e) => setDate(e.value)}
@@ -164,7 +164,7 @@ const MRPdfUpload: React.FC = () => {
                   }}
                   options={categories}
                   placeholder="Select Category"
-                  className="w-full mb-2 inputBoxMedrec"
+                  className="w-full my-2 inputBoxMedrec"
                 />
                 <p>Document Sub Category</p>
                 <Dropdown
@@ -172,7 +172,7 @@ const MRPdfUpload: React.FC = () => {
                   onChange={(e) => setSelectedSubItem(e.value)}
                   options={selectedCategory ? subItems[selectedCategory] : []}
                   placeholder="Select Sub-category"
-                  className="w-full inputBoxMedrec mb-2"
+                  className="w-full inputBoxMedrec my-2"
                   disabled={!selectedCategory}
                 />
                 <p>Notes</p>

@@ -15,7 +15,7 @@ const EnterOTP = () => {
   const history = useHistory();
 
   // Timer state
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(300);
   const [canResend, setCanResend] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -61,7 +61,8 @@ const EnterOTP = () => {
                 onChange={(e) => setTokens(e.value ?? undefined)}
                 className="custom-otp-input"
                 integerOnly
-              />
+                length={6}
+              />
               <div
                 style={{
                   display: "flex",
@@ -95,7 +96,7 @@ const EnterOTP = () => {
               <div style={{ margin: "2rem 0 0 1rem" }}>
                 <button
                   onClick={() => {
-                    // history.goBack(); 
+                    // history.goBack();
                     setShowModal(true);
                   }}
                   className="medCustom-button01"
@@ -111,22 +112,17 @@ const EnterOTP = () => {
             className="half-screen-modal"
           >
             <div className="modalContent">
-              <div className="lottie-container">
-
-              </div>
+              <div className="lottie-container"></div>
               <p
                 style={{
                   fontWeight: "700",
                   fontSize: "x-large",
-                  marginTop: "10%"
-
+                  marginTop: "10%",
                 }}
               >
                 {" "}
                 {t("verifyOTP.verifySuccessful")}
-
               </p>
-
             </div>
           </IonModal>
         </div>

@@ -93,6 +93,8 @@ const Login: React.FC = () => {
 
           localStorage.setItem("headStatus", data.users[0].headStatus);
           setShowModal(true);
+          localStorage.setItem("adsBannerClosed", "present");
+
           setSignInData({
             username: "",
             password: "",
@@ -101,17 +103,11 @@ const Login: React.FC = () => {
       } else {
         setLoading(false);
         setErrorMessage(t("login.Invalid username or password"));
-
-        // setToastMessage("*Invalid username or password");
-        // setShowToast(true);
       }
     } catch (error) {
       console.error("Error during Sign In:", error);
       setLoading(false);
       setErrorMessage(t("login.An error occurred. Please try again"));
-      // setToastMessage("An error occurred. Please try again.");
-      // setShowToast(true);
-      // setLoadingStatus(false);
     }
   };
 
@@ -223,24 +219,6 @@ const Login: React.FC = () => {
               justifyContent: "end",
             }}
           >
-            {/* <div
-              style={{
-                fontSize: "0.8rem",
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Checkbox
-                inputId="remember"
-                onChange={() => setChecked(!checked)}
-                checked={checked}
-              ></Checkbox>
-              <label htmlFor="remember" className="ml-2">
-                {t("login.Remember Me")}
-              </label>
-            </div> */}
             <span
               onClick={() => {
                 history.push("/forgotPassword", {
@@ -326,11 +304,6 @@ const Login: React.FC = () => {
                       )}
                     </div>
                   </div>
-                  {/* <RadioButton
-                            value={item.refUserCustId}
-                            checked={tempselectedUser === item.refUserId}
-                            onChange={() => settempSelectedUser(item.refUserId)}
-                          /> */}
                 </div>
               ))}
             </IonList>

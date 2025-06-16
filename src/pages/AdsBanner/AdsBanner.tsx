@@ -6,15 +6,16 @@ const AdsBanner: React.FC = () => {
 
   useEffect(() => {
     // Only show ad if not already closed in this session
-    const isBannerClosed = sessionStorage.getItem("adsBannerClosed");
-    if (!isBannerClosed) {
+    const isBannerClosed = localStorage.getItem("adsBannerClosed");
+    console.log("isBannerClosed", isBannerClosed);
+    if (isBannerClosed === "present") {
       setShowBanner(true);
     }
   }, []);
 
   const handleCloseBanner = () => {
     setShowBanner(false);
-    sessionStorage.setItem("adsBannerClosed", "true");
+    localStorage.setItem("adsBannerClosed", "absent");
   };
 
   if (!showBanner) return null;

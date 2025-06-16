@@ -2,12 +2,8 @@ import {
   IonBackButton,
   IonButtons,
   IonContent,
-  IonHeader,
-  IonIcon,
   IonPage,
-  IonTitle,
   IonToast,
-  IonToolbar,
 } from "@ionic/react";
 import React, { useState } from "react";
 import "./ForgotPassword.css";
@@ -16,37 +12,62 @@ import { useHistory } from "react-router-dom";
 import { chevronBack } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import forgetpassword from "../../assets/images/Forgetpassword/forgotpassword.png";
+import axios from "axios";
+import decrypt from "../../helper";
 
 const ForgotPassword = () => {
   const { t } = useTranslation("global");
   const history = useHistory();
-  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
   const [toastOpen, setToastOpen] = useState({
     status: false,
     message: "",
     textColor: "white",
   });
 
-  const handleNext = () => {
-    if (/^\d{10}$/.test(mobile)) {
-      history.push("/enterOTP", {
-        direction: "forward",
-        animation: "slide",
-      });
-    } else {
-      setToastOpen({
-        status: true,
-        message: t("forgotPassword.invalidEmail"),
-        textColor: "red",
-      });
-    }
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const handleChange = (e: any) => {
-    const value = e.target.value;
-    if (/^\d{0,10}$/.test(value)) {
-      setMobile(value);
-    }
+  const handleNext = () => {
+    axios
+      .post(
+        import.meta.env.VITE_API_COMMERCIAL_URL + "/generateOTPForPassword",
+        {
+          email: email,
+        }
+      )
+      .then((response) => {
+        console.log("res", response);
+        const data = decrypt(
+          response.data[1],
+          response.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("line 46");
+        console.log("data", data);
+        if (data.status) {
+          history.push("/enterOTP", {
+            direction: "forward",
+            animation: "slide",
+          });
+        } else {
+          setToastOpen({
+            status: true,
+            message: t("forgotPassword.invalidEmail"),
+            textColor: "red",
+          });
+        }
+      });
+
+    // if (validateEmail(email)) {
+    // } else {
+    //   setToastOpen({
+    //     status: true,
+    //     message: t("forgotPassword.invalidEmail"),
+    //     textColor: "red",
+    //   });
+    // }
   };
 
   return (
@@ -62,17 +83,17 @@ const ForgotPassword = () => {
               ></IonBackButton>
             </IonButtons>
           </div>
-          {/* <IonIcon size="large" onClick={() => history.goBack()} icon={chevronBack}></IonIcon> */}
+
           <img src={forgetpassword} alt="forgetpassword" />
           <div className="forgotPassword">
             <h1 className="forgettitle">{t("forgotPassword.title")}</h1>
             <div className="forgotPasswordFields">
               <label>{t("forgotPassword.description")}</label>
               <InputText
-                type="number"
-                value={mobile}
-                onChange={handleChange}
-                placeholder={t("forgotPassword.Mobile Number")}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder={t("forgotPassword.Email Address")}
                 style={{
                   width: "20rem",
                   maxWidth: "100%",
