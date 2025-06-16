@@ -1,23 +1,26 @@
-import { IonContent, IonModal, IonPage } from "@ionic/react";
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { IonContent, IonModal, IonPage, IonToast } from "@ionic/react";
+import React, { useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import chnagepassword from "../../assets/images/Changepassword/Changepassword.png";
 import { useTranslation } from "react-i18next";
 import { Password } from "primereact/password";
 import "./ChangePAssword.css";
 import Lottie from "lottie-react";
 import tickAnimation from "../../assets/Animations/tickanimation.json";
+import axios from "axios";
+import decrypt from "../../helper";
 
 const ChangePAssword = () => {
-  const [token, setTokens] = useState<string | number | undefined>();
   const { t } = useTranslation("global");
   const history = useHistory();
 
-  const [timer, setTimer] = useState(120);
-  const [canResend, setCanResend] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const location = useLocation<{ email: string; userId: number }>();
+  const email = location.state?.email;
+  const userId = location.state?.userId;
 
   const [toastOpen, setToastOpen] = useState({
     status: false,
@@ -25,6 +28,7 @@ const ChangePAssword = () => {
     textColor: "white",
   });
   const validateForm = () => {
+    console.log("password", password);
     if (!password) {
       setToastOpen({
         status: true,
@@ -43,6 +47,7 @@ const ChangePAssword = () => {
       return false;
     }
 
+    console.log("confirmPassword", confirmPassword);
     if (password !== confirmPassword) {
       setToastOpen({
         status: true,
@@ -64,6 +69,25 @@ const ChangePAssword = () => {
         textColor: "green",
       });
       console.log("Form submitted");
+
+      axios
+        .post(import.meta.env.VITE_API_COMMERCIAL_URL + "/enterNewPassword", {
+          userId: userId,
+          password: password,
+          email: email,
+        })
+        .then((response) => {
+          const data = decrypt(
+            response.data[1],
+            response.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          console.log("data", data);
+          if (data.status) {
+            history.replace("/login");
+            setShowModal(false);
+          }
+        });
     }
   };
 
@@ -99,11 +123,7 @@ const ChangePAssword = () => {
                   feedback={false}
                 />
                 <div style={{ marginTop: "2rem" }}>
-                  <button
-                    type="submit"
-                    className="medCustom-button01"
-                    onClick={() => setShowModal(true)}
-                  >
+                  <button type="submit" className="medCustom-button01">
                     {t("changepassword.Finish")}
                   </button>
                 </div>
@@ -123,7 +143,7 @@ const ChangePAssword = () => {
                   style={{ width: 150, height: 150 }}
                   onComplete={() => {
                     setTimeout(() => {
-                      history.push("/home");
+                      // history.push("/home");
                     }, 1000);
                   }}
                 />
@@ -142,6 +162,16 @@ const ChangePAssword = () => {
           </IonModal>
         </div>
       </IonContent>
+
+      <IonToast
+        style={{ "--color": toastOpen.textColor, fontWeight: "bold" }}
+        isOpen={toastOpen.status}
+        onDidDismiss={() =>
+          setToastOpen({ status: false, textColor: "", message: "" })
+        }
+        message={toastOpen.message}
+        duration={3000}
+      />
     </IonPage>
   );
 };

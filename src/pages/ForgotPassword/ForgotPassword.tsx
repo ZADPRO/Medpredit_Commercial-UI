@@ -50,6 +50,8 @@ const ForgotPassword = () => {
           history.push("/enterOTP", {
             direction: "forward",
             animation: "slide",
+            email: email,
+            userId: data.userId.refUserId,
           });
         } else {
           setToastOpen({
