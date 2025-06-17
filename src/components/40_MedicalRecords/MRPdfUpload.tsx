@@ -17,22 +17,24 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
 import { Dropdown } from "primereact/dropdown";
-import { Directory, Filesystem } from "@capacitor/filesystem";
-import { FileOpener } from "@capacitor-community/file-opener";
+import axios from "axios";
+import decrypt from "../../helper";
+import { useHistory } from "react-router";
 
 const MRPdfUpload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [pdfFileUrl, setPdfFileUrl] = useState<string | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null); // hold actual file
   const [date, setDate] = useState<Nullable<Date>>(null);
-
-  const today = new Date();
-
-  // REPORTS - Lab test reports, XRay, Scans (CT, MRI, ULTRASOUND), Echo / ECG, Biopsy, Pathology
-  // PRESCRIPTIONS - Doctor's presc, Medication list, Dosage schedule, Treatment notes, Follow up advice
-  // MEDICAL DOC - Discharge, Hospital Bills, Insurance, Referral letters, Medical certs, Vaccination records, Surgery / procedure reports
+  const [docName, setDocName] = useState("");
+  const [notes, setNotes] = useState("");
+  const [centerName, setCenterName] = useState("");
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubItem, setSelectedSubItem] = useState<string | null>(null);
+
+  const today = new Date();
+  const history = useHistory();
 
   const categories = [
     { label: "Reports", value: "reports" },
@@ -72,13 +74,72 @@ const MRPdfUpload: React.FC = () => {
     if (file && file.type === "application/pdf") {
       const url = URL.createObjectURL(file);
       setPdfFileUrl(url);
+      setPdfFile(file); // store actual file
       console.log("PDF File URL:", url);
     }
   };
 
   const openNativeViewer = () => {
     if (pdfFileUrl) {
-      window.open(pdfFileUrl, "_blank"); // For web — open in new tab
+      window.open(pdfFileUrl, "_blank");
+    }
+  };
+
+  const handleSave = async () => {
+    if (!pdfFile) {
+      alert("Please select a PDF file.");
+      return;
+    }
+
+    console.log("Saving document with values:");
+    console.log({
+      docName,
+      date,
+      selectedCategory,
+      selectedSubItem,
+      notes,
+      centerName,
+      pdfFile,
+    });
+
+    const userDetails = localStorage.getItem("userDetails");
+    const userDeatilsObj = userDetails
+      ? JSON.parse(userDetails)
+      : { userId: null, token: null };
+
+    const formData = new FormData();
+    formData.append("pdf", pdfFile);
+    formData.append("docName", docName);
+    formData.append("date", date ? date.toISOString() : "");
+    formData.append("category", selectedCategory ?? "");
+    formData.append("subCategory", selectedSubItem ?? "");
+    formData.append("notes", notes);
+    formData.append("centerName", centerName);
+    formData.append("userId", userDeatilsObj.userId);
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/medicalRecordsUpload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const data = decrypt(
+        response.data[1],
+        response.data[0],
+        import.meta.env.VITE_ENCRYPTION_KEY
+      );
+      console.log("data", data);
+      if (data.status) {
+        history.replace("/MedicalRecords", { shouldReload: true });
+      }
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      alert("An error occurred during upload.");
     }
   };
 
@@ -98,7 +159,6 @@ const MRPdfUpload: React.FC = () => {
       </IonHeader>
       <IonContent color="light">
         <div className="custom-border-box flex flex-column m-3 py-5 border-round-lg font-medium align-items-center justify-content-center bg-white">
-          {/* Upload section - hidden once PDF is selected */}
           {!pdfFileUrl && (
             <>
               <p className="font-bold text-xl">Upload PDF</p>
@@ -116,7 +176,6 @@ const MRPdfUpload: React.FC = () => {
             </>
           )}
 
-          {/* Preview section - shown only after selection */}
           {pdfFileUrl && (
             <div
               className="cursor-pointer mt-4"
@@ -145,56 +204,65 @@ const MRPdfUpload: React.FC = () => {
         <div className="m-3">
           {pdfFileUrl && (
             <>
-              <div>
-                <p>Document Name</p>
-                <InputText
-                  placeholder="Enter Document Name"
-                  className="w-full inputBoxMedrec my-2"
-                />
-                <p>Date</p>
-                <Calendar
-                  id="buttondisplay"
-                  className="w-full inputBoxMedrec my-2"
-                  value={date}
-                  placeholder="Enter Date"
-                  onChange={(e) => setDate(e.value)}
-                  maxDate={today}
-                />
+              <p>Document Name</p>
+              <InputText
+                value={docName}
+                onChange={(e) => setDocName(e.target.value)}
+                placeholder="Enter Document Name"
+                className="w-full inputBoxMedrec my-2"
+              />
 
-                <p>Document Category</p>
-                <Dropdown
-                  value={selectedCategory}
-                  onChange={(e) => {
-                    setSelectedCategory(e.value);
-                    setSelectedSubItem(null); // Reset sub item
-                  }}
-                  options={categories}
-                  placeholder="Select Category"
-                  className="w-full my-2 inputBoxMedrec"
-                />
-                <p>Document Sub Category</p>
-                <Dropdown
-                  value={selectedSubItem}
-                  onChange={(e) => setSelectedSubItem(e.value)}
-                  options={selectedCategory ? subItems[selectedCategory] : []}
-                  placeholder="Select Sub-category"
-                  className="w-full inputBoxMedrec my-2"
-                  disabled={!selectedCategory}
-                />
-                <p>Notes</p>
-                <InputText
-                  placeholder="Enter Record notes"
-                  className="w-full my-2"
-                />
+              <p>Date</p>
+              <Calendar
+                id="buttondisplay"
+                className="w-full inputBoxMedrec my-2"
+                value={date}
+                placeholder="Enter Date"
+                onChange={(e) => setDate(e.value)}
+                maxDate={today}
+              />
 
-                <p>Medical Center Name</p>
-                <InputText
-                  placeholder="Enter Medical Center Name"
-                  className="w-full my-2"
-                />
+              <p>Document Category</p>
+              <Dropdown
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.value);
+                  setSelectedSubItem(null);
+                }}
+                options={categories}
+                placeholder="Select Category"
+                className="w-full my-2 inputBoxMedrec"
+              />
 
-                <IonButton expand="block">Save Document</IonButton>
-              </div>
+              <p>Document Sub Category</p>
+              <Dropdown
+                value={selectedSubItem}
+                onChange={(e) => setSelectedSubItem(e.value)}
+                options={selectedCategory ? subItems[selectedCategory] : []}
+                placeholder="Select Sub-category"
+                className="w-full inputBoxMedrec my-2"
+                disabled={!selectedCategory}
+              />
+
+              <p>Notes</p>
+              <InputText
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Enter Record notes"
+                className="w-full my-2"
+              />
+
+              <p>Medical Center Name</p>
+              <InputText
+                value={centerName}
+                onChange={(e) => setCenterName(e.target.value)}
+                placeholder="Enter Medical Center Name"
+                className="w-full my-2"
+              />
+
+              <IonButton expand="block" onClick={handleSave}>
+                Save Document
+              </IonButton>
             </>
           )}
         </div>

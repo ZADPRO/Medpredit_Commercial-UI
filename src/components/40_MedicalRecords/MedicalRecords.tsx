@@ -14,7 +14,7 @@ import {
 import { ButtonGroup } from "primereact/buttongroup";
 
 import { chevronBack } from "ionicons/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./MedicalRecords.css";
 import MedicalRecordsReports from "./MedicalRecordsReports";
@@ -24,6 +24,7 @@ import { Button } from "primereact/button";
 
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 import { useHistory } from "react-router";
+import axios from "axios";
 
 const MedicalRecords: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState<string>("reports");
@@ -31,6 +32,40 @@ const MedicalRecords: React.FC = () => {
   const [value, setValue] = useState<string>();
 
   const history = useHistory();
+
+  const userDetails = localStorage.getItem("userDetails");
+  const userDeatilsObj = userDetails
+    ? JSON.parse(userDetails)
+    : { userId: null, token: null };
+
+  const fetchMedicalRecords = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/medicalRecordsDetails/${
+          userDeatilsObj.userId
+        }`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.status) {
+        console.log("Records:", response.data.records);
+        // Use response.data.records to populate your UI
+      } else {
+        alert("No records found.");
+      }
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      alert("Something went wrong while fetching records.");
+    }
+  };
+
+  useEffect(() => {
+    fetchMedicalRecords();
+  }, []);
 
   return (
     <IonPage>
@@ -120,6 +155,7 @@ const MedicalRecords: React.FC = () => {
             /> */}
             <Button
               icon="pi pi-file-pdf"
+              size="large"
               className={
                 value === "pdf"
                   ? "p-button-primary buttonIconGroupEnd buttonIconGroupStart"
