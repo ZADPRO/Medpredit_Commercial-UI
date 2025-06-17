@@ -1,5 +1,6 @@
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonContent,
   IonHeader,
@@ -91,13 +92,7 @@ const CategorySuccess: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="light">
-          <IonButtons slot="start">
-            <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
+      <IonHeader></IonHeader>
 
       <IonContent fullscreen className="categorySuccessContent">
         <div className="successCard m-2">
@@ -130,6 +125,7 @@ const CategorySuccess: React.FC = () => {
             </>
           ) : pendingAssessments.length > 0 ? (
             <>
+              <p onClick={() => history.replace("/home")}>Go to Home</p>
               <h3 className="pendingHeader">Pending Assessments</h3>
               <IonList lines="none" className="pendingQuizList">
                 {pendingAssessments.map((assessment) => (
