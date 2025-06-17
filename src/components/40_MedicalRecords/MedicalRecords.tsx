@@ -27,6 +27,12 @@ import { useHistory } from "react-router";
 import axios from "axios";
 
 const MedicalRecords: React.FC = () => {
+  const [records, setRecords] = useState({
+    reports: [],
+    prescriptions: [],
+    documents: [],
+  });
+
   const [selectedSegment, setSelectedSegment] = useState<string>("reports");
 
   const [value, setValue] = useState<string>();
@@ -52,8 +58,22 @@ const MedicalRecords: React.FC = () => {
       );
 
       if (response.data.status) {
-        console.log("Records:", response.data.records);
-        // Use response.data.records to populate your UI
+        const allRecords = response.data.records;
+
+        const categorized = {
+          reports: allRecords.filter(
+            (record) => record.refCategory === "reports"
+          ),
+          prescriptions: allRecords.filter(
+            (record) => record.refCategory === "prescriptions"
+          ),
+          documents: allRecords.filter(
+            (record) => record.refCategory === "medical_docs"
+          ),
+        };
+
+        setRecords(categorized);
+        console.log("categorized", categorized);
       } else {
         alert("No records found.");
       }
@@ -103,9 +123,15 @@ const MedicalRecords: React.FC = () => {
       </IonHeader>
       <IonContent>
         {/* MEDICAL HISTORY DISPLAY CONTENTS */}
-        {selectedSegment === "reports" && <MedicalRecordsReports />}
-        {selectedSegment === "prescriptions" && <MedicalRecordsPrescriptions />}
-        {selectedSegment === "documents" && <MedicalRecordsDocuments />}
+        {selectedSegment === "reports" && (
+          <MedicalRecordsReports records={records.reports} />
+        )}
+        {selectedSegment === "prescriptions" && (
+          <MedicalRecordsPrescriptions records={records.prescriptions} />
+        )}
+        {selectedSegment === "documents" && (
+          <MedicalRecordsDocuments records={records.documents} />
+        )}
 
         {/* FAB BUTTONS */}
         <IonFab
