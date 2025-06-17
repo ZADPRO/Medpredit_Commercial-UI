@@ -1,5 +1,6 @@
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
   IonChip,
   IonContent,
@@ -16,11 +17,15 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
 import { Dropdown } from "primereact/dropdown";
+import { Directory, Filesystem } from "@capacitor/filesystem";
+import { FileOpener } from "@capacitor-community/file-opener";
 
 const MRPdfUpload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [pdfFileUrl, setPdfFileUrl] = useState<string | null>(null);
   const [date, setDate] = useState<Nullable<Date>>(null);
+
+  const today = new Date();
 
   // REPORTS - Lab test reports, XRay, Scans (CT, MRI, ULTRASOUND), Echo / ECG, Biopsy, Pathology
   // PRESCRIPTIONS - Doctor's presc, Medication list, Dosage schedule, Treatment notes, Follow up advice
@@ -84,15 +89,15 @@ const MRPdfUpload: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton
               mode="md"
-              defaultHref="/profile"
+              defaultHref="/MedicalRecords"
               icon={chevronBack}
             ></IonBackButton>
           </IonButtons>
           <IonTitle>PDF Records</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <div className="custom-border-box flex flex-column m-3 py-5 border-round-lg font-medium align-items-center justify-content-center">
+      <IonContent color="light">
+        <div className="custom-border-box flex flex-column m-3 py-5 border-round-lg font-medium align-items-center justify-content-center bg-white">
           {/* Upload section - hidden once PDF is selected */}
           {!pdfFileUrl && (
             <>
@@ -153,6 +158,7 @@ const MRPdfUpload: React.FC = () => {
                   value={date}
                   placeholder="Enter Date"
                   onChange={(e) => setDate(e.value)}
+                  maxDate={today}
                 />
 
                 <p>Document Category</p>
@@ -176,7 +182,18 @@ const MRPdfUpload: React.FC = () => {
                   disabled={!selectedCategory}
                 />
                 <p>Notes</p>
-                <p>Save Button</p>
+                <InputText
+                  placeholder="Enter Record notes"
+                  className="w-full my-2"
+                />
+
+                <p>Medical Center Name</p>
+                <InputText
+                  placeholder="Enter Medical Center Name"
+                  className="w-full my-2"
+                />
+
+                <IonButton expand="block">Save Document</IonButton>
               </div>
             </>
           )}

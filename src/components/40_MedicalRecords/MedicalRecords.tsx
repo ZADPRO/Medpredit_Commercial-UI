@@ -81,7 +81,7 @@ const MedicalRecords: React.FC = () => {
           edge={false}
         >
           <ButtonGroup>
-            <Button
+            {/* <Button
               icon="pi pi-camera"
               className={
                 value === "camera"
@@ -100,8 +100,6 @@ const MedicalRecords: React.FC = () => {
                   });
 
                   console.log("Captured image URI:", image.webPath);
-                  // You can now display or upload the image using image.webPath
-                  // For example: showPreview(image.webPath);
                 } catch (error) {
                   console.error("Camera error:", error);
                 }
@@ -119,13 +117,13 @@ const MedicalRecords: React.FC = () => {
                 history.push("/imageRecords");
                 setValue("images");
               }}
-            />
+            /> */}
             <Button
               icon="pi pi-file-pdf"
               className={
                 value === "pdf"
-                  ? "p-button-primary buttonIconGroupEnd"
-                  : "buttonIconGroupEnd"
+                  ? "p-button-primary buttonIconGroupEnd buttonIconGroupStart"
+                  : "buttonIconGroupEnd buttonIconGroupStart"
               }
               onClick={() => {
                 console.log("PDF selected");
