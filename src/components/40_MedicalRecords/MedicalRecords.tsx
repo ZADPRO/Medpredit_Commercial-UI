@@ -23,7 +23,7 @@ import MedicalRecordsDocuments from "./MedicalRecordsDocuments";
 import { Button } from "primereact/button";
 
 import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import axios from "axios";
 
 const MedicalRecords: React.FC = () => {
@@ -32,6 +32,8 @@ const MedicalRecords: React.FC = () => {
     prescriptions: [],
     documents: [],
   });
+
+  const location = useLocation<{ shouldReload?: boolean }>();
 
   const [selectedSegment, setSelectedSegment] = useState<string>("reports");
 
@@ -86,6 +88,18 @@ const MedicalRecords: React.FC = () => {
   useEffect(() => {
     fetchMedicalRecords();
   }, []);
+
+  useEffect(() => {
+    // Call API on load or reload
+    if (location.state?.shouldReload) {
+      fetchMedicalRecords();
+
+      // Clear the reload flag so it doesn’t trigger again unnecessarily
+      history.replace({ ...location, state: {} });
+    } else {
+      fetchMedicalRecords();
+    }
+  }, [location.state?.shouldReload]);
 
   return (
     <IonPage>

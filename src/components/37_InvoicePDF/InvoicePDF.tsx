@@ -577,7 +577,7 @@ const InvoicePDF: React.FC<Transaction> = ({
         directory: Directory.Documents,
       });
 
-      console.log("PDF saved:", savedFile);
+      console.log("PDF saved:", savedFile.uri);
       setLoading(false);
       // Open the file using FileOpener
       await FileOpener.open({

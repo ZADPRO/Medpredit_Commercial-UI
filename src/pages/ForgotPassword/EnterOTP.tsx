@@ -132,7 +132,7 @@ const EnterOTP = () => {
                   </button>
                 )}
               </div>
-              <div>
+              {/* <div>
                 <div
                   style={{
                     display: "flex",
@@ -142,7 +142,7 @@ const EnterOTP = () => {
                 >
                   {t("verifyOTP.resendmsg")}
                 </div>
-              </div>
+              </div> */}
               <div style={{ margin: "2rem 0 0 1rem" }}>
                 <button
                   onClick={() => {

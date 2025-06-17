@@ -1,6 +1,10 @@
 import React from "react";
 import folderIcon from "../../assets/MedicalRecords/folder.svg";
 
+import { Filesystem, Directory } from "@capacitor/filesystem";
+import axios from "axios";
+import { FileOpener } from "@capacitor-community/file-opener";
+
 interface Props {
   records: any[];
 }
@@ -43,7 +47,70 @@ const formatDate = (dateString: string): string => {
   return `${day}-${month}-${year}`;
 };
 
+const blobToBase64 = (blob: Blob): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      const base64 = dataUrl.split(",")[1]; // Remove "data:*/*;base64," prefix
+      resolve(base64);
+    };
+    reader.readAsDataURL(blob);
+  });
+};
+
 const MedicalRecordsPrescriptions: React.FC<Props> = ({ records }) => {
+  const handleDocClick = async (refDocId: number) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/medicalRecordsDownload`,
+        { refDocId },
+        { responseType: "blob" }
+      );
+      console.log("response", response);
+
+      const fileBlob = response.data;
+      console.log("fileBlob", fileBlob);
+      const contentType = fileBlob.type || "application/pdf";
+      console.log("contentType", contentType);
+
+      // Convert blob to base64
+      const base64Data = await blobToBase64(fileBlob);
+      console.log("base64Data", base64Data);
+
+      // Create file name
+      const fileName = `document_${refDocId}.pdf`;
+      console.log("fileName", fileName);
+
+      // Save file to device
+      await Filesystem.writeFile({
+        path: fileName,
+        data: base64Data,
+        directory: Directory.Documents,
+      });
+
+      // Get file URI
+      const fileUriResult = await Filesystem.getUri({
+        path: fileName,
+        directory: Directory.Documents,
+      });
+
+      const fileUri = fileUriResult.uri;
+      console.log("fileUri", fileUri);
+
+      // Open the PDF
+      await FileOpener.open({
+        filePath: fileUri,
+        contentType: "application/pdf",
+      });
+
+      console.log("PDF saved and opened successfully!");
+    } catch (error) {
+      console.error("Error downloading or opening PDF:", error);
+    }
+  };
+
   return (
     <div>
       {records.length === 0 ? (
@@ -62,6 +129,7 @@ const MedicalRecordsPrescriptions: React.FC<Props> = ({ records }) => {
             <div
               className="flex shadow-2 m-2 p-3 border-round-lg"
               key={record.refDocId}
+              onClick={() => handleDocClick(record.refDocId)}
             >
               <img
                 src={folderIcon}
