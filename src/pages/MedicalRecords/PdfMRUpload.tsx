@@ -22,7 +22,7 @@ const PdfMRUpload: React.FC = () => {
               icon={chevronBack}
             ></IonBackButton>
           </IonButtons>
-          <IonTitle>Capture Image</IonTitle>
+          <IonTitle>Upload Document</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent></IonContent>

@@ -22,7 +22,7 @@ const PhotoMRUpload: React.FC = () => {
               icon={chevronBack}
             ></IonBackButton>
           </IonButtons>
-          <IonTitle>Capture Image</IonTitle>
+          <IonTitle>Choose Photo</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent></IonContent>

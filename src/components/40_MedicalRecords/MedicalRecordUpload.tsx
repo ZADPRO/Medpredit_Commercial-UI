@@ -178,21 +178,30 @@ const MedicalRecordUpload: React.FC = () => {
             >
               <div
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
-                onClick={() => history.push("/cameraMR")}
+                onClick={() => {
+                  modal.current?.dismiss(); // Close the modal
+                  history.push("/cameraMR");
+                }}
               >
                 <img src={camera} alt="" />
                 <p className="m-0 text-xs">Capture</p>
               </div>
               <div
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
-                onClick={() => history.push("/photoMR")}
+                onClick={() => {
+                  modal.current?.dismiss(); // Close the modal
+                  history.push("/photoMR");
+                }}
               >
                 <img src={photo} alt="" />
                 <p className="m-0 text-xs">Photos</p>
               </div>
               <div
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
-                onClick={() => history.push("/pdfMR")}
+                onClick={() => {
+                  modal.current?.dismiss(); // Close the modal
+                  history.push("/pdfMR");
+                }}
               >
                 <img src={document} alt="" />
                 <p className="m-0 text-xs">PDF</p>
