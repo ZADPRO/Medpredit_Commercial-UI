@@ -54,12 +54,28 @@ const CameraMRUpload: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <div className="cameraBtn">
-          <IonFab vertical="bottom" horizontal="center" slot="fixed">
-            <IonFabButton onClick={() => takePhoto()}>
-              <IonIcon icon={camera}></IonIcon>
-            </IonFabButton>
-          </IonFab>
+        <div className="cameraBtnContainer">
+          <button
+            className="sideBtn leftBtn"
+            onClick={() => console.log("Left")}
+          >
+            Preview
+          </button>
+
+          <div className="cameraBtn">
+            <IonFab vertical="bottom" horizontal="center" slot="fixed">
+              <IonFabButton onClick={() => takePhoto()}>
+                <IonIcon icon={camera}></IonIcon>
+              </IonFabButton>
+            </IonFab>
+          </div>
+
+          <button
+            className="sideBtn rightBtn"
+            onClick={() => console.log("Right")}
+          >
+            Submit
+          </button>
         </div>
 
         <IonActionSheet
