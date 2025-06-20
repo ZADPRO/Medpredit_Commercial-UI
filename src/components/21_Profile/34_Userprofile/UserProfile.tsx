@@ -751,6 +751,7 @@ const UserProfile: React.FC = () => {
                       ? new Date().toISOString().split("T")[0]
                       : formData.refDOB
                   }
+                  max={new Date().toISOString().split("T")[0]}
                   onIonChange={(e) => {
                     const selectedDate = e.detail.value;
                     setFormData({
@@ -1162,7 +1163,7 @@ const UserProfile: React.FC = () => {
                     <li>{t("userProfile.Disaster management and rescue")}</li>
                   </div>
                   <div style={{ marginTop: "10px" }}>
-                    <b>{t("userProfile.others")}</b>
+                    <b>{t("userProfile.Others")}</b>
                   </div>
                   <div
                     style={{

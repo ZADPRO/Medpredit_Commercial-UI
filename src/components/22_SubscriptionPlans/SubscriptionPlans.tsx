@@ -62,14 +62,17 @@ const SubscriptionPlans: React.FC = () => {
         const tokenObject = JSON.parse(tokenString);
         const token = tokenObject.token;
 
-        console.log(token)
+        console.log(token);
         axios
-          .get(`${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`, {
-            headers: {
-              Authorization: token,
-              "Content-Type": "application/json",
-            },
-          })
+          .get(
+            `${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`,
+            {
+              headers: {
+                Authorization: token,
+                "Content-Type": "application/json",
+              },
+            }
+          )
           .then((response) => {
             const data = decrypt(
               response.data[1],
@@ -81,7 +84,9 @@ const SubscriptionPlans: React.FC = () => {
               setPackages(data.result);
               setSubscriptionData({
                 packageStatus: data.packageStatus ?? false,
-                packageData: Array.isArray(data.packageData) ? data.packageData : []
+                packageData: Array.isArray(data.packageData)
+                  ? data.packageData
+                  : [],
               });
               setLoading(false);
             } else {
@@ -108,7 +113,7 @@ const SubscriptionPlans: React.FC = () => {
     getPackage();
   }, []);
 
-  const { t, i18n } = useTranslation("global")
+  const { t, i18n } = useTranslation("global");
 
   return (
     <IonPage>
@@ -217,7 +222,8 @@ const SubscriptionPlans: React.FC = () => {
                           const tokenObject = JSON.parse(tokenString || "");
                           const token = tokenObject.token;
                           window.location.href =
-                            "http://localhost:5173/subscription?token=" +
+                            "http://192.168.29.54:5174/subscription?token=" +
+                            // "https://medpredit.com/subscription?token=" +
                             token +
                             "&packageId=" +
                             plan.refPkgId +
@@ -280,7 +286,8 @@ const SubscriptionPlans: React.FC = () => {
                       const tokenObject = JSON.parse(tokenString || "");
                       const token = tokenObject.token;
                       window.location.href =
-                        "http://localhost:5173/subscription?token=" +
+                        "http://192.168.29.54:5174/subscription?token=" +
+                        // "https://medpredit.com/subscription?token=" +
                         token +
                         "&packageId=" +
                         plan.refPkgId +

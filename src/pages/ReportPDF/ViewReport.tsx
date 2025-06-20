@@ -1269,7 +1269,7 @@ const ViewReport: React.FC<ViewReportProps> = ({ reportDate, selectedUser }) => 
                                         <>
                                           {" "}
                                           <Text key={element.refPTScore}>
-                                            {element.refPTScore} cms
+                                            {element.refPTScore} CMS
                                           </Text>
                                         </>
                                       ) : (

@@ -276,6 +276,8 @@ const Home: React.FC = () => {
                     setUserProfileIcon(PINoPlan);
                     break;
                 }
+              } else {
+                setUserProfileIcon(PINoPlan);
               }
 
               // setSubscriptionData({
@@ -385,12 +387,13 @@ const Home: React.FC = () => {
                   className=""
                   style={{ width: "40px" }}
                   alt=""
-                  onClick={() =>
+                  onClick={() => {
+                    console.log("Chekcing daa");
                     history.push("/profile", {
                       direction: "forward",
                       animation: "slide",
-                    })
-                  }
+                    });
+                  }}
                 />
               </div>
             </div>
