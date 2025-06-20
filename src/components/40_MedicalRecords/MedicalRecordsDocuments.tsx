@@ -1,5 +1,5 @@
 import React from "react";
-import folderIcon from "../../assets/MedicalRecords/folder.svg";
+import folderIcon from "../../assets/MedicalRecords/pdf1.png";
 import axios from "axios";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener";
@@ -135,10 +135,10 @@ const MedicalRecordsDocuments: React.FC<Props> = ({ records }) => {
                 className="medicalRecordsIcon"
               />
               <div className="flex flex-column pl-3 w-full">
-                <p className="font-bold uppercase">{docName}</p>
-                <p>{centerName}</p>
-                <p className="text-sm text-secondary">{subCategoryLabel}</p>
-                <p className="flex text-xs justify-content-end">
+                <p className="font-bold uppercase m-0">{docName}</p>
+                <p className="m-0">{centerName}</p>
+                <p className="text-sm text-secondary m-0">{subCategoryLabel}</p>
+                <p className="flex text-xs justify-content-end m-0">
                   Date - {formattedDate}
                 </p>
               </div>

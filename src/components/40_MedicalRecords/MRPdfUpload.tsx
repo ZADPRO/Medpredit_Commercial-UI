@@ -161,8 +161,8 @@ const MRPdfUpload: React.FC = () => {
         <div className="custom-border-box flex flex-column m-3 py-5 border-round-lg font-medium align-items-center justify-content-center bg-white">
           {!pdfFileUrl && (
             <>
-              <p className="font-bold text-xl">Upload PDF</p>
-              <p className="text-sm pb-3">Browse Your PDF To Upload</p>
+              <p className="font-bold text-xl m-0">Upload PDF</p>
+              <p className="text-sm pb-3 m-0">Browse Your PDF To Upload</p>
               <IonChip onClick={() => fileInputRef.current?.click()}>
                 Browse Files
               </IonChip>

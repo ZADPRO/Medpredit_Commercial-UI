@@ -50,3 +50,12 @@ ion-segment-button {
 .custom-border-box {
   border: 2px dashed #a2a2a28c;
 }
+
+.cardContents img {
+  width: 40px;
+  height: 40px;
+}
+
+.cardContents img {
+  padding: 6px;
+}

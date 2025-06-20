@@ -494,3 +494,22 @@
   width: 1.2rem;
   opacity: 100%;
 }
+
+.medicalRecordUploads .content img {
+  width: 40px;
+}
+
+.medicalRecordUploads .content {
+  background-color: #f2f6d0;
+}
+
+.iconCont i {
+  font-size: 1rem;
+  color: var(--med-light-green);
+  background-color: var(--med-dark-green);
+  padding: 0.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

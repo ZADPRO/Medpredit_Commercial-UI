@@ -47,6 +47,10 @@ import MRCameraCapture from "../../components/40_MedicalRecords/MRCameraCapture"
 import MRImageList from "../../components/40_MedicalRecords/MRImageList";
 import MRPdfUpload from "../../components/40_MedicalRecords/MRPdfUpload";
 import CategorySuccess from "../CategorySuccess/CategorySuccess";
+import MedicalRecordUpload from "../../components/40_MedicalRecords/MedicalRecordUpload";
+import CameraMRUpload from "../MedicalRecords/CameraMRUpload";
+import PhotoMRUpload from "../MedicalRecords/PhotoMRUpload";
+import PdfMRUpload from "../MedicalRecords/PdfMRUpload";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
@@ -203,6 +207,19 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/pdfRecords">
           <MRPdfUpload />
+        </Route>
+        <Route path="/uploadMedicalRecords">
+          <MedicalRecordUpload />
+        </Route>
+
+        <Route path="/cameraMR">
+          <CameraMRUpload />
+        </Route>
+        <Route path="/photoMR">
+          <PhotoMRUpload />
+        </Route>
+        <Route path="/pdfMR">
+          <PdfMRUpload />
         </Route>
 
         <Route path="/addFamilyMember">

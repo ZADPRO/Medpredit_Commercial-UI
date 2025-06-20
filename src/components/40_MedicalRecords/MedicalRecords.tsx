@@ -116,7 +116,7 @@ const MedicalRecords: React.FC = () => {
         </IonToolbar>
         <IonToolbar>
           <IonSegment
-            color="primary"
+            color="success"
             value={selectedSegment}
             onIonChange={(e) => {
               const value = e.detail.value;
@@ -203,7 +203,8 @@ const MedicalRecords: React.FC = () => {
               }
               onClick={() => {
                 console.log("PDF selected");
-                history.push("/pdfRecords");
+                // history.push("/pdfRecords");
+                history.push("/uploadMedicalRecords");
                 setValue("pdf");
               }}
             />

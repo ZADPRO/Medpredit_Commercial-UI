@@ -22,6 +22,9 @@ import {
   personOutline,
   search,
 } from "ionicons/icons";
+
+import folderIcon from "../../assets/MedicalRecords/folder.svg";
+
 import { Carousel } from "react-responsive-carousel";
 import carousel1_eng from "../../assets/images/Home/BANNER1_ENG.jpg";
 import carousel2_eng from "../../assets/images/Home/BANNER2_ENG.jpg";
@@ -462,6 +465,24 @@ const Home: React.FC = () => {
                 <img src={carouselImages[3]} className="carousel-image" />
               </div> */}
             </Carousel>
+          </div>
+          <div className="medicalRecordUploads mx-3 my-4 flex flex-column">
+            <div className="flex content align-items-center justify-content-between m-0 border-round-lg px-3 py-2 gap-4 shadow-1">
+              <div className="flex flex-column">
+                <p
+                  className="mx-0 my-1 font-bold"
+                  style={{
+                    color: "#0c4b41",
+                  }}
+                >
+                  Upload Medical Records
+                </p>
+              </div>
+              {/* <img src={folderIcon} alt="" /> */}
+              <div className="iconCont">
+                <i className="pi pi-upload" />
+              </div>
+            </div>
           </div>
           <div className="home-services">
             <div className="home-services-title">
