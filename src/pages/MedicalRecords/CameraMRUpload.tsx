@@ -10,21 +10,22 @@ import {
   IonHeader,
   IonIcon,
   IonImg,
+  IonModal,
   IonPage,
   IonRow,
   IonTitle,
   IonToolbar,
+  IonButton,
 } from "@ionic/react";
-import { chevronBack } from "ionicons/icons";
+import { chevronBack, camera, trash, close } from "ionicons/icons";
 import React, { useState } from "react";
 
-import { camera, trash, close } from "ionicons/icons";
 import { usePhotoGallery, UserPhoto } from "../../hooks/usePhotoGallery";
 
 const CameraMRUpload: React.FC = () => {
   const { deletePhoto, photos, takePhoto } = usePhotoGallery();
-  console.log("photos", photos);
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
+  const [showPreviewModal, setShowPreviewModal] = useState(false); // Modal control
 
   return (
     <IonPage>
@@ -40,10 +41,11 @@ const CameraMRUpload: React.FC = () => {
           <IonTitle>Capture Image</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       <IonContent>
         <IonGrid>
           <IonRow>
-            {photos.map((photo, index) => (
+            {[...photos].reverse().map((photo, index) => (
               <IonCol size="6" key={index}>
                 <IonImg
                   onClick={() => setPhotoToDelete(photo)}
@@ -57,7 +59,7 @@ const CameraMRUpload: React.FC = () => {
         <div className="cameraBtnContainer">
           <button
             className="sideBtn leftBtn"
-            onClick={() => console.log("Left")}
+            onClick={() => setShowPreviewModal(true)}
           >
             Preview
           </button>
@@ -78,6 +80,34 @@ const CameraMRUpload: React.FC = () => {
           </button>
         </div>
 
+        {/* Preview Modal */}
+        <IonModal
+          isOpen={showPreviewModal}
+          onDidDismiss={() => setShowPreviewModal(false)}
+        >
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle>Image Preview</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onClick={() => setShowPreviewModal(false)}>
+                  Close
+                </IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+
+          <IonContent>
+            {[...photos].reverse().map((photo, index) => (
+              <IonImg
+                key={index}
+                src={photo.webviewPath}
+                style={{ margin: "10px", borderRadius: "10px" }}
+              />
+            ))}
+          </IonContent>
+        </IonModal>
+
+        {/* Delete ActionSheet */}
         <IonActionSheet
           isOpen={!!photoToDelete}
           buttons={[
@@ -100,7 +130,7 @@ const CameraMRUpload: React.FC = () => {
           ]}
           onDidDismiss={() => setPhotoToDelete(undefined)}
         />
-      </IonContent>{" "}
+      </IonContent>
     </IonPage>
   );
 };
