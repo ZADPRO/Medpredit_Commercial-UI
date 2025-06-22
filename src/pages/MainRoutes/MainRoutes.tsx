@@ -51,9 +51,17 @@ import MedicalRecordUpload from "../../components/40_MedicalRecords/MedicalRecor
 import CameraMRUpload from "../MedicalRecords/CameraMRUpload";
 import PhotoMRUpload from "../MedicalRecords/PhotoMRUpload";
 import PdfMRUpload from "../MedicalRecords/PdfMRUpload";
+import { useNetworkCheck } from "../../hooks/useNetworkCheck";
+import { useAxiosInterceptor } from "../../hooks/useAxiosInterceptor";
+import NoInternet from "../NoInternet/NoInternet";
+import ServerError from "../ServerError/ServerError";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
+
+  // ⛓️ Add Hooks
+  useNetworkCheck();
+  useAxiosInterceptor();
 
   useEffect(() => {
     const configureStatusBar = async () => {
@@ -80,6 +88,7 @@ const MainRoutes: React.FC = () => {
   if (tokenString) {
     const tokenObject = JSON.parse(tokenString);
     roleType = tokenObject.roleType;
+    console.log("roleType", roleType);
   }
 
   const history = useHistory();
@@ -110,6 +119,8 @@ const MainRoutes: React.FC = () => {
         <Route exact path="/">
           <Splashscreen />
         </Route>
+        <Route path="/no-internet" component={NoInternet} />
+        <Route path="/internal-server-error" component={ServerError} />
         <Route path="/chooselanguage">
           <Chooselanguage />
         </Route>
