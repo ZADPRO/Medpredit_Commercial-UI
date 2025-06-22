@@ -74,7 +74,12 @@ const CameraMRUpload: React.FC = () => {
 
           <button
             className="sideBtn rightBtn"
-            onClick={() => console.log("Right")}
+            onClick={() => {
+              const uploadedUrls = photos
+                .map((p) => p.uploadedUrl)
+                .filter(Boolean);
+              console.log("Uploaded file URLs:", uploadedUrls);
+            }}
           >
             Submit
           </button>

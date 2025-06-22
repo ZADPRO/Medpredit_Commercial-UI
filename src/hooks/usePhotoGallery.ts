@@ -38,15 +38,51 @@ export function usePhotoGallery() {
     loadSaved();
   }, []);
 
+  const uploadToServer = async (blob: Blob): Promise<string | null> => {
+    const tokenString = localStorage.getItem("userDetails");
+    const tokenObject = JSON.parse(tokenString);
+    const userId = tokenObject.userId;
+    const formData = new FormData();
+    formData.append("file", blob, "photo.jpeg");
+    formData.append("userId", userId);
+
+    try {
+      const response = await fetch(
+        "https://medpredit-staging.brightoncloudtech.com/fileUpload/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      return data.fileUrl || null;
+    } catch (error) {
+      console.error("Upload failed:", error);
+      return null;
+    }
+  };
+
   const takePhoto = async () => {
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
       quality: 100,
     });
+
     const fileName = new Date().getTime() + ".jpeg";
     const savedFileImage = await savePicture(photo, fileName);
-    const newPhotos = [savedFileImage, ...photos];
+
+    // Convert to Blob
+    const response = await fetch(photo.webPath!);
+    const blob = await response.blob();
+    const uploadedUrl = await uploadToServer(blob);
+
+    const photoWithUrl = {
+      ...savedFileImage,
+      uploadedUrl,
+    };
+
+    const newPhotos = [photoWithUrl, ...photos];
     setPhotos(newPhotos);
     Preferences.set({ key: PHOTO_STORAGE, value: JSON.stringify(newPhotos) });
   };
@@ -89,13 +125,9 @@ export function usePhotoGallery() {
   };
 
   const deletePhoto = async (photo: UserPhoto) => {
-    // Remove this photo from the Photos reference data array
     const newPhotos = photos.filter((p) => p.filepath !== photo.filepath);
-
-    // Update photos array cache by overwriting the existing photo array
     Preferences.set({ key: PHOTO_STORAGE, value: JSON.stringify(newPhotos) });
 
-    // delete photo file from filesystem
     const filename = photo.filepath.substr(photo.filepath.lastIndexOf("/") + 1);
     await Filesystem.deleteFile({
       path: filename,
@@ -114,6 +146,7 @@ export function usePhotoGallery() {
 export interface UserPhoto {
   filepath: string;
   webviewPath?: string;
+  uploadedUrl?: string; // <-- NEW FIELD
 }
 
 export async function base64FromPath(path: string): Promise<string> {
