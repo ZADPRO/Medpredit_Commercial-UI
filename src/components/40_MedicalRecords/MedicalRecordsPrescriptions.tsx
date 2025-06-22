@@ -87,7 +87,7 @@ const MedicalRecordsPrescriptions: React.FC<Props> = ({ records }) => {
       await Filesystem.writeFile({
         path: fileName,
         data: base64Data,
-        directory: Directory.Documents,
+        directory: Directory.Documents, 
       });
 
       // Get file URI
