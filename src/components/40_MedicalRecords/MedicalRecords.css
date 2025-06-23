@@ -85,6 +85,7 @@ ion-segment-button {
   color: var(--med-dark-green);
   border: none;
   width: 100px;
+  box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
   height: 48px;
   display: flex;
   border-radius: 10px;

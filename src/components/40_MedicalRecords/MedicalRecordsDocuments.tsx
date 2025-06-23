@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import folderIcon from "../../assets/MedicalRecords/pdf1.png";
 import axios from "axios";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener";
+import { IonSkeletonText, IonText } from "@ionic/react";
 
 interface Props {
   records: any[];
@@ -59,6 +60,16 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
   });
 };
 const MedicalRecordsDocuments: React.FC<Props> = ({ records }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate network loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [records]);
+
   const handleDocClick = async (refDocId: number) => {
     try {
       const response = await axios.post(
@@ -111,8 +122,37 @@ const MedicalRecordsDocuments: React.FC<Props> = ({ records }) => {
 
   return (
     <div>
-      {records.length === 0 ? (
-        <p>No reports available.</p>
+      {loading ? (
+        <>
+          {[...Array(3)].map((_, idx) => (
+            <div className="flex shadow-2 m-2 p-3 border-round-lg" key={idx}>
+              <IonSkeletonText
+                animated
+                style={{ width: "60px", height: "60px", borderRadius: "8px" }}
+              />
+              <div className="flex flex-column pl-3 w-full">
+                <IonSkeletonText
+                  animated
+                  style={{ width: "70%", height: "12px", marginBottom: "6px" }}
+                />
+                <IonSkeletonText
+                  animated
+                  style={{ width: "50%", height: "12px", marginBottom: "6px" }}
+                />
+                <IonSkeletonText
+                  animated
+                  style={{ width: "40%", height: "12px", marginBottom: "6px" }}
+                />
+                <IonSkeletonText
+                  animated
+                  style={{ width: "30%", height: "12px" }}
+                />
+              </div>
+            </div>
+          ))}
+        </>
+      ) : records.length === 0 ? (
+        <IonText color="medium">No reports available.</IonText>
       ) : (
         records.map((record) => {
           const docName = record.refDocName || "-";

@@ -77,7 +77,8 @@ const CameraMRUpload: React.FC = () => {
             onClick={() => {
               const uploadedUrls = photos
                 .map((p) => p.uploadedUrl)
-                .filter(Boolean);
+                .filter(Boolean)
+                .reverse(); // Reverse the order here
               console.log("Uploaded file URLs:", uploadedUrls);
             }}
           >

@@ -33,6 +33,33 @@ const MedicalRecordUpload: React.FC = () => {
   const [pdfFileUrl, setPdfFileUrl] = useState<string | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null); // hold actual file
 
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+
+  const uploadToServer = async (file: File): Promise<string | null> => {
+    const tokenString = localStorage.getItem("userDetails");
+    const tokenObject = tokenString ? JSON.parse(tokenString) : {};
+    const userId = tokenObject.userId;
+
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+    formData.append("userId", userId);
+
+    try {
+      const response = await fetch(
+        "https://medpredit-staging.brightoncloudtech.com/fileUpload/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      return data.fileUrl || null;
+    } catch (error) {
+      console.error("Upload failed:", error);
+      return null;
+    }
+  };
+
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubItem, setSelectedSubItem] = useState<string | null>(null);
 
@@ -161,9 +188,38 @@ const MedicalRecordUpload: React.FC = () => {
             ref={fileInputRef}
             type="file"
             accept="application/pdf"
-            onChange={handleFileSelect}
+            multiple
+            onChange={async (e) => {
+              const files = e.target.files;
+              if (!files) return;
+
+              const fileArray = Array.from(files);
+              for (const file of fileArray) {
+                if (file.type === "application/pdf") {
+                  const url = await uploadToServer(file);
+                  if (url) {
+                    setUploadedFiles((prev) => [...prev, url]);
+                  }
+                }
+              }
+              // Clear input value so same file can be re-uploaded if needed
+              e.target.value = "";
+            }}
             hidden
           />
+
+          {uploadedFiles.length > 0 && (
+            <div className="m-3">
+              <p className="font-bold">Uploaded PDFs:</p>
+              {uploadedFiles.map((url, index) => (
+                <div key={index}>
+                  <a href={url} target="_blank" rel="noopener noreferrer">
+                    PDF {index + 1}
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <IonModal
           ref={modal}
@@ -198,9 +254,10 @@ const MedicalRecordUpload: React.FC = () => {
               </div>
               <div
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
-                onClick={() => {
-                  modal.current?.dismiss(); // Close the modal
-                  history.push("/pdfMR");
+                onClick={async () => {
+                  modal.current?.dismiss();
+                  // Trigger file input click
+                  fileInputRef.current?.click();
                 }}
               >
                 <img src={document} alt="" />

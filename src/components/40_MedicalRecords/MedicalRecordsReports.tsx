@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { IonSkeletonText, IonText } from "@ionic/react";
 import folderIcon from "../../assets/MedicalRecords/pdf1.png";
 
 import { Filesystem, Directory } from "@capacitor/filesystem";
@@ -53,7 +54,7 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
     reader.onerror = reject;
     reader.onload = () => {
       const dataUrl = reader.result as string;
-      const base64 = dataUrl.split(",")[1]; // Remove "data:*/*;base64," prefix
+      const base64 = dataUrl.split(",")[1];
       resolve(base64);
     };
     reader.readAsDataURL(blob);
@@ -61,6 +62,16 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
 };
 
 const MedicalRecordsReports: React.FC<Props> = ({ records }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate network loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, [records]);
+
   const handleDocClick = async (refDocId: number) => {
     try {
       const response = await axios.post(
@@ -105,7 +116,7 @@ const MedicalRecordsReports: React.FC<Props> = ({ records }) => {
         contentType: "application/pdf",
       });
 
-      onShowToast("PDF opened successfully!");
+      // onShowToast("PDF opened successfully!");
 
       console.log("PDF saved and opened successfully!");
     } catch (error) {
@@ -115,8 +126,37 @@ const MedicalRecordsReports: React.FC<Props> = ({ records }) => {
 
   return (
     <div>
-      {records.length === 0 ? (
-        <p>No reports available.</p>
+      {loading ? (
+        <>
+          {[...Array(3)].map((_, idx) => (
+            <div className="flex shadow-2 m-2 p-3 border-round-lg" key={idx}>
+              <IonSkeletonText
+                animated
+                style={{ width: "60px", height: "60px", borderRadius: "8px" }}
+              />
+              <div className="flex flex-column pl-3 w-full">
+                <IonSkeletonText
+                  animated
+                  style={{ width: "70%", height: "12px", marginBottom: "6px" }}
+                />
+                <IonSkeletonText
+                  animated
+                  style={{ width: "50%", height: "12px", marginBottom: "6px" }}
+                />
+                <IonSkeletonText
+                  animated
+                  style={{ width: "40%", height: "12px", marginBottom: "6px" }}
+                />
+                <IonSkeletonText
+                  animated
+                  style={{ width: "30%", height: "12px" }}
+                />
+              </div>
+            </div>
+          ))}
+        </>
+      ) : records.length === 0 ? (
+        <IonText color="medium">No reports available.</IonText>
       ) : (
         records.map((record) => {
           const docName = record.refDocName || "-";
