@@ -12,10 +12,10 @@
   background-position: center;
   background-repeat: no-repeat;
   overflow: scroll;
-  animation: fadeInScale 0.8s ease-out;
+  /* animation: fadeInScale 0.8s ease-out; */
 }
 
-.loginScreenIonic>img {
+.loginScreenIonic > img {
   max-height: 37vh;
 }
 
@@ -83,7 +83,7 @@
   margin: 0.8rem 0;
 }
 
-.loginIonicLogo>ion-icon {
+.loginIonicLogo > ion-icon {
   background-color: var(--med-light-green);
   color: var(--med-dark-green);
   font-size: 1.6rem;

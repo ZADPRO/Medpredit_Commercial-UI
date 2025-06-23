@@ -1,0 +1,26 @@
+.ads-banner {
+  position: fixed;
+  bottom: 2vh;
+  left: 3%;
+  width: 94%;
+  height: 8vh;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  font-weight: 500;
+}
+
+.ads-close-btn {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.8rem;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}

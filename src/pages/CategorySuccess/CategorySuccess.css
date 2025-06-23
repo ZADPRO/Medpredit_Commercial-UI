@@ -1,0 +1,122 @@
+.categorySuccessContent {
+  --background: #f4f6f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.successCard {
+  background-color: #ffffff;
+  max-width: 600px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+.animatedSuccessIcon {
+  font-size: 64px;
+  color: #00813e; /* changed */
+  animation: popIn 0.4s ease-out;
+  margin-bottom: 1rem;
+}
+
+.mainSuccessTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #00813e; /* changed */
+  margin-bottom: 0.5rem;
+}
+
+.mainSuccessSubtitle {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 2rem;
+}
+
+.pendingHeader {
+  text-align: left;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00813e; /* changed */
+  margin-bottom: 1rem;
+}
+
+.pendingQuizList {
+  width: 100%;
+  
+}
+
+.pendingQuizItem {
+  background: #f9f9f9;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s ease all;
+}
+
+.pendingQuizItem:hover {
+  background-color: #e6f4ec; /* soft green hover */
+}
+
+.quizTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.quizDesc {
+  font-size: 14px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.startButton {
+  background-color: #00813e; /* changed */
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.startButton:hover {
+  background-color: #006a32; /* darker hover */
+}
+
+.noPendingQuizText {
+  font-size: 16px;
+  color: #00813e; /* changed */
+  margin-top: 2rem;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}

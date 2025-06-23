@@ -43,9 +43,25 @@ import GetStarted from "../../components/001_GetStarted/GetStarted";
 import SearchPage from "../../components/12_SearchPage/SearchPage";
 import { App } from "@capacitor/app";
 import MedicalRecords from "../../components/40_MedicalRecords/MedicalRecords";
+import MRCameraCapture from "../../components/40_MedicalRecords/MRCameraCapture";
+import MRImageList from "../../components/40_MedicalRecords/MRImageList";
+import MRPdfUpload from "../../components/40_MedicalRecords/MRPdfUpload";
+import CategorySuccess from "../CategorySuccess/CategorySuccess";
+import MedicalRecordUpload from "../../components/40_MedicalRecords/MedicalRecordUpload";
+import CameraMRUpload from "../MedicalRecords/CameraMRUpload";
+import PhotoMRUpload from "../MedicalRecords/PhotoMRUpload";
+import PdfMRUpload from "../MedicalRecords/PdfMRUpload";
+import { useNetworkCheck } from "../../hooks/useNetworkCheck";
+import { useAxiosInterceptor } from "../../hooks/useAxiosInterceptor";
+import NoInternet from "../NoInternet/NoInternet";
+import ServerError from "../ServerError/ServerError";
 
 const MainRoutes: React.FC = () => {
   const location = useLocation();
+
+  // ⛓️ Add Hooks
+  useNetworkCheck();
+  useAxiosInterceptor();
 
   useEffect(() => {
     const configureStatusBar = async () => {
@@ -72,6 +88,7 @@ const MainRoutes: React.FC = () => {
   if (tokenString) {
     const tokenObject = JSON.parse(tokenString);
     roleType = tokenObject.roleType;
+    console.log("roleType", roleType);
   }
 
   const history = useHistory();
@@ -102,6 +119,8 @@ const MainRoutes: React.FC = () => {
         <Route exact path="/">
           <Splashscreen />
         </Route>
+        <Route path="/no-internet" component={NoInternet} />
+        <Route path="/internal-server-error" component={ServerError} />
         <Route path="/chooselanguage">
           <Chooselanguage />
         </Route>
@@ -191,6 +210,28 @@ const MainRoutes: React.FC = () => {
         <Route path="/MedicalRecords">
           <MedicalRecords />
         </Route>
+        <Route path="/cameraRecords">
+          <MRCameraCapture />
+        </Route>
+        <Route path="/imageRecords">
+          <MRImageList />
+        </Route>
+        <Route path="/pdfRecords">
+          <MRPdfUpload />
+        </Route>
+        <Route path="/uploadMedicalRecords">
+          <MedicalRecordUpload />
+        </Route>
+
+        <Route path="/cameraMR">
+          <CameraMRUpload />
+        </Route>
+        <Route path="/photoMR">
+          <PhotoMRUpload />
+        </Route>
+        <Route path="/pdfMR">
+          <PdfMRUpload />
+        </Route>
 
         <Route path="/addFamilyMember">
           <AddFamilyMember />
@@ -200,6 +241,9 @@ const MainRoutes: React.FC = () => {
         </Route>
         <Route path="/about">
           <About />
+        </Route>
+        <Route path="/successCategory">
+          <CategorySuccess />
         </Route>
         <Route path="/knowAbout/:sentDisease">
           <KnowAbout />

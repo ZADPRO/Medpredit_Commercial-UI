@@ -52,8 +52,8 @@ import { useTranslation } from "react-i18next";
 import CustomIonLoading from "../../CustomIonLoading/CustomIonLoading";
 
 const UserProfile: React.FC = () => {
-    const [loading, setLoading] = useState<boolean>(false);
-  
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [selectedSegment, setSelectedSegment] =
     useState<string>("Personal Details");
 
@@ -273,20 +273,20 @@ const UserProfile: React.FC = () => {
               setFormData(data.result[0]);
             }
           } else {
-             setToastOpen({
-               status: true,
-               textColor: "red",
-               message: t("login.An error occurred. Please try again"),
-             });
+            setToastOpen({
+              status: true,
+              textColor: "red",
+              message: t("login.An error occurred. Please try again"),
+            });
           }
         });
     } catch (error) {
       setLoading(false);
       setToastOpen({
-               status: true,
-               textColor: "red",
-               message: t("login.An error occurred. Please try again"),
-             });
+        status: true,
+        textColor: "red",
+        message: t("login.An error occurred. Please try again"),
+      });
       console.error("Error fetching user details:", error);
     }
   };
@@ -391,7 +391,6 @@ const UserProfile: React.FC = () => {
       console.log("Token Invalid");
     }
   };
-
 
   console.log(formData);
   const updateLocalStorage = () => {
@@ -531,7 +530,7 @@ const UserProfile: React.FC = () => {
   };
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage className="">
       <IonHeader>
         <IonToolbar>
           {(localStorage.getItem("firstLogin") == "false" ||
@@ -545,8 +544,31 @@ const UserProfile: React.FC = () => {
             <IonButton
               fill="clear"
               slot="end"
-              color={"dark"}
+              color="dark"
               onClick={() => {
+                console.log("formData.refPincode", formData.refPincode);
+                if (
+                  !formData.refPincode ||
+                  formData.refPincode.trim() === "-"
+                ) {
+                  console.log("pincode was missing");
+
+                  // Check and set the segment if needed
+                  if (selectedSegment !== "Contact Details") {
+                    setSelectedSegment("Contact Details");
+                  }
+
+                  // Show toast message
+                  setToastOpen({
+                    status: true,
+                    textColor: "red", // You can use "red" for error
+                    message: "Pincode must be entered",
+                  });
+
+                  return; // Stop execution
+                }
+
+                // If pincode is entered, proceed
                 history.replace("/home");
                 localStorage.setItem("firstLogin", "false");
               }}
@@ -729,6 +751,7 @@ const UserProfile: React.FC = () => {
                       ? new Date().toISOString().split("T")[0]
                       : formData.refDOB
                   }
+                  max={new Date().toISOString().split("T")[0]}
                   onIonChange={(e) => {
                     const selectedDate = e.detail.value;
                     setFormData({
@@ -863,7 +886,8 @@ const UserProfile: React.FC = () => {
             {/* Occupation */}
             <div className="inputBox">
               <label>
-                {t("userProfile.Occupation")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.Occupation")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
                 className={`p-inputgroup addFamilyInputField ${
@@ -1127,7 +1151,11 @@ const UserProfile: React.FC = () => {
                     <li>{t("userProfile.Sales and marketing")}</li>
                     <li>{t("userProfile.IT and software solutions")}</li>
                     <li>{t("userProfile.Finance and banking")}</li>
-                    <li>{t("userProfile.Transport and logistics- road and railways")}</li>
+                    <li>
+                      {t(
+                        "userProfile.Transport and logistics- road and railways"
+                      )}
+                    </li>
                     <li>{t("userProfile.Hotels and lodges")}</li>
                     <li>{t("userProfile.Media")}</li>
                     <li>{t("userProfile.Judicial")}</li>
@@ -1135,7 +1163,7 @@ const UserProfile: React.FC = () => {
                     <li>{t("userProfile.Disaster management and rescue")}</li>
                   </div>
                   <div style={{ marginTop: "10px" }}>
-                    <b>{t("userProfile.others")}</b>
+                    <b>{t("userProfile.Others")}</b>
                   </div>
                   <div
                     style={{
@@ -1172,7 +1200,8 @@ const UserProfile: React.FC = () => {
             {/* Mobile Number */}
             <div className="inputBox">
               <label>
-                {t("Register User.Mobile Number")} <span style={{ color: "red" }}>*</span>
+                {t("Register User.Mobile Number")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div className="p-inputgroup addFamilyInputField inputDisabled">
                 <span className="addFamilyInputField_Icon">
@@ -1200,7 +1229,8 @@ const UserProfile: React.FC = () => {
             </div>
             <div className="inputBox">
               <label>
-                {t("Register User.E-Mail")} <span style={{ color: "red" }}>*</span>
+                {t("Register User.E-Mail")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
                 className={`p-inputgroup addFamilyInputField ${
@@ -1232,7 +1262,8 @@ const UserProfile: React.FC = () => {
                 </label>
               </div>
               <label>
-                {t("userProfile.Address")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.Address")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
                 className={`p-inputgroup addFamilyInputField ${
@@ -1257,7 +1288,8 @@ const UserProfile: React.FC = () => {
             {/* District */}
             <div className="inputBox">
               <label>
-                {t("userProfile.District")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.District")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
                 className={`p-inputgroup addFamilyInputField ${
@@ -1282,7 +1314,8 @@ const UserProfile: React.FC = () => {
             {/* Pincode */}
             <div className="inputBox">
               <label>
-                {t("userProfile.Pincode")} <span style={{ color: "red" }}>*</span>
+                {t("userProfile.Pincode")}{" "}
+                <span style={{ color: "red" }}>*</span>
               </label>
               <div
                 className={`p-inputgroup addFamilyInputField ${
@@ -1318,7 +1351,9 @@ const UserProfile: React.FC = () => {
         <IonFooter>
           <IonToolbar>
             {selectedSegment == "Contact Details" ? (
-              <IonTitle onClick={() => handleSave()}>{t("userProfile.Save")}</IonTitle>
+              <IonTitle onClick={() => handleSave()}>
+                {t("userProfile.Save")}
+              </IonTitle>
             ) : (
               <IonTitle
                 onClick={() =>

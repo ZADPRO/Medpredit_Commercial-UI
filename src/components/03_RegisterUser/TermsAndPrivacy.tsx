@@ -15,7 +15,7 @@ const TermsAndPrivacy: React.FC = () => {
   const { t, i18n } = useTranslation("global");
 
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage className="">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

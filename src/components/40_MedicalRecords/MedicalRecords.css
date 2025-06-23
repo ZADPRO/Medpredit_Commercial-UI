@@ -22,7 +22,96 @@ ion-segment-button {
 }
 
 /* On focus */
-.p-selectbutton .p-button:focus {
+.p-button:focus {
   outline: none;
   box-shadow: 0 0 0 0 rgba(63, 81, 181, 0.5); /* bluish outline */
+}
+
+.p-button.p-component.p-button-icon-only {
+  padding: 15px 25px;
+}
+
+.buttonIconGroupStart {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.buttonIconGroupEnd {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.buttonIconGroup,
+.buttonIconGroupStart,
+.buttonIconGroupEnd {
+  background-color: #0c4b41;
+}
+
+.custom-border-box {
+  border: 2px dashed #a2a2a28c;
+}
+
+.cardContents img {
+  width: 40px;
+  height: 40px;
+}
+
+.cardContents img {
+  padding: 6px;
+}
+
+.cameraBtn ion-fab {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  margin: 0px 0px 0px 0px;
+  position: fixed;
+}
+
+.cameraBtnContainer {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.sideBtn {
+  background-color: var(--med-light-green);
+  color: var(--med-dark-green);
+  border: none;
+  width: 100px;
+  box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
+  height: 48px;
+  display: flex;
+  border-radius: 10px;
+  justify-content: center;
+  bottom: 0px;
+  font-weight: bold;
+  align-items: center;
+  font-size: 15px;
+}
+/* 
+    --background: var(--med-light-green);
+    --background-activated: #87d361;
+    --background-hover: #a3e681;
+    --box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
+    --color: var(--med-dark-green);
+    height: 64px;
+    width: 64px;
+    font-weight: bold;
+ */
+
+.leftBtn {
+  position: absolute;
+  left: 35px;
+}
+
+.rightBtn {
+  position: absolute;
+  right: 35px;
 }

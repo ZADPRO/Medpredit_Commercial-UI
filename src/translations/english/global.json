@@ -72,15 +72,15 @@
   },
   "forgotPassword": {
     "title": "Forgot Password?",
-    "description": "Enter your mobile number to receive an OTP and reset your password.",
+    "description": "Enter your email id to receive an OTP and reset your password.",
     "emailPlaceholder": "Mobile Number",
     "continue": "Continue",
-    "invalidEmail": "Please enter a valid mobile number",
-    "Mobile Number": "Mobile Number"
+    "invalidEmail": "Please enter a valid email number",
+    "Email Address": "Email ID"
   },
   "verifyOTP": {
     "title": "OTP VERFICATION",
-    "description": "Enter OTP sent to +91-8765279827",
+    "description": "Enter OTP sent to your email",
     "otpPlaceholder": "Enter OTP",
     "verify": "Verify",
     "resendmsg": "Don't receive code? Re-send",

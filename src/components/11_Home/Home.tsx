@@ -2,17 +2,12 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
-  IonFabList,
   IonGrid,
   IonHeader,
   IonIcon,
-  IonicSafeString,
   IonPage,
   IonRow,
   IonToolbar,
@@ -22,18 +17,14 @@ import "./Home.css";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
   chevronDown,
-  chevronForward,
   chevronUp,
-  chevronUpCircle,
-  colorPalette,
-  document,
   newspaperOutline,
-  notificationsOutline,
-  peopleOutline,
-  personAddOutline,
   personOutline,
   search,
 } from "ionicons/icons";
+
+import folderIcon from "../../assets/MedicalRecords/folder.svg";
+
 import { Carousel } from "react-responsive-carousel";
 import carousel1_eng from "../../assets/images/Home/BANNER1_ENG.jpg";
 import carousel2_eng from "../../assets/images/Home/BANNER2_ENG.jpg";
@@ -45,7 +36,7 @@ import carousel3_hin from "../../assets/images/Home/BANNER3_HINDI.jpg";
 import carousel4_hin from "../../assets/images/Home/BANNER4_HINDI.jpg";
 import { Divider } from "primereact/divider";
 import { Card } from "primereact/card";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { motion } from "framer-motion";
 import alcohol from "../../assets/images/Services/alchohol.png";
 import physical from "../../assets/images/Services/physical-activities.png";
@@ -61,21 +52,25 @@ import coronaryKnowAbout from "../../assets/images/Services/Coronary KnowAbout.p
 import stokeKnowAbout from "../../assets/images/Services/Stroke KnowAbout.png";
 import indiaFlag from "../../assets/images/Home/India Flag.png";
 import heartIcon from "../../assets/images/Home/heart.png";
-import goodImage from "../../assets/images/Home/good.svg";
-import averageImage from "../../assets/images/Home/average.svg";
-import riskImage from "../../assets/images/Home/risk.svg";
-import personAdd from "../../assets/images/Icons/PersonAdd.png";
-import personEdit from "../../assets/images/Icons/PersonEdit.png";
 import { StatusBar } from "@capacitor/status-bar";
 import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { useTranslation } from "react-i18next";
 
+import TutorialCarousel from "../41_TutorialCarousel/TutorialCarousel";
+
+import PINoPlan from "../../assets/UserIcons/noPlan.png";
+import PIBasicPlan from "../../assets/UserIcons/basic.png";
+import PIStandardPlan from "../../assets/UserIcons/standard.png";
+import PIFamilyPlan from "../../assets/UserIcons/familyPlan.png";
+import PIProPlan from "../../assets/UserIcons/proPlan.png";
+
 const Home: React.FC = () => {
   const history = useHistory();
-  const location = useLocation();
   const userDetails = localStorage.getItem("userDetails");
+
+  const [userProfileIcon, setUserProfileIcon] = useState("");
 
   const userDeatilsObj = userDetails
     ? JSON.parse(userDetails)
@@ -262,6 +257,31 @@ const Home: React.FC = () => {
                 tempPackages[1],
               ]; // Rearrange the package list for UI
               setPackages(tempPackages);
+              console.log("tempPackages", data);
+              if (data.packageStatus && data.packageData[0]) {
+                const refPkgId = data.packageData[0].refPkgId;
+                console.log("refPkgId", refPkgId);
+
+                switch (refPkgId) {
+                  case 0:
+                    setUserProfileIcon(PIBasicPlan);
+                    break;
+                  case 1:
+                    setUserProfileIcon(PIStandardPlan);
+                    break;
+                  case 2:
+                    setUserProfileIcon(PIFamilyPlan);
+                    break;
+                  case 3:
+                    setUserProfileIcon(PIProPlan);
+                    break;
+                  default:
+                    setUserProfileIcon(PINoPlan);
+                    break;
+                }
+              } else {
+                setUserProfileIcon(PINoPlan);
+              }
 
               // setSubscriptionData({
               //   packageStatus: data.packageStatus ?? false,
@@ -320,49 +340,68 @@ const Home: React.FC = () => {
     }
   };
 
+  const [showTutorial, setShowTutorial] = useState(false);
+
   useEffect(() => {
+    const tutorialSeen = localStorage.getItem("tutorial");
+    if (tutorialSeen === "present") {
+      console.log("tutorialSeen", tutorialSeen);
+      setShowTutorial(true);
+    }
     setLoading(true);
     getPackage();
     getHomeDetails();
   }, []);
 
   console.log(packages);
+
+  const handleCloseTutorial = () => {
+    localStorage.setItem("tutorial", "absent");
+    setShowTutorial(false);
+  };
+
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage className="">
       <IonHeader>
-        <div className="home-top">
-          <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
-            <div className="home-top-bar-greetings">
-              <span style={{ fontSize: "0.8rem" }}>{t("home.Hi")},</span>
-              <h2
-                style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
-              >
-                {userDeatilsObj.firstName}
-              </h2>
-            </div>
-            <div className="home-top-bar-icons">
-              <IonIcon
-                onClick={() =>
-                  history.push("/reports", {
-                    direction: "forward",
-                    animation: "slide",
-                  })
-                }
-                icon={newspaperOutline}
-              />
-              {/* <IonIcon icon={notificationsOutline} /> */}
-              <IonIcon
-                onClick={() =>
-                  history.push("/profile", {
-                    direction: "forward",
-                    animation: "slide",
-                  })
-                }
-                icon={personOutline}
-              />
+        <IonToolbar>
+          <div className="home-top">
+            <div className={`home-top-bar ${isScrolled ? "scrolled" : ""}`}>
+              <div className="home-top-bar-greetings">
+                <span style={{ fontSize: "0.8rem" }}>{t("home.Hi")},</span>
+                <h2
+                  style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
+                >
+                  {userDeatilsObj.firstName}
+                </h2>
+              </div>
+              <div className="home-top-bar-icons">
+                <IonIcon
+                  onClick={() =>
+                    history.push("/reports", {
+                      direction: "forward",
+                      animation: "slide",
+                    })
+                  }
+                  icon={newspaperOutline}
+                />
+                {/* <IonIcon icon={notificationsOutline} /> */}
+                <img
+                  src={userProfileIcon}
+                  className=""
+                  style={{ width: "40px" }}
+                  alt=""
+                  onClick={() => {
+                    console.log("Chekcing daa");
+                    history.push("/profile", {
+                      direction: "forward",
+                      animation: "slide",
+                    });
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </IonToolbar>
       </IonHeader>
 
       <IonContent scrollEvents={true} onIonScroll={handleScroll}>
@@ -427,25 +466,24 @@ const Home: React.FC = () => {
               </div> */}
             </Carousel>
           </div>
-          {/* <div className="home-services">
-            <div className="home-services-title">
-              <h2
-                style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
-              >
-                Services
-              </h2>
-              <span className="medCustom-chip01">View All</span>
+          <div className="medicalRecordUploads mx-3 my-4 flex flex-column">
+            <div className="flex content align-items-center justify-content-between m-0 border-round-lg px-3 py-2 gap-4 shadow-1">
+              <div className="flex flex-column">
+                <p
+                  className="mx-0 my-1 font-bold"
+                  style={{
+                    color: "#0c4b41",
+                  }}
+                >
+                  Upload Medical Records
+                </p>
+              </div>
+              {/* <img src={folderIcon} alt="" /> */}
+              <div className="iconCont">
+                <i className="pi pi-upload" />
+              </div>
             </div>
-
-            <div className="home-services-list">
-              {services.map((item) => (
-                <div>
-                  <IonIcon icon={accessibility} />
-                  <span>{item.title}</span>
-                </div>
-              ))}
-            </div>
-          </div> */}
+          </div>
           <div className="home-services">
             <div className="home-services-title">
               <h2
@@ -456,7 +494,6 @@ const Home: React.FC = () => {
               <span style={{ fontSize: "0.6rem" }}>
                 {t("home.Stay Informed and Take Control of Your Health")}
               </span>
-              {/* <span className="medCustom-chip01">View All</span> */}
             </div>
             <div style={{ width: "100%" }}>
               <IonGrid className="home-custom-grid">
@@ -707,195 +744,8 @@ const Home: React.FC = () => {
                         );
                     })}
                 </div>
-                {/* <div className="home-pricing-card">
-              <Card className="home-pricing-card-content">
-                <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                  Intro
-                </span>
-                <div>
-                  <p>2 Family Members</p>
-                  <p>2 Family Members</p>
-                </div>
-                <span
-                  style={{
-                    fontSize: "0.6rem",
-                    fontWeight: "bold",
-                    fontStyle: "italic",
-                  }}
-                >
-                  Rs.400/ Month
-                </span>
-                <div className="home-pricing-card-getstarted">Get Started</div>
-              </Card>
-              <Card className="home-pricing-card-content">
-                <span style={{ fontSize: "1.4rem", fontWeight: "bolder" }}>
-                  Pro
-                </span>
-                <div>
-                  <p>6 Family Members</p>
-                  <p>6 Family Members</p>
-                  <p>6 Family Members</p>
-                  <p>6 Family Members</p>
-                </div>
-                <span
-                  style={{
-                    fontSize: "0.8rem",
-                    fontWeight: "bolder",
-                    fontStyle: "italic",
-                  }}
-                >
-                  Rs.800/ Month
-                </span>
-                <div className="home-pricing-card-getstarted-pro">
-                  Get Started
-                </div>
-              </Card>
-              <Card className="home-pricing-card-content">
-                <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
-                  Base
-                </span>
-                <div>
-                  <p>4 Family Members</p>
-                  <p>4 Family Members</p>
-                  <p>4 Family Members</p>
-                  <p>4 Family Members</p>
-                </div>
-                <span
-                  style={{
-                    fontSize: "0.6rem",
-                    fontWeight: "bold",
-                    fontStyle: "italic",
-                  }}
-                >
-                  Rs.600/ Month
-                </span>
-                <div className="home-pricing-card-getstarted">Get Started</div>
-              </Card>
-            </div> */}
               </div>
             )}
-          {/* <div className="home-riskFactor">
-            <div className="home-riskFactor-title">
-              <div>
-                <h2
-                  style={{ fontSize: "1.3rem", margin: "0", fontWeight: "600" }}
-                >
-                  Risk Factor
-                </h2>
-                <span style={{ fontSize: "0.6rem" }}>
-                  Stay Informed and Take Control of Your Health
-                </span>
-              </div>
-
-              {/* <span>View All</span> */}{" "}
-          {/*
-            </div>
-
-            <div className="home-riskFactor-content">
-              <div className="home-riskFactor-score01">
-                <div className="home-riskFactor-card01">
-                  <div style={{ display: "flex", gap: "0.3rem" }}>
-                    <img src={goodImage} />
-                    <span>Good</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <span
-                      style={{
-                        color: "rgba(87, 142, 37, 1)",
-                        fontSize: "1.5rem",
-                      }}
-                    >
-                      6
-                    </span>
-                    <span>/8</span>
-                  </div>
-                </div>
-                <div className="home-riskFactor-card01">
-                  <div style={{ display: "flex", gap: "0.3rem" }}>
-                    <img src={averageImage} />
-                    <span>Average</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <span
-                      style={{
-                        color: "rgba(255, 161, 11, 1)",
-                        fontSize: "1.5rem",
-                      }}
-                    >
-                      1
-                    </span>
-                    <span>/8</span>
-                  </div>
-                </div>
-                <div className="home-riskFactor-card01">
-                  <div style={{ display: "flex", gap: "0.3rem" }}>
-                    <img src={riskImage} />
-                    <span>Risk</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <span
-                      style={{
-                        color: "rgba(240, 0, 38, 1)",
-                        fontSize: "1.5rem",
-                      }}
-                    >
-                      1
-                    </span>
-                    <span>/8</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="home-riskFactor-score02">
-                <div className="home-riskFactor-rings">
-                  <div
-                    style={{
-                      width: "9rem",
-                      height: "9rem",
-                      borderRadius: "50%",
-                      border: "0.5rem solid #F00026",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "0.3rem",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "7rem",
-                        height: "7rem",
-                        borderRadius: "50%",
-                        border: "0.5rem solid #FFA10B",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "0rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: "5rem",
-                          height: "5rem",
-                          borderRadius: "50%",
-                          border: "0.5rem solid #578E25",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: "0.4rem",
-                        }}
-                      >
-                        <span
-                          style={{ fontWeight: "bold", fontSize: "0.7rem" }}
-                        >
-                          100/100
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
           <div className="home-knowAbout">
             <div className="home-knowAbout-title">
               <div>
@@ -940,10 +790,7 @@ const Home: React.FC = () => {
               ))}
             </div>
           </div>
-          {/* <div className="home-faq">
-            <h2>FAQ</h2>
-            <IonIcon size="large" src={chevronForward} />
-          </div> */}
+
           <div className="home-footer">
             <h3>
               {t("home.made with")} <img src={heartIcon} /> {t("home.by")}
@@ -956,22 +803,9 @@ const Home: React.FC = () => {
             <h1> </h1>
           </div>
         </div>
-
-        {/* <IonFab slot="fixed" vertical="bottom" horizontal="end" edge={false}>
-          <IonFabButton>
-            <IonIcon icon={peopleOutline}></IonIcon>
-          </IonFabButton>
-          <IonFabList side="top">
-            <IonFabButton>
-              <img src={personAdd} />
-            </IonFabButton>
-            <IonFabButton>
-              <img src={personEdit} />
-            </IonFabButton>
-          </IonFabList>
-        </IonFab> */}
       </IonContent>
       <CustomIonLoading isOpen={loading} />
+      {showTutorial && <TutorialCarousel onClose={handleCloseTutorial} />}
     </IonPage>
   );
 };

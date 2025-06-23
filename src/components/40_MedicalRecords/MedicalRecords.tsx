@@ -11,24 +11,95 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { ButtonGroup } from "primereact/buttongroup";
+
 import { chevronBack } from "ionicons/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./MedicalRecords.css";
 import MedicalRecordsReports from "./MedicalRecordsReports";
 import MedicalRecordsPrescriptions from "./MedicalRecordsPrescriptions";
 import MedicalRecordsDocuments from "./MedicalRecordsDocuments";
-import { SelectButton, SelectButtonChangeEvent } from "primereact/selectbutton";
+import { Button } from "primereact/button";
+
+import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { useHistory, useLocation } from "react-router";
+import axios from "axios";
 
 const MedicalRecords: React.FC = () => {
+  const [records, setRecords] = useState({
+    reports: [],
+    prescriptions: [],
+    documents: [],
+  });
+
+  const location = useLocation<{ shouldReload?: boolean }>();
+
   const [selectedSegment, setSelectedSegment] = useState<string>("reports");
 
-  const options = [
-    { icon: "pi pi-camera", value: "camera" },
-    { icon: "pi pi-images", value: "images" },
-    { icon: "pi pi-file-pdf", value: "pdf" },
-  ];
   const [value, setValue] = useState<string>();
+
+  const history = useHistory();
+
+  const userDetails = localStorage.getItem("userDetails");
+  const userDeatilsObj = userDetails
+    ? JSON.parse(userDetails)
+    : { userId: null, token: null };
+
+  const fetchMedicalRecords = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/medicalRecordsDetails/${
+          userDeatilsObj.userId
+        }`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.status) {
+        const allRecords = response.data.records;
+
+        const categorized = {
+          reports: allRecords.filter(
+            (record) => record.refCategory === "reports"
+          ),
+          prescriptions: allRecords.filter(
+            (record) => record.refCategory === "prescriptions"
+          ),
+          documents: allRecords.filter(
+            (record) => record.refCategory === "medical_docs"
+          ),
+        };
+
+        setRecords(categorized);
+        console.log("categorized", categorized);
+      } else {
+        alert("No records found.");
+      }
+    } catch (error) {
+      console.error("Error fetching medical records:", error);
+      alert("Something went wrong while fetching records.");
+    }
+  };
+
+  useEffect(() => {
+    fetchMedicalRecords();
+  }, []);
+
+  useEffect(() => {
+    // Call API on load or reload
+    if (location.state?.shouldReload) {
+      fetchMedicalRecords();
+
+      // Clear the reload flag so it doesn’t trigger again unnecessarily
+      history.replace({ ...location, state: {} });
+    } else {
+      fetchMedicalRecords();
+    }
+  }, [location.state?.shouldReload]);
 
   return (
     <IonPage>
@@ -45,7 +116,7 @@ const MedicalRecords: React.FC = () => {
         </IonToolbar>
         <IonToolbar>
           <IonSegment
-            color="primary"
+            color="success"
             value={selectedSegment}
             onIonChange={(e) => {
               const value = e.detail.value;
@@ -66,9 +137,15 @@ const MedicalRecords: React.FC = () => {
       </IonHeader>
       <IonContent>
         {/* MEDICAL HISTORY DISPLAY CONTENTS */}
-        {selectedSegment === "reports" && <MedicalRecordsReports />}
-        {selectedSegment === "prescriptions" && <MedicalRecordsPrescriptions />}
-        {selectedSegment === "documents" && <MedicalRecordsDocuments />}
+        {selectedSegment === "reports" && (
+          <MedicalRecordsReports records={records.reports} />
+        )}
+        {selectedSegment === "prescriptions" && (
+          <MedicalRecordsPrescriptions records={records.prescriptions} />
+        )}
+        {selectedSegment === "documents" && (
+          <MedicalRecordsDocuments records={records.documents} />
+        )}
 
         {/* FAB BUTTONS */}
         <IonFab
@@ -78,18 +155,60 @@ const MedicalRecords: React.FC = () => {
           horizontal="end"
           edge={false}
         >
-          <SelectButton
-            value={value}
-            onChange={(e: SelectButtonChangeEvent) => {
-              console.log("e", e.value);
-              setValue(e.value);
-            }}
-            options={options}
-            optionLabel="icon"
-            itemTemplate={(option) => (
-              <i className={option.icon} style={{ fontSize: "1rem" }} />
-            )}
-          />
+          <ButtonGroup>
+            {/* <Button
+              icon="pi pi-camera"
+              className={
+                value === "camera"
+                  ? "p-button-primary buttonIconGroupStart"
+                  : "buttonIconGroupStart"
+              }
+              onClick={async () => {
+                setValue("camera");
+
+                try {
+                  const image = await Camera.getPhoto({
+                    quality: 90,
+                    allowEditing: false,
+                    resultType: CameraResultType.Uri, // Can also use Base64 or DataUrl
+                    source: CameraSource.Camera,
+                  });
+
+                  console.log("Captured image URI:", image.webPath);
+                } catch (error) {
+                  console.error("Camera error:", error);
+                }
+              }}
+            />
+            <Button
+              icon="pi pi-images"
+              className={
+                value === "images"
+                  ? "p-button-primary buttonIconGroup"
+                  : "buttonIconGroup"
+              }
+              onClick={() => {
+                console.log("Images selected");
+                history.push("/imageRecords");
+                setValue("images");
+              }}
+            /> */}
+            <Button
+              icon="pi pi-file-pdf"
+              size="large"
+              className={
+                value === "pdf"
+                  ? "p-button-primary buttonIconGroupEnd buttonIconGroupStart"
+                  : "buttonIconGroupEnd buttonIconGroupStart"
+              }
+              onClick={() => {
+                console.log("PDF selected");
+                // history.push("/pdfRecords");
+                history.push("/uploadMedicalRecords");
+                setValue("pdf");
+              }}
+            />
+          </ButtonGroup>
         </IonFab>
       </IonContent>
     </IonPage>

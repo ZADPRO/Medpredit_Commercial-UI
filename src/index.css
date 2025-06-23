@@ -37,7 +37,7 @@ body {
 }
 
 ion-content {
-  padding-top: var(--ion-safe-area-top); /* Pushes content below status bar */
+  padding-top: var(--ion-safe-area-top);
 }
 
 .medCustom-button01 {
@@ -139,7 +139,7 @@ ion-content {
 
 .p-inputtext {
   color: black;
-  border: none;
+  /* border: none; */
 }
 
 .p-inputtext:enabled:focus {
@@ -310,10 +310,22 @@ ion-fab-button#fab-premium {
   font-weight: bold;
 }
 
-p {
+/* p {
   margin: 0;
-}
+} */
 
 .medicalRecordsIcon {
   width: 60px;
+  height: 60px;
+  padding: 8px;
+  object-fit: cover;
+  background-color: #0c4b41;
+  border-radius: 50%;
+}
+
+.animationLottie {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 }

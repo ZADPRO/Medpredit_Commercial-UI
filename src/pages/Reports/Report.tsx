@@ -789,7 +789,7 @@ const Report: React.FC = () => {
 
   console.log("item colors==========================", itemColors);
   return (
-    <IonPage className="cus-ion-page">
+    <IonPage className="">
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">

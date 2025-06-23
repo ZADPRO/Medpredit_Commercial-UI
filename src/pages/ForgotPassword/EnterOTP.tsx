@@ -1,21 +1,36 @@
 import { IonContent, IonModal, IonPage } from "@ionic/react";
 import { InputOtp } from "primereact/inputotp";
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import "./ForgotPassword.css";
 import { useTranslation } from "react-i18next";
 import Lottie from "lottie-react";
-import otp from "../../assets/Animations/otp.json";
 import otpsent from "../../assets/Animations/otpsent.json";
 import "./EnterOTP.css";
+import axios from "axios";
+import decrypt from "../../helper";
 
 const EnterOTP = () => {
   const [token, setTokens] = useState<string | number | undefined>();
   const { t } = useTranslation("global");
+
+  const [toastOpen, setToastOpen] = useState({
+    status: false,
+    message: "",
+    textColor: "white",
+  });
+
   const history = useHistory();
 
+  const location = useLocation<{ email: string; userId: number }>();
+  const email = location.state?.email;
+  const userId = location.state?.userId;
+
+  // Now you can use `email` inside this component
+  console.log("Email passed to EnterOTP:", email, userId);
+
   // Timer state
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(300);
   const [canResend, setCanResend] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -31,11 +46,46 @@ const EnterOTP = () => {
   }, [timer]);
 
   const handleResend = () => {
-    setTimer(120);
+    setTimer(300);
     setCanResend(false);
     // Add logic to resend OTP here
   };
 
+  const verifyOTPToBackend = () => {
+    axios
+      .post(
+        import.meta.env.VITE_API_COMMERCIAL_URL + "/validateOTPForPassword",
+        {
+          email: email,
+          otp: token,
+          userId: userId,
+        }
+      )
+      .then((response) => {
+        console.log("res", response);
+        const data = decrypt(
+          response.data[1],
+          response.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("line 46");
+        console.log("data", data);
+        if (data.status) {
+          history.push("/changepassword", {
+            direction: "forward",
+            animation: "slide",
+            email: email,
+            userId: userId,
+          });
+        } else {
+          setToastOpen({
+            status: true,
+            message: t("forgotPassword.invalidEmail"),
+            textColor: "red",
+          });
+        }
+      });
+  };
   return (
     <IonPage>
       <IonContent fullscreen>
@@ -61,7 +111,8 @@ const EnterOTP = () => {
                 onChange={(e) => setTokens(e.value ?? undefined)}
                 className="custom-otp-input"
                 integerOnly
-              />
+                length={6}
+              />
               <div
                 style={{
                   display: "flex",
@@ -81,7 +132,7 @@ const EnterOTP = () => {
                   </button>
                 )}
               </div>
-              <div>
+              {/* <div>
                 <div
                   style={{
                     display: "flex",
@@ -91,12 +142,12 @@ const EnterOTP = () => {
                 >
                   {t("verifyOTP.resendmsg")}
                 </div>
-              </div>
+              </div> */}
               <div style={{ margin: "2rem 0 0 1rem" }}>
                 <button
                   onClick={() => {
-                    // history.goBack(); 
-                    setShowModal(true);
+                    verifyOTPToBackend();
+                    // setShowModal(true);
                   }}
                   className="medCustom-button01"
                 >
@@ -111,22 +162,17 @@ const EnterOTP = () => {
             className="half-screen-modal"
           >
             <div className="modalContent">
-              <div className="lottie-container">
-
-              </div>
+              <div className="lottie-container"></div>
               <p
                 style={{
                   fontWeight: "700",
                   fontSize: "x-large",
-                  marginTop: "10%"
-
+                  marginTop: "10%",
                 }}
               >
                 {" "}
                 {t("verifyOTP.verifySuccessful")}
-
               </p>
-
             </div>
           </IonModal>
         </div>

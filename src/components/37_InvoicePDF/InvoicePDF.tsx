@@ -36,6 +36,7 @@ interface Transaction {
   refUserLname: string;
   refUserCustId: string;
   refAddress: string;
+  refPincode: string;
 }
 
 const InvoicePDF: React.FC<Transaction> = ({
@@ -55,6 +56,7 @@ const InvoicePDF: React.FC<Transaction> = ({
   refUserLname,
   refUserCustId,
   refAddress,
+  refPincode,
 }) => {
   Font.register({
     family: "PopRegular",
@@ -305,94 +307,152 @@ const InvoicePDF: React.FC<Transaction> = ({
                   Rs. {refTransactionAmount}
                 </Text>
               </View>
-              <View
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <View
-                  style={{
-                    width: "40%",
-                    borderBottom: "1px solid #000",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Text
+              {refPincode && refPincode.startsWith("6") ? (
+                <>
+                  {/* SGST */}
+                  <View
                     style={{
-                      width: "58%",
-                      fontSize: "14px",
-                      fontFamily: "PopRegular",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                      paddingLeft: "5px",
-                      paddingRight: "10px",
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
                     }}
                   >
-                    SGST (9%)
-                  </Text>
-                  <Text
+                    <View
+                      style={{
+                        width: "40%",
+                        borderBottom: "1px solid #000",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          width: "58%",
+                          fontSize: "14px",
+                          fontFamily: "PopRegular",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "5px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        SGST (9%)
+                      </Text>
+                      <Text
+                        style={{
+                          width: "42%",
+                          fontSize: "14px",
+                          fontFamily: "PopRegular",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "5px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        Rs. {refTransactionSGST}
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* CGST */}
+                  <View
                     style={{
-                      width: "42%",
-                      fontSize: "14px",
-                      fontFamily: "PopRegular",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                      paddingLeft: "5px",
-                      paddingRight: "10px",
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
                     }}
                   >
-                    Rs. {refTransactionSGST}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <View
-                  style={{
-                    width: "40%",
-                    borderBottom: "1px solid #000",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Text
+                    <View
+                      style={{
+                        width: "40%",
+                        borderBottom: "1px solid #000",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          width: "58%",
+                          fontSize: "14px",
+                          fontFamily: "PopRegular",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "5px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        CGST (9%)
+                      </Text>
+                      <Text
+                        style={{
+                          width: "42%",
+                          fontSize: "14px",
+                          fontFamily: "PopRegular",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "5px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        Rs. {refTransactionCGST}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <>
+                  {/* IGST */}
+                  <View
                     style={{
-                      width: "58%",
-                      fontSize: "14px",
-                      fontFamily: "PopRegular",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                      paddingLeft: "5px",
-                      paddingRight: "10px",
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
                     }}
                   >
-                    CGST (9%)
-                  </Text>
-                  <Text
-                    style={{
-                      width: "42%",
-                      fontSize: "14px",
-                      fontFamily: "PopRegular",
-                      paddingTop: "10px",
-                      paddingBottom: "10px",
-                      paddingLeft: "5px",
-                      paddingRight: "10px",
-                    }}
-                  >
-                    Rs. {refTransactionCGST}
-                  </Text>
-                </View>
-              </View>
+                    <View
+                      style={{
+                        width: "40%",
+                        borderBottom: "1px solid #000",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          width: "58%",
+                          fontSize: "14px",
+                          fontFamily: "PopRegular",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "5px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        IGST (18%)
+                      </Text>
+                      <Text
+                        style={{
+                          width: "42%",
+                          fontSize: "14px",
+                          fontFamily: "PopRegular",
+                          paddingTop: "10px",
+                          paddingBottom: "10px",
+                          paddingLeft: "5px",
+                          paddingRight: "10px",
+                        }}
+                      >
+                        Rs.{" "}
+                        {Number(refTransactionSGST) +
+                          Number(refTransactionCGST)}
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              )}
+
               <View
                 style={{
                   width: "100%",
@@ -517,7 +577,7 @@ const InvoicePDF: React.FC<Transaction> = ({
         directory: Directory.Documents,
       });
 
-      console.log("PDF saved:", savedFile);
+      console.log("PDF saved:", savedFile.uri);
       setLoading(false);
       // Open the file using FileOpener
       await FileOpener.open({
