@@ -19,6 +19,7 @@ import {
 } from "@ionic/react";
 import { chevronBack, camera, trash, close } from "ionicons/icons";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { usePhotoGallery, UserPhoto } from "../../hooks/usePhotoGallery";
 
@@ -26,6 +27,7 @@ const CameraMRUpload: React.FC = () => {
   const { deletePhoto, photos, takePhoto } = usePhotoGallery();
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
   const [showPreviewModal, setShowPreviewModal] = useState(false); // Modal control
+  const { t } = useTranslation("global");
 
   return (
     <IonPage>
@@ -38,7 +40,7 @@ const CameraMRUpload: React.FC = () => {
               icon={chevronBack}
             ></IonBackButton>
           </IonButtons>
-          <IonTitle>Capture Image</IonTitle>
+          <IonTitle>{t("reports.Capture Image")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -61,7 +63,7 @@ const CameraMRUpload: React.FC = () => {
             className="sideBtn leftBtn"
             onClick={() => setShowPreviewModal(true)}
           >
-            Preview
+            {t("reports.Preview")}
           </button>
 
           <div className="cameraBtn">
@@ -82,7 +84,7 @@ const CameraMRUpload: React.FC = () => {
               console.log("Uploaded file URLs:", uploadedUrls);
             }}
           >
-            Submit
+            {t("reports.Submit")}
           </button>
         </div>
 
@@ -93,10 +95,10 @@ const CameraMRUpload: React.FC = () => {
         >
           <IonHeader>
             <IonToolbar>
-              <IonTitle>Image Preview</IonTitle>
+              <IonTitle>{t("reports.Image Preview")}</IonTitle>
               <IonButtons slot="end">
                 <IonButton onClick={() => setShowPreviewModal(false)}>
-                  Close
+                  {t("reports.Close")}
                 </IonButton>
               </IonButtons>
             </IonToolbar>

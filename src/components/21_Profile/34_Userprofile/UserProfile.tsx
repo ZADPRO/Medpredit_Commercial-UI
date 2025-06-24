@@ -402,7 +402,18 @@ const UserProfile: React.FC = () => {
     // Save back to localStorage
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
   };
-
+  const calculateAge = (dob: any) => {
+    if (!dob || dob === "-") return 0;
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+  const userAge = calculateAge(formData.refDOB);
   const verifyForm1 = () => {
     if (formData.refUserFname.length === 0) {
       setToastOpen({
@@ -834,13 +845,16 @@ const UserProfile: React.FC = () => {
                     " " +
                     t("userProfile.Marital Status")
                   }
-                  name="refGender"
+                  name="refMaritalStatus"
                   className="addFamilyDropdown"
-                  disabled={!isEditing ? true : false}
-                  checkmark={true}
-                  highlightOnSelect={false}
+                  disabled={!isEditing || userAge < 18}
                 />
               </div>
+              {userAge < 18 && isEditing && (
+                <small style={{ color: "red", marginTop: "1rem" }}>
+                  {t("userProfile.warning")}
+                </small>
+              )}
             </div>
           </IonSegmentContent>
           <IonSegmentContent id="Career Details">

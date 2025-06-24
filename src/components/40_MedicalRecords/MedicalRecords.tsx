@@ -15,6 +15,7 @@ import { ButtonGroup } from "primereact/buttongroup";
 
 import { chevronBack } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import "./MedicalRecords.css";
 import MedicalRecordsReports from "./MedicalRecordsReports";
@@ -34,6 +35,7 @@ const MedicalRecords: React.FC = () => {
   });
 
   const location = useLocation<{ shouldReload?: boolean }>();
+  const { t } = useTranslation("global");
 
   const [selectedSegment, setSelectedSegment] = useState<string>("reports");
 
@@ -64,13 +66,13 @@ const MedicalRecords: React.FC = () => {
 
         const categorized = {
           reports: allRecords.filter(
-            (record) => record.refCategory === "reports"
+            (record:any) => record.refCategory === "reports"
           ),
           prescriptions: allRecords.filter(
-            (record) => record.refCategory === "prescriptions"
+            (record:any) => record.refCategory === "prescriptions"
           ),
           documents: allRecords.filter(
-            (record) => record.refCategory === "medical_docs"
+            (record:any) => record.refCategory === "medical_docs"
           ),
         };
 
@@ -112,7 +114,7 @@ const MedicalRecords: React.FC = () => {
               icon={chevronBack}
             ></IonBackButton>
           </IonButtons>
-          <IonTitle>Medical Records</IonTitle>
+          <IonTitle> {t("home.Medical Records")}</IonTitle>
         </IonToolbar>
         <IonToolbar>
           <IonSegment
@@ -124,13 +126,13 @@ const MedicalRecords: React.FC = () => {
             }}
           >
             <IonSegmentButton value="reports">
-              <IonLabel style={{ fontSize: "14px" }}>Reports</IonLabel>
+              <IonLabel style={{ fontSize: "14px" }}>{t("home.Reports")}</IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="prescriptions">
-              <IonLabel style={{ fontSize: "14px" }}>Prescriptions</IonLabel>
+              <IonLabel style={{ fontSize: "14px" }}>{t("home.Prescriptions")}</IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="documents">
-              <IonLabel style={{ fontSize: "14px" }}>Documents</IonLabel>
+              <IonLabel style={{ fontSize: "14px" }}>{t("home.Documents")}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
         </IonToolbar>

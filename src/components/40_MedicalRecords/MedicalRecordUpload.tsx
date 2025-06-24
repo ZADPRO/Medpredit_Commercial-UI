@@ -21,6 +21,7 @@ import { useHistory } from "react-router";
 import camera from "../../assets/MedicalRecords/cameraImg.png";
 import photo from "../../assets/MedicalRecords/photoImg.png";
 import document from "../../assets/MedicalRecords/pdfImg.png";
+import { useTranslation } from "react-i18next";
 
 const MedicalRecordUpload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -29,6 +30,7 @@ const MedicalRecordUpload: React.FC = () => {
   const [docName, setDocName] = useState("");
   const [notes, setNotes] = useState("");
   const [centerName, setCenterName] = useState("");
+  const { t } = useTranslation("global");
 
   const [pdfFileUrl, setPdfFileUrl] = useState<string | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null); // hold actual file
@@ -124,28 +126,28 @@ const MedicalRecordUpload: React.FC = () => {
               icon={chevronBack}
             ></IonBackButton>
           </IonButtons>
-          <IonTitle>Medical Records</IonTitle>
+          <IonTitle>{t("home.Medical Records")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <div className="m-3">
-          <p className="m-0">Document Name</p>
+          <p className="m-0">{t("report.Document Name")}</p>
           <InputText
             value={docName}
             onChange={(e) => setDocName(e.target.value)}
-            placeholder="Enter Document Name"
+            placeholder={t("report.Enter Document Name")}
             className="w-full inputBoxMedrec my-2"
           />
-          <p className="m-0">Date</p>
+          <p className="m-0">{t("report.Date")}</p>
           <Calendar
             id="buttondisplay"
             className="w-full inputBoxMedrec my-2"
             value={date}
-            placeholder="Enter Date"
+            placeholder={t("report.Enter Date")}
             onChange={(e) => setDate(e.value)}
             maxDate={today}
           />
-          <p className="m-0">Document Category</p>
+          <p className="m-0">{t("report.Document Category")}</p>
           <Dropdown
             value={selectedCategory}
             onChange={(e) => {
@@ -153,36 +155,38 @@ const MedicalRecordUpload: React.FC = () => {
               setSelectedSubItem(null);
             }}
             options={categories}
-            placeholder="Select Category"
+            placeholder={t("report.Select Category")}
             className="w-full my-2 inputBoxMedrec"
           />
-          <p className="m-0">Document Sub Category</p>
+          <p className="m-0">{t("report.Document Sub Category")}</p>
           <Dropdown
             value={selectedSubItem}
             onChange={(e) => setSelectedSubItem(e.value)}
             options={selectedCategory ? subItems[selectedCategory] : []}
-            placeholder="Select Sub-category"
+            placeholder={t("report.Select Sub-category")}
             className="w-full inputBoxMedrec my-2"
             disabled={!selectedCategory}
           />
-          <p className="m-0">Notes</p>
+          <p className="m-0">{t("report.Notes")}</p>
           <InputText
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Enter Record notes"
+            placeholder={t("report.Enter Record notes")}
             className="w-full my-2"
           />
-          <p className="m-0">Medical Center Name</p>
+          <p className="m-0">{t("report.Medical Center Name")}</p>
           <InputText
             value={centerName}
             onChange={(e) => setCenterName(e.target.value)}
-            placeholder="Enter Medical Center Name"
+            placeholder={t("report.Enter Medical Center Name")}
             className="w-full my-2"
           />
-          <p className="m-0">Upload Medical Records</p>
+          <p className="m-0">{t("report.Upload Medical Records")}</p>
           <div className="flex justify-content-center m-2">
             {/* <IonChip onClick={() => fileInputRef.current?.click()}> */}
-            <IonChip id="open-modal">Choose Medical Records</IonChip>{" "}
+            <IonChip id="open-modal">
+              {t("report.Choose Medical Records")}
+            </IonChip>{" "}
           </div>
           <input
             ref={fileInputRef}
@@ -210,11 +214,11 @@ const MedicalRecordUpload: React.FC = () => {
 
           {uploadedFiles.length > 0 && (
             <div className="m-3">
-              <p className="font-bold">Uploaded PDFs:</p>
+              <p className="font-bold">{t("report.Uploaded PDFs:")}</p>
               {uploadedFiles.map((url, index) => (
                 <div key={index}>
                   <a href={url} target="_blank" rel="noopener noreferrer">
-                    PDF {index + 1}
+                    {t("report.PDF")} {index + 1}
                   </a>
                 </div>
               ))}
@@ -230,7 +234,7 @@ const MedicalRecordUpload: React.FC = () => {
           <div className="w-full flex align-items-center justify-content-center">
             <div
               className="flex align-items-center gap-3 mt-2 justify-content-center"
-              style={{ width: "85%" }}
+              style={{ width: "28%", minWidth: "100px", cursor: "pointer" }}
             >
               <div
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
@@ -240,19 +244,21 @@ const MedicalRecordUpload: React.FC = () => {
                 }}
               >
                 <img src={camera} alt="" />
-                <p className="m-0 text-xs">Capture</p>
+                <p className="m-0 text-xs">{t("report.Capture")}</p>
               </div>
               <div
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
+                style={{ width: "28%", minWidth: "100px", cursor: "pointer" }}
                 onClick={() => {
                   modal.current?.dismiss(); // Close the modal
                   history.push("/photoMR");
                 }}
               >
                 <img src={photo} alt="" />
-                <p className="m-0 text-xs">Photos</p>
+                <p className="m-0 text-xs">{t("report.Photos")}</p>
               </div>
               <div
+                style={{ width: "28%", minWidth: "100px", cursor: "pointer" }}
                 className="cardContents flex-1 shadow-3 border-round-lg py-2 px-3 my-3 flex flex-column align-items-center"
                 onClick={async () => {
                   modal.current?.dismiss();
@@ -261,7 +267,7 @@ const MedicalRecordUpload: React.FC = () => {
                 }}
               >
                 <img src={document} alt="" />
-                <p className="m-0 text-xs">PDF</p>
+                <p className="m-0 text-xs">{t("report.PDF")}</p>
               </div>
             </div>
           </div>
@@ -275,7 +281,7 @@ const MedicalRecordUpload: React.FC = () => {
             }}
             className={`questionSubmitButton`}
           >
-            Save Document
+            {t("report. Save Document")}
           </button>
         </IonToolbar>
       </IonFooter>

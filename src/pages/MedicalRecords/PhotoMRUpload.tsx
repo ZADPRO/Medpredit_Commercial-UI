@@ -19,6 +19,7 @@ import {
 } from "@awesome-cordova-plugins/photo-library";
 import { AndroidPermissions } from "@awesome-cordova-plugins/android-permissions";
 import { isPlatform } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
 const PhotoMRUpload: React.FC = () => {
   const [albums, setAlbums] = useState<AlbumItem[]>([]);
@@ -26,7 +27,7 @@ const PhotoMRUpload: React.FC = () => {
     Record<string, LibraryItem[]>
   >({});
   const [loading, setLoading] = useState(true);
-
+  const { t } = useTranslation("global");
   useEffect(() => {
     const fetchPhotos = async () => {
       if (!isPlatform("cordova") && !isPlatform("capacitor")) {
@@ -84,7 +85,7 @@ const PhotoMRUpload: React.FC = () => {
               icon={chevronBack}
             />
           </IonButtons>
-          <IonTitle>Gallery Albums</IonTitle>
+          <IonTitle>{t("reports.Gallery Albums")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

@@ -475,7 +475,7 @@ const Home: React.FC = () => {
                     color: "#0c4b41",
                   }}
                 >
-                  Upload Medical Records
+                 {t("home.Upload Medical Records")}
                 </p>
               </div>
               {/* <img src={folderIcon} alt="" /> */}

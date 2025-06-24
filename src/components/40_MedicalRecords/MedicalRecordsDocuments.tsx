@@ -4,6 +4,7 @@ import axios from "axios";
 import { Directory, Filesystem } from "@capacitor/filesystem";
 import { FileOpener } from "@capacitor-community/file-opener";
 import { IonSkeletonText, IonText } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   records: any[];
@@ -119,6 +120,7 @@ const MedicalRecordsDocuments: React.FC<Props> = ({ records }) => {
       console.error("Error downloading or opening PDF:", error);
     }
   };
+  const { t } = useTranslation("global");
 
   return (
     <div>
@@ -152,7 +154,7 @@ const MedicalRecordsDocuments: React.FC<Props> = ({ records }) => {
           ))}
         </>
       ) : records.length === 0 ? (
-        <IonText color="medium">No reports available.</IonText>
+        <IonText color="medium">{t("home.No reports available.")}</IonText>
       ) : (
         records.map((record) => {
           const docName = record.refDocName || "-";

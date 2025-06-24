@@ -132,7 +132,14 @@
     "made with": "बनाया के साथ",
     "by": "द्वारा",
     "Made in India": "भारत में बना",
-    "No results found": "कोई परिणाम नहीं मिला"
+    "No results found": "कोई परिणाम नहीं मिला",
+    "Upload Medical Records": "चिकित्सा रिकॉर्ड अपलोड करें",
+    "Choose Medical Records": "चिकित्सा रिकॉर्ड चुनें",
+    "Medical Records": "चिकित्सा रिकॉर्ड",
+    "Reports": "रिपोर्ट्स",
+    "Prescriptions": "नुस्ख़े",
+    "Documents": "दस्तावेज़",
+    "No reports available.": "कोई रिपोर्ट उपलब्ध नहीं है।"
   },
   "profile": {
     "Phone Number": "फोन नंबर",
@@ -158,6 +165,27 @@
     "Empowering you with seamless healthcare solutions": "आपको निर्बाध स्वास्थ्य देखभाल समाधान के साथ सशक्त बनाना।",
     "Join Premium": "प्रीमियम जॉइन करें"
   },
+  "report": {
+    "Document Name": "दस्तावेज़ का नाम",
+    "Date": "तारीख",
+    "Document Category": "दस्तावेज़ श्रेणी",
+    "Document Sub Category": "दस्तावेज़ उप-श्रेणी",
+    "Notes": "टिप्पणियाँ",
+    "Medical Center Name": "चिकित्सा केंद्र का नाम",
+    "Upload Medical Records": "चिकित्सा रिकॉर्ड अपलोड करें",
+    "Choose Medical Records": "चिकित्सा रिकॉर्ड चुनें",
+    "Uploaded PDFs:": "अपलोड की गई PDFs:",
+    "PDF": "PDF",
+    "Capture": "कैप्चर करें",
+    "Photos": "फ़ोटो",
+    " Save Document": " दस्तावेज़ सहेजें",
+    "Enter Document Name": "दस्तावेज़ का नाम दर्ज करें",
+    "Enter Date": "तारीख दर्ज करें",
+    "Select Category": "श्रेणी चुनें",
+    "Select Sub-category": "उप-श्रेणी चुनें",
+    "Enter Record notes": "रिकॉर्ड के नोट्स दर्ज करें",
+    "Enter Medical Center Name": "चिकित्सा केंद्र का नाम दर्ज करें"
+  },
   "userProfile": {
     "My Profile": "मेरा प्रोफाइल",
     "Personal": "व्यक्तिगत",
@@ -169,6 +197,7 @@
     "Select": "चुनें",
     "Date of Birth": "जन्म तिथि",
     "Marital Status": "वैवाहिक स्थिति",
+    "warning": "वैवाहिक स्थिति केवल 18 वर्ष की आयु के बाद ही चुनी जा सकती है।",
     "Education": "शिक्षा",
     "Occupation": "व्यवसाय",
     "Category": "श्रेणी",
@@ -290,6 +319,13 @@
     "Submit Feedback": "प्रतिक्रिया जमा करें"
   },
   "about": {
+    "About Us": "हमारे बारे में",
+    "Your Partner in Personalized Health & Wellness": "व्यक्तिगत स्वास्थ्य और कल्याण में आपका साझेदार",
+    "App Version": "ऐप संस्करण",
+    "Developed By": "विकसितकर्ता",
+    "About Description": "Medpredit एक आत्म-मूल्यांकन स्वास्थ्य ऐप है जो व्यक्तियों और परिवारों को तनाव, नींद, BMI, आहार और अन्य स्वास्थ्य मापदंडों की निगरानी करने में मदद करता है। व्यक्तिगत जानकारियों के साथ सशक्त बनें और एक ही स्थान से परिवार की भलाई का प्रबंधन करें।",
+    "Contact Us": "संपर्क करें",
+    "Medpredit. All rights reserved.": "Medpredit. सर्वाधिकार सुरक्षित।",
     "About": "मेडप्रेडिट के बारे में",
     "YourPartner": "व्यक्तिगत स्वास्थ्य और कल्याण में आपका साथी",
     "Description": "मेडप्रेडिट एक उपयोगकर्ता-अनुकूल सेल्फ-असेसमेंट हेल्थकेयर ऐप है जो आपको अपने स्वास्थ्य की जिम्मेदारी लेने में सक्षम बनाता है। चाहे आप अपनी जीवनशैली सुधारना चाहते हों या अपने वर्तमान स्वास्थ्य को समझना चाहते हों, मेडप्रेडिट आपको मूल्यवान जानकारी प्रदान करता है।",
@@ -476,7 +512,14 @@
     "Taken": "लिया गया",
     "Valid Till": "मान्य तक",
     "No Data Filled": "कोई डेटा नहीं भरा गया",
-    "Assessment Score": "आकलन अंक"
+    "Assessment Score": "आकलन अंक",
+    "ques": "प्रश्न:",
+    "Capture Image": "छवि कैप्चर करें",
+    "Preview": "पूर्वावलोकन",
+    "Submit": "जमा करें",
+    "Close": "बंद करें",
+    "Image Preview": "छवि पूर्वावलोकन",
+    "Gallery Albums": "गैलरी एल्बम्स"
   },
   "manage": {
     "Manage Family": "परिवार प्रबंधन करें",

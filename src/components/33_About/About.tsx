@@ -14,9 +14,11 @@ import {
 } from "@ionic/react";
 import { chevronBack } from "ionicons/icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const About: React.FC = () => {
   const appVersion = "1.0.0"; // You can dynamically fetch this if needed
+  const { t } = useTranslation("global");
 
   return (
     <IonPage>
@@ -25,7 +27,7 @@ const About: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" icon={chevronBack} defaultHref="/home" />
           </IonButtons>
-          <IonTitle>About Us</IonTitle>
+          <IonTitle>{t("about.About Us")}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -36,7 +38,7 @@ const About: React.FC = () => {
             <IonCol>
               <h2>Medpredit</h2>
               <IonText color="medium">
-                <p>Your Partner in Personalized Health & Wellness</p>
+                <p>{t("about.Your Partner in Personalized Health & Wellness")}</p>
               </IonText>
             </IonCol>
           </IonRow>
@@ -44,7 +46,7 @@ const About: React.FC = () => {
           {/* App Version */}
           <IonRow>
             <IonCol>
-              <IonLabel className="about-label">App Version</IonLabel>
+              <IonLabel className="about-label">{t("about.App Version")}</IonLabel>
               <IonText color="dark">
                 <p>{appVersion}</p>
               </IonText>
@@ -54,7 +56,7 @@ const About: React.FC = () => {
           {/* Developed By */}
           <IonRow>
             <IonCol>
-              <IonLabel className="about-label">Developed By</IonLabel>
+              <IonLabel className="about-label">{t("about.Developed By")}</IonLabel>
               <IonText color="dark">
                 <p>Zadroit IT Solutions</p>
               </IonText>
@@ -64,14 +66,10 @@ const About: React.FC = () => {
           {/* Description */}
           <IonRow>
             <IonCol>
-              <IonLabel className="about-label">About Medpredit</IonLabel>
+              <IonLabel className="about-label">{t("about.About")}</IonLabel>
               <IonText color="medium">
                 <p>
-                  Medpredit is a self-assessment healthcare app designed to help
-                  individuals and families monitor health parameters like
-                  stress, sleep, BMI, diet, and more. Empower yourself with
-                  personalized insights and manage family wellness from one
-                  place.
+                  {t("about.About Description")}
                 </p>
               </IonText>
             </IonCol>
@@ -80,7 +78,7 @@ const About: React.FC = () => {
           {/* Contact Information */}
           <IonRow>
             <IonCol>
-              <IonLabel className="about-label">Contact Us</IonLabel>
+              <IonLabel className="about-label">{t("about.Contact Us")}</IonLabel>
               <IonText color="primary">
                 <p>support@medpredit.com</p>
               </IonText>
@@ -92,8 +90,7 @@ const About: React.FC = () => {
             <IonCol className="ion-text-center">
               <IonText color="medium">
                 <p>
-                  &copy; {new Date().getFullYear()} Medpredit. All rights
-                  reserved.
+                  &copy; {new Date().getFullYear()} {t("about.Medpredit. All rights reserved.")}
                 </p>
               </IonText>
             </IonCol>

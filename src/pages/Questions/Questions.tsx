@@ -548,7 +548,9 @@ const Questions: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
-          <IonTitle>{"Question: " + visibleQuestions.length}</IonTitle>
+          {/* <IonTitle>{"Question: " + visibleQuestions.length}</IonTitle> */}
+          <IonTitle>{`${t("reports.ques")} ${visibleQuestions.length}`}</IonTitle>
+
           <IonButtons slot="end">
             <IonButton onClick={() => handleUndo()}>
               <IonIcon icon={arrowUndoSharp} />

@@ -5,6 +5,7 @@ import folderIcon from "../../assets/MedicalRecords/pdf1.png";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import axios from "axios";
 import { FileOpener } from "@capacitor-community/file-opener";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   records: any[];
@@ -123,6 +124,7 @@ const MedicalRecordsReports: React.FC<Props> = ({ records }) => {
       console.error("Error downloading or opening PDF:", error);
     }
   };
+  const { t } = useTranslation("global");
 
   return (
     <div>
@@ -156,7 +158,7 @@ const MedicalRecordsReports: React.FC<Props> = ({ records }) => {
           ))}
         </>
       ) : records.length === 0 ? (
-        <IonText color="medium">No reports available.</IonText>
+        <IonText color="medium">{t("home.No reports available.")}</IonText>
       ) : (
         records.map((record) => {
           const docName = record.refDocName || "-";

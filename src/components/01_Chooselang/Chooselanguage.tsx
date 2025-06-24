@@ -24,7 +24,7 @@ interface Category {
 
 const Chooselanguage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -42,10 +42,22 @@ const Chooselanguage: React.FC = () => {
           setSelectedCategory(
             localStorage.getItem("refLanCode")
               ? localStorage.getItem("refLanCode")
-              : (data.getLanguage.length > 0 ? data.getLanguage[0].refLKey : "1")
+              : data.getLanguage.length > 0
+              ? data.getLanguage[0].refLKey
+              : "1"
           );
-          localStorage.getItem("refLanCode") == undefined && localStorage.setItem("refLanCode", data.getLanguage.length > 0 ? data.getLanguage[0].refLKey : "1");
-          localStorage.getItem("lang") == undefined && localStorage.setItem("lang", data.getLanguage.length > 0 ? data.getLanguage[0].refLlandcode: "english");
+          localStorage.getItem("refLanCode") == undefined &&
+            localStorage.setItem(
+              "refLanCode",
+              data.getLanguage.length > 0 ? data.getLanguage[0].refLKey : "1"
+            );
+          localStorage.getItem("lang") == undefined &&
+            localStorage.setItem(
+              "lang",
+              data.getLanguage.length > 0
+                ? data.getLanguage[0].refLlandcode
+                : "english"
+            );
         }
 
         console.log(data);
@@ -117,6 +129,8 @@ const Chooselanguage: React.FC = () => {
                           ? english
                           : category.refLId === "2"
                           ? hindi
+                          : category.refLId === "3"
+                          ? tamil
                           : english
                       }
                       alt={category.refLName}
@@ -131,7 +145,6 @@ const Chooselanguage: React.FC = () => {
           <div className="button-container">
             <button
               onClick={() =>
-                
                 history.push("/getStarted", {
                   direction: "forward",
                   animation: "slide",

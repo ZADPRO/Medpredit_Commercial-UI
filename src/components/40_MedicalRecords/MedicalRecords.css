@@ -84,9 +84,9 @@ ion-segment-button {
   background-color: var(--med-light-green);
   color: var(--med-dark-green);
   border: none;
-  width: 100px;
+  width: 130px;
   box-shadow: 5px 5px 10px 0px rgba(12, 75, 65, 1);
-  height: 48px;
+  height: 50px;
   display: flex;
   border-radius: 10px;
   justify-content: center;
@@ -94,6 +94,7 @@ ion-segment-button {
   font-weight: bold;
   align-items: center;
   font-size: 15px;
+  transition: all 0.3s ease;
 }
 /* 
     --background: var(--med-light-green);
@@ -108,10 +109,10 @@ ion-segment-button {
 
 .leftBtn {
   position: absolute;
-  left: 35px;
+  left: 10px;
 }
 
 .rightBtn {
   position: absolute;
-  right: 35px;
+  right: 10px;
 }

@@ -5,6 +5,7 @@ import { Filesystem, Directory } from "@capacitor/filesystem";
 import axios from "axios";
 import { FileOpener } from "@capacitor-community/file-opener";
 import { IonSkeletonText, IonText } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   records: any[];
@@ -122,6 +123,8 @@ const MedicalRecordsPrescriptions: React.FC<Props> = ({ records }) => {
     }
   };
 
+    const { t } = useTranslation("global");
+
   return (
     <div>
       {loading ? (
@@ -154,7 +157,7 @@ const MedicalRecordsPrescriptions: React.FC<Props> = ({ records }) => {
           ))}
         </>
       ) : records.length === 0 ? (
-        <IonText color="medium">No reports available.</IonText>
+        <IonText color="medium">{t("home.No reports available.")}</IonText>
       ) : (
         records.map((record) => {
           const docName = record.refDocName || "-";
