@@ -23,7 +23,8 @@ import { useTranslation } from "react-i18next";
 
 import { usePhotoGallery, UserPhoto } from "../../hooks/usePhotoGallery";
 
-const CameraMRUpload: React.FC = () => {
+const 
+CameraMRUpload: React.FC = () => {
   const { deletePhoto, photos, takePhoto } = usePhotoGallery();
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
   const [showPreviewModal, setShowPreviewModal] = useState(false); // Modal control
