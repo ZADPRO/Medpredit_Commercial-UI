@@ -1,10 +1,11 @@
 {
-    "splashScreen": {
+  "splashScreen": {
     "Predict": "முன்கணிக்கவும்",
     "Prevent": "தடுக்கவும்",
     "Progress": "முன்னேற்றம்"
   },
   "chooseLanguage": {
+    "Choose Language": "மொழியைத் தேர்ந்தெடுக்கவும்",
     "home": "Home page tamil",
     "language": "உங்கள் மொழியை தேர்வுசெய்க",
     "subtitle": "நம்பிக்கைக்கும் தொழில்நுட்பத்துக்கும் ஓர் சந்திப்பு.",

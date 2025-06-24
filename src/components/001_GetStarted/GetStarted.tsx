@@ -8,7 +8,7 @@ import getStarted02 from "../../assets/images/GetStarted/GetStarted02.png";
 import getStarted03 from "../../assets/images/GetStarted/GetStarted03.png";
 import { arrowBack, arrowBackSharp, arrowForward } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";  // Import Framer Motion
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const GetStarted: React.FC = () => {
   const [showButton, setShowButton] = useState(false);
@@ -128,7 +128,8 @@ const GetStarted: React.FC = () => {
                       color: "var(--med-dark-green)",
                     }}
                   >
-                    <IonIcon icon={arrowBackSharp} /> Choose Language
+                    <IonIcon icon={arrowBackSharp} />
+                    {t("chooseLanguage.Choose Language")}
                   </div>
                 )}
               </div>
