@@ -508,10 +508,18 @@ const ManageFamily: React.FC = () => {
                 <IonIcon icon={addOutline}></IonIcon>
               </IonFabButton>
               <IonFabList side="start">
-                <IonFabButton onClick={() => history.push("/addFamilyMember")}>
+
+                <IonFabButton  style={{
+                    width: "90px", // Increased width for Tamil text
+                    height: "80px", // Optional: match height for circular look
+                    whiteSpace: "normal", // Allow wrapping
+                    textAlign: "center", // Center text
+                    padding: "0px", // Add padding for readability
+                  
+                  }} onClick={() => history.push("/addFamilyMember")}>
                   <span
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "0.7rem",
                       fontWeight: "bold",
                       color: "white",
                     }}
@@ -520,6 +528,14 @@ const ManageFamily: React.FC = () => {
                   </span>
                 </IonFabButton>
                 <IonFabButton
+                 style={{
+                    width: "90px", // Increased width for Tamil text
+                    height: "80px", // Optional: match height for circular look
+                    whiteSpace: "normal", // Allow wrapping
+                    textAlign: "center", // Center text
+                    padding: "0px", // Add padding for readability
+                  
+                  }}
                   onClick={() =>
                     history.push({
                       pathname: "/linkFamilyMember",
@@ -529,7 +545,7 @@ const ManageFamily: React.FC = () => {
                 >
                   <span
                     style={{
-                      fontSize: "0.8rem",
+                      fontSize: "0.7rem",
                       fontWeight: "bold",
                       color: "white",
                     }}

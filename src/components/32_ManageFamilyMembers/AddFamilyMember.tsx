@@ -305,7 +305,7 @@ const AddFamily: React.FC = () => {
       setToastOpen({
         status: true,
         textColor: "red",
-        message: t("link.Enter Valid Mobile Number"),
+        message: t("link.Enter Valid Email ID"),
       });
       return false;
     } else if (formData.refAddress.length === 0) {
@@ -685,9 +685,10 @@ const AddFamily: React.FC = () => {
                     value={formData.refUserFname}
                     onChange={handleInputChange}
                     placeholder={
-                      t("Register User.Enter") +
+                    
+                     t("Register User.First")+
                       " " +
-                      t("Register User.First Name")
+                      t("Register User.Enter")
                     }
                     name="refUserFname"
                   />
@@ -709,9 +710,7 @@ const AddFamily: React.FC = () => {
                     value={formData.refUserLname}
                     onChange={handleInputChange}
                     placeholder={
-                      t("Register User.Enter") +
-                      " " +
-                      t("Register User.Last Name")
+                      t("Register User.Last") + " " + t("Register User.Enter")
                     }
                     name="refUserLname"
                   />
