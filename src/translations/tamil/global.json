@@ -1,8 +1,8 @@
 {
   "splashScreen": {
-    "Predict": "முன்கணிக்கவும்",
-    "Prevent": "தடுக்கவும்",
-    "Progress": "முன்னேற்றம்"
+    "Predict": "கண்காணி",
+    "Prevent": " தடு",
+    "Progress": "முன்னேறு"
   },
   "chooseLanguage": {
     "Choose Language": "மொழியைத் தேர்ந்தெடுக்கவும்",
@@ -458,7 +458,7 @@
     "Aim for at least 10,000 steps per day": "ஒவ்வொரு நாளும் குறைந்தது 10,000 அடிகள் செல்வதை இலக்காக கொண்டிருக்கவும்.",
     "Choose stairs over elevators for added movement": "மேலும் இயக்கத்திற்கு சிஞ்சல்கள் பயன்படுத்தவும்.",
     "Understand how stress impacts your well-being and ways to manage it": "மன அழுத்தம் உங்கள் உடல்நலனுக்கு எவ்வாறு பாதிப்பை ஏற்படுத்துகிறது மற்றும் அதை எவ்வாறு கையாள்வது என்பதை புரிந்து கொள்ளுங்கள்.",
-    "Practice deep breathing or meditation for relaxation": "தகுந்த சோர்வை கையாள சிறந்த ஆழ்ந்த மூச்சுத்திணறல் அல்லது தியானத்தை பயிற்சி செய்யவும்.",
+    "Practice deep breathing or meditation for relaxation": "தகுந்த சோர்வை கையாள சிறந்த ஆழ்ந்த மூச்சுப்பயிற்சி அல்லது தியானத்தை பயிற்சி செய்யவும்.",
     "Maintain a balanced work-life schedule": "பணியுடனான வாழ்க்கைத் திட்டத்தை சீரான முறையில் பராமரிக்கவும்.",
     "Engage in hobbies and activities you enjoy": "நீங்கள் விரும்பும் பொழுதுபோக்கு மற்றும் நடவடிக்கைகளில் ஈடுபடுங்கள்.",
     "Get adequate sleep to help manage stress levels": "மன அழுத்தத்தை கையாள எளிதாக்க தூங்கும் நேரத்தை சரியான முறையில் எடுக்கவும்.",
@@ -470,10 +470,10 @@
     "Seek support from family, friends, or professionals": "குடும்பத்தினர், நண்பர்கள் அல்லது வல்லுநர்களிடம் உதவி பெறுங்கள்.",
     "Stay active and find healthy alternatives to manage cravings": "சுறுசுறுப்பாக இருங்கள் மற்றும் விருப்பங்களை கையாள பரிந்துரைக்கப்பட்ட மாற்றங்களை தேர்ந்தெடுங்கள்.",
     "Assess your alcohol consumption and its effects on your health": "உங்கள் மது பயன்பாட்டை மதிப்பிடுங்கள் மற்றும் அதன் உடல் நலத்திற்கு ஏற்படும் பாதிப்புகளை ஆராயுங்கள்.",
-    "Limit alcohol intake to recommended guidelines": "குறிப்பிட்ட வழிகாட்டுதல்களைப் பொருத்து மது மதிப்பு உபயோகத்தை கட்டுப்படுத்துங்கள்.",
+    "Limit alcohol intake to recommended guidelines": "குறிப்பிட்ட வழிகாட்டுதல்களைப் பொருத்து மது உபயோகத்தை கட்டுப்படுத்துங்கள்.",
     "Be aware of the long-term health effects of excessive drinking": "அதிக மது பயன்பாட்டின் நீண்ட கால உடல் நல பாதிப்புகளை அறியுங்கள்.",
     "Stay hydrated and alternate alcoholic drinks with water": "சரியான அளவில் நீர் பருகி, மது மற்றும் நீரை மாற்றி பருகுங்கள்.",
-    "Consider alcohol-free days to maintain balance": "சரிவழி நிலைப்பாட்டை பராமரிக்க, மதுபானமின்றி நாட்களைத் தேர்ந்தெடுங்கள்.",
+    "Consider alcohol-free days to maintain balance": "சரிவழி நிலைப்பாட்டை பராமரிக்க,  மது இல்லாத நாட்களைத் தேர்ந்தெடுங்கள்.",
     "Seek professional advice if drinking affects your health or daily life": "உங்கள் மது பயன்பாடு உங்கள் உடல் நலத்திற்கு அல்லது தினசரி வாழ்க்கைக்கு பாதிப்புகளை ஏற்படுத்துமானால் வல்லுநர் ஆலோசனை பெறுங்கள்.",
     "Evaluate your eating habits and improve nutrition": "உங்கள் உணவுத் பழக்கங்களை மதிப்பிடுங்கள் மற்றும் பக்குவத்தை மேம்படுத்துங்கள்.",
     "Consume a balanced diet with fruits, vegetables, and lean proteins": "பழங்கள், காய்கறிகள் மற்றும் மிதமான புரதங்கள் கொண்ட சமநிலையான உணவுக் குறிப்பை சாப்பிடுங்கள்.",
@@ -485,7 +485,7 @@
     "Maintain a healthy weight through a balanced diet and exercise": "சமநிலையான உணவையும் உடற்பயிற்சியும் மூலம் ஒரு நல்ல உடல் எடையை பராமரிக்கவும்.",
     "Monitor your BMI regularly to track progress": "உங்கள் BMI ஐ அங்கீகாரமாக சோதித்து தொடரவும்.",
     "Reduce sugary drinks and high-calorie foods": "சர்க்கரை நிறைந்த பானங்கள் மற்றும் அதிக கலோரி உணவுகளை குறைக்கவும்.",
-    "Engage in strength training to support metabolism": "உடல் மெட்டாபொலிசத்தை உதவவும், பலத்திறன் பயிற்சிகளை மேற்கொள்வது.",
+    "Engage in strength training to support metabolism": "உடல்  சிதை மாற்றத்துக்கு உதவ தசை வலுவூட்டும் பயிற்சிகளை மேற்கொள்ளவும்.",
     "Consult a healthcare provider for weight management support": "உடல் எடை மேலாண்மை ஆதரவு பெற, மருத்துவருடன் ஆலோசனை செய்யுங்கள்.",
     "Analyze your sleep patterns and improve rest quality": "உங்கள் தூக்கத்தின் மாதிரிகளை மதிப்பிடுங்கள் மற்றும் உறங்கும் நேரத்தை மேம்படுத்துங்கள்.",
     "Aim for 7-9 hours of sleep per night": "ஒவ்வொரு இரவிலும் 7-9 மணி நேரம் தூங்க வேண்டும்.",
