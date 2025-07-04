@@ -42,8 +42,8 @@
     "Enter": "உள்ளிடுக",
     "First Name": "முதல் பெயர்",
     "Last Name": "கடைசி பெயர்",
-    "First":"முதல் பெயரை",
-    "Last":"கடைசி பெயரை",
+    "First": "முதல் பெயரை",
+    "Last": "கடைசி பெயரை",
     "E-Mail": "மின்னஞ்சல்",
     "Mobile Number": "மொபைல் எண்",
     "Enter Password": "கடவுச்சொல்லை உள்ளிடுக",
@@ -280,21 +280,21 @@
   "manageSub": {
     "Manage Subscription": "சந்தாவை நிர்வகிக்கவும்",
     "Choose Your Plan": "உங்கள் திட்டத்தை தேர்ந்தெடுக்கவும்",
-    "Select a subscription plan that suits your needs": "உங்கள் தேவைகளுக்கு ஏற்ற சந்தா திட்டத்தை தேர்ந்தெடுக்கவும்.",
-    "Current Package": "தற்போதைய தொகுப்பு",
-    "Subscribe": "சந்தா எடுக்கவும்",
-    "Expires On": "காலாவதியாகும் தேதி"
+    "Select a subscription plan that suits your needs": "உங்கள் தேவைக்கு ஏற்ப ஒரு சந்தா திட்டத்தைத் தேர்ந்தெடுக்கவும்.",
+    "Current Package": "தற்போதைய திட்டம்",
+    "Subscribe": "சந்தாதாரராகவும்",
+    "Expires On": "முடிவடையும் தேதி"
   },
   "subPayment": {
     "Proceed": "தொடரவும்",
     "Payment": "கட்டணம்",
     "Plan Type": "திட்ட வகை",
     "Description": "விளக்கம்",
-    "Plan Validity": "திட்டம் செல்லுபடியாகும் காலம்",
+    "Plan Validity": "திட்டத்தின் செல்லுபடியாகும் காலம்",
     "days": "நாட்கள்",
     "Valid Members": "செல்லுபடியாகும் உறுப்பினர்கள்",
     "Start Date": "தொடக்க தேதி",
-    "Expiry Date": "முடிவு தேதி"
+    "Expiry Date": "முடிவடையும் தேதி"
   },
   "transactionhis": {
     "Transaction History": "பண பரிவர்த்தனை வரலாறு",
