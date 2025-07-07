@@ -66,20 +66,67 @@ const Questions: React.FC = () => {
   const [submitButton, setSubmitButton] = useState(true);
   const [scrollIndex, setScrollIndex] = useState(0);
 
-  // Subscription restriction states
+  // Subscription related states
+  const [hasSubscription, setHasSubscription] = useState(false);
   const [showSubscriptionAlert, setShowSubscriptionAlert] = useState(false);
   const [answeredQuestionsCount, setAnsweredQuestionsCount] = useState(0);
-  const FREE_QUESTIONS_LIMIT = 2;
+  const MAX_FREE_QUESTIONS = 2;
 
   const SubmitActive = (isActive: boolean) => {
     setSubmitButton(isActive);
   };
 
-  // Check if user has subscription (you can modify this logic based on your user data structure)
-  const hasSubscription = () => {
-    // Check if user has subscription from tokenObject or localStorage
-    // Example: return tokenObject.hasSubscription || localStorage.getItem('hasSubscription') === 'true';
-    return false; // Default to false for demonstration
+  // Check user subscription status
+  const checkSubscriptionStatus = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_COMMERCIAL_URL}/checkSubscription`,
+        {
+          headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = decrypt(
+        response.data[1],
+        response.data[0],
+        import.meta.env.VITE_ENCRYPTION_KEY
+      );
+
+      console.log("checkSubscriptionStatus---", data);
+
+      if (data.status) {
+        localStorage.setItem(
+          "hasSubscription",
+          JSON.stringify(data.hasSubscription)
+        );
+        localStorage.setItem("token", JSON.stringify(token));
+
+        setHasSubscription(data.hasSubscription || false);
+      }
+    } catch (error) {
+      console.error("Error checking subscription:", error);
+      setHasSubscription(false); // Default to no subscription on error
+    }
+  };
+
+  // Check if user can answer more questions
+  const canAnswerMoreQuestions = () => {
+    return hasSubscription || answeredQuestionsCount < MAX_FREE_QUESTIONS;
+  };
+
+  // Show subscription alert
+  const showSubscriptionRequiredAlert = () => {
+    setShowSubscriptionAlert(true);
+  };
+
+  // Navigate to subscription page
+  const navigateToSubscription = () => {
+    history.push("/subscriptionPlans", {
+      returnUrl: `/questions/${selectedServiceId}/${selectedUserId}`,
+    });
   };
 
   // INTERFACE FOR QUESTIONS
@@ -155,30 +202,23 @@ const Questions: React.FC = () => {
       });
   };
 
-  const checkSubscriptionLimit = () => {
-    if (!hasSubscription() && answeredQuestionsCount >= FREE_QUESTIONS_LIMIT) {
-      setShowSubscriptionAlert(true);
-      return false;
-    }
-    return true;
-  };
-
   const getNextQuestions = (
     questionId: any,
     questionType: any,
     answer: any,
     forwardQId: any
   ) => {
-    // Check subscription limit before proceeding
-    if (!checkSubscriptionLimit()) {
-      return;
-    }
-
     setSubmitButton(true);
     console.log("forwardQId:", forwardQId);
     console.log("Answer submitted for questionId:", questionId, answer);
     console.log("################--->", questionId);
     localStorage.setItem("testQuestion", questionId);
+
+    // Check if user can answer more questions before proceeding
+    if (!canAnswerMoreQuestions() && forwardQId) {
+      showSubscriptionRequiredAlert();
+      return;
+    }
 
     // Convert forwardQId to a number, if not null
     let nextQuestionId = forwardQId ? parseInt(forwardQId, 10) : null;
@@ -192,7 +232,7 @@ const Questions: React.FC = () => {
         ])
       );
 
-      // Check if this is a new question (not editing)
+      // Check if this is a new question being answered
       const isNewQuestion = !responseMap.has(questionId);
 
       responseMap.set(questionId, { questionType, answer });
@@ -205,7 +245,7 @@ const Questions: React.FC = () => {
         })
       );
 
-      // Increment answered questions count only for new questions
+      // Update answered questions count for new questions
       if (isNewQuestion) {
         setAnsweredQuestionsCount((prev) => prev + 1);
       }
@@ -375,6 +415,8 @@ const Questions: React.FC = () => {
             console.log("Response data", responses);
             console.log("Edited");
             setVisibleQuestions(newVisibleQuestions);
+            // Reset answered questions count when editing
+            setAnsweredQuestionsCount(newVisibleQuestions.length);
           }
         }
       });
@@ -402,6 +444,8 @@ const Questions: React.FC = () => {
             console.log("Response data", responses);
             console.log("Edited");
             setVisibleQuestions(newVisibleQuestions);
+            // Reset answered questions count when editing
+            setAnsweredQuestionsCount(newVisibleQuestions.length);
           }
         }
       });
@@ -430,6 +474,8 @@ const Questions: React.FC = () => {
             console.log("Response data", responses);
             console.log("Edited");
             setVisibleQuestions(newVisibleQuestions);
+            // Reset answered questions count when editing
+            setAnsweredQuestionsCount(newVisibleQuestions.length);
           }
         }
       });
@@ -441,15 +487,10 @@ const Questions: React.FC = () => {
     getNextQuestions(questionId, questionType, resultValue, forwardQnId);
   };
 
-  const handleSubscriptionRedirect = () => {
-    setShowSubscriptionAlert(false);
-    // Redirect to subscription page
-    history.push("/subscriptionPlans");
-  };
-
   useEffect(() => {
     if (token) {
       try {
+        checkSubscriptionStatus(); // Check subscription first
         getQuestions();
       } catch (error) {
         console.log("Error fetching questions", error);
@@ -521,6 +562,8 @@ const Questions: React.FC = () => {
     setVisibleQuestions((prevQuestions) => {
       if (prevQuestions.length === 1) return prevQuestions;
       const newQuestions = prevQuestions.slice(0, -1);
+      // Update answered questions count when undoing
+      setAnsweredQuestionsCount(newQuestions.length);
       return newQuestions;
     });
     setSubmitButton(true);
@@ -537,21 +580,13 @@ const Questions: React.FC = () => {
             visibleQuestions.length
           }`}</IonTitle>
 
-          {/* Show question limit indicator */}
-          {/* {!hasSubscription() && (
-            <IonTitle 
-              size="small" 
-              color="warning"
-              style={{ 
-                fontSize: '12px', 
-                position: 'absolute', 
-                right: '60px',
-                top: '50%',
-                transform: 'translateY(-50%)'
-              }}
+          {/* Show subscription status */}
+          {/* {!hasSubscription && (
+            <div
+              style={{ fontSize: "12px", color: "#666", textAlign: "center" }}
             >
-              {`${answeredQuestionsCount}/${FREE_QUESTIONS_LIMIT} Free`}
-            </IonTitle>
+              {`${answeredQuestionsCount}/${MAX_FREE_QUESTIONS} Free Questions`}
+            </div>
           )} */}
 
           <IonButtons slot="end">
@@ -576,7 +611,7 @@ const Questions: React.FC = () => {
                 <YesNo
                   label={question}
                   onOptionSelect={(refOptionId, forwardQId) => {
-                    // Logic handled in onEdit
+                    // Handle option selection
                   }}
                   onEdit={(questionType, refOptionId, forwardQId) => {
                     handleQuestionEdit(
@@ -593,7 +628,7 @@ const Questions: React.FC = () => {
                 <MultipleSelect
                   label={question}
                   onOptionSelect={(selectedOptions, forwardQId) => {
-                    // Logic handled in onEdit
+                    // Handle option selection
                   }}
                   onEdit={(selectedOptions, forwardQId) => {
                     handleMultipleSelectEdit(
@@ -783,7 +818,7 @@ const Questions: React.FC = () => {
                   label={question}
                   onOptionSelect={(selectedOptions, forwardQId) => {
                     if (index === enabledIndex) {
-                      // Logic handled in onEdit
+                      // Handle option selection
                     }
                   }}
                   onEdit={(selectedOptions, forwardQId) => {
@@ -855,11 +890,11 @@ const Questions: React.FC = () => {
 
       {/* Subscription Alert */}
       <IonAlert
+        cssClass="custom-alert"
         isOpen={showSubscriptionAlert}
         onDidDismiss={() => setShowSubscriptionAlert(false)}
         header="Subscription Required"
-        message={`You have reached the limit of ${FREE_QUESTIONS_LIMIT} free questions. Please subscribe to continue with unlimited assessments.`}
-        cssClass="custom-alert"
+        message={`You have reached the limit of ${MAX_FREE_QUESTIONS} free questions per assessment. Please subscribe to continue with unlimited questions.`}
         buttons={[
           {
             text: "Cancel",
@@ -871,7 +906,8 @@ const Questions: React.FC = () => {
           {
             text: "Subscribe Now",
             handler: () => {
-              handleSubscriptionRedirect();
+              setShowSubscriptionAlert(false);
+              navigateToSubscription();
             },
           },
         ]}
