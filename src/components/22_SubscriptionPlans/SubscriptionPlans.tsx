@@ -64,8 +64,11 @@ const SubscriptionPlans: React.FC = () => {
 
         console.log(token);
         axios
-          .get(
+          .post(
             `${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`,
+            {
+              refLanCode: localStorage.getItem("refLanCode"),
+            },
             {
               headers: {
                 Authorization: token,
@@ -79,7 +82,7 @@ const SubscriptionPlans: React.FC = () => {
               response.data[0],
               import.meta.env.VITE_ENCRYPTION_KEY
             );
-            console.log(data);
+            console.log("language code",data);
             if (data.status) {
               setPackages(data.result);
               setSubscriptionData({

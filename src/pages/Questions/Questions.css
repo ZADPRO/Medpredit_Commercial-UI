@@ -182,3 +182,32 @@ ion-accordion-toggle-icon ios {
   border: none;
   margin: 0.1rem;
 }
+
+/* Style for the custom IonAlert */
+ion-alert.custom-alert {
+  --background: #a5e768;
+  --color: #0c4b41;
+  border-radius: 10px;
+}
+
+.custom-alert .alert-wrapper.sc-ion-alert-ios{
+  border-radius: 10px;
+
+} 
+/* Button text color */
+ion-alert.custom-alert .alert-button {
+  color: #0c4b41;
+  --background: white;
+  background-color: azure;
+
+}
+
+/* Header and message customization */
+ion-alert.custom-alert .alert-title {
+  color: #0c4b41;
+  font-weight: bold;
+}
+
+ion-alert.custom-alert .alert-message {
+  color: #0c4b41;
+}

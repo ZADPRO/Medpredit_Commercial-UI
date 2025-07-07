@@ -61,12 +61,18 @@ const ServiceAssessment: React.FC = () => {
 
   const userDeatilsObj = userDetails
     ? JSON.parse(userDetails)
-    : { userId: null, userCustId: null, phNumber: null, firstName: null, lastName: null };
-
+    : {
+        userId: null,
+        userCustId: null,
+        phNumber: null,
+        firstName: null,
+        lastName: null,
+      };
 
   const headStatus = localStorage.getItem("headStatus") || "false";
 
-  const [subscriptionData, setSubscriptionData] = useState<UserSubscriptionInfo>();
+  const [subscriptionData, setSubscriptionData] =
+    useState<UserSubscriptionInfo>();
   const [freeAssessmentCount, setFreeAssesmentCount] = useState<number>(0);
 
   const { serviceId } = useParams<{
@@ -106,7 +112,9 @@ const ServiceAssessment: React.FC = () => {
     { refQCategoryId: number; refCategoryLabel: string }[]
   >([]);
 
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -118,12 +126,16 @@ const ServiceAssessment: React.FC = () => {
     {
       serviceId: 8,
       title: t("home.Physical Activity"),
-      subTitle: t("assessment.Evaluate your daily movement and exercise habits"),
+      subTitle: t(
+        "assessment.Evaluate your daily movement and exercise habits"
+      ),
       image: physical_banner,
       priority: "Low",
       points: [
         t("assessment.Engage in at least 30 minutes of exercise daily"),
-        t("assessment.Incorporate stretching and strength training into your routine"),
+        t(
+          "assessment.Incorporate stretching and strength training into your routine"
+        ),
         t("assessment.Reduce prolonged sitting and take active breaks"),
         t("assessment.Aim for at least 10,000 steps per day"),
         t("assessment.Choose stairs over elevators for added movement"),
@@ -132,8 +144,9 @@ const ServiceAssessment: React.FC = () => {
     {
       serviceId: 9,
       title: t("home.Stress"),
-      subTitle:
-        t("assessment.Understand how stress impacts your well-being and ways to manage it"),
+      subTitle: t(
+        "assessment.Understand how stress impacts your well-being and ways to manage it"
+      ),
       image: stress_banner,
       priority: "High",
       points: [
@@ -147,7 +160,9 @@ const ServiceAssessment: React.FC = () => {
     {
       serviceId: 10,
       title: t("home.Tobacco"),
-      subTitle: t("assessment.Review your tobacco use and explore healthier alternatives"),
+      subTitle: t(
+        "assessment.Review your tobacco use and explore healthier alternatives"
+      ),
       image: tobacco_banner,
       priority: "High",
       points: [
@@ -155,32 +170,43 @@ const ServiceAssessment: React.FC = () => {
         t("assessment.Explore nicotine replacement therapies if needed"),
         t("assessment.Set a quit date and create a plan to stop smoking"),
         t("assessment.Seek support from family, friends, or professionals"),
-        t("assessment.Stay active and find healthy alternatives to manage cravings"),
+        t(
+          "assessment.Stay active and find healthy alternatives to manage cravings"
+        ),
       ],
     },
     {
       serviceId: 11,
       title: t("home.Alcohol"),
-      subTitle:
-        t("assessment.Assess your alcohol consumption and its effects on your health"),
+      subTitle: t(
+        "assessment.Assess your alcohol consumption and its effects on your health"
+      ),
       image: alcohol_banner,
       priority: "High",
       points: [
         t("assessment.Limit alcohol intake to recommended guidelines"),
-        t("assessment.Be aware of the long-term health effects of excessive drinking"),
+        t(
+          "assessment.Be aware of the long-term health effects of excessive drinking"
+        ),
         t("assessment.Stay hydrated and alternate alcoholic drinks with water"),
         t("assessment.Consider alcohol-free days to maintain balance"),
-        t("assessment.Seek professional advice if drinking affects your health or daily life"),
+        t(
+          "assessment.Seek professional advice if drinking affects your health or daily life"
+        ),
       ],
     },
     {
       serviceId: 12,
       title: t("home.Dietary"),
-      subTitle: t("assessment.Evaluate your eating habits and improve nutrition"),
+      subTitle: t(
+        "assessment.Evaluate your eating habits and improve nutrition"
+      ),
       image: dietary_banner,
       priority: "Low",
       points: [
-        t("assessment.Consume a balanced diet with fruits, vegetables, and lean proteins"),
+        t(
+          "assessment.Consume a balanced diet with fruits, vegetables, and lean proteins"
+        ),
         t("assessment.Limit processed and high-sugar foods"),
         t("assessment.Stay hydrated by drinking enough water daily"),
         t("assessment.Plan meals in advance to make healthier choices"),
@@ -190,22 +216,29 @@ const ServiceAssessment: React.FC = () => {
     {
       serviceId: 13,
       title: t("home.BMI"),
-      subTitle:
-        t("assessment.Understand your Body Mass Index (BMI) and its impact on health"),
+      subTitle: t(
+        "assessment.Understand your Body Mass Index (BMI) and its impact on health"
+      ),
       image: bmi_banner,
       priority: "Low",
       points: [
-        t("assessment.Maintain a healthy weight through a balanced diet and exercise"),
+        t(
+          "assessment.Maintain a healthy weight through a balanced diet and exercise"
+        ),
         t("assessment.Monitor your BMI regularly to track progress"),
         t("assessment.Reduce sugary drinks and high-calorie foods"),
         t("assessment.Engage in strength training to support metabolism"),
-        t("assessment.Consult a healthcare provider for weight management support"),
+        t(
+          "assessment.Consult a healthcare provider for weight management support"
+        ),
       ],
     },
     {
       serviceId: 43,
       title: t("home.Sleep"),
-      subTitle: t("assessment.Analyze your sleep patterns and improve rest quality"),
+      subTitle: t(
+        "assessment.Analyze your sleep patterns and improve rest quality"
+      ),
       image: sleep_banner,
       priority: "High",
       points: [
@@ -219,15 +252,23 @@ const ServiceAssessment: React.FC = () => {
     {
       serviceId: 51,
       title: t("home.Family History"),
-      subTitle: t("assessment.Identify hereditary health risks and preventive measures"),
+      subTitle: t(
+        "assessment.Identify hereditary health risks and preventive measures"
+      ),
       image: family_banner,
       priority: "Low",
       points: [
         t("assessment.Be aware of family history-related health conditions"),
         t("assessment.Schedule regular health screenings and check-ups"),
-        t("assessment.Maintain a healthy lifestyle to reduce genetic risk factors"),
-        t("assessment.Discuss family medical history with a healthcare provider"),
-        t("assessment.Encourage family members to adopt healthy habits together"),
+        t(
+          "assessment.Maintain a healthy lifestyle to reduce genetic risk factors"
+        ),
+        t(
+          "assessment.Discuss family medical history with a healthcare provider"
+        ),
+        t(
+          "assessment.Encourage family members to adopt healthy habits together"
+        ),
       ],
     },
   ];
@@ -299,7 +340,6 @@ const ServiceAssessment: React.FC = () => {
     const currentDate: any = new Date();
     currentDate.setHours(0, 0, 0, 0);
 
-
     // Calculate the difference in milliseconds
     const diffInMs = givenDate - currentDate;
 
@@ -325,7 +365,7 @@ const ServiceAssessment: React.FC = () => {
               patientId: userId.toString(),
               employeeId: null,
               hospitalId: "undefined",
-              refLanCode: localStorage.getItem("refLanCode")
+              refLanCode: localStorage.getItem("refLanCode"),
             },
             {
               headers: {
@@ -344,19 +384,24 @@ const ServiceAssessment: React.FC = () => {
             setCategories(data.data);
             setSubscriptionData({
               packageStatus: data.checkSubscriptions.length > 0 ? true : false,
-              packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
+              packageData: Array.isArray(data.checkSubscriptions)
+                ? data.checkSubscriptions
+                : [],
             });
 
             servicesDetails.find((item) => item.serviceId === Number(serviceId))
               ?.priority === "High"
               ? setFreeAssesmentCount(
-                data.isHigherQuestion[0].assessmenttakenno
-              )
+                  data.isHigherQuestion[0].assessmenttakenno
+                )
               : setFreeAssesmentCount(
-                data.isLowerQuestion[0].assessmenttakenno
-              );
+                  data.isLowerQuestion[0].assessmenttakenno
+                );
 
-            const tempCategory = data.data.find((item: Category) => item.refQCategoryId === Number(serviceId)) || null;
+            const tempCategory =
+              data.data.find(
+                (item: Category) => item.refQCategoryId === Number(serviceId)
+              ) || null;
             setSelectedCategory(tempCategory);
             setLoading(false);
             // setLoadingStatus(false);
@@ -371,7 +416,7 @@ const ServiceAssessment: React.FC = () => {
     }
 
     console.log(history.location.pathname);
-  }
+  };
   console.log(loading);
   const searchPatient = () => {
     const tokenString = localStorage.getItem("userDetails");
@@ -412,13 +457,12 @@ const ServiceAssessment: React.FC = () => {
             // setLoadingStatus(false);
 
             if (data.status) {
-
               setUserData(data.familyMembers);
               // setSelectedUser(data.data[0].refUserId)
               setSelectedUser(tokenObject.userId);
 
               // setSubscriptionData({
-              //   packageStatus: data.checkSubscriptions.length > 0 ? true : false, 
+              //   packageStatus: data.checkSubscriptions.length > 0 ? true : false,
               //   packageData: Array.isArray(data.checkSubscriptions) ? data.checkSubscriptions : []
               // });
               //   if (data.data.length === 0) {
@@ -464,14 +508,15 @@ const ServiceAssessment: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    selectedUser && getCategory(selectedUser)
-  }, [selectedUser])
-
+    selectedUser && getCategory(selectedUser);
+  }, [selectedUser]);
 
   useEffect(() => {
-    const tempValidity = selectedCategory?.refPTcreatedDate &&
-      getValidity(selectedCategory?.refQCategoryId) >
-      -calculateDaysDifference(selectedCategory?.refPTcreatedDate) || false;
+    const tempValidity =
+      (selectedCategory?.refPTcreatedDate &&
+        getValidity(selectedCategory?.refQCategoryId) >
+          -calculateDaysDifference(selectedCategory?.refPTcreatedDate)) ||
+      false;
 
     setServiceValidity(tempValidity);
   }, [selectedCategory]);
@@ -529,8 +574,9 @@ const ServiceAssessment: React.FC = () => {
               return (
                 <div
                   key={item.refUserId}
-                  className={`serviceAssess_content_memberWrapper ${selectedUser === item.refUserId ? "selected" : ""
-                    }`}
+                  className={`serviceAssess_content_memberWrapper ${
+                    selectedUser === item.refUserId ? "selected" : ""
+                  }`}
                   onClick={(e) => {
                     setSelectedUser(item.refUserId);
                     e.currentTarget.scrollIntoView({
@@ -602,7 +648,9 @@ const ServiceAssessment: React.FC = () => {
                     pathname: "/reports",
                     state: {
                       selectedUser: selectedUser,
-                      selectedUserInfo: userData.find(item => item.refUserId == selectedUser)
+                      selectedUserInfo: userData.find(
+                        (item) => item.refUserId == selectedUser
+                      ),
                     },
                   })
                 }
@@ -622,7 +670,7 @@ const ServiceAssessment: React.FC = () => {
                 display: "flex",
                 justifyContent: "center",
                 paddingTop: "1rem",
-                color: "#00a184"
+                color: "#00a184",
               }}
             >
               {t("assessment.This Assessment Score Remains Active For")}{" "}
@@ -662,61 +710,25 @@ const ServiceAssessment: React.FC = () => {
         {/* </div> */}
       </IonContent>
       <IonFooter>
-        {serviceValidity == true && (
+        {/* If assessment is already taken and still valid, show "Assessment Taken" */}
+        {serviceValidity === true && (
           <IonToolbar className="cus-ion-toolbar-disabled">
             <IonTitle>{t("assessment.Assessment Taken")}</IonTitle>
           </IonToolbar>
         )}
-        {/* {serviceValidity == false && (
+
+        {/* If assessment is not taken or not valid, allow user to start assessment */}
+        {serviceValidity === false && (
           <IonToolbar>
-          <IonTitle
-            onClick={() =>
-              history.push(`/serviceQuestion/${serviceId}/${selectedUser}`)
-            }
-          >
-            Start Assessment
-          </IonTitle>
-        </IonToolbar>
-        )} */}
-        {serviceValidity == false &&
-          (subscriptionData?.packageStatus == false &&
-            (Number(freeAssessmentCount) || 0) >= 1 ? (
-            <IonToolbar className="cus-ion-toolbar-premium">
-              <div
-                onClick={() =>
-                  presentAlert({
-                    cssClass: "custom-alert",
-                    message:
-                      t("manage.Please Upgrade your membership to proceed assessment"),
-                    buttons: [
-                      {
-                        text: t("manage.Cancel"),
-                        role: "cancel", // Close alert
-                        cssClass: "close-button",
-                      },
-                      {
-                        text: t("manage.Upgrade Now"),
-                        handler: () => history.replace("/subscriptionPlans"),
-                      },
-                    ],
-                  })
-                }
-              >
-                <span>{t("assessment.Start Assessment")}</span>
-                <img style={{ width: "2rem", height: "3rem" }} src={crown} />
-              </div>
-            </IonToolbar>
-          ) : (
-            <IonToolbar>
-              <IonTitle
-                onClick={() =>
-                  history.push(`/serviceQuestion/${serviceId}/${selectedUser}`)
-                }
-              >
-                {t("assessment.Start Assessment")}
-              </IonTitle>
-            </IonToolbar>
-          ))}
+            <IonTitle
+              onClick={() =>
+                history.push(`/serviceQuestion/${serviceId}/${selectedUser}`)
+              }
+            >
+              {t("assessment.Start Assessment")}
+            </IonTitle>
+          </IonToolbar>
+        )}
       </IonFooter>
 
       <CustomIonLoading isOpen={loading} />

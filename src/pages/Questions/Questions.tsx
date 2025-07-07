@@ -9,6 +9,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonAlert,
 } from "@ionic/react";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
@@ -65,18 +66,21 @@ const Questions: React.FC = () => {
   const [submitButton, setSubmitButton] = useState(true);
   const [scrollIndex, setScrollIndex] = useState(0);
 
+  // Subscription restriction states
+  const [showSubscriptionAlert, setShowSubscriptionAlert] = useState(false);
+  const [answeredQuestionsCount, setAnsweredQuestionsCount] = useState(0);
+  const FREE_QUESTIONS_LIMIT = 2;
+
   const SubmitActive = (isActive: boolean) => {
     setSubmitButton(isActive);
   };
 
-  // useEffect(() => {
-  //   const getCategory = {
-  //     id: cardTitle,
-  //     label: refCategoryLabel,
-  //   };
-
-  //   localStorage.setItem("getQuestions", JSON.stringify(getCategory));
-  // }, []);
+  // Check if user has subscription (you can modify this logic based on your user data structure)
+  const hasSubscription = () => {
+    // Check if user has subscription from tokenObject or localStorage
+    // Example: return tokenObject.hasSubscription || localStorage.getItem('hasSubscription') === 'true';
+    return false; // Default to false for demonstration
+  };
 
   // INTERFACE FOR QUESTIONS
   const [questionData, setQuestionsData] = useState<
@@ -151,12 +155,25 @@ const Questions: React.FC = () => {
       });
   };
 
+  const checkSubscriptionLimit = () => {
+    if (!hasSubscription() && answeredQuestionsCount >= FREE_QUESTIONS_LIMIT) {
+      setShowSubscriptionAlert(true);
+      return false;
+    }
+    return true;
+  };
+
   const getNextQuestions = (
     questionId: any,
     questionType: any,
     answer: any,
     forwardQId: any
   ) => {
+    // Check subscription limit before proceeding
+    if (!checkSubscriptionLimit()) {
+      return;
+    }
+
     setSubmitButton(true);
     console.log("forwardQId:", forwardQId);
     console.log("Answer submitted for questionId:", questionId, answer);
@@ -175,6 +192,9 @@ const Questions: React.FC = () => {
         ])
       );
 
+      // Check if this is a new question (not editing)
+      const isNewQuestion = !responseMap.has(questionId);
+
       responseMap.set(questionId, { questionType, answer });
 
       const updatedResponses = Array.from(responseMap.entries()).map(
@@ -185,10 +205,15 @@ const Questions: React.FC = () => {
         })
       );
 
+      // Increment answered questions count only for new questions
+      if (isNewQuestion) {
+        setAnsweredQuestionsCount((prev) => prev + 1);
+      }
+
       // Submit the final updated responses if no next question exists
       if (!nextQuestionId) {
         setSubmitButton(false);
-        setSubmittedAnswer(updatedResponses); // Use the updated responses here
+        setSubmittedAnswer(updatedResponses);
         console.log("Submitting responses:", updatedResponses);
       }
 
@@ -245,7 +270,6 @@ const Questions: React.FC = () => {
       );
 
       console.log("nextQuestion", visibleQuestions);
-
       console.log("nextQuestion", nextQuestion);
 
       if (nextQuestion) {
@@ -276,12 +300,6 @@ const Questions: React.FC = () => {
               Number(selectedServiceId) === 201
                 ? questionSets
                 : submittedAnswer,
-            // employeeId: localStorage.getItem("currentDoctorId")
-            //   ? localStorage.getItem("currentDoctorId")
-            //   : null,
-            // hospitalId: localStorage.getItem("hospitalId")
-            //   ? localStorage.getItem("hospitalId")
-            //   : null,
             employeeId: null,
             hospitalId: "undefined",
             refLanCode: localStorage.getItem("refLanCode"),
@@ -308,20 +326,13 @@ const Questions: React.FC = () => {
               const getQuestionsToken = JSON.parse(getCategory);
               getQuestions();
               setResponses([]);
-              // history.push(
-              //   `/subCategories/${getQuestionsToken.id}/${getQuestionsToken.label}`
-              // );
               setLoadingStatus(false);
-              // history.replace(`/serviceAssessment/${selectedServiceId}`, {
-              //   getCategory: true,
-              // });
               history.push("/successCategory", {
                 selectedUserId: selectedUserId,
               });
               setSubmittedAnswer([]);
             } else {
               console.error("getCategory is null or undefined");
-
               setLoadingStatus(false);
               history.replace(`/serviceAssessment/${selectedServiceId}`, {
                 getCategory: true,
@@ -371,7 +382,6 @@ const Questions: React.FC = () => {
     console.log("forwardQnId", forwardQnId);
     getNextQuestions(questionId, questionType, refOptionId, forwardQnId);
   };
-  console.log("Visible qns", visibleQuestions);
 
   const handleMultipleSelectEdit = (
     questionId: any,
@@ -431,6 +441,12 @@ const Questions: React.FC = () => {
     getNextQuestions(questionId, questionType, resultValue, forwardQnId);
   };
 
+  const handleSubscriptionRedirect = () => {
+    setShowSubscriptionAlert(false);
+    // Redirect to subscription page
+    history.push("/subscriptionPlans");
+  };
+
   useEffect(() => {
     if (token) {
       try {
@@ -453,41 +469,10 @@ const Questions: React.FC = () => {
     if (categoryString) {
       setBackwardQ({
         id: categoryObject.id,
-
         label: categoryObject.label,
       });
     }
   }, []);
-
-  // const handleInfoClick = () => {
-  //   if (cardTitle === "8") {
-  //     history.push("/physicalActivity/showCards");
-  //   }
-  //   if (cardTitle === "10") {
-  //     history.push("/tobacoo/showCards");
-  //   }
-  //   if (cardTitle === "9") {
-  //     history.push("/stress/showCards");
-  //   }
-  //   if (cardTitle === "11") {
-  //     history.push("/alcohol/showCards");
-  //   }
-  // };
-
-  // const handleInstructionsClick = () => {
-  //   if (cardTitle === "8") {
-  //     history.push("/physicalActivity/instructions");
-  //   }
-  //   if (cardTitle === "10") {
-  //     history.push("/tobacoo/instructions");
-  //   }
-  //   if (cardTitle === "9") {
-  //     history.push("/stress/instructions");
-  //   }
-  //   if (cardTitle === "11") {
-  //     history.push("/alcohol/instructions");
-  //   }
-  // };
 
   console.log("eee", responses);
 
@@ -518,7 +503,7 @@ const Questions: React.FC = () => {
     if (visibleQuestions.length > 0) {
       handleNextQuestion();
     }
-  }, [visibleQuestions]); // Runs whenever visibleQuestions updates
+  }, [visibleQuestions]);
 
   const handleNextQuestion = () => {
     if (visibleQuestions.length > 1) {
@@ -548,8 +533,26 @@ const Questions: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton mode="md" defaultHref="/home" icon={chevronBack} />
           </IonButtons>
-          {/* <IonTitle>{"Question: " + visibleQuestions.length}</IonTitle> */}
-          <IonTitle>{`${t("reports.ques")} ${visibleQuestions.length}`}</IonTitle>
+          <IonTitle>{`${t("reports.ques")} ${
+            visibleQuestions.length
+          }`}</IonTitle>
+
+          {/* Show question limit indicator */}
+          {/* {!hasSubscription() && (
+            <IonTitle 
+              size="small" 
+              color="warning"
+              style={{ 
+                fontSize: '12px', 
+                position: 'absolute', 
+                right: '60px',
+                top: '50%',
+                transform: 'translateY(-50%)'
+              }}
+            >
+              {`${answeredQuestionsCount}/${FREE_QUESTIONS_LIMIT} Free`}
+            </IonTitle>
+          )} */}
 
           <IonButtons slot="end">
             <IonButton onClick={() => handleUndo()}>
@@ -558,6 +561,7 @@ const Questions: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
+
       <IonContent className="ion-padding">
         {visibleQuestions.length > 0 &&
           visibleQuestions.map((question, index) => (
@@ -572,13 +576,7 @@ const Questions: React.FC = () => {
                 <YesNo
                   label={question}
                   onOptionSelect={(refOptionId, forwardQId) => {
-                    // if (index === enabledIndex) {
-                    //   // getNextQuestions(
-                    //   //   question.questionId,
-                    //   //   refOptionId,
-                    //   //   forwardQId
-                    //   // );
-                    // }
+                    // Logic handled in onEdit
                   }}
                   onEdit={(questionType, refOptionId, forwardQId) => {
                     handleQuestionEdit(
@@ -595,13 +593,7 @@ const Questions: React.FC = () => {
                 <MultipleSelect
                   label={question}
                   onOptionSelect={(selectedOptions, forwardQId) => {
-                    // if (index === enabledIndex) {
-                    //   // getNextQuestions(
-                    //   //   question.questionId,
-                    //   //   refOptionId,
-                    //   //   forwardQId
-                    //   // );
-                    // }
+                    // Logic handled in onEdit
                   }}
                   onEdit={(selectedOptions, forwardQId) => {
                     handleMultipleSelectEdit(
@@ -621,12 +613,6 @@ const Questions: React.FC = () => {
                   onClickOpt={(value, questionId, forwardQId) => {
                     if (index === enabledIndex) {
                       console.log("-------------------->onEdit Triggered");
-                      // getNextQuestions(
-                      //   questionId,
-                      //   question.questionType,
-                      //   parseInt(value),
-                      //   forwardQId
-                      // );
                     }
                   }}
                   onEdit={(questionType, value, forwardQId) => {
@@ -664,12 +650,6 @@ const Questions: React.FC = () => {
                   onClickOpt={(value, questionId, forwardQId) => {
                     if (index === enabledIndex) {
                       console.log("-------------------->onEdit Triggered");
-                      // getNextQuestions(
-                      //   questionId,
-                      //   question.questionType,
-                      //   parseInt(value),
-                      //   forwardQId
-                      // );
                     }
                   }}
                   onEdit={(questionType, value, forwardQId) => {
@@ -690,12 +670,6 @@ const Questions: React.FC = () => {
                   onClickOpt={(value, questionId, forwardQId) => {
                     if (index === enabledIndex) {
                       console.log("-------------------->onEdit Triggered");
-                      // getNextQuestions(
-                      //   questionId,
-                      //   question.questionType,
-                      //   parseInt(value),
-                      //   forwardQId
-                      // );
                     }
                   }}
                   onEdit={(questionType, value, forwardQId) => {
@@ -791,12 +765,6 @@ const Questions: React.FC = () => {
                   onClickOpt={(value, questionId, forwardQId) => {
                     if (index === enabledIndex) {
                       console.log("-------------------->onEdit Triggered");
-                      // getNextQuestions(
-                      //   questionId,
-                      //   question.questionType,
-                      //   parseInt(value),
-                      //   forwardQId
-                      // );
                     }
                   }}
                   onEdit={(questionType, value, forwardQId) => {
@@ -815,11 +783,7 @@ const Questions: React.FC = () => {
                   label={question}
                   onOptionSelect={(selectedOptions, forwardQId) => {
                     if (index === enabledIndex) {
-                      // getNextQuestions(
-                      //   question.questionId,
-                      //   refOptionId,
-                      //   forwardQId
-                      // );
+                      // Logic handled in onEdit
                     }
                   }}
                   onEdit={(selectedOptions, forwardQId) => {
@@ -842,6 +806,7 @@ const Questions: React.FC = () => {
             </div>
           ))}
       </IonContent>
+
       <IonFooter>
         <IonToolbar>
           {loadingStatus ? (
@@ -851,12 +816,11 @@ const Questions: React.FC = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  height: "100%", // Ensures vertical centering if the parent has a defined height
+                  height: "100%",
                 }}
               >
                 <button
                   disabled={submitButton}
-                  // onClick={submitResponse}
                   className={`questionSubmitButton ${
                     submitButton ? "disabled" : ""
                   }`}
@@ -888,6 +852,30 @@ const Questions: React.FC = () => {
           )}
         </IonToolbar>
       </IonFooter>
+
+      {/* Subscription Alert */}
+      <IonAlert
+        isOpen={showSubscriptionAlert}
+        onDidDismiss={() => setShowSubscriptionAlert(false)}
+        header="Subscription Required"
+        message={`You have reached the limit of ${FREE_QUESTIONS_LIMIT} free questions. Please subscribe to continue with unlimited assessments.`}
+        cssClass="custom-alert"
+        buttons={[
+          {
+            text: "Cancel",
+            role: "cancel",
+            handler: () => {
+              setShowSubscriptionAlert(false);
+            },
+          },
+          {
+            text: "Subscribe Now",
+            handler: () => {
+              handleSubscriptionRedirect();
+            },
+          },
+        ]}
+      />
     </IonPage>
   );
 };

@@ -228,8 +228,11 @@ const Home: React.FC = () => {
 
         console.log(token);
         axios
-          .get(
+          .post(
             `${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`,
+            {
+              refLanCode: localStorage.getItem("refLanCode"),
+            },
             {
               headers: {
                 Authorization: token,
@@ -243,7 +246,7 @@ const Home: React.FC = () => {
               response.data[0],
               import.meta.env.VITE_ENCRYPTION_KEY
             );
-            console.log(data);
+            console.log("language code",data);
             if (data.status) {
               let tempPackages = data.result.sort(
                 (a: any, b: any) => a.refPkgValidMembers - b.refPkgValidMembers
@@ -467,7 +470,10 @@ const Home: React.FC = () => {
             </Carousel>
           </div>
           <div className="medicalRecordUploads mx-3 my-4 flex flex-column">
-            <div className="flex content align-items-center justify-content-between m-0 border-round-lg px-3 py-2 gap-4 shadow-1">
+            <div
+              className="flex content align-items-center justify-content-between m-0 border-round-lg px-3 py-2 gap-4 shadow-1"
+              onClick={() => history.push("/camera")}
+            >
               <div className="flex flex-column">
                 <p
                   className="mx-0 my-1 font-bold"
@@ -475,7 +481,7 @@ const Home: React.FC = () => {
                     color: "#0c4b41",
                   }}
                 >
-                 {t("home.Upload Medical Records")}
+                  {t("home.Upload Medical Records")}
                 </p>
               </div>
               {/* <img src={folderIcon} alt="" /> */}

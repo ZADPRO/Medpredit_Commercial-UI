@@ -304,6 +304,7 @@
 
 .home-pricing-card-content .p-card-body {
   padding: 0;
+  
 }
 
 .home-pricing-card-content > div {
@@ -366,7 +367,9 @@
   justify-content: space-between;
   align-items: center;
 }
-
+.home-pricing-card-content:nth-child(2) > div{
+  width: 100%;
+} 
 .home-riskFactor-score01 {
   min-width: 45%;
   background: linear-gradient(233.73deg, #efffb1 -2.15%, #ffffff 99.68%);
