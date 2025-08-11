@@ -232,6 +232,9 @@ const Home: React.FC = () => {
             `${import.meta.env.VITE_API_COMMERCIAL_URL}/getAllValidPackage`,
             {
               refLanCode: localStorage.getItem("refLanCode"),
+              versionCode: import.meta.env.VERSION_CODE
+                ? import.meta.env.VERSION_CODE
+                : null,
             },
             {
               headers: {
@@ -246,8 +249,10 @@ const Home: React.FC = () => {
               response.data[0],
               import.meta.env.VITE_ENCRYPTION_KEY
             );
-            console.log("language code",data);
+            console.log("language code", data);
             if (data.status) {
+              localStorage.setItem("token", JSON.stringify(token));
+
               let tempPackages = data.result.sort(
                 (a: any, b: any) => a.refPkgValidMembers - b.refPkgValidMembers
               );
