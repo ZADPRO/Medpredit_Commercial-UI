@@ -73,16 +73,16 @@ const Profile: React.FC = () => {
         // { icon: "pi pi-comment", label: t("profile.Feedback"), path: "/feedback" },
       ],
     },
-    {
-      title: t("profile.MedicalRecords"),
-      items: [
-        {
-          icon: "pi pi-upload",
-          label: t("profile.UploadMedicalRecords"),
-          path: "/MedicalRecords",
-        },
-      ],
-    },
+    // {
+    //   title: t("profile.MedicalRecords"),
+    //   items: [
+    //     {
+    //       icon: "pi pi-upload",
+    //       label: t("profile.UploadMedicalRecords"),
+    //       path: "/MedicalRecords",
+    //     },
+    //   ],
+    // },
     {
       title: t("profile.More"),
       items: [

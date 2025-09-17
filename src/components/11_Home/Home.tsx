@@ -485,7 +485,7 @@ const Home: React.FC = () => {
               </div> */}
             </Carousel>
           </div>
-          <div className="medicalRecordUploads mx-3 my-4 flex flex-column">
+          {/* <div className="medicalRecordUploads mx-3 my-4 flex flex-column">
             <div
               className="flex content align-items-center justify-content-between m-0 border-round-lg px-3 py-2 gap-4 shadow-1"
               onClick={() => history.push("/camera")}
@@ -500,12 +500,12 @@ const Home: React.FC = () => {
                   {t("home.Upload Medical Records")}
                 </p>
               </div>
-              {/* <img src={folderIcon} alt="" /> */}
+           
               <div className="iconCont">
                 <i className="pi pi-upload" />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Health Data */}
           {/* <div className="">
