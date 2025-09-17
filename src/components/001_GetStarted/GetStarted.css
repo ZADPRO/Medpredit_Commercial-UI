@@ -13,6 +13,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  overflow-y: auto; /* Allow scroll if content overflows */
 }
 
 .get-started-wrapper {
@@ -31,40 +32,42 @@
 }
 
 .get-started-carousel-div {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
+  /* Removed position absolute to prevent text cutting */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 1rem;
+  width: 100%;
 }
 
 .get-started-carousel {
-  padding: 1.5rem;
-  width: 95%;
+  padding: 1rem;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   gap: 1rem;
   color: var(--med-dark-green);
+  min-height: 40vh; /* Ensure height for multiline text */
 }
 
 .get-started-carousel div h2 {
   font-weight: bold;
+  text-align: center;
+  word-break: break-word;
 }
 
 .get-started-carousel div span {
   line-height: 28px;
   width: 100%;
   max-width: 90vw;
-  display: flex;
-  margin: 0 auto;
+  display: block;
   font-weight: 300;
-  text-align: justify;
-  text-align-last: center;
+  text-align: center;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .get-started-carousel-container {

@@ -30,22 +30,29 @@ const ForgotPassword = () => {
   };
 
   const handleNext = () => {
+    // Step 1: Validate email first
+    if (!validateEmail(email)) {
+      setToastOpen({
+        status: true,
+        message: t("forgotPassword.invalidEmail"),
+        textColor: "red",
+      });
+      return; // Stop execution
+    }
+
+    // Step 2: Call API
     axios
       .post(
         import.meta.env.VITE_API_COMMERCIAL_URL + "/generateOTPForPassword",
-        {
-          email: email,
-        }
+        { email: email }
       )
       .then((response) => {
-        console.log("res", response);
         const data = decrypt(
           response.data[1],
           response.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
-        console.log("line 46");
-        console.log("data", data);
+
         if (data.status) {
           history.push("/enterOTP", {
             direction: "forward",
@@ -60,16 +67,16 @@ const ForgotPassword = () => {
             textColor: "red",
           });
         }
+      })
+      .catch((error) => {
+        // Step 3: Catch server errors (500, network, etc.)
+        console.error(error);
+        setToastOpen({
+          status: true,
+          message: t("forgotPassword.invalidEmail"),
+          textColor: "red",
+        });
       });
-
-    // if (validateEmail(email)) {
-    // } else {
-    //   setToastOpen({
-    //     status: true,
-    //     message: t("forgotPassword.invalidEmail"),
-    //     textColor: "red",
-    //   });
-    // }
   };
 
   return (

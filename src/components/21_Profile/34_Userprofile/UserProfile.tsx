@@ -584,7 +584,7 @@ const UserProfile: React.FC = () => {
                 localStorage.setItem("firstLogin", "false");
               }}
             >
-              <IonText>Skip</IonText>
+              {/* <IonText>Skip</IonText> */}
             </IonButton>
           ) : (
             <IonButton
