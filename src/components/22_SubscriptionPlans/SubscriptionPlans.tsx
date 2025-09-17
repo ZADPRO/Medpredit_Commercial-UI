@@ -225,8 +225,8 @@ const SubscriptionPlans: React.FC = () => {
                           const tokenObject = JSON.parse(tokenString || "");
                           const token = tokenObject.token;
                           window.location.href =
-                            "http://localhost:5173/subscription?token=" +
-                            // "https://medpredit.com/subscription?token=" +
+                            // "http://localhost:5173/subscription?token=" +
+                            "https://medpredit.com/subscription?token=" +
                             token +
                             "&packageId=" +
                             plan.refPkgId +
@@ -289,8 +289,8 @@ const SubscriptionPlans: React.FC = () => {
                       const tokenObject = JSON.parse(tokenString || "");
                       const token = tokenObject.token;
                       window.location.href =
-                        "http://localhost:5173/subscription?token=" +
-                        // "https://medpredit.com/subscription?token=" +
+                        // "http://localhost:5173/subscription?token=" +
+                        "https://medpredit.com/subscription?token=" +
                         token +
                         "&packageId=" +
                         plan.refPkgId +

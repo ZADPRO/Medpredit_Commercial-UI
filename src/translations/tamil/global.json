@@ -79,7 +79,8 @@
     "emailPlaceholder": "மின்னஞ்சல் முகவரி",
     "continue": "தொடரவும்",
     "invalidEmail": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்.",
-    "Mobile Number": "மொபைல் எண்"
+    "Mobile Number": "மொபைல் எண்",
+     "Email Address": "மின்னஞ்சல் முகவரி"
   },
   "verifyOTP": {
     "title": "OTP சரிபார்க்கவும்",

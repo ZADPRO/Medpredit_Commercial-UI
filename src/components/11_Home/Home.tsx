@@ -22,8 +22,11 @@ import {
   personOutline,
   search,
 } from "ionicons/icons";
+import { IoBarChart } from "react-icons/io5";
 
 import folderIcon from "../../assets/MedicalRecords/folder.svg";
+
+import graphimg from "../../assets/images/graph.png";
 
 import { Carousel } from "react-responsive-carousel";
 import carousel1_eng from "../../assets/images/Home/BANNER1_ENG.jpg";
@@ -57,7 +60,7 @@ import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { useTranslation } from "react-i18next";
-
+import circle from "../../assets/images/Backgroundimg/circle.png";
 import TutorialCarousel from "../41_TutorialCarousel/TutorialCarousel";
 
 import PINoPlan from "../../assets/UserIcons/noPlan.png";
@@ -69,7 +72,7 @@ import PIProPlan from "../../assets/UserIcons/proPlan.png";
 const Home: React.FC = () => {
   const history = useHistory();
   const userDetails = localStorage.getItem("userDetails");
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userProfileIcon, setUserProfileIcon] = useState("");
 
   const userDeatilsObj = userDetails
@@ -265,10 +268,10 @@ const Home: React.FC = () => {
                 tempPackages[1],
               ]; // Rearrange the package list for UI
               setPackages(tempPackages);
-              console.log("tempPackages", data);
+              console.log("tempPackages--------->", tempPackages);
               if (data.packageStatus && data.packageData[0]) {
                 const refPkgId = data.packageData[0].refPkgId;
-                console.log("refPkgId", refPkgId);
+                console.log("refPkgId----?----", refPkgId);
 
                 switch (refPkgId) {
                   case 0:
@@ -366,6 +369,14 @@ const Home: React.FC = () => {
   const handleCloseTutorial = () => {
     localStorage.setItem("tutorial", "absent");
     setShowTutorial(false);
+  };
+
+  const handleCardClick = () => {
+    if (isLoggedIn) {
+      history.push("/connect");
+    } else {
+      history.push("/loginconnect");
+    }
   };
 
   return (
@@ -495,6 +506,110 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Health Data */}
+          {/* <div className="">
+            <div
+              onClick={handleCardClick}
+              style={{
+                padding: "1rem 1.5rem",
+                backgroundImage: `url(${circle})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+                backgroundPosition: "center right",
+
+                backgroundColor: "#0c4c3f",
+                borderRadius: "2rem",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "90px",
+                width: "100%",
+                marginBottom: "10px",
+              }}
+            >
+        
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#a3e635",
+                    padding: "0.75rem",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <IoBarChart
+                    style={{ color: "#0c4c3f", fontSize: "1.5rem" }}
+                  />
+                </div>
+                <div>
+                  <h2
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "1.25rem",
+                      margin: 0,
+                    }}
+                  >
+                    Medpredit Fit
+                  </h2>
+                  <p
+                    style={{
+                      color: "#d1d5db",
+                      fontSize: "0.875rem",
+                      margin: 0,
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    Find your activities here
+                  </p>
+                </div>
+              </div>
+
+            
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  gap: "0.75rem",
+
+                  width: "rem",
+                  height: "5rem",
+                }}
+              >
+               
+                {isLoggedIn ? (
+                  <button
+                    style={{
+                      backgroundColor: "#a3e635",
+                      border: "none",
+                      padding: "10px",
+                      borderRadius: "1rem",
+                      color: "#0c4c3f",
+                      fontWeight: "bolder",
+                      fontSize: "10px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    GET STARTED
+                  </button>
+                ) : (
+                  <img
+                    src={graphimg}
+                    alt="graph design"
+                    style={{ width: "4rem", height: "2.5rem" }}
+                  />
+                )}
+              </div>
+            </div>
+          </div> */}
+
           <div className="home-services">
             <div className="home-services-title">
               <h2
@@ -522,7 +637,7 @@ const Home: React.FC = () => {
                         </b>
                       </div>
                     </Divider>
-                    {localStorage.getItem("subValid") == "false" && (
+                    {/* {localStorage.getItem("subValid") == "false" && (
                       <p
                         style={{
                           marginTop: "0",
@@ -533,7 +648,7 @@ const Home: React.FC = () => {
                         {t("home.Free Assesstment Taken")}:{" "}
                         {freeAssessment.higherCount > 0 ? 1 : 0}/1
                       </p>
-                    )}
+                    )} */}
                   </div>
                   <IonRow>
                     {services.slice(0, 4).map((card, index) => (
@@ -574,7 +689,7 @@ const Home: React.FC = () => {
                         </b>
                       </div>
                     </Divider>
-                    {localStorage.getItem("subValid") == "false" && (
+                    {/* {localStorage.getItem("subValid") == "false" && (
                       <p
                         style={{
                           marginTop: "0",
@@ -585,7 +700,7 @@ const Home: React.FC = () => {
                         {t("home.Free Assesstment Taken")}:{" "}
                         {freeAssessment.lowerCount > 0 ? 1 : 0}/1
                       </p>
-                    )}
+                    )} */}
                   </div>
                   <IonRow>
                     {services.slice(4, 8).map((card, index) => (

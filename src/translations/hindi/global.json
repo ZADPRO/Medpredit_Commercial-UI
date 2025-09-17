@@ -75,7 +75,8 @@
     "emailPlaceholder": "ईमेल पता",
     "continue": "जारी रखें",
     "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें।",
-    "Mobile Number": "मोबाइल नंबर"
+    "Mobile Number": "मोबाइल नंबर",
+    "Email Address": "ईमेल पता"
   },
   "verifyOTP": {
     "title": "ओटीपी सत्यापन",
