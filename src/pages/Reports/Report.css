@@ -165,3 +165,13 @@
   font-weight: bold;
   font-size: 0.8rem;
 }
+
+.disabled-button {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  background-color: #ccc !important;
+}
+
+.disabled-button:hover {
+  background-color: #ccc !important;
+}

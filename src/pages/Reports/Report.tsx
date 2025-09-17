@@ -76,11 +76,9 @@ const Report: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Nullable<Date>>();
 
   const [tempselectedUser, settempSelectedUser] = useState<number>();
-  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>(
-  );
+  const [tempselectedDate, settempSelectedDate] = useState<Nullable<Date>>();
 
   const [filledDates, setFilledDates] = useState<any[]>([]);
-
 
   const userDetails = localStorage.getItem("userDetails");
 
@@ -253,11 +251,11 @@ const Report: React.FC = () => {
               response.data[0],
               import.meta.env.VITE_ENCRYPTION_KEY
             );
-  
+
             console.log("====================================");
             console.log("########", data);
             console.log("====================================");
-  
+
             if (data.status) {
               // setAllReports(data.data);
               let ar = [];
@@ -284,7 +282,6 @@ const Report: React.FC = () => {
     }
   };
 
-
   const reportData = () => {
     // console.log("---------------------->", reportDate);
     const tokenString = localStorage.getItem("userDetails");
@@ -305,7 +302,7 @@ const Report: React.FC = () => {
               employeeId: null,
               hospitalId: "undefined",
               reportDate: tempselectedDate,
-              refLanCode: localStorage.getItem("refLanCode")
+              refLanCode: localStorage.getItem("refLanCode"),
             },
             {
               headers: {
@@ -682,7 +679,7 @@ const Report: React.FC = () => {
               patientId: selectedUser?.toString(),
               employeeId: null,
               hospitalId: "undefined",
-              refLanCode: localStorage.getItem("refLanCode")
+              refLanCode: localStorage.getItem("refLanCode"),
             },
             {
               headers: {
@@ -746,31 +743,30 @@ const Report: React.FC = () => {
 
   const formatDate = (date: Date): string => {
     const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const dd = String(date.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  
   const dateTemplate = (dateInfo: any) => {
     const { year, month, day } = dateInfo;
     const dateObj = new Date(year, month, day);
     const isAllowed = filledDates.includes(formatDate(dateObj));
-  
+
     return (
       <span
         style={{
-          color: isAllowed ? 'inherit' : '#ccc',
+          color: isAllowed ? "inherit" : "#ccc",
           opacity: isAllowed ? 1 : 0.5,
-          pointerEvents: 'none', // optional, purely for UI feel
+          pointerEvents: "none", // optional, purely for UI feel
         }}
       >
         {day}
       </span>
     );
   };
-  
-  console.log("selectedDate",selectedDate);
+
+  console.log("selectedDate", selectedDate);
   const [doc, setDoc] = useState<React.ReactNode>(null);
 
   const handleViewReport = () => {
@@ -778,10 +774,9 @@ const Report: React.FC = () => {
       const pdfDoc = ViewReport({ reportDate: selectedDate, selectedUser });
       setDoc(pdfDoc);
     }
-  }
+  };
 
   console.log(doc);
-
 
   const [showReport, setShowReport] = useState(false);
 
@@ -961,15 +956,17 @@ const Report: React.FC = () => {
             />
           </div>
           <h4>{t("reports.Select Date")}</h4>
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            width: "95%",
-            height: "95%",
-            margin: "0 auto"
-          }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              width: "95%",
+              height: "95%",
+              margin: "0 auto",
+            }}
+          >
             <Calendar
-            style={{width: "100%"}}
+              style={{ width: "100%" }}
               value={tempselectedDate}
               onChange={(e) => settempSelectedDate(e.value)}
               maxDate={maxDate}
@@ -996,7 +993,21 @@ const Report: React.FC = () => {
                 {t("reports.Back")}
               </button>
             )}
-            <button onClick={() => reportData()} className="medCustom-button01">
+            <button
+              onClick={() => reportData()}
+              className={`medCustom-button01 ${
+                filledDates.length === 0 ||
+                !tempselectedDate ||
+                !filledDates.includes(formatDate(tempselectedDate))
+                  ? "disabled-button"
+                  : ""
+              }`}
+              disabled={
+                filledDates.length === 0 ||
+                !tempselectedDate ||
+                !filledDates.includes(formatDate(tempselectedDate))
+              }
+            >
               {t("reports.Select")}
             </button>
           </div>
@@ -1094,7 +1105,6 @@ const Report: React.FC = () => {
       </IonModal>
 
       <IonContent className="ion-padding">
-
         {/* {selectedUser && (
           <div
             style={{

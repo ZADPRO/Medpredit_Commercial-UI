@@ -80,7 +80,7 @@ const About: React.FC = () => {
             <IonCol>
               <IonLabel className="about-label">{t("about.Contact Us")}</IonLabel>
               <IonText color="primary">
-                <p>support@medpredit.com</p>
+                <p>med-info@zadroit.com </p>
               </IonText>
             </IonCol>
           </IonRow>
