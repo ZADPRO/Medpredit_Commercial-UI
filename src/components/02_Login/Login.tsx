@@ -170,12 +170,12 @@ const Login: React.FC = () => {
 
     if (flag == "true") {
       setTimeout(() => {
-        history.push("/userProfile");
+        history.replace("/userProfile");
         setShowModal(false);
       }, 1000);
     } else {
       setTimeout(() => {
-        history.push("/home");
+        history.replace("/home");
         setShowModal(false);
       }, 1000);
     }

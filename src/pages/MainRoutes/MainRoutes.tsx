@@ -63,24 +63,24 @@ const MainRoutes: React.FC = () => {
   useNetworkCheck();
   useAxiosInterceptor();
 
-  useEffect(() => {
-    const configureStatusBar = async () => {
-      if (Capacitor.isNativePlatform()) {
-        let bgcolor;
-        if (location.pathname != "/home") {
-          bgcolor = "#f8fff5";
-        } else {
-          bgcolor = "none";
-        }
+  // useEffect(() => {
+  //   const configureStatusBar = async () => {
+  //     if (Capacitor.isNativePlatform()) {
+  //       let bgcolor;
+  //       if (location.pathname != "/home") {
+  //         bgcolor = "#f8fff5";
+  //       } else {
+  //         bgcolor = "none";
+  //       }
 
-        await StatusBar.setOverlaysWebView({ overlay: false });
-        await StatusBar.setBackgroundColor({ color: bgcolor });
-        await StatusBar.setStyle({ style: Style.Light });
-      }
-    };
+  //       await StatusBar.setOverlaysWebView({ overlay: false });
+  //       await StatusBar.setBackgroundColor({ color: bgcolor });
+  //       await StatusBar.setStyle({ style: Style.Light });
+  //     }
+  //   };
 
-    configureStatusBar();
-  }, [location.pathname]);
+  //   configureStatusBar();
+  // }, [location.pathname]);
 
   const tokenString = localStorage.getItem("userDetails");
   let roleType = 1;

@@ -7,7 +7,7 @@ import tutorial2 from "../../assets/Tutorial/2.png";
 import tutorial3 from "../../assets/Tutorial/3.png";
 import tutorial4 from "../../assets/Tutorial/4.png";
 
-const images = [tutorial1, tutorial2, tutorial3, tutorial4];
+const images = [tutorial1, tutorial2, tutorial3];
 
 const TutorialCarousel: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

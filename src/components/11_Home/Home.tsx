@@ -22,7 +22,7 @@ import {
   personOutline,
   search,
 } from "ionicons/icons";
-import { IoBarChart } from "react-icons/io5";
+// import { IoBarChart } from "react-icons/io5";
 
 import folderIcon from "../../assets/MedicalRecords/folder.svg";
 

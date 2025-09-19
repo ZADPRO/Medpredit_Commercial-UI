@@ -40,19 +40,20 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/zoom";
 import "@ionic/react/css/ionic-swiper.css";
-import AdsBanner from "./pages/AdsBanner/AdsBanner";
+// import AdsBanner from "./pages/AdsBanner/AdsBanner";
 
 setupIonicReact({
   mode: "ios",
 });
 
 const App: React.FC = () => (
+  
   <IonApp>
     <AppExitHandler />
     <IonReactRouter>
       <MainRoutes />
     </IonReactRouter>
-    <AdsBanner />
+    {/* <AdsBanner /> */}
   </IonApp>
 );
 

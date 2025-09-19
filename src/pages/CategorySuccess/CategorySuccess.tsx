@@ -82,6 +82,12 @@ const CategorySuccess: React.FC = () => {
     getRemainingCategory();
   }, []);
 
+  useEffect(() => {
+  if (!loading && pendingAssessments.length === 0) {
+    history.replace("/home"); // Auto-redirect
+  }
+}, [loading, pendingAssessments, history]);
+
   const handleAssessmentClick = (assessmentId: string) => {
     if (!selectedUserId) return;
 
