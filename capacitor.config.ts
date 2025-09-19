@@ -9,12 +9,21 @@ const config: CapacitorConfig = {
       launchShowDuration: 0,
     },
     Keyboard: {
-      resize: "body", // Options: "native", "body", "ionic"
+      resize: "body",
       resizeOnFullScreen: true,
     },
     PhotoLibrary: {
       read: true,
       write: false,
+    },
+    FirebaseAuthentication: {
+      skipNativeAuth: false,
+      providers: ["google.com"],
+      google: {
+        scopes: ["profile", "email"],
+        serverClientId:
+          "158794026736-r7o7fcnp5t410iojsmeiqbomhpkjm2qp.apps.googleusercontent.com",
+      },
     },
   },
 };

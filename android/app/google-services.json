@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "158794026736",
+    "project_id": "medpredit-auth",
+    "storage_bucket": "medpredit-auth.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158794026736:android:3cb9fc567c376f94e4fc35",
+        "android_client_info": {
+          "package_name": "io.zadroit.medpredit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "158794026736-29hibkasvphchh3boqqoivi37hht41fj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.zadroit.medpredit",
+            "certificate_hash": "6377d9a70a29a1c53dc4dddfd5e14f47d6755dea"
+          }
+        },
+        {
+          "client_id": "158794026736-r7o7fcnp5t410iojsmeiqbomhpkjm2qp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWI9a-_gdZhptTHP16qfRMaVYLGx7kX_U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "158794026736-r7o7fcnp5t410iojsmeiqbomhpkjm2qp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -22,7 +22,8 @@ import {
   personOutline,
   search,
 } from "ionicons/icons";
-// import { IoBarChart } from "react-icons/io5";
+import { IoBarChart } from "react-icons/io5";
+import circle from "../../assets/Home/circle.png";
 
 import folderIcon from "../../assets/MedicalRecords/folder.svg";
 
@@ -60,7 +61,6 @@ import axios from "axios";
 import decrypt from "../../helper";
 import CustomIonLoading from "../CustomIonLoading/CustomIonLoading";
 import { useTranslation } from "react-i18next";
-import circle from "../../assets/images/Backgroundimg/circle.png";
 import TutorialCarousel from "../41_TutorialCarousel/TutorialCarousel";
 
 import PINoPlan from "../../assets/UserIcons/noPlan.png";
@@ -69,7 +69,27 @@ import PIStandardPlan from "../../assets/UserIcons/standard.png";
 import PIFamilyPlan from "../../assets/UserIcons/familyPlan.png";
 import PIProPlan from "../../assets/UserIcons/proPlan.png";
 
+import { Capacitor } from "@capacitor/core";
+
+import { auth, GoogleAuthProvider, signInWithPopup } from "./firebase";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
+
 const Home: React.FC = () => {
+  const signIn = async () => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await FirebaseAuthentication.signInWithGoogle();
+        console.log("User:", result);
+      } catch (error) {
+        console.error("Google Sign-In failed:", error);
+      }
+    } else {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      console.log("User:", result.user);
+    }
+  };
+
   const history = useHistory();
   const userDetails = localStorage.getItem("userDetails");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -609,6 +629,111 @@ const Home: React.FC = () => {
               </div>
             </div>
           </div> */}
+
+          <div className="">
+            <div
+              onClick={signIn}
+              style={{
+                padding: "1rem 1.5rem",
+                backgroundImage: `url(${circle})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+                backgroundPosition: "center right",
+                backgroundColor: "#0c4c3f",
+                borderRadius: "2rem",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "90px",
+                width: "100%",
+                marginBottom: "10px",
+              }}
+            >
+              {/* Left side with icon and text */}
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#a3e635",
+                    padding: "0.75rem",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <IoBarChart
+                    style={{ color: "#0c4c3f", fontSize: "1.5rem" }}
+                  />
+                </div>
+                <div>
+                  <h2
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
+                      fontSize: "1.25rem",
+                      margin: 0,
+                    }}
+                  >
+                    Medpredit Fit
+                  </h2>
+                  <p
+                    style={{
+                      color: "#d1d5db",
+                      fontSize: "0.875rem",
+                      margin: 0,
+                      marginTop: "0.25rem",
+                    }}
+                  >
+                    Find your activities here
+                  </p>
+                </div>
+              </div>
+
+              {/* Right side container with circle background */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  gap: "0.75rem",
+
+                  width: "rem",
+                  height: "5rem",
+                }}
+              >
+                {/* <img
+                  src={graphimg}
+                  alt="graph design"
+                  style={{ width: "4rem", height: "2.5rem" }}
+                /> */}
+                {isLoggedIn ? (
+                  <button
+                    style={{
+                      backgroundColor: "#a3e635",
+                      border: "none",
+                      padding: "10px",
+                      borderRadius: "1rem",
+                      color: "#0c4c3f",
+                      fontWeight: "bolder",
+                      fontSize: "10px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    GET STARTED
+                  </button>
+                ) : (
+                  <img
+                    src={graphimg}
+                    alt="graph design"
+                    style={{ width: "4rem", height: "2.5rem" }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
 
           <div className="home-services">
             <div className="home-services-title">
